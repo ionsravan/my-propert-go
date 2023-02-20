@@ -1,0 +1,22 @@
+{
+  "agent": "/agent.png",
+  "bars": "/bars.png",
+  "bg": "/bg.png",
+  "bighouse": "/bighouse.png",
+  "Rectangle 583(1)": "/cities/Rectangle 583(1).png",
+  "Rectangle 583(2)": "/cities/Rectangle 583(2).png",
+  "Rectangle 583(3)": "/cities/Rectangle 583(3).png",
+  "Rectangle 583(4)": "/cities/Rectangle 583(4).png",
+  "Rectangle 583(5)": "/cities/Rectangle 583(5).png",
+  "Rectangle 583": "/cities/Rectangle 583.png",
+  "favicon": "/favicon.ico",
+  "home": "/home.png",
+  "map": "/map.png",
+  "mediumhome": "/mediumhome.png",
+  "next": "/next.svg",
+  "thirteen": "/thirteen.svg",
+  "v": "/v.png",
+  "vercel": "/vercel.svg",
+  "villa3": "/villa3.png",
+  "villa4": "/villa4.png"
+}

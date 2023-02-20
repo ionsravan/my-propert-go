@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg {
+  background: linear-gradient(
+    101.42deg,
+    #275bc1 4.88%,
+    rgba(28, 84, 192, 0.79) 102.89%
+  );
+}
+
+.testibg {
+  background: linear-gradient(0deg, #e2f2ff, #e2f2ff), #ffffff;
+}
+
+.bd {
+  border: 2px solid rgba(169, 169, 169, 0.28);
+  border-radius: 16px;
+}
+
+.cover {
+  background: linear-gradient(
+    106.23deg,
+    rgba(64, 111, 202, 0.7) 0.46%,
+    rgba(11, 50, 125, 0.7) 97.31%
+  );
+}
+
+input[type="text"]:focus ~ .input-text,
+input[type="text"]:not(:placeholder-shown) ~ .input-text {
+  @apply transform -translate-y-7 -translate-x-5 scale-75 opacity-100 text-lg;
+}
