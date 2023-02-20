@@ -19,8 +19,7 @@ export function Input({
   showError,
 }: InputProps) {
   return (
-    <>
-      {" "}
+    <div>
       <div
         className={`group  focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 rounded-xl bd  `}
       >
@@ -40,7 +39,7 @@ export function Input({
           </span>
         </label>
       </div>
-      {showError ? <p className="text-red-500 text-sm">{err}</p> : null}
-    </>
+      {showError ? <p className=" mt-3 text-red-500 text-sm">{err}</p> : null}
+    </div>
   );
 }
