@@ -8,6 +8,7 @@ interface InputProps {
   err?: string;
   setValue: React.Dispatch<SetStateAction<any>>;
   showError: boolean;
+  type?: string;
 }
 
 export function Input({
@@ -17,6 +18,7 @@ export function Input({
   placeholder,
   err,
   showError,
+  type = "text",
 }: InputProps) {
   return (
     <div>
@@ -27,7 +29,7 @@ export function Input({
         <label className="flex items-center w-full relative cursor-pointer  py-1 ">
           <input
             required
-            type="text"
+            type={type}
             placeholder="Input"
             className="h-10 w-full px-2   bg-white border-none outline-none focus placeholder-gray-300 placeholder-opacity-0 transition duration-200"
             onChange={(e) => {

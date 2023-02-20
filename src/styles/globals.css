@@ -28,6 +28,7 @@
 }
 
 input[type="text"]:focus ~ .input-text,
+input[type="password"]:not(:placeholder-shown) ~ .input-text,
 input[type="text"]:not(:placeholder-shown) ~ .input-text {
   @apply transform -translate-y-7 -translate-x-5 scale-75 opacity-100 text-lg;
 }

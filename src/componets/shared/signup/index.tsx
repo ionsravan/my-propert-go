@@ -43,6 +43,50 @@ const SingnupTemplate = ({
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState<boolean>(false);
   const [errors, setErros] = useState<string>("");
+  const [showPass, setShowPass] = useState<boolean>(false);
+
+  const handleSubmit = async () => {
+    if (
+      name &&
+      email &&
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
+      password &&
+      password.length >= 8 &&
+      mob &&
+      /^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(
+        mob.toString()
+      ) &&
+      password &&
+      confirmEmail &&
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(confirmEmail)
+    ) {
+      setLoading(true);
+      const result = await signupController(
+        name,
+        email,
+        mob,
+        password,
+        instance,
+        url
+      );
+      if (typeof result == "string") {
+        setCookies("jwtToken", result);
+        SignupSuccess();
+        router.push(redirectUrl);
+      } else {
+        if (result == 409) {
+          setErros("This Email Already Exists on Another Account");
+        } else {
+          setErros("Some Error Accured Please Try Again !");
+        }
+      }
+    } else {
+      console.log("not runnig");
+      setLoading(false);
+      setShowError(true);
+      return;
+    }
+  };
 
   return (
     <div className="grow  ">
@@ -77,6 +121,7 @@ const SingnupTemplate = ({
                 : "Enter Valid Email"
             }
           />
+
           <Input
             value={confirmEmail}
             setValue={setConfiremail}
@@ -114,52 +159,29 @@ const SingnupTemplate = ({
             placeholder="Add a Password"
             showError={showError}
             err={password.length < 8 ? "password must be 8 chaachters" : " "}
+            type={showPass ? "text" : "password"}
           />
+          <div
+            className="w-full px-4 space-x-4 textlg
+          "
+          >
+            <input
+              checked={showPass}
+              onChange={() => {
+                setShowPass(!showPass);
+              }}
+              type="checkbox"
+              name="password"
+              id=""
+            />
+            <label htmlFor="password" className="text-lg">
+              show password
+            </label>
+          </div>
         </div>
 
         <button
-          onClick={async () => {
-            if (
-              name &&
-              email &&
-              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email) &&
-              password &&
-              password.length >= 8 &&
-              mob &&
-              /^(?:(?:\+|0{0,2})91(\s*|[\-])?|[0]?)?([6789]\d{2}([ -]?)\d{3}([ -]?)\d{4})$/.test(
-                mob.toString()
-              ) &&
-              password &&
-              confirmEmail &&
-              /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(confirmEmail)
-            ) {
-              setLoading(true);
-              const result = await signupController(
-                name,
-                email,
-                mob,
-                password,
-                instance,
-                url
-              );
-              if (typeof result == "string") {
-                setCookies("jwtToken", result);
-                SignupSuccess();
-                router.push(redirectUrl);
-              } else {
-                if (result == 409) {
-                  setErros("This Email Already Exists on Another Account");
-                } else {
-                  setErros("Some Error Accured Please Try Again !");
-                }
-              }
-            } else {
-              console.log("not runnig");
-              setLoading(false);
-              setShowError(true);
-              return;
-            }
-          }}
+          onClick={handleSubmit}
           className={`${
             loading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
           } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out`}
