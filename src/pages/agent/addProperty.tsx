@@ -21,6 +21,7 @@ import {
 } from "react-icons/hi";
 import { BsBuilding } from "react-icons/bs";
 import {
+  AiOutlineClose,
   AiOutlineDollar,
   AiOutlineHome,
   AiOutlineSetting,
@@ -119,13 +120,10 @@ export default function Modal() {
   const [adress, setAdress] = useState("");
   const [area, setArea] = useState<area | null>(null);
   const [BHKconfig, setBHKConfig] = useState<string>("1");
-  const [file, setFile] = useState<any>(null);
   const instance = useAxios();
-  const { agentId, showModal, setShowModal } = useAppContext();
-  const [cookies, setCookes] = useCookies(["jwtToken"]);
+  const { showModal, setShowModal } = useAppContext();
   const [availableFor, setAvailableFor] = useState({ name: "Rent" });
   const [propertyType, setPropertyType] = useState({ name: "villa" });
-  const [selectedFiles, setSelectedFiles] = useState([]);
   const [filesToupload, setFilesToUpload] = useState<any>([]);
 
   const { data: loc } = useFetch<response<location[]>>(
@@ -146,20 +144,39 @@ export default function Modal() {
       });
     }
   };
-
-  useEffect(() => {
-    console.log(filesToupload);
-  }, [filesToupload]);
+  const dleteImage = (file: any) => {
+    setFilesToUpload((prev: any) => {
+      let imgs: Array<any> = [...filesToupload];
+      const index = imgs.indexOf(file);
+      if (index > -1) {
+        imgs.splice(index, 1);
+      }
+      return imgs;
+    });
+  };
 
   const renderPhotos = (source: any) => {
     return source.map((photo: any) => {
       return (
-        <img
-          className="h-40 w-full max-w-[200px] object-contain"
-          src={URL.createObjectURL(photo)}
-          alt=""
-          key={photo}
-        />
+        <div
+          className="w-max h-40 flex justify-center items-center  relative max-w-[200px]"
+          key={JSON.stringify(photo)}
+        >
+          <button
+            onClick={() => {
+              dleteImage(photo);
+            }}
+            className="text-white bg-red-500 h-6 w-6 flex rounded-full items-center justify-center absolute top-1 right-0"
+          >
+            <AiOutlineClose />
+          </button>
+          <img
+            className=" h-full object-cover"
+            src={URL.createObjectURL(photo)}
+            alt=""
+            key={photo}
+          />
+        </div>
       );
     });
   };
