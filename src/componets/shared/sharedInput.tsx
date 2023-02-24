@@ -7,7 +7,7 @@ interface InputProps {
   value: any;
   err?: string;
   setValue: React.Dispatch<SetStateAction<any>>;
-  showError: boolean;
+  showError?: boolean;
   type?: string;
 }
 
@@ -23,11 +23,12 @@ export function Input({
   return (
     <div>
       <div
-        className={`group  focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 rounded-xl bd  `}
+        className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
       >
         {Icon && <Icon className="text-xl text-[#2C5FC3] " />}
         <label className="flex items-center w-full relative cursor-pointer  py-1 ">
           <input
+            value={value}
             required
             type={type}
             placeholder="Input"

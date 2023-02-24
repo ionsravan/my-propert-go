@@ -1,7 +1,7 @@
 import { AxiosInstance } from "axios";
 import Image from "next/image";
 import React, { ReactElement, useEffect } from "react";
-import { Agent, response } from "src/@types";
+import { Agent, location, response, area, AvailableFor } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import { useAppContext } from "src/Context/AppContext";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
@@ -84,29 +84,38 @@ export const addProperty = async (
   cost: string,
   desccription: string,
   size: string,
-  availableFor: string,
+  availableFor: AvailableFor,
   BHKconfig: string,
-  amenities: string,
-  location: string,
-  area: string,
-  areaId: string,
-  adress: string
+  amenities: string[],
+  location: location | null,
+  area: area | null,
+  adress: string,
+  propertyType: AvailableFor,
+  files: any
 ) => {
-  const res = await instance.post("/agent/property/addProperty", {
-    name: name,
-    cost: cost,
-    description: desccription,
-    size: 200,
-    availableFor: "Rent",
-    BHKconfig: BHKconfig,
-    amenities: ["Lift"],
-    location: "Banglore",
-    locationId: "62f28a1c0df5e0b03e8b3c01",
-    area: "Electronics City",
-    areaId: "62f2968ebf14be30bd0a16ac",
-    address: "alfdfsnl",
-  });
-  console.log("hi", res);
+  const data = new FormData();
+  if (location?.name && location._id && area?.name && area?._id) {
+    data.append("name", name);
+    data.append("cost", cost);
+    data.append("description", desccription);
+    data.append("size", size);
+    data.append("availableFor", availableFor.name);
+    data.append("BHKconfig", BHKconfig);
+    data.append("amenities", JSON.stringify(amenities));
+    data.append("location", location?.name);
+    data.append("locationId", location?._id);
+    data.append("area", area?.name);
+    data.append("areaId", area?._id);
+    data.append("address", adress);
+    data.append("propertyType", propertyType?.name);
+    Array.from(files).forEach((file: any) => {
+      data.append("photos", file);
+    });
+    // for (const key of Object.keys(files)) {
+    //   data.append("photos", files[key]);
+    // }
+  }
+  const res = await instance.post("/agent/property/addProperty", data);
   return res;
 };
 

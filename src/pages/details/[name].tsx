@@ -40,6 +40,7 @@ const Details = () => {
   useEffect(() => {
     console.log("id", redirectId);
   }, [redirectId]);
+  console.log(data);
 
   return (
     <main className="py-12 px-8 space-y-6 max-w-7xl mx-auto w-full">

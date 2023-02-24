@@ -1,82 +1,175 @@
 import axios from "axios";
-import React, { ChangeEvent, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import { Input } from "src/componets/shared/sharedInput";
 import { useAppContext } from "src/Context/AppContext";
 import { useAxios } from "src/utills/axios";
 import { addProperty } from ".";
+import { Fragment } from "react";
+import { Listbox, Transition } from "@headlessui/react";
+import {
+  HiCheck,
+  HiChevronDown,
+  HiOutlineLocationMarker,
+} from "react-icons/hi";
+import { BsBuilding } from "react-icons/bs";
+import {
+  AiOutlineDollar,
+  AiOutlineHome,
+  AiOutlineSetting,
+  AiOutlineUser,
+} from "react-icons/ai";
+import { FaRegAddressBook } from "react-icons/fa";
+import {
+  MdOutlineHolidayVillage,
+  MdPhotoSizeSelectSmall,
+} from "react-icons/md";
+import { area, location, response } from "src/@types";
+import { useFetch } from "src/lib/hooks/useFetch";
 
-interface Props {
-  showModal: any;
-  setShowModal: Function;
+const people = [
+  { name: "Wade Cooper" },
+  { name: "Arlene Mccoy" },
+  { name: "Devon Webb" },
+  { name: "Tom Cook" },
+  { name: "Tanya Fox" },
+  { name: "Hellen Schmidt" },
+];
+interface SelectProps<T> {
+  value: any;
+  setState: any;
+  options: any;
 }
-// const res = await instance.post("/agent/property/addProperty", {
-//   name: "my New property",
-//   cost: 2000,
-//   description: "new Property is added",
-//   size: 200,
-//   availableFor: "Rent",
-//   BHKconfig: 4,
-//   amenities: ["Lift"],
-//   location: "Banglore",
-//   locationId: "62f28a1c0df5e0b03e8b3c01",
-//   area: "Electronics City",
-//   areaId: "62f2968ebf14be30bd0a16ac",
-//   address: "alfdfsnl",
-// });
+
+export function Select<T>({ value, setState, options }: SelectProps<T>) {
+  useEffect(() => {
+    if (options) {
+      setState(options[0]);
+    }
+  }, []);
+
+  return (
+    <div className="top-16 w-full rounded-lg">
+      <Listbox value={value ? value : "Location"} onChange={setState}>
+        <div className="relative mt-1">
+          <Listbox.Button className="relative w-full cursor-default rounded-lg  bg-white py-2 pl-2 pr-10 text-left    focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+            <span className="block text-black opacity-50 truncate text-lg">
+              {value?.name}
+            </span>
+            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+              <HiChevronDown className="h-5 w-5 " aria-hidden="true" />
+            </span>
+          </Listbox.Button>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              {options?.map((val: any, personIdx: any) => (
+                <Listbox.Option
+                  key={personIdx}
+                  className={({ active }) =>
+                    `relative cursor-default select-none py-2 pl-10 pr-4 text-black opacity-50 ${
+                      active ? "bg-primaryBlue/50" : ""
+                    }`
+                  }
+                  value={val}
+                >
+                  {({ selected }) => (
+                    <>
+                      <span
+                        className={`block truncate ${
+                          selected ? "font-medium" : "font-normal"
+                        }`}
+                      >
+                        {val.name}
+                      </span>
+                      {selected ? (
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                          <HiCheck className="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      ) : null}
+                    </>
+                  )}
+                </Listbox.Option>
+              ))}
+            </Listbox.Options>
+          </Transition>
+        </div>
+      </Listbox>
+    </div>
+  );
+}
 
 export default function Modal() {
   const [name, setName] = useState("");
   const [cost, setCost] = useState("");
   const [desccription, setDescription] = useState("");
   const [size, setSize] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState<location | null>(null);
   const [adress, setAdress] = useState("");
-  const [area, setArea] = useState("");
-  const [BHKconfig, setBHKConfig] = useState<string>();
+  const [area, setArea] = useState<area | null>(null);
+  const [BHKconfig, setBHKConfig] = useState<string>("1");
   const [file, setFile] = useState<any>(null);
   const instance = useAxios();
   const { agentId, showModal, setShowModal } = useAppContext();
   const [cookies, setCookes] = useCookies(["jwtToken"]);
-  console.log(agentId);
+  const [availableFor, setAvailableFor] = useState({ name: "Rent" });
+  const [propertyType, setPropertyType] = useState({ name: "villa" });
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [filesToupload, setFilesToUpload] = useState<any>([]);
 
-  const handleFileChange = (e: ChangeEvent<any>) => {
+  const { data: loc } = useFetch<response<location[]>>(
+    "/property/location/getAllLocation"
+  );
+  const { data, error } = useFetch<response<area[]>>(
+    `/property/location/getAreaInLocation/${location?._id}`
+  );
+
+  const handleImageChange = (e: any) => {
     if (e.target.files) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const handleUploadClick = async (id: string, agentId: string) => {
-    if (!file) {
-      return;
-    }
-
-    let data = new FormData();
-
-    data.append("propertyId", id);
-    data.append("photos", file);
-    try {
-      const response = await axios({
-        method: "patch",
-        url: "http://localhost:8080/api//agent/property/addImageToProperty",
-        data: data,
-        headers: {
-          Authorization: `Bearer ${cookies.jwtToken}`,
-          "Content-Type": "multipart/form-data",
-        },
+      setFilesToUpload((prev: any) => {
+        let prevs = [...filesToupload];
+        prev.push(e.target.files[0]);
+        e.target.value = null;
+        e.target.files = null;
+        return prevs;
       });
-      console.log(response);
-    } catch (error) {
-      console.log(error);
     }
   };
+
+  useEffect(() => {
+    console.log(filesToupload);
+  }, [filesToupload]);
+
+  const renderPhotos = (source: any) => {
+    return source.map((photo: any) => {
+      return (
+        <img
+          className="h-40 w-full max-w-[200px] object-contain"
+          src={URL.createObjectURL(photo)}
+          alt=""
+          key={photo}
+        />
+      );
+    });
+  };
+
   return (
     <>
       {showModal ? (
         <>
-          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
-            <div className="relative my-6 mx-auto lg:w-[800px] max-w-3xl">
+          <div className="justify-center  my-auto items-center flex overflow-x-hidden overflow-y-scroll fixed inset-0 z-50 outline-none focus:outline-none h-[90vh]">
+            <div className="relative h-full my-6 mx-auto w-full lg:w-[800px] max-w-3xl">
               {/*content*/}
               <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
                 {/*header*/}
@@ -94,31 +187,72 @@ export default function Modal() {
                   </button>
                 </div>
                 {/*body*/}
-                <form className=" w-[90%] mx-auto space-y-3' ">
-                  <div className="space-y-4">
-                    <Input placeholder="name" value={name} setValue={setName} />
+                <form className=" w-[90%] mx-auto space-y-6' ">
+                  <div className="space-y-10">
                     <Input
+                      Icon={AiOutlineUser}
+                      placeholder="name"
+                      value={name}
+                      setValue={setName}
+                    />
+                    <Input
+                      Icon={AiOutlineDollar}
                       placeholder="price"
                       value={cost}
                       setValue={setCost}
                     />
                     <Input
+                      Icon={AiOutlineHome}
                       placeholder="BHK Config ie. 4"
                       value={BHKconfig}
                       setValue={setBHKConfig}
                     />
+                    <div className="flex items-center px-5  relative z-50 w-full border bd rounded-lg">
+                      <MdOutlineHolidayVillage className="text-lg text-[#2C5FC3] " />
+                      <Select
+                        options={[
+                          { name: "villa" },
+                          { name: "pg" },
+                          { name: "appartment" },
+                        ]}
+                        value={propertyType}
+                        setState={setPropertyType}
+                      />
+                    </div>
+                    <div className="flex items-center px-5  relative z-40 w-full border bd rounded-lg">
+                      <AiOutlineSetting className="text-lg text-[#2C5FC3] " />
+                      <Select
+                        options={[{ name: "Rent" }, { name: "Sell" }]}
+                        value={availableFor}
+                        setState={setAvailableFor}
+                      />
+                    </div>
+                    <div className="flex items-center px-5  relative z-30 w-full border bd rounded-lg">
+                      <HiOutlineLocationMarker className="text-lg text-[#2C5FC3] " />
+                      <Select
+                        options={loc?.result}
+                        value={location}
+                        setState={setLocation}
+                      />
+                    </div>
+                    {data?.result && (
+                      <div className="flex items-center px-5  relative z-20 w-full border bd rounded-lg">
+                        <BsBuilding className="text-lg text-[#2C5FC3] " />
+                        <Select
+                          options={data?.result}
+                          value={area}
+                          setState={setArea}
+                        />
+                      </div>
+                    )}
                     <Input
-                      placeholder="location"
-                      value={location}
-                      setValue={setLocation}
-                    />
-                    <Input placeholder="area" value={area} setValue={setArea} />
-                    <Input
+                      Icon={FaRegAddressBook}
                       placeholder="address"
                       value={adress}
                       setValue={setAdress}
                     />
                     <Input
+                      Icon={MdPhotoSizeSelectSmall}
                       placeholder="size in Sqft"
                       value={size}
                       setValue={setSize}
@@ -131,15 +265,18 @@ export default function Modal() {
                     onChange={(e) => setDescription(e.target.value)}
                     required={true}
                     placeholder="Add  description"
-                    className="w-[90%] max-w-lg px-3 py-2 border  my-4"
+                    className="focus:outline-none  w-full h-52 px-3 mt-5 py-2 border  my-4"
                   />
 
                   <div className="m-4">
                     <label className="inline-block mb-2 text-gray-500">
                       upload Property Image (jpg,png,svg,jpeg)
                     </label>
-                    <div className="flex items-center justify-center w-full">
-                      <label className="flex flex-col w-full h-32 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                    <div className="flex items-center  w-full">
+                      <div className="w-full flex max-w-md overflow-x-scroll">
+                        {renderPhotos(filesToupload)}
+                      </div>
+                      <label className=" max-w-[150px] flex flex-col w-full h-40 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
                         <div className="flex flex-col items-center justify-center pt-7">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -158,7 +295,7 @@ export default function Modal() {
                           </p>
                         </div>
                         <input
-                          onChange={handleFileChange}
+                          onChange={handleImageChange}
                           type="file"
                           className="opacity-0"
                         />
@@ -186,13 +323,14 @@ export default function Modal() {
                           cost,
                           desccription,
                           size,
-                          "RENT",
-                          BHKconfig as string,
-                          "LIFT",
+                          availableFor,
+                          BHKconfig,
+                          ["LFT"],
                           location,
                           area,
-                          "str",
-                          adress
+                          adress,
+                          propertyType,
+                          filesToupload
                         )
                       ).data.result._id;
                       if (id) {

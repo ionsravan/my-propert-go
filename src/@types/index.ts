@@ -7,6 +7,7 @@ export type location = {
 export type area = {
   name: string;
   areaId: string;
+  _id?: string;
 };
 
 export type Agent = {
@@ -64,3 +65,7 @@ export type Buyer = {
   property: Propery;
   user: User;
 };
+
+export interface AvailableFor {
+  name: string;
+}
