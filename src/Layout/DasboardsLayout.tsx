@@ -61,7 +61,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
       </div>
       <div
         className={`justify-between absolute top-0 z-50 p-5 transition-all ease-in duration-200 ${
-          open ? "-translate-x-" : "-translate-x-full"
+          open ? "-translate-x-8" : "-translate-x-full"
         }    bg-white min-h-screen h-full pt-10 pr-4 flex flex-col w-full max-w-[300px] p `}
       >
         <Navbar />
