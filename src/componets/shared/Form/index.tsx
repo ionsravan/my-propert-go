@@ -51,7 +51,7 @@ const FormLoginSignup = () => {
     <>
       <SignupLoginFormContainer>
         <LoginSignupCTA />
-        {/* <SingnupTemplate signupController={signupController} /> */}
+        {/* <SingnupTemplate signupContrearller={signupController} /> */}
       </SignupLoginFormContainer>
     </>
   );
