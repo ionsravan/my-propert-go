@@ -95,11 +95,11 @@ const MessageCardBuyers = ({ _id, agent, property, user, message }: Buyer) => {
           <p className="text-[#091E42] font-extralight text-xs">ENQUIRED FOR</p>
           <div>
             <h1 className="text-sm text-TitleColor font-bold">
-              {property.name}
+              {property?.name}
             </h1>
             <div className="flex space-x-4 mb-4 text-sm mt-1">
               <p className="font-normal text-xs text-[#091E42]">
-                {property.address}
+                {property?.address}
               </p>
               <div className="flex  items-center px-1 space-x-1 bg-green-300 bg-opacity-40 text-green-800 text-[9px]">
                 <p>4.5</p>
@@ -114,7 +114,7 @@ const MessageCardBuyers = ({ _id, agent, property, user, message }: Buyer) => {
             <p className="flex text-TitleColor text-lg items-center">
               <span className="flex items-center space-x-1 ">
                 <FaRupeeSign />
-                <span className="text-lg font-bold">{property.cost}</span>
+                <span className="text-lg font-bold">{property?.cost}</span>
               </span>
               <span className="ml-1 text-xs">k</span>
             </p>
@@ -124,13 +124,13 @@ const MessageCardBuyers = ({ _id, agent, property, user, message }: Buyer) => {
             <p className="flex text-TitleColor text-lg items-center">
               <span className="flex items-center space-x-1 ">
                 <span className="text-lg font-bold">
-                  {property.BHKconfig}BHK
+                  {property?.BHKconfig}BHK
                 </span>
               </span>
               <span className="ml-1 text-xs"></span>
             </p>
             <p className="text-black opacity-40 text-sm">
-              {property.BHKconfig} Baths
+              {property?.BHKconfig} Baths
             </p>
           </div>
         </div>
@@ -141,15 +141,15 @@ const MessageCardBuyers = ({ _id, agent, property, user, message }: Buyer) => {
         <div className="w-full space-y-4 py-5 max-w-3xl transition transform duration-300 ease-in">
           <div className="text-xs text-[#2B2B2B] space-x-2 flex items-center">
             <AiOutlineUser className="text-primaryBlue text-lg" />
-            <p>{user.name}</p>
+            <p>{user?.name}</p>
           </div>
           <div className="text-xs text-[#2B2B2B] space-x-2 flex items-center">
             <AiOutlinePhone className="text-primaryBlue text-lg rotate-90" />
-            <p>{user.mobileNumber}</p>
+            <p>{user?.mobileNumber}</p>
           </div>
           <div className="text-xs text-[#2B2B2B] space-x-2 flex items-center">
             <AiOutlineMail className="text-primaryBlue text-lg" />
-            <p>{user.email}</p>
+            <p>{user?.email}</p>
           </div>
           <p className="text-xs font-manrope text-TitleColor">{message}</p>
         </div>
@@ -162,6 +162,7 @@ const Buyers = () => {
   const { data } = useFetch<response<Buyer[]>>(
     "/agent/property/buyers/getAllBuyers"
   );
+  console.log(data);
   return (
     <>
       <div className="space-y-5">

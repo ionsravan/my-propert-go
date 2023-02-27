@@ -1,5 +1,3 @@
-import { AxiosInstance } from "axios";
-import { NextRouter } from "next/router";
 import LoginSignupCTA from "src/componets/shared/Form/LoginSignupCTA";
 import SignupLoginFormContainer from "src/componets/shared/Form/SignupLoginFormContainer";
 import SingnupTemplate from "src/componets/shared/signup";

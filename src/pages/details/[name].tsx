@@ -3,6 +3,8 @@ import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
 import Image from "next/image";
 import { LoadImage } from "../../componets/shared/img";
 import { SlArrowRight } from "react-icons/sl";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 import React, {
   ReactElement,
@@ -30,17 +32,25 @@ const Details = () => {
   const { data, error, status } = useFetch<ProperyRes>(
     `property/getPropertyById/${id}`
   );
-  const { redirectId, setRedirectId } = useAppContext();
   const instance = useAxios();
 
-  useEffect(() => {
-    setRedirectId(id as string);
-  }, []);
-
-  useEffect(() => {
-    console.log("id", redirectId);
-  }, [redirectId]);
-  console.log(data);
+  const responsive = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3,
+      slidesToSlide: 3, // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2,
+      slidesToSlide: 2, // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1,
+      slidesToSlide: 1, // optional, default to 1.
+    },
+  };
 
   return (
     <main className="py-12 px-8 space-y-6 max-w-7xl mx-auto w-full">
@@ -102,14 +112,14 @@ const Details = () => {
 
       {/* main details content */}
       <section className="space-y-10">
-        <div className="relative w-full flex  space-x-2  ">
+        <div className="relative w-full overflow-x-scroll flex space-x-2  ">
           {data?.result?.propertyImages.map((img) => {
             return (
               <LoadImage key={img} src={img || "/bighouse.png"}>
                 <Image
                   src={img || "/bighouse.png"}
                   fill
-                  className="object-cover"
+                  className="object-center"
                   alt="villa4"
                 />
               </LoadImage>

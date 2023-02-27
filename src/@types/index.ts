@@ -69,3 +69,8 @@ export type Buyer = {
 export interface AvailableFor {
   name: string;
 }
+
+export type amenity = {
+  _id: string;
+  name: string;
+};

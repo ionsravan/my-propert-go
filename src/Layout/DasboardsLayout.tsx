@@ -26,8 +26,8 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
 
   return (
     <>
-      <div className="flex min-h-screen  font-manrope bg-[#F6F6F6] overflow-hidden relative">
-        <div className="justify-between hidden   bg-white min-h-screen h-full pt-10 pr-4 md:flex flex-col w-full max-w-[300px] p ">
+      <div className="flex   font-manrope bg-[#F6F6F6] overflow-hidden relative">
+        <div className="justify-between hidden   bg-white min-h-screen h-full pt-10 pr-4 md:flex flex-col w-full max-w-[300px] sticky top-0 ">
           <Navbar />
           <div className="p-3 py-6">
             <button
@@ -61,7 +61,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
       </div>
       <div
         className={`justify-between absolute top-0 z-50 p-5 transition-all ease-in duration-200 ${
-          open ? "-translate-x-5" : "-translate-x-full"
+          open ? "-translate-x-" : "-translate-x-full"
         }    bg-white min-h-screen h-full pt-10 pr-4 flex flex-col w-full max-w-[300px] p `}
       >
         <Navbar />

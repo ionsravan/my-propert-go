@@ -1,6 +1,8 @@
+import { useRouter } from "next/router";
 import { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { AiFillStar } from "react-icons/ai";
-import { ProperyResArr } from "src/@types";
+import { amenity, area, ProperyResArr, response } from "src/@types";
+import { useFetch } from "src/lib/hooks/useFetch";
 
 export function Toggle() {
   const [enabled, setEnabled] = useState<boolean>(false);
@@ -44,28 +46,20 @@ const SidBarItemContainer = ({
 const Aminity = ({ text }: { text: string }) => {
   return <p className="text-sm px-3 rounded-full my-2 border">{text}</p>;
 };
-const Amenties = () => {
+const Amenties = ({ data }: { data: amenity[] }) => {
   return (
     <div>
       <h1 className="text-[16px] pb-5">Aminties</h1>
       <div className="px-2 flex flex-wrap ">
-        <Aminity text="Parking" />
-        <Aminity text="Power Backup" />
-        <Aminity text="Lift" />
-        <Aminity text="Park" />
-        <Aminity text="Gymnasuium" />
+        {data?.map((d) => {
+          return <Aminity text={d.name} key={d._id} />;
+        })}
       </div>
       <button className="text-xs text-primaryBlue">+4 more</button>
     </div>
   );
 };
-const Location = ({
-  name = "Ajmer",
-  stars = 0,
-}: {
-  name?: string;
-  stars?: number;
-}) => {
+const Location = ({ name, stars = 0 }: { name?: string; stars?: number }) => {
   return (
     <div className="flex space-x-3 items-center">
       <input
@@ -86,17 +80,14 @@ const Location = ({
     </div>
   );
 };
-const LocationsFilter = () => {
+const LocationsFilter = ({ areas }: { areas: area[] }) => {
   return (
     <div>
       <h1 className="text-[16px] pb-5">Locations</h1>
       <div className="space-y-3">
-        <Location />
-        <Location />
-        <Location />
-        <Location />
-        <Location />
-        <Location />
+        {areas.map((a) => {
+          return <Location key={a._id} name={a.name} />;
+        })}
       </div>
     </div>
   );
@@ -116,6 +107,14 @@ interface Props {
 }
 
 const SearchSideOptions = ({ data, setData }: Props) => {
+  const { query } = useRouter();
+  console.log(query);
+  const { data: area, error } = useFetch<response<area[]>>(
+    `/property/location/getAreaInLocation/${query.query}`
+  );
+  const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
+  console.log(ams);
+
   return (
     <div className="font-manrope top-2 overflow-hidden">
       <h1 className="text-TitleColor font-bold text-2xl py-2 mb-4">
@@ -147,7 +146,7 @@ const SearchSideOptions = ({ data, setData }: Props) => {
           </PropertiesFilter>
         </SidBarItemContainer>
         <SidBarItemContainer isBottomBorder>
-          <LocationsFilter />
+          {area && <LocationsFilter areas={area.result} />}
         </SidBarItemContainer>
         <SidBarItemContainer isBottomBorder>
           <p className="text-[16px]">New Projects / Soceties</p>
@@ -157,9 +156,7 @@ const SearchSideOptions = ({ data, setData }: Props) => {
         </SidBarItemContainer>
         {/* amenties */}
         <SidBarItemContainer isBottomBorder>
-          <div>
-            <Amenties />
-          </div>
+          <div>{ams && <Amenties data={ams?.result} />}</div>
         </SidBarItemContainer>
         <SidBarItemContainer isBottomBorder>
           <p className="text-[16px]">Furnishing status</p>

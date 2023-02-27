@@ -1,10 +1,18 @@
 import Image from "next/image";
 import React, { ReactElement } from "react";
-import { AiFillProfile, AiFillStar, AiOutlineLink } from "react-icons/ai";
+import {
+  AiFillProfile,
+  AiFillStar,
+  AiOutlineLink,
+  AiOutlineMore,
+} from "react-icons/ai";
 import { Agent, response } from "src/@types";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
+import { Menu } from "@headlessui/react";
+import { useAxios } from "src/utills/axios";
+import { toast } from "react-toastify";
 
 const Card = ({
   name,
@@ -33,14 +41,17 @@ const ComapnyCard = ({
   place,
   img,
   stars,
+  _id,
 }: {
   name: string;
   place: string;
   stars: number;
   img: string;
+  _id: string;
 }) => {
+  const instance = useAxios();
   return (
-    <div className="bg-white w-full shrink-0 rounded-lg flex space-x-[17px]  p-5 max-w-[280px]">
+    <div className="bg-white w-full shrink-0 rounded-lg flex n  space-x-[17px]  p-5 max-w-[280px] relative">
       <div className="relative  flex rounded-full justify-center items-center h-[46px] w-[46px]">
         <Image
           fill
@@ -58,6 +69,29 @@ const ComapnyCard = ({
             <AiFillStar className="text-[6px]" />
           </div>
         </div>
+      </div>
+      <div className="absolute top-2 right-4">
+        <button
+          onClick={async () => {
+            try {
+              const res = await instance.delete("/admin/agent/deleteAdmin", {
+                data: {
+                  agentId: _id,
+                },
+              });
+              console.log(res);
+              toast("Agent Deleted", {
+                className: "text-red-400",
+              });
+            } catch (e) {
+              console.log(e);
+              toast("Error Accured Try Again");
+            }
+          }}
+          className="text-red-400 px-3 hover:bg-gray-100"
+        >
+          delete
+        </button>
       </div>
     </div>
   );
@@ -100,6 +134,7 @@ const DashBoard = () => {
           {data?.result.map((ag) => {
             return (
               <ComapnyCard
+                _id={ag._id}
                 key={ag._id}
                 name={ag?.name}
                 img={ag?.profilePhoto}

@@ -9,7 +9,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { AiOutlineMail, AiOutlinePhone, AiOutlineUser } from "react-icons/ai";
-import { Input } from "src/pages/signup";
+import { Input } from "../shared/sharedInput";
 import GetInTouchWithAdvertiserModal from "./AdvertiserModal";
 
 const GetInTouchWithAdvertiser = () => {

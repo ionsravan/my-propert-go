@@ -21,7 +21,7 @@ export const LoadImage = ({ src, children }: Props) => {
   }, [src]);
   return (
     <div
-      className="relative h-96   "
+      className="relative h-96 object-contain  "
       style={{
         width: widht,
         maxWidth: 700,

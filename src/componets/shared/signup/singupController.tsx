@@ -14,6 +14,7 @@ export const signupController = async (
       password: password,
       mobileNumber: mobileNumber,
       name: name,
+      type: "Agent",
     });
     if (res.status == 200) {
       return res.data?.token;
