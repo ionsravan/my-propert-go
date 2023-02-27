@@ -57,10 +57,10 @@ export const Navbar = () => {
           : "overflow-hidden sticky top-0 z-50"
       } `}
     >
-      <div className="hidden md:block">
+      <div className="hidden md:block w-full">
         <Nav />
       </div>
-      <div className="w-full flex justify-end">
+      <div className="w-full md:hidden flex justify-end">
         <Link href={"/login"}>
           <button
             className={`${

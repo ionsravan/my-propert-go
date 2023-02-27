@@ -89,9 +89,9 @@ const SingnupTemplate = ({
   };
 
   return (
-    <div className="grow  ">
+    <div className="grow">
       <Navbar />
-      <div className="my-8 md:py-24 px-5 md:px-12">
+      <div className="md:py-24 px-5 md:px-12">
         <div className="space-y-5 text-sm text-gray-500 max-w-[400px]">
           <h1 className="text-3xl lg:text-4xl font-extrabold font-manrope text-black">
             {"New Here ? let's set up your account"}
