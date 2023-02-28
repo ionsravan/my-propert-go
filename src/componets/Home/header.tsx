@@ -52,6 +52,11 @@ const Header = () => {
     }
   }, [loc?.result]);
 
+  useEffect(() => {
+    setLocId("");
+    setLocation("");
+  }, []);
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center space-x-1">
