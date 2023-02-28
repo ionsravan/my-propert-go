@@ -23,6 +23,8 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
+import Carousel from "src/componets/shared/carusal";
+import CardCarousel from "src/componets/Sliders/cardCaursel";
 
 const people = [
   { id: 1, name: "Durward Reynolds", unavailable: false },
@@ -111,15 +113,11 @@ export default function Home() {
           {/* buttons */}
           <div></div>
         </div>
-        <div className="py-10 space-x-8 flex overflow-x-scroll ">
-          {data?.result &&
-            data?.result.map((property) => {
-              return (
-                <>
-                  <HouseCard {...property} key={property._id} />
-                </>
-              );
-            })}
+
+        <div>
+          {data?.result && (
+            <CardCarousel data={data?.result} Card={HouseCard} />
+          )}
         </div>
       </section>
 

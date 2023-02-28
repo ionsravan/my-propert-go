@@ -3,12 +3,16 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useContext,
   useReducer,
   useState,
+  createContext,
+  useEffect,
 } from "react";
 import { AiFillStar, AiOutlineClose } from "react-icons/ai";
 import { amenity, area, Propery, ProperyResArr, response } from "src/@types";
 import { useFetch } from "src/lib/hooks/useFetch";
+import { useFilterContext } from "src/pages/search/[query]";
 
 export function Toggle() {
   const [enabled, setEnabled] = useState<boolean>(false);
@@ -53,9 +57,8 @@ const Aminity = ({ text }: { text: string }) => {
   return <p className="text-sm px-3 rounded-full ">{text}</p>;
 };
 const Amenties = ({ data }: { data: amenity[] }) => {
-  const [selected, setSelected] = useState<string[]>([]);
-  let findDuplicates = (arr: string[]) =>
-    arr.filter((item, index) => arr.indexOf(item) != index);
+  const { selected, setSelected } = useFilterContext();
+
   return (
     <div>
       <div className="flex justify-between items-start">
@@ -167,57 +170,81 @@ const SearchSideOptions = ({ data, setData }: Props) => {
   );
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
   const [intialState, setIntialState] = useState(data);
+  const { selected, setSelected } = useFilterContext();
+  const filterByaminties = () => {
+    setData((prev) => {
+      const data = prev;
+      data?.map((item) => {
+        return selected.filter((am) => {
+          return item.amenities.find((a) => {
+            return am == a;
+          });
+        });
+      });
+      console.log("fil", data);
+      return data;
+    });
+  };
+
+  useEffect(() => {
+    if (selected) {
+      console.log(selected);
+      filterByaminties();
+    }
+  }, [selected]);
   return (
-    <div className="font-manrope top-2 overflow-hidden">
-      <h1 className="text-TitleColor font-bold text-2xl py-2 mb-4">
-        Properties
-      </h1>
-      <div className="text-TitleColor">
-        <SidBarItemContainer isBottomBorder>
-          <PropertiesFilter>
-            <div className="flex flex-col">
-              <p className="text-[16px]">Verified Properties</p>
-              <small className="text-[10px] opacity-60">
-                verified by myproperty go
-              </small>
-            </div>
-          </PropertiesFilter>
-        </SidBarItemContainer>
-        <SidBarItemContainer isBottomBorder>
-          <PropertiesFilter>
-            <div className="flex flex-col">
-              <p className="text-[16px]">Properties With Photos</p>
-            </div>
-          </PropertiesFilter>
-        </SidBarItemContainer>
-        <SidBarItemContainer isBottomBorder>
-          <PropertiesFilter>
-            <div className="flex flex-col">
-              <p className="text-[16px]">Properties With Videos</p>
-            </div>
-          </PropertiesFilter>
-        </SidBarItemContainer>
-        <SidBarItemContainer isBottomBorder>
-          {area && <LocationsFilter areas={area.result} />}
-        </SidBarItemContainer>
-        <SidBarItemContainer isBottomBorder>
-          <p className="text-[16px]">New Projects / Soceties</p>
-        </SidBarItemContainer>
-        <SidBarItemContainer isBottomBorder>
-          <p className="text-[16px]">Construction Status</p>
-        </SidBarItemContainer>
-        {/* amenties */}
-        <SidBarItemContainer isBottomBorder>
-          <div>{ams && <Amenties data={ams?.result} />}</div>
-        </SidBarItemContainer>
-        <SidBarItemContainer isBottomBorder>
-          <p className="text-[16px]">Furnishing status</p>
-        </SidBarItemContainer>
-        <SidBarItemContainer>
-          <p className="text-[16px]">Purchase type</p>
-        </SidBarItemContainer>
+    <>
+      <div className="font-manrope top-2 overflow-hidden">
+        <h1 className="text-TitleColor font-bold text-2xl py-2 mb-4">
+          Properties
+        </h1>
+        <div className="text-TitleColor">
+          <SidBarItemContainer isBottomBorder>
+            <PropertiesFilter>
+              <div className="flex flex-col">
+                <p className="text-[16px]">Verified Properties</p>
+                <small className="text-[10px] opacity-60">
+                  verified by myproperty go
+                </small>
+              </div>
+            </PropertiesFilter>
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            <PropertiesFilter>
+              <div className="flex flex-col">
+                <p className="text-[16px]">Properties With Photos</p>
+              </div>
+            </PropertiesFilter>
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            <PropertiesFilter>
+              <div className="flex flex-col">
+                <p className="text-[16px]">Properties With Videos</p>
+              </div>
+            </PropertiesFilter>
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            {area && <LocationsFilter areas={area.result} />}
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            <p className="text-[16px]">New Projects / Soceties</p>
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            <p className="text-[16px]">Construction Status</p>
+          </SidBarItemContainer>
+          {/* amenties */}
+          <SidBarItemContainer isBottomBorder>
+            <div>{ams && <Amenties data={ams?.result} />}</div>
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            <p className="text-[16px]">Furnishing status</p>
+          </SidBarItemContainer>
+          <SidBarItemContainer>
+            <p className="text-[16px]">Purchase type</p>
+          </SidBarItemContainer>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
