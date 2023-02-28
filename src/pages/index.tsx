@@ -16,15 +16,16 @@ import {
 import { HomeChip } from "src/componets/Home/header";
 import Tour from "src/componets/Home/Tour";
 import { useFetch } from "src/lib/hooks/useFetch";
-import { ProperyRes, ProperyResArr } from "src/@types";
+import { Propery, ProperyRes, ProperyResArr } from "src/@types";
 import Layout from "src/Layout/main";
-import { ReactElement, useRef } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 
 import { useState } from "react";
 import { Listbox } from "@headlessui/react";
 import Carousel from "src/componets/shared/carusal";
 import CardCarousel from "src/componets/Sliders/cardCaursel";
+import { useAppContext } from "src/Context/AppContext";
 
 const people = [
   { id: 1, name: "Durward Reynolds", unavailable: false },
@@ -64,6 +65,31 @@ export default function Home() {
   );
   console.log(data);
   const ref = useRef<HTMLDivElement>(null);
+  const [Filtred, setFiltred] = useState<Propery[] | null>([]);
+  const [propertyTypeFilter, setPropertyFilter] = useState<string>("all");
+
+  useEffect(() => {
+    if (data?.result) {
+      setFiltred(data?.result);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (propertyTypeFilter == "all") {
+      if (data?.result) {
+        setFiltred(data?.result);
+      }
+    } else {
+      setFiltred((prev) => {
+        const data = prev;
+        const arr = data?.filter((p) => {
+          return p.propertyType == propertyTypeFilter;
+        });
+        return arr as Propery[];
+      });
+    }
+  }, [propertyTypeFilter]);
+
   return (
     <>
       <div className="min-h-[70vh] bg relative py-32 px-5 md:px-10">
@@ -91,32 +117,64 @@ export default function Home() {
         <HomeSectionTitle text="Featured House" />
         <div>
           <div className="flex space-x-4 pt-10">
-            <HomeChip
-              bg="bg-green-500"
-              textColor="text-white"
-              Icon={AiFillHome}
-              text="House"
-            />
-            <HomeChip
-              bg=""
-              textColor="text-[#888B97]"
-              Icon={MdVilla}
-              text="Villa"
-            />
-            <HomeChip
-              bg=""
-              textColor="text-[#888B97]"
-              Icon={MdOutlineApartment}
-              text="Appartment"
-            />
+            <div
+              onClick={() => {
+                setPropertyFilter("all");
+              }}
+            >
+              <HomeChip
+                bg={propertyTypeFilter == "all" ? "bg-green-500" : ""}
+                textColor={
+                  propertyTypeFilter == "all" ? "text-white" : "text-[#888B97]"
+                }
+                Icon={AiFillHome}
+                text="House"
+              />
+            </div>
+            <div
+              onClick={() => {
+                setPropertyFilter("villa");
+              }}
+            >
+              <HomeChip
+                bg={propertyTypeFilter == "villa" ? "bg-green-500" : ""}
+                textColor={
+                  propertyTypeFilter == "villa"
+                    ? "text-white"
+                    : "text-[#888B97]"
+                }
+                Icon={MdVilla}
+                text="Villa"
+              />
+            </div>
+            <div
+              onClick={() => {
+                setPropertyFilter("appartment");
+              }}
+            >
+              <HomeChip
+                bg={propertyTypeFilter == "appartment" ? "bg-green-500" : ""}
+                textColor={
+                  propertyTypeFilter == "appartment"
+                    ? "text-white"
+                    : "text-[#888B97]"
+                }
+                Icon={MdOutlineApartment}
+                text="Appartment"
+              />
+            </div>
           </div>
           {/* buttons */}
           <div></div>
         </div>
 
         <div>
-          {data?.result && (
-            <CardCarousel data={data?.result} Card={HouseCard} />
+          {Filtred?.length ? (
+            <CardCarousel data={Filtred} Card={HouseCard} />
+          ) : (
+            <p className="text-lg py-4">
+              No Property Found with PropertyType {propertyTypeFilter}
+            </p>
           )}
         </div>
       </section>

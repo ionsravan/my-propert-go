@@ -25,6 +25,8 @@ interface AppContextProviderInterface {
   setLocation: Dispatch<SetStateAction<string>>;
   redirectId: string | null;
   setRedirectId: Dispatch<SetStateAction<string | null>>;
+  searchFilter: string;
+  setsearcheFilter: Dispatch<SetStateAction<string>>;
 }
 
 interface IContextProps {
@@ -47,6 +49,7 @@ export const AppContextProvider = ({ children }: IContextProps) => {
   const [resCount, setResCount] = useState<number>(0);
   const [location, setLocation] = useState<string>("");
   const [redirectId, setRedirectId] = useState<string | null>("");
+  const [searchFilter, setsearcheFilter] = useState<string>("all");
 
   const sharedState = {
     user,
@@ -63,6 +66,8 @@ export const AppContextProvider = ({ children }: IContextProps) => {
     setLocation,
     redirectId,
     setRedirectId,
+    searchFilter,
+    setsearcheFilter,
   };
   return (
     <>

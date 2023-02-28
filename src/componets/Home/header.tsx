@@ -13,6 +13,7 @@ interface ChipProps {
   text: string;
   bg: string;
   textColor: string;
+  isActive?: boolean;
 }
 export const HomeChip = ({ Icon, text, textColor, bg }: ChipProps) => {
   return (
@@ -36,6 +37,8 @@ const Header = () => {
   const { location, setLocation } = useAppContext();
   const [show, setShow] = useState<boolean>(false);
   const [locId, setLocId] = useState<string | undefined>("");
+
+  const { searchFilter, setsearcheFilter } = useAppContext();
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
@@ -71,24 +74,48 @@ const Header = () => {
         </p>
       </div>
       <div className="flex space-x-4 mb-8 ">
-        <HomeChip
-          Icon={AiFillHome}
-          text="home"
-          textColor="text-primaryBlue"
-          bg="bg-white"
-        />
-        <HomeChip
-          bg="bg-transparent"
-          textColor="text-white"
-          Icon={MdVilla}
-          text="Villa"
-        />
-        <HomeChip
-          bg="bg-transparent"
-          textColor="text-white"
-          Icon={MdOutlineApartment}
-          text="Apartments"
-        />
+        <div
+          onClick={() => {
+            setsearcheFilter("all");
+          }}
+        >
+          <HomeChip
+            Icon={AiFillHome}
+            text="home"
+            textColor={
+              searchFilter == "all" ? "text-primaryBlue" : "text-white"
+            }
+            bg={searchFilter == "all" ? "bg-white" : "bg-transparent"}
+          />
+        </div>
+        <div
+          onClick={() => {
+            setsearcheFilter("villa");
+          }}
+        >
+          <HomeChip
+            bg={searchFilter == "villa" ? "bg-white" : "bg-transparent"}
+            textColor={
+              searchFilter == "villa" ? "text-primaryBlue" : "text-white"
+            }
+            Icon={MdVilla}
+            text="Villa"
+          />
+        </div>
+        <div
+          onClick={() => {
+            setsearcheFilter("appartment");
+          }}
+        >
+          <HomeChip
+            bg={searchFilter == "appartment" ? "bg-white" : "bg-transparent"}
+            textColor={
+              searchFilter == "appartment" ? "text-primaryBlue" : "text-white"
+            }
+            Icon={MdOutlineApartment}
+            text="Apartments"
+          />
+        </div>
       </div>
       <div className="mt-2">
         <div className="flex md:px-1 items-center bg-white text-green-300 w-full md:max-w-xl  rounded-full ">

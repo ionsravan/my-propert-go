@@ -11,6 +11,7 @@ import {
 } from "react";
 import { AiFillStar, AiOutlineClose } from "react-icons/ai";
 import { amenity, area, Propery, ProperyResArr, response } from "src/@types";
+import { useAppContext } from "src/Context/AppContext";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useFilterContext } from "src/pages/search/[query]";
 
@@ -57,6 +58,7 @@ const Aminity = ({ text }: { text: string }) => {
   return <p className="text-sm px-3 rounded-full ">{text}</p>;
 };
 const Amenties = ({ data }: { data: amenity[] }) => {
+  const [ams, setAms] = useState(data);
   const { selected, setSelected } = useFilterContext();
 
   return (
@@ -91,7 +93,7 @@ const Amenties = ({ data }: { data: amenity[] }) => {
         })}
       </div>
       <div className="px-2 flex flex-wrap ">
-        {data?.map((d) => {
+        {ams?.map((d) => {
           return (
             <div
               className="border rounded-full my-3 cursor-pointer"
@@ -149,6 +151,38 @@ const LocationsFilter = ({ areas }: { areas: area[] }) => {
     </div>
   );
 };
+
+const TypeFilter = ({
+  areas = ["all", "villa", "appartment", "pg"],
+}: {
+  areas?: string[];
+}) => {
+  const { searchFilter, setsearcheFilter } = useAppContext();
+  return (
+    <div>
+      <h1 className="text-[16px] pb-5">Property Type</h1>
+      <div className="space-y-3">
+        {areas.map((area) => {
+          return (
+            <div key={area} className="flex space-x-3 text-sm">
+              <input
+                checked={searchFilter == area}
+                onChange={(e) => {
+                  setsearcheFilter(e.target.value);
+                }}
+                type={"radio"}
+                value={area}
+                name="type"
+              />
+              <label htmlFor="type">{area}</label>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const PropertiesFilter = ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex justify-between items-center">
@@ -169,29 +203,8 @@ const SearchSideOptions = ({ data, setData }: Props) => {
     `/property/location/getAreaInLocation/${query.query}`
   );
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
-  const [intialState, setIntialState] = useState(data);
-  const { selected, setSelected } = useFilterContext();
-  const filterByaminties = () => {
-    setData((prev) => {
-      const data = prev;
-      data?.map((item) => {
-        return selected.filter((am) => {
-          return item.amenities.find((a) => {
-            return am == a;
-          });
-        });
-      });
-      console.log("fil", data);
-      return data;
-    });
-  };
+  const { searchFilter } = useAppContext();
 
-  useEffect(() => {
-    if (selected) {
-      console.log(selected);
-      filterByaminties();
-    }
-  }, [selected]);
   return (
     <>
       <div className="font-manrope top-2 overflow-hidden">
@@ -225,6 +238,9 @@ const SearchSideOptions = ({ data, setData }: Props) => {
           </SidBarItemContainer>
           <SidBarItemContainer isBottomBorder>
             {area && <LocationsFilter areas={area.result} />}
+          </SidBarItemContainer>
+          <SidBarItemContainer isBottomBorder>
+            <TypeFilter />
           </SidBarItemContainer>
           <SidBarItemContainer isBottomBorder>
             <p className="text-[16px]">New Projects / Soceties</p>

@@ -6,7 +6,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { ProperyResArr } from "src/@types";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { Propery } from "src/@types/index";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "src/Context/AppContext";
 
 const HomeResult = ({
@@ -119,15 +119,33 @@ interface Props {
 
 const SearchResult = ({ data }: Props) => {
   const { setResCount } = useAppContext();
+  const [filteredSeach, setFilterdSearch] = useState(data);
+  const { searchFilter, setsearcheFilter } = useAppContext();
 
   useEffect(() => {
-    if (data) {
-      setResCount(data?.length);
+    if (searchFilter == "all") {
+      if (data) {
+        setFilterdSearch(data);
+      }
+    } else {
+      setFilterdSearch((prev) => {
+        const arr = data?.filter((p) => {
+          console.log(searchFilter == p.propertyType);
+          return p.propertyType == searchFilter;
+        });
+        return arr as Propery[];
+      });
+    }
+  }, [searchFilter, data]);
+
+  useEffect(() => {
+    if (filteredSeach) {
+      setResCount(filteredSeach?.length);
     }
   }, [data]);
   return (
     <div className="  w-full overflow-hidden p-2">
-      {data?.map((prop) => {
+      {filteredSeach?.map((prop) => {
         return <HomeResult key={prop._id} {...prop} />;
       })}
     </div>
