@@ -3,7 +3,9 @@ import React, { ReactNode, useLayoutEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { AiOutlineClose, AiOutlineLink, AiOutlineMenu } from "react-icons/ai";
 import { TbEdit } from "react-icons/tb";
+import { MyModal } from "src/componets/Sliders/ImageSlider";
 import { useAppContext } from "src/Context/AppContext";
+import AddPropertyForm from "src/pages/agent/addProperty";
 import Modal from "src/pages/agent/addProperty";
 
 interface Props {
@@ -57,7 +59,9 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
           </div>
           {children}
         </div>
-        <Modal />
+        <MyModal setIsOpen={setShowModal} isOpen={showModal}>
+          <AddPropertyForm />
+        </MyModal>
       </div>
       <div
         className={`justify-between absolute top-0 z-50 p-5 transition-all ease-in duration-200 ${

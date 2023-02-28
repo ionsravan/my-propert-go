@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
 import { VscListFilter } from "react-icons/vsc";
-import { ProperyResArr } from "src/@types";
+import { Propery, ProperyResArr } from "src/@types";
 import SearchResult from "src/componets/search/searchResults";
 import SearchSideOptions from "src/componets/search/serachSideoptions";
 import { useAppContext } from "src/Context/AppContext";
@@ -17,10 +17,10 @@ const Search = () => {
     `/property/getPropertiesByLocation/${locName}`
   );
   const [PropertyResult, setPropertyResult] =
-    useState<ProperyResArr | undefined | null>(null);
+    useState<Propery[] | undefined | null>(null);
 
   useEffect(() => {
-    setPropertyResult(data);
+    setPropertyResult(data?.result);
   }, [data]);
 
   return (

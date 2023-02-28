@@ -114,20 +114,20 @@ const HomeResult = ({
   );
 };
 interface Props {
-  data: ProperyResArr | undefined | null;
+  data: Propery[] | undefined | null;
 }
 
 const SearchResult = ({ data }: Props) => {
   const { setResCount } = useAppContext();
 
   useEffect(() => {
-    if (data?.result) {
-      setResCount(data?.result?.length);
+    if (data) {
+      setResCount(data?.length);
     }
-  }, [data?.result]);
+  }, [data]);
   return (
     <div className="  w-full overflow-hidden p-2">
-      {data?.result.map((prop) => {
+      {data?.map((prop) => {
         return <HomeResult key={prop._id} {...prop} />;
       })}
     </div>

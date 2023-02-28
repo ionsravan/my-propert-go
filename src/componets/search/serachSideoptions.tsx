@@ -1,7 +1,13 @@
 import { useRouter } from "next/router";
-import { Dispatch, ReactNode, SetStateAction, useState } from "react";
-import { AiFillStar } from "react-icons/ai";
-import { amenity, area, ProperyResArr, response } from "src/@types";
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useReducer,
+  useState,
+} from "react";
+import { AiFillStar, AiOutlineClose } from "react-icons/ai";
+import { amenity, area, Propery, ProperyResArr, response } from "src/@types";
 import { useFetch } from "src/lib/hooks/useFetch";
 
 export function Toggle() {
@@ -44,15 +50,63 @@ const SidBarItemContainer = ({
   );
 };
 const Aminity = ({ text }: { text: string }) => {
-  return <p className="text-sm px-3 rounded-full my-2 border">{text}</p>;
+  return <p className="text-sm px-3 rounded-full ">{text}</p>;
 };
 const Amenties = ({ data }: { data: amenity[] }) => {
+  const [selected, setSelected] = useState<string[]>([]);
+  let findDuplicates = (arr: string[]) =>
+    arr.filter((item, index) => arr.indexOf(item) != index);
   return (
     <div>
-      <h1 className="text-[16px] pb-5">Aminties</h1>
+      <div className="flex justify-between items-start">
+        <h1 className="text-[16px] pb-5">Aminties</h1>
+        {selected.length > 0 && (
+          <button
+            className="text-sm text-primaryBlue"
+            onClick={() => {
+              setSelected([]);
+            }}
+          >
+            clear
+          </button>
+        )}
+      </div>
+      <div className="px-2 flex flex-wrap ">
+        {selected?.map((d) => {
+          return (
+            <div
+              className="flex justify-center items-center py-1 px-3 my-2 mx-2 border rounded-full bg-primaryBlue text-white cursor-pointer"
+              key={d}
+              onClick={() => {
+                setSelected((prev) => prev.filter((item) => item !== d));
+              }}
+            >
+              <Aminity text={d} />
+              <AiOutlineClose />
+            </div>
+          );
+        })}
+      </div>
       <div className="px-2 flex flex-wrap ">
         {data?.map((d) => {
-          return <Aminity text={d.name} key={d._id} />;
+          return (
+            <div
+              className="border rounded-full my-3 cursor-pointer"
+              key={d._id}
+              onClick={() => {
+                setSelected((prev) => {
+                  const data = [...prev];
+                  data?.push(d.name);
+                  const uniqueArray = data.filter(function (item, pos) {
+                    return data.indexOf(item) == pos;
+                  });
+                  return uniqueArray;
+                });
+              }}
+            >
+              <Aminity text={d.name} />
+            </div>
+          );
         })}
       </div>
       <button className="text-xs text-primaryBlue">+4 more</button>
@@ -102,19 +156,17 @@ const PropertiesFilter = ({ children }: { children: ReactNode }) => {
 };
 
 interface Props {
-  data: ProperyResArr | undefined | null;
-  setData: Dispatch<SetStateAction<ProperyResArr | undefined | null>>;
+  data: Propery[] | undefined | null;
+  setData: Dispatch<SetStateAction<Propery[] | undefined | null>>;
 }
 
 const SearchSideOptions = ({ data, setData }: Props) => {
   const { query } = useRouter();
-  console.log(query);
   const { data: area, error } = useFetch<response<area[]>>(
     `/property/location/getAreaInLocation/${query.query}`
   );
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
-  console.log(ams);
-
+  const [intialState, setIntialState] = useState(data);
   return (
     <div className="font-manrope top-2 overflow-hidden">
       <h1 className="text-TitleColor font-bold text-2xl py-2 mb-4">

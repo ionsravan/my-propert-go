@@ -31,7 +31,7 @@ const SuggestionCard = () => {
             alt="villa4"
           />
         </div>
-        <div className="bg-[#2E5CA0] flex justify-center items-center absolute p-1 px-2  z-50 top-2  ">
+        <div className="bg-[#2E5CA0] flex justify-center items-center absolute p-1 px-2  z-20 top-2  ">
           <p className="text-white text-xs">9</p>
         </div>
       </div>

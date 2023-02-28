@@ -22,7 +22,7 @@ import { useAxios } from "src/utills/axios";
 import { Agent } from "src/componets/successToast";
 import { useCookies } from "react-cookie";
 import Link from "next/link";
-import { useAppContext } from "src/Context/AppContext";
+import ImageSlider, { MyModal } from "src/componets/Sliders/ImageSlider";
 
 const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -32,6 +32,7 @@ const Details = () => {
   const { data, error, status } = useFetch<ProperyRes>(
     `property/getPropertyById/${id}`
   );
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   const instance = useAxios();
 
   const responsive = {
@@ -113,27 +114,62 @@ const Details = () => {
       {/* main details content */}
       <section className="space-y-10">
         <div className="relative w-full overflow-x-scroll flex space-x-2  ">
-          {data?.result?.propertyImages.map((img) => {
+          {data?.result?.propertyImages.slice(0, 2).map((img) => {
             return (
               <LoadImage key={img} src={img || "/bighouse.png"}>
                 <Image
                   src={img || "/bighouse.png"}
                   fill
-                  className="object-center"
+                  className="object-contain"
                   alt="villa4"
                 />
               </LoadImage>
             );
           })}
-          <div className="absolute z-50 bottom-4 right-5 md:right-14 bg-white px-4 py-2 rounded-full shadow-sm border hover:scale-105 active:scale-95 transition transform duration-200 ease-out  ">
-            <button>More Images</button>
+          <div className="absolute z-10 bottom-4 right-5 md:right-14 bg-white px-4 py-2 rounded-full shadow-sm border hover:scale-105 active:scale-95 transition transform duration-200 ease-out  ">
+            <button onClick={() => setIsOpen(true)}>More Images</button>
           </div>
         </div>
+
         <div className="w-full">
-          <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
-            Get in comfort
-          </button>
+          {cookies?.jwtToken ? (
+            <button
+              onClick={async () => {
+                try {
+                  console.log(data?.result?._id);
+                  console.log(data?.result);
+                  const res = await instance.post(
+                    "/user/property/contactAgent",
+                    {
+                      propertyId: data?.result?._id,
+                      message: "Hi ",
+                      propertyType: data?.result?.propertyType,
+                    }
+                  );
+                  if (res.data) {
+                    Agent();
+                  }
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+              className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  "
+            >
+              Get in Contact
+            </button>
+          ) : (
+            <Link href={"/login"}>
+              <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
+                Login to Get in Contact
+              </button>
+            </Link>
+          )}
         </div>
+        {data?.result?.propertyImages && (
+          <MyModal isOpen={isOpen} setIsOpen={setIsOpen}>
+            <ImageSlider slides={data?.result.propertyImages} />
+          </MyModal>
+        )}
         <div>
           <p className=" text-gray-800 font-manrope">
             {data?.result?.description}
