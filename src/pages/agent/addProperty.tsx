@@ -130,12 +130,13 @@ export default function AddPropertyForm() {
     if (e.target.files) {
       setFilesToUpload((prev: any) => {
         let prevs = [...filesToupload];
-        prev.push(e.target.files[0]);
-        e.target.value = null;
-        e.target.files = null;
+        console.log(e.target.files);
+        prevs.push(e.target.files[0]);
+        console.log(prevs);
         return prevs;
       });
     }
+    e.target.files = null;
   };
   const dleteImage = (file: any) => {
     setFilesToUpload((prev: any) => {
@@ -149,11 +150,11 @@ export default function AddPropertyForm() {
   };
 
   const renderPhotos = (source: any) => {
-    return source.map((photo: any) => {
+    return source.map((photo: any, index: any) => {
       return (
         <div
           className="w-max h-40 flex justify-center items-center  relative max-w-[200px]"
-          key={JSON.stringify(photo)}
+          key={index}
         >
           <button
             onClick={() => {
@@ -296,9 +297,9 @@ export default function AddPropertyForm() {
                         fill="currentColor"
                       >
                         <path
-                          fill-rule="evenodd"
+                          fillRule="evenodd"
                           d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                          clip-rule="evenodd"
+                          clipRule="evenodd"
                         />
                       </svg>
                       <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
