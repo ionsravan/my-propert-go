@@ -18,7 +18,9 @@ const HouseCard = ({ name, propertyImages, cost, agentId, _id }: Propery) => {
           />
         </div>
         <div className="space-y-1 mt-5">
-          <h1 className="text-[22px] font-semibold text-TitleColor">{name}</h1>
+          <h1 className="text-[22px] font-semibold text-TitleColor">
+            {name.slice(0, 25)}....
+          </h1>
           <p className="flex items-center text-primaryBlue text-lg font-light">
             <FaRupeeSign className="font-extralight" />
             <span>{cost}</span>

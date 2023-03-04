@@ -15,8 +15,13 @@ import { useAppContext } from "src/Context/AppContext";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useFilterContext } from "src/pages/search/[query]";
 
-export function Toggle() {
-  const [enabled, setEnabled] = useState<boolean>(false);
+export function Toggle({
+  enabled,
+  setEnabled,
+}: {
+  enabled: boolean;
+  setEnabled: Dispatch<SetStateAction<boolean>>;
+}) {
   return (
     <div className="relative flex flex-col items-center justify-center  overflow-hidden">
       <div className="flex">
@@ -162,7 +167,7 @@ const TypeFilter = ({
     <div>
       <h1 className="text-[16px] pb-5">Property Type</h1>
       <div className="space-y-3">
-        {areas.map((area) => {
+        {areas.map((area, index) => {
           return (
             <div key={area} className="flex space-x-3 text-sm">
               <input
@@ -183,11 +188,19 @@ const TypeFilter = ({
   );
 };
 
-const PropertiesFilter = ({ children }: { children: ReactNode }) => {
+const PropertiesFilter = ({
+  children,
+  enabled,
+  setEnabled,
+}: {
+  children: ReactNode;
+  enabled: boolean;
+  setEnabled: Dispatch<SetStateAction<boolean>>;
+}) => {
   return (
     <div className="flex justify-between items-center">
       <div>{children}</div>
-      <Toggle />
+      <Toggle enabled={enabled} setEnabled={setEnabled} />
     </div>
   );
 };
@@ -203,7 +216,7 @@ const SearchSideOptions = ({ data, setData }: Props) => {
     `/property/location/getAreaInLocation/${query.query}`
   );
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
-  const { searchFilter } = useAppContext();
+  const { propertywithPhotos, setPropertyWithPhotos } = useFilterContext();
 
   return (
     <>
@@ -213,7 +226,10 @@ const SearchSideOptions = ({ data, setData }: Props) => {
         </h1>
         <div className="text-TitleColor">
           <SidBarItemContainer isBottomBorder>
-            <PropertiesFilter>
+            <PropertiesFilter
+              enabled={propertywithPhotos}
+              setEnabled={setPropertyWithPhotos}
+            >
               <div className="flex flex-col">
                 <p className="text-[16px]">Verified Properties</p>
                 <small className="text-[10px] opacity-60">
@@ -223,14 +239,20 @@ const SearchSideOptions = ({ data, setData }: Props) => {
             </PropertiesFilter>
           </SidBarItemContainer>
           <SidBarItemContainer isBottomBorder>
-            <PropertiesFilter>
+            <PropertiesFilter
+              enabled={propertywithPhotos}
+              setEnabled={setPropertyWithPhotos}
+            >
               <div className="flex flex-col">
                 <p className="text-[16px]">Properties With Photos</p>
               </div>
             </PropertiesFilter>
           </SidBarItemContainer>
           <SidBarItemContainer isBottomBorder>
-            <PropertiesFilter>
+            <PropertiesFilter
+              enabled={propertywithPhotos}
+              setEnabled={setPropertyWithPhotos}
+            >
               <div className="flex flex-col">
                 <p className="text-[16px]">Properties With Videos</p>
               </div>

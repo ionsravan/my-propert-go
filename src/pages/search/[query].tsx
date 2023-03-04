@@ -19,6 +19,8 @@ import { useFetch } from "src/lib/hooks/useFetch";
 interface FilterContextInterface {
   selected: string[] | [];
   setSelected: Dispatch<SetStateAction<string[] | []>>;
+  propertywithPhotos: boolean;
+  setPropertyWithPhotos: Dispatch<SetStateAction<boolean>>;
 }
 interface IContextProps {
   children: ReactNode;
@@ -32,9 +34,12 @@ export const useFilterContext = () => {
 
 export const FilterContextProvder = ({ children }: IContextProps) => {
   const [selected, setSelected] = useState<string[]>([]);
+  const [propertywithPhotos, setPropertyWithPhotos] = useState(false);
   const shared = {
     selected,
     setSelected,
+    propertywithPhotos,
+    setPropertyWithPhotos,
   };
   return (
     <>

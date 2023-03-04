@@ -8,6 +8,7 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { Propery } from "src/@types/index";
 import { useEffect, useState } from "react";
 import { useAppContext } from "src/Context/AppContext";
+import { useFilterContext } from "src/pages/search/[query]";
 
 const HomeResult = ({
   name,
@@ -121,6 +122,7 @@ const SearchResult = ({ data }: Props) => {
   const { setResCount } = useAppContext();
   const [filteredSeach, setFilterdSearch] = useState(data);
   const { searchFilter, setsearcheFilter } = useAppContext();
+  const { selected, propertywithPhotos } = useFilterContext();
 
   useEffect(() => {
     if (searchFilter == "all") {
@@ -142,7 +144,40 @@ const SearchResult = ({ data }: Props) => {
     if (filteredSeach) {
       setResCount(filteredSeach?.length);
     }
-  }, [data]);
+  }, [filteredSeach]);
+
+  useEffect(() => {
+    if (selected.length == 0) {
+      setFilterdSearch(data);
+      return;
+    }
+    setFilterdSearch((prev) => {
+      const temp: any = [];
+      selected.map((s) => {
+        data?.filter((p) => {
+          if (p.amenities.includes(s)) {
+            console.log(s, p);
+            temp.push(p);
+          } else {
+            console.log("all", s);
+          }
+        });
+      });
+      return temp;
+    });
+  }, [selected]);
+
+  useEffect(() => {
+    if (!propertywithPhotos) {
+      setFilterdSearch(data);
+      return;
+    }
+    const filteredData = filteredSeach?.filter((item) => {
+      return propertywithPhotos ? item.propertyImages.length > 0 : true;
+    });
+    setFilterdSearch(filteredData);
+  }, [propertywithPhotos]);
+
   return (
     <div className="  w-full overflow-hidden p-2">
       {filteredSeach?.map((prop) => {

@@ -1,12 +1,125 @@
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import { AiFillHome, AiOutlineSearch } from "react-icons/ai";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { AiFillHome, AiOutlineCheck, AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineApartment, MdVilla } from "react-icons/md";
 import { SlArrowRight } from "react-icons/sl";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { response, location } from "src/@types/index";
 import Link from "next/link";
 import { useAppContext } from "src/Context/AppContext";
+import { Fragment } from "react";
+import { Combobox, Transition } from "@headlessui/react";
+import { IconType } from "react-icons";
+
+function Search({ locations }: { locations: location[] }) {
+  const [selected, setSelected] = useState(locations[0]);
+  const [query, setQuery] = useState("");
+  const { location, setLocation } = useAppContext();
+
+  const filteredPeople =
+    query === ""
+      ? locations
+      : locations.filter((person) =>
+          person.name
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
+
+  return (
+    <div className="w-full max-w-xl">
+      <Combobox value={selected} onChange={setSelected}>
+        <div className="relative mt-1 rounded-full  ">
+          <div className="flex items-center  relative w-full cursor-default overflow-hidden rounded-full bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
+            <div className="relative h-4 w-4 md:h-6 md:w-6 pl-10 ">
+              <Image
+                src={"/loc.svg"}
+                fill
+                alt="home"
+                className="object-fill rounded-lg"
+              />
+            </div>
+            <Combobox.Input
+              value={query}
+              placeholder="Search for the location you want"
+              className="w-full border-none py-3 md:py-4 rounded-full pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0 outline-none focus:outline-none"
+              onChange={(event) => setQuery(event.target.value)}
+            />
+            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center">
+              <div className="rounded-full md:min-w-[120px]  py-2  md:py-3 md:flex border justify-center items-center space-x-1 active:scale-95 transition transform duration-200 active:bg-green-700 cursor-pointer bg-green-500">
+                <Link href={`/search/${location?._id}`}>
+                  <button className="font-manrope text-sm md:text-lg text-white">
+                    <span className="hidden md:block">search</span>
+                    <span className="md:hidden block">
+                      <AiOutlineSearch className="w-10" />
+                    </span>
+                  </button>
+                </Link>
+                <div className="hidden md:blo">
+                  <SlArrowRight />
+                </div>
+              </div>
+            </Combobox.Button>
+          </div>
+          <Transition
+            as={Fragment}
+            leave="transition ease-in duration-100"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              {filteredPeople.length === 0 && query !== "" ? (
+                <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
+                  Nothing found.
+                </div>
+              ) : (
+                filteredPeople.map((loc) => (
+                  <Combobox.Option
+                    onClick={() => {
+                      setQuery(loc.name);
+                      setLocation(loc);
+                    }}
+                    key={loc._id}
+                    className={({ active }) =>
+                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                        active ? "bg-primaryBlue text-white" : "text-gray-900"
+                      }`
+                    }
+                    value={loc}
+                  >
+                    {({ selected, active }) => (
+                      <>
+                        <span
+                          className={`block truncate ${
+                            selected ? "font-medium" : "font-normal"
+                          }`}
+                        >
+                          {loc.name}
+                        </span>
+                        {selected ? (
+                          <span
+                            className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
+                              active ? "text-white" : "text-teal-600"
+                            }`}
+                          >
+                            <AiOutlineCheck
+                              className="h-5 w-5"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        ) : null}
+                      </>
+                    )}
+                  </Combobox.Option>
+                ))
+              )}
+            </Combobox.Options>
+          </Transition>
+        </div>
+      </Combobox>
+    </div>
+  );
+}
 
 interface ChipProps {
   Icon: React.ElementType;
@@ -33,30 +146,35 @@ export const HomeChip = ({ Icon, text, textColor, bg }: ChipProps) => {
   );
 };
 
+type chipData = {
+  name: string;
+  value: string;
+  Icon: IconType;
+};
+
+const homChipsData: chipData[] = [
+  {
+    name: "Home",
+    value: "all",
+    Icon: AiFillHome,
+  },
+  {
+    name: "Villa",
+    value: "villa",
+    Icon: MdVilla,
+  },
+  {
+    name: "Appartment",
+    value: "appartment",
+    Icon: MdOutlineApartment,
+  },
+];
+
 const Header = () => {
-  const { location, setLocation } = useAppContext();
-  const [show, setShow] = useState<boolean>(false);
-  const [locId, setLocId] = useState<string | undefined>("");
-
   const { searchFilter, setsearcheFilter } = useAppContext();
-
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
   );
-  const [results, setResults] = useState<location[] | null>(null);
-
-  useEffect(() => {
-    if (loc?.result.length == 0) return;
-    if (loc?.result !== undefined) {
-      setResults(loc?.result);
-    }
-  }, [loc?.result]);
-
-  useEffect(() => {
-    setLocId("");
-    setLocation("");
-  }, []);
-
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center space-x-1">
@@ -79,116 +197,27 @@ const Header = () => {
         </p>
       </div>
       <div className="flex space-x-4 mb-8 ">
-        <div
-          onClick={() => {
-            setsearcheFilter("all");
-          }}
-        >
-          <HomeChip
-            Icon={AiFillHome}
-            text="home"
-            textColor={
-              searchFilter == "all" ? "text-primaryBlue" : "text-white"
-            }
-            bg={searchFilter == "all" ? "bg-white" : "bg-transparent"}
-          />
-        </div>
-        <div
-          onClick={() => {
-            setsearcheFilter("villa");
-          }}
-        >
-          <HomeChip
-            bg={searchFilter == "villa" ? "bg-white" : "bg-transparent"}
-            textColor={
-              searchFilter == "villa" ? "text-primaryBlue" : "text-white"
-            }
-            Icon={MdVilla}
-            text="Villa"
-          />
-        </div>
-        <div
-          onClick={() => {
-            setsearcheFilter("appartment");
-          }}
-        >
-          <HomeChip
-            bg={searchFilter == "appartment" ? "bg-white" : "bg-transparent"}
-            textColor={
-              searchFilter == "appartment" ? "text-primaryBlue" : "text-white"
-            }
-            Icon={MdOutlineApartment}
-            text="Apartments"
-          />
-        </div>
-      </div>
-      <div className="mt-2">
-        <div className="flex md:px-1 items-center bg-white text-green-300 w-full md:max-w-xl  rounded-full ">
-          <div className="relative h-4 w-4 md:h-6 md:w-6 pl-10 ">
-            <Image
-              src={"/loc.svg"}
-              fill
-              alt="home"
-              className="object-fill rounded-lg"
-            />
-          </div>
-          <input
-            value={location}
-            onChange={(e) => {
-              setLocation(e.target.value);
-              if (e.target.value.length > 0) {
-                setShow(true);
-                setResults((prev) => {
-                  const filtred = loc?.result?.filter((str) => {
-                    return str.name.includes(location);
-                  });
-                  if (filtred !== undefined) {
-                    return filtred;
-                  } else {
-                    return null;
-                  }
-                });
-              } else {
-                setShow(false);
-                if (loc?.result !== undefined) {
-                  setResults(loc?.result);
+        {homChipsData.map(({ Icon, name, value }) => {
+          return (
+            <div
+              key={name}
+              onClick={() => {
+                setsearcheFilter(value);
+              }}
+            >
+              <HomeChip
+                Icon={AiFillHome}
+                text={name}
+                textColor={
+                  searchFilter == value ? "text-primaryBlue" : "text-white"
                 }
-              }
-            }}
-            placeholder="search for the location you want"
-            type="text"
-            className="md:px-2 md:p-4 p-2 grow text-black text-xs md:text-lg rounded-full outline-none"
-          />
-          <div className="rounded-full min-w-[120px]  py-2  md:py-3 flex border justify-center items-center space-x-1 active:scale-95 transition transform duration-200 active:bg-green-700 cursor-pointer bg-green-500">
-            <Link href={`/search/${locId}`}>
-              <button className="font-manrope text-sm md:text-lg text-white">
-                search
-              </button>
-            </Link>
-            <div className="hidden md:blo">
-              <SlArrowRight />
+                bg={searchFilter == value ? "bg-white" : "bg-transparent"}
+              />
             </div>
-          </div>
-        </div>
-        {show && (
-          <div className="max-h-20 overflow-scroll w-full px-5 bg-white max-w-xs mx-10 my-2 rounded-sm">
-            {results?.map((l) => {
-              return (
-                <p
-                  key={l._id}
-                  onClick={() => {
-                    setLocation(l.name);
-                    setLocId(l._id);
-                  }}
-                  className="py-3 hover:bg-white/30 cursor-pointer"
-                >
-                  {l.name}
-                </p>
-              );
-            })}
-          </div>
-        )}
+          );
+        })}
       </div>
+      <Search locations={loc?.result || []} />
     </div>
   );
 };

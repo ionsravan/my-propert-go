@@ -9,6 +9,7 @@ import {
   useEffect,
 } from "react";
 import { useCookies } from "react-cookie";
+import { location } from "src/@types";
 import { useAxios } from "src/utills/axios";
 interface AppContextProviderInterface {
   user: any | null;
@@ -21,8 +22,8 @@ interface AppContextProviderInterface {
   setShowModal: Dispatch<SetStateAction<boolean>>;
   resCount: number;
   setResCount: Dispatch<SetStateAction<number>>;
-  location: string;
-  setLocation: Dispatch<SetStateAction<string>>;
+  location: location | null;
+  setLocation: Dispatch<SetStateAction<location | null>>;
   redirectId: string | null;
   setRedirectId: Dispatch<SetStateAction<string | null>>;
   searchFilter: string;
@@ -47,7 +48,7 @@ export const AppContextProvider = ({ children }: IContextProps) => {
   const [agentId, setAgentId] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [resCount, setResCount] = useState<number>(0);
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState<location | null>(null);
   const [redirectId, setRedirectId] = useState<string | null>("");
   const [searchFilter, setsearcheFilter] = useState<string>("all");
 

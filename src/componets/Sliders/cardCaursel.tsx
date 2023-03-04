@@ -22,7 +22,7 @@ function CardCarousel({ Card, data }: Props) {
   return (
     <div className="relative">
       <div className="text-center py-4  text-xl font-bold"></div>
-      <div className="absolute right-0 top-5 ">
+      <div className="absolute right-0 top-0 ">
         <button onClick={scrollLeft} className="p-2 m-2 rounded-full bg-white">
           <FiChevronLeft />
         </button>
