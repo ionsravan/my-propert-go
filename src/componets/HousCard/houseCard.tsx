@@ -8,7 +8,7 @@ import Link from "next/link";
 const HouseCard = ({ name, propertyImages, cost, agentId, _id }: Propery) => {
   return (
     <Link href={`/details/${_id}`}>
-      <div className=" relative  grow  rounded-lg p-4 shadow-md border font-manrope  ">
+      <div className=" relative  grow  rounded-2xl p-4 shadow-md border font-manrope bg-white  ">
         <div className="relative h-64 w-[300px]">
           <Image
             src={propertyImages[0] ? propertyImages[0] : "/bighouse.png"}

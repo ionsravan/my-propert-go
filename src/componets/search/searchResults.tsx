@@ -45,7 +45,7 @@ const HomeResult = ({
               </div>
             </div>
           </div>
-          <div className=" max-w-xl py-1 w-full flex">
+          <div className=" max-w-xl py-1 w-full flex justify-between">
             <div className="">
               <p className="flex text-TitleColor text-lg items-center">
                 <span className="flex items-center space-x-1 ">
@@ -58,7 +58,7 @@ const HomeResult = ({
                 Onwards
               </p>
             </div>
-            <div className=" flex flex-col items-center grow ">
+            <div className=" flex flex-col items-center border-r border-r-gray-400  px-8 border-l border-l-gray-400">
               <div>
                 <p className="flex text-TitleColor  items-center">
                   <span className="flex items-center space-x-1 ">
@@ -89,22 +89,26 @@ const HomeResult = ({
           </div>
           <div className="py-4 border-b border-[#EBECF0] max-w-2xl">
             <p className="text-xs leading-relaxed">
-              {description}...
+              {description.slice(0, 400)}...
               <span className="text-primaryBlue ml-9">learn more</span>
             </p>
           </div>
           <div className="w-full items-center md:flex justify-between mt-4">
             <div>
               <div className="flex space-x-4 text-sm  ">
-                <button className="bg-green-400 bg-opacity-50 px-2 p-1 text-xs md:text-sm ">
+                <button className="bg-green-400 bg-opacity-50 px-2 p-1 text-xs md:text-sm rounded-lg">
                   NO BROKERAGE
                 </button>
-                <button className="bg-[#EBECF0] px-2 p-1">READY MOVE</button>
-                <button className="bg-[#EBECF0] px-2 p-1">NEW BOOKING</button>
+                <button className="bg-[#EBECF0] px-2 p-1 rounded-lg">
+                  READY MOVE
+                </button>
+                <button className="bg-[#EBECF0] px-2 p-1 rounded-lg">
+                  NEW BOOKING
+                </button>
               </div>
             </div>
             <div className="md:mt-0 mt-4">
-              <button className="  bg-primaryBlue px-7  text-white   py-2 rounded-sm shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out w-full  ">
+              <button className="  bg-primaryBlue px-7  text-white   py-2 rounded-xl shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out w-full  ">
                 Contact Builder
               </button>
             </div>
@@ -179,7 +183,7 @@ const SearchResult = ({ data }: Props) => {
   }, [propertywithPhotos]);
 
   return (
-    <div className="  w-full overflow-hidden p-2">
+    <div className=" w-full overflow-hidden p-2">
       {filteredSeach?.map((prop) => {
         return <HomeResult key={prop._id} {...prop} />;
       })}

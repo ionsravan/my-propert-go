@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { AiFillHome, AiOutlineCheck, AiOutlineSearch } from "react-icons/ai";
 import { MdOutlineApartment, MdVilla } from "react-icons/md";
 import { SlArrowRight } from "react-icons/sl";
@@ -7,11 +7,10 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { response, location } from "src/@types/index";
 import Link from "next/link";
 import { useAppContext } from "src/Context/AppContext";
-import { Fragment } from "react";
 import { Combobox, Transition } from "@headlessui/react";
 import { IconType } from "react-icons";
 
-function Search({ locations }: { locations: location[] }) {
+function Search({ locations }: { locations: location[] | [] }) {
   const [selected, setSelected] = useState(locations[0]);
   const [query, setQuery] = useState("");
   const { location, setLocation } = useAppContext();
@@ -45,8 +44,8 @@ function Search({ locations }: { locations: location[] }) {
               className="w-full border-none py-3 md:py-4 rounded-full pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0 outline-none focus:outline-none"
               onChange={(event) => setQuery(event.target.value)}
             />
-            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center">
-              <div className="rounded-full md:min-w-[120px]  py-2  md:py-3 md:flex border justify-center items-center space-x-1 active:scale-95 transition transform duration-200 active:bg-green-700 cursor-pointer bg-green-500">
+            <Combobox.Button className="">
+              <div className="rounded-full  md:min-w-[120px]  py-2  md:py-3 md:flex border justify-center items-center space-x-1 active:scale-95 transition transform duration-200 active:bg-green-700 cursor-pointer bg-green-500">
                 <Link href={`/search/${location?._id}`}>
                   <button className="font-manrope text-sm md:text-lg text-white">
                     <span className="hidden md:block">search</span>
@@ -152,7 +151,7 @@ type chipData = {
   Icon: IconType;
 };
 
-const homChipsData: chipData[] = [
+export const homeChipsData: chipData[] = [
   {
     name: "Home",
     value: "all",
@@ -197,7 +196,7 @@ const Header = () => {
         </p>
       </div>
       <div className="flex space-x-4 mb-8 ">
-        {homChipsData.map(({ Icon, name, value }) => {
+        {homeChipsData.map(({ Icon, name, value }) => {
           return (
             <div
               key={name}
@@ -217,7 +216,7 @@ const Header = () => {
           );
         })}
       </div>
-      <Search locations={loc?.result || []} />
+      {loc?.result && <Search locations={loc?.result} />}
     </div>
   );
 };

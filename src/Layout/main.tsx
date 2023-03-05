@@ -13,7 +13,7 @@ const Layout = ({ children, onlyNav }: Props) => {
   return (
     <div className="overflow-hidden bg-[#F5F5F5]">
       <Navbar />
-      <main>{children}</main>
+      <main className="overflow-x-hidden">{children}</main>
       <>
         {!onlyNav ? (
           <>

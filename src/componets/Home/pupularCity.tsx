@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { location } from "src/@types";
 
 interface Props {
   img: string;

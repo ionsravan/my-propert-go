@@ -29,21 +29,15 @@ export const PostingCard = ({
   BHKconfig,
   size,
   address,
-  agentId,
-  availableFor,
   cost,
-  description,
-  location,
-  area,
   propertyImages,
-  purchaseRequests,
 }: Propery) => {
   return (
     <div className="mb-5 bg-white rounded-lg md:flex cursor-pointer">
       {/* image section */}
       <div className="h-[160px] relative md:w-[180px]">
         <Image
-          src={"/smallb.png"}
+          src={propertyImages[0] || "/smallb.png"}
           fill
           alt="home"
           className="rounded-l-lg object-cover"
@@ -149,9 +143,18 @@ const MyPosting = () => {
       </div>
 
       <PostingByDeveloper />
-      <div className="w-full space-y-5  overflow-scroll scrollbar-hide mb-8">
+      <div className="w-full space-y-5   scrollbar-hide mb-8">
         {data?.result?.properties.map((property) => {
-          return <PostingCard key={property._id} {...property} />;
+          return (
+            <>
+              <PostingCard key={property._id} {...property} />
+              <PostingCard key={property._id} {...property} />
+              <PostingCard key={property._id} {...property} />
+              <PostingCard key={property._id} {...property} />
+              <PostingCard key={property._id} {...property} />
+              <PostingCard key={property._id} {...property} />
+            </>
+          );
         })}
       </div>
     </>

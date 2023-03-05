@@ -1,5 +1,4 @@
 import { SetStateAction } from "react";
-import { useAppContext } from "src/Context/AppContext";
 
 interface InputProps {
   Icon?: React.ElementType;
@@ -31,15 +30,12 @@ export function Input({
             value={value}
             required
             type={type}
-            placeholder="Input"
-            className="h-10 w-full px-2   bg-white border-none outline-none focus placeholder-gray-300 placeholder-opacity-0 transition duration-200"
+            placeholder={placeholder}
+            className="h-10 w-full px-2   bg-white border-none outline-none focus  transition duration-200"
             onChange={(e) => {
               setValue(e.target.value);
             }}
           />
-          <span className="text-sm opacity-50 group-focus-within:text-primaryBlue  text-opacity-80 bg-white absolute left-0 top-2 px-1 transition duration-200 input-text">
-            {placeholder}
-          </span>
         </label>
       </div>
       {showError ? <p className=" mt-3 text-red-500 text-sm">{err}</p> : null}

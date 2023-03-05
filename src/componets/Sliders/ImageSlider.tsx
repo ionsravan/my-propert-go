@@ -2,7 +2,13 @@ import React, { Dispatch, ReactNode, SetStateAction, useState } from "react";
 import { BsChevronCompactLeft, BsChevronCompactRight } from "react-icons/bs";
 import { RxDotFilled } from "react-icons/rx";
 
-function ImageSlider({ slides }: { slides: string[] }) {
+function ImageSlider({
+  slides,
+  setIsOpen,
+}: {
+  slides: string[];
+  setIsOpen: any;
+}) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const prevSlide = () => {
@@ -22,7 +28,13 @@ function ImageSlider({ slides }: { slides: string[] }) {
   };
 
   return (
-    <div className="max-w-[1400px] h-[300px] md:h-[780px] w-full m-auto py-16 px-4 relative group">
+    <div className="max-w-[1400px]  h-[300px] md:h-[780px] w-full m-auto py-16 px-4 relative group">
+      <div
+        onClick={() => setIsOpen(false)}
+        className="absolute -top-20 right-4 cursor-pointer bg-slate-200 w-10 h-10 rounded-full flex items-center justify-center "
+      >
+        <AiOutlineClose className="text-black text-xl" />
+      </div>
       <div
         style={{ backgroundImage: `url(${slides[currentIndex]})` }}
         className="w-full h-full rounded-2xl bg-center bg-contain bg-no-repeat duration-500"
@@ -51,6 +63,7 @@ function ImageSlider({ slides }: { slides: string[] }) {
 }
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { AiOutlineClose } from "react-icons/ai";
 
 export function MyModal({
   children,
@@ -65,14 +78,10 @@ export function MyModal({
     setIsOpen(false);
   }
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-30" onClose={closeModal}>
+        <Dialog as="div" className="relative z-30 " onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -85,8 +94,8 @@ export function MyModal({
             <div className="fixed inset-0 bg-black bg-opacity-25" />
           </Transition.Child>
 
-          <div className="fixed inset-0 overflow-y-auto ">
-            <div className="flex  items-center justify-center p-4 text-center">
+          <div className="fixed inset-0 overflow-y-auto mt-12 ">
+            <div className="flex items-center justify-center p-4 text-center">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -96,16 +105,9 @@ export function MyModal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all relative">
-                  <div className="mt-2 h-full">{children}</div>
-                  <div className="mt-4">
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                      onClick={closeModal}
-                    >
-                      close
-                    </button>
+                <Dialog.Panel className="w-full max-w-7xl  my-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all relative">
+                  <div className="mt-20 h-full flex justify-center items-center">
+                    {children}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

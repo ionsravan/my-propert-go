@@ -64,7 +64,7 @@ const ComapnyCard = ({
         <h1 className="text-sm text-TitleColor font-bold">{name}</h1>
         <div className="flex space-x-4 mb-4 text-sm mt-1">
           <p className="font-normal text-xs text-[#091E42]">Savita Grenage</p>
-          <div className="flex  items-center px-1 space-x-1 bg-green-300 bg-opacity-40 text-green-800 text-[9px]">
+          <div className="flex items-center px-1 space-x-1 bg-green-300 bg-opacity-40 text-green-800 text-[9px] rounded-sm">
             <p>4.5</p>
             <AiFillStar className="text-[6px]" />
           </div>
@@ -79,12 +79,10 @@ const ComapnyCard = ({
                   agentId: _id,
                 },
               });
-              console.log(res);
               toast("Agent Deleted", {
                 className: "text-red-400",
               });
             } catch (e) {
-              console.log(e);
               toast("Error Accured Try Again");
             }
           }}
@@ -129,8 +127,8 @@ const DashBoard = () => {
       <div>
         <h1 className="text-black font-bold text-lg mb-4">All Compenies</h1>
       </div>
-      <div className="w-full  overflow-scroll">
-        <div className="flex space-x-4 ">
+      <div className="w-full overflow-scroll scrollbar-hide">
+        <div className="flex space-x-4 scrollbar-hide ">
           {data?.result.map((ag) => {
             return (
               <ComapnyCard

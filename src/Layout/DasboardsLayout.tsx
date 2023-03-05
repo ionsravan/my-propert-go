@@ -6,7 +6,6 @@ import { TbEdit } from "react-icons/tb";
 import { MyModal } from "src/componets/Sliders/ImageSlider";
 import { useAppContext } from "src/Context/AppContext";
 import AddPropertyForm from "src/pages/agent/addProperty";
-import Modal from "src/pages/agent/addProperty";
 
 interface Props {
   children: ReactNode;
@@ -23,13 +22,12 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
     if (cookies.jwtToken == undefined) {
       router.push(`${router.pathname}/login`);
     }
-    console.log("life", cookies.jwtToken);
   }, []);
 
   return (
     <>
-      <div className="flex   font-manrope bg-[#F6F6F6] overflow-hidden relative">
-        <div className="justify-between hidden   bg-white min-h-screen h-full pt-10 pr-4 md:flex flex-col w-full max-w-[300px] sticky top-0 ">
+      <div className="flex h-screen overflow-x-hidden font-manrope bg-[#F6F6F6] overflow-y-scroll relative">
+        <div className="justify-between hidden bg-white min-h-screen h-full pt-10 pr-4 md:flex flex-col w-full max-w-[300px] sticky top-0 ">
           <Navbar />
           <div className="p-3 py-6">
             <button
@@ -46,7 +44,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
           </div>
         </div>
 
-        <div className="flex px-6 md:px-[50px] relative flex-col   w-full overflow-hidden pt-10">
+        <div className="flex px-6 md:px-[50px] relative flex-col w-full overflow-scroll pt-10 h-screen">
           <div className=" w-full justify-end  md:hidden flex">
             <button
               className="text-2xl top-8 "
