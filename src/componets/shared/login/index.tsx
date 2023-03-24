@@ -1,15 +1,14 @@
 import { AxiosInstance } from "axios";
-import { NextRouter, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { AiFillLock, AiOutlineMail } from "react-icons/ai";
-import { useAppContext } from "src/Context/AppContext";
 import { useAxios } from "src/utills/axios";
 import { ConnectWithFaceBook } from "../LoginWitFaceBook";
 import { Input } from "../sharedInput";
-import { useForm, Resolver } from "react-hook-form";
 import { LoginSuccess } from "src/componets/successToast";
 import { ConnectWithGoogle } from "../LoginWithGoogle";
+import { Navbar } from "../signup/signupNavbar";
 
 export interface LoginProps {
   login: (
@@ -33,7 +32,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
   const [error, setErorr] = useState<string>("");
   return (
     <div className="grow  ">
-      {/* <Navbar /> */}
+      <Navbar />
       <div className="py-24 px-12">
         <div className="space-y-5 text-sm text-gray-500 max-w-[400px]">
           <h1 className="text-3xl lg:text-4xl font-extrabold font-manrope text-black">

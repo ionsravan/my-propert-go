@@ -10,15 +10,24 @@ import { useAppContext } from "src/Context/AppContext";
 import { Combobox, Transition } from "@headlessui/react";
 import { IconType } from "react-icons";
 
-function Search({ locations }: { locations: location[] | [] }) {
-  const [selected, setSelected] = useState(locations[0]);
+function Search() {
+  const [selected, setSelected] = useState<any>(null);
   const [query, setQuery] = useState("");
   const { location, setLocation } = useAppContext();
+  const { data } = useFetch<response<location[]>>(
+    "/property/location/getAllLocation"
+  );
+
+  useEffect(() => {
+    if (data?.result) {
+      setSelected(data?.result[0]);
+    }
+  }, [data]);
 
   const filteredPeople =
     query === ""
-      ? locations
-      : locations.filter((person) =>
+      ? data?.result
+      : data?.result.filter((person) =>
           person.name
             .toLowerCase()
             .replace(/\s+/g, "")
@@ -47,12 +56,12 @@ function Search({ locations }: { locations: location[] | [] }) {
             <Combobox.Button className="">
               <div className="rounded-full  md:min-w-[120px]  py-2  md:py-3 md:flex border justify-center items-center space-x-1 active:scale-95 transition transform duration-200 active:bg-green-700 cursor-pointer bg-green-500">
                 <Link href={`/search/${location?._id}`}>
-                  <button className="font-manrope text-sm md:text-lg text-white">
+                  <div className="font-manrope text-sm md:text-lg text-white">
                     <span className="hidden md:block">search</span>
                     <span className="md:hidden block">
                       <AiOutlineSearch className="w-10" />
                     </span>
-                  </button>
+                  </div>
                 </Link>
                 <div className="hidden md:blo">
                   <SlArrowRight />
@@ -67,11 +76,11 @@ function Search({ locations }: { locations: location[] | [] }) {
             leaveTo="opacity-0"
           >
             <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-              {filteredPeople.length === 0 && query !== "" ? (
+              {filteredPeople?.length === 0 && query !== "" ? (
                 <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                   Nothing found.
                 </div>
-              ) : (
+              ) : filteredPeople ? (
                 filteredPeople.map((loc) => (
                   <Combobox.Option
                     onClick={() => {
@@ -111,6 +120,8 @@ function Search({ locations }: { locations: location[] | [] }) {
                     )}
                   </Combobox.Option>
                 ))
+              ) : (
+                <p className="p-2 text-lg">loading ...</p>
               )}
             </Combobox.Options>
           </Transition>
@@ -171,9 +182,7 @@ export const homeChipsData: chipData[] = [
 
 const Header = () => {
   const { searchFilter, setsearcheFilter } = useAppContext();
-  const { data: loc } = useFetch<response<location[]>>(
-    "/property/location/getAllLocation"
-  );
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center space-x-1">
@@ -216,7 +225,7 @@ const Header = () => {
           );
         })}
       </div>
-      {loc?.result && <Search locations={loc?.result} />}
+      <Search />
     </div>
   );
 };

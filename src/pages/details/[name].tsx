@@ -4,7 +4,7 @@ import Image from "next/image";
 import { LoadImage } from "../../componets/shared/img";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { RxDotFilled } from "react-icons/rx";
-import React, { ReactElement, useRef, useState } from "react";
+import React, { Fragment, ReactElement, useRef, useState } from "react";
 import { HiCheckCircle } from "react-icons/hi";
 import Layout from "src/Layout/main";
 import { useFetch } from "src/lib/hooks/useFetch";
@@ -17,6 +17,8 @@ import Link from "next/link";
 import ImageSlider, { MyModal } from "src/componets/Sliders/ImageSlider";
 import CardCarousel from "src/componets/Sliders/cardCaursel";
 import { scrollLeft, scrollRight } from "..";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { Transition, Dialog } from "@headlessui/react";
 
 const reviewData = [
   {
@@ -32,6 +34,124 @@ const reviewData = [
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
   },
 ];
+
+function MyMsg({ data, text }: { data: any; text: string }) {
+  let [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const instance = useAxios();
+  const [loading, setLoading] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
+  return (
+    <>
+      <div className=" flex items-center justify-center w-full">
+        <button
+          type="button"
+          onClick={openModal}
+          className="rounded-md b px-4 py-2 text-sm font-medium w-full text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
+        >
+          {text}
+        </button>
+      </div>
+
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed top-36 inset-0 overflow-y-auto ">
+            <div className="flex justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg  text-lg leading-6 text-white font-bold bg-primaryBlue p-4"
+                  >
+                    Talk To The Agent
+                  </Dialog.Title>
+                  <div className="mt-2 px-4">
+                    <h1 className="text-black ">Message</h1>
+                    <textarea
+                      id="description"
+                      name="desccription"
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      required={true}
+                      placeholder="writte your message"
+                      className="focus:outline-none  w-full h-52 px-3 mt-5 py-2 border  my-4"
+                    />
+                  </div>
+
+                  <div className="mt-4 p-4 w-full flex justify-end">
+                    <div
+                      className={
+                        "cursor-pointer inline-flex justify-center rounded-md border border-transparent px-6 py-2 text-sm font-medium bg-primaryBlue text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2" +
+                        (loading ? " bg-opacity-50 " : "")
+                      }
+                      onClick={async () => {
+                        try {
+                          setLoading(true);
+                          const res = await instance.post(
+                            "/user/property/contactAgent",
+                            {
+                              propertyId: data?.result?._id,
+                              message: message,
+                              propertyType: data?.result?.propertyType,
+                            }
+                          );
+                          if (res.data) {
+                            Agent();
+                            setLoading(false);
+                            setMessage("");
+                            closeModal();
+                          }
+                        } catch (e) {
+                          setLoading(false);
+                          console.log(e);
+                        }
+                      }}
+                    >
+                      {loading ? "Sending Message.." : "Send Message"}
+                    </div>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+              <div>
+                <button>
+                  <AiOutlineCloseCircle className="text-2xl text-white mx-2" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+    </>
+  );
+}
 
 const ReviewCard = ({ text }: { text: string }) => {
   return (
@@ -69,7 +189,7 @@ const Details = () => {
     `property/getPropertyById/${id}`
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const instance = useAxios();
+  console.log(data);
 
   return (
     <div className=" bg-white">
@@ -136,9 +256,8 @@ const Details = () => {
             {data?.result?.propertyImages.slice(0, 2).map((img) => {
               return (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
-                  <Image
+                  <img
                     src={img || "/bighouse.png"}
-                    fill
                     className="object-contain"
                     alt="villa4"
                   />
@@ -152,29 +271,9 @@ const Details = () => {
 
           <div className="w-full">
             {cookies?.jwtToken ? (
-              <button
-                onClick={async () => {
-                  try {
-                    console.log(data?.result?._id);
-                    console.log(data?.result);
-                    const res = await instance.post(
-                      "/user/property/contactAgent",
-                      {
-                        propertyId: data?.result?._id,
-                        message: "Hi ",
-                        propertyType: data?.result?.propertyType,
-                      }
-                    );
-                    if (res.data) {
-                      Agent();
-                    }
-                  } catch (e) {
-                    console.log(e);
-                  }
-                }}
-                className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  "
-              >
-                Get in Contact
+              <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
+                {/* <MessageBox data={data} text="Get in Contact" /> */}
+                <MyMsg data={data} text="Get in Comfort" />
               </button>
             ) : (
               <Link href={"/login"}>
@@ -249,29 +348,8 @@ const Details = () => {
                 </p>
               </div>
               {cookies?.jwtToken ? (
-                <button
-                  onClick={async () => {
-                    try {
-                      console.log(data?.result?._id);
-                      console.log(data?.result);
-                      const res = await instance.post(
-                        "/user/property/contactAgent",
-                        {
-                          propertyId: data?.result?._id,
-                          message: "Hi ",
-                          propertyType: data?.result?.propertyType,
-                        }
-                      );
-                      if (res.data) {
-                        Agent();
-                      }
-                    } catch (e) {
-                      console.log(e);
-                    }
-                  }}
-                  className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  "
-                >
-                  Contact Agent
+                <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                  <MyMsg data={data} text="Contact Agent" />
                 </button>
               ) : (
                 <Link href={"/login"}>

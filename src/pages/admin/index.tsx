@@ -13,6 +13,7 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { Menu } from "@headlessui/react";
 import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
+import imgs from "public.json";
 
 const Card = ({
   name,
@@ -21,13 +22,12 @@ const Card = ({
 }: {
   name: string;
   Value: number;
-  Icon: React.ElementType;
+  Icon: string;
 }) => {
   return (
     <div className="bg-white w-full rounded-lg flex space-x-3 items-center px-[15px] py-5 max-w-[180px]">
-      <div className="bg-primaryBlue bg-opacity-20 flex rounded-full justify-center items-center h-[46px] w-[46px]">
-        <div className=" text-primaryBlue h-4 w-4">{<Icon />}</div>
-      </div>
+      <img src={Icon} alt="" />
+
       <div>
         <p className="text-primaryBlue text-[19.05px] font-bold">{Value}</p>
         <p className="text-[#A3AED0] text-xs">{name}</p>
@@ -108,9 +108,9 @@ const DashBoard = () => {
         </div>
       </div>
       <div className="flex space-x-[17px] mt-6 mb-8">
-        <Card Icon={AiFillProfile} name="Total Students" Value={2598} />
-        <Card Icon={AiFillProfile} name="Total Students" Value={2598} />
-        <Card Icon={AiFillProfile} name="Total Students" Value={2598} />
+        <Card Icon={imgs.Profile} name="Total Students" Value={2598} />
+        <Card Icon={imgs.data} name="Brokers" Value={2598} />
+        <Card Icon={imgs.data} name="Companies" Value={2598} />
       </div>
       {/* <div className="bg-white rounded-sm mb-9 p-6  ">
         <div>

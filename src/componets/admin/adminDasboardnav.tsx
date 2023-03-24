@@ -15,6 +15,8 @@ import {
 } from "react-icons/ai";
 import { RiUser3Line } from "react-icons/ri";
 import { MdOutlineApartment } from "react-icons/md";
+import { LucideProps } from "lucide-react";
+import { AdminNavbarIcons } from "./adminIcons";
 
 const Avtar = () => {
   return (
@@ -65,28 +67,28 @@ const AdminsideNav = () => {
       <Link href={"/admin"}>
         <SideNavItem
           name="Dashboard"
-          Icon={AiOutlineHome}
+          Icon={AdminNavbarIcons.home}
           isActive={router.pathname == "/admin"}
         />
       </Link>
       <Link href={"/admin/customers"}>
         <SideNavItem
           name="Customer"
-          Icon={RiUser3Line}
+          Icon={AdminNavbarIcons.customer}
           isActive={router.pathname == "/admin/customers"}
         />
       </Link>
       <Link href={"/admin/broker"}>
         <SideNavItem
           name="Brokers"
-          Icon={AiOutlineUserSwitch}
+          Icon={AdminNavbarIcons.brokers}
           isActive={router.pathname == "/admin/broker"}
         />
       </Link>
       <Link href={"/admin/compnies"}>
         <SideNavItem
           name="Companies"
-          Icon={MdOutlineApartment}
+          Icon={AdminNavbarIcons.compnies}
           isActive={router.pathname == "/admin/compnies"}
         />
       </Link>

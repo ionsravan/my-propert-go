@@ -18,7 +18,7 @@ const Nav = () => {
     },
     {
       name: "Sing up",
-      link: "/",
+      link: "/signup",
     },
   ];
   return (
