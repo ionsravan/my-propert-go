@@ -26,9 +26,13 @@ function reducer<Type>(
     case FetchState.FETCHING:
       return { ...state, status: FetchState.FETCHING };
     case "FETCHED":
-      return { ...state, status: "fetched", data: action.payload };
+      return { ...state, status: FetchState.FETCHED, data: action.payload };
     case "FETCH_ERROR":
-      return { ...state, status: "error", error: action.payload };
+      return {
+        ...state,
+        status: FetchState.FETCH_ERROR,
+        error: action.payload,
+      };
     default:
       return state;
   }

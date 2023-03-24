@@ -19,6 +19,7 @@ import CardCarousel from "src/componets/Sliders/cardCaursel";
 import { scrollLeft, scrollRight } from "..";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Transition, Dialog } from "@headlessui/react";
+import { toast } from "react-toastify";
 
 const reviewData = [
   {
@@ -124,7 +125,10 @@ function MyMsg({ data, text }: { data: any; text: string }) {
                             }
                           );
                           if (res.data) {
-                            Agent();
+                            toast("great", {
+                              position: "bottom-center",
+                              type: "success",
+                            });
                             setLoading(false);
                             setMessage("");
                             closeModal();
@@ -256,15 +260,16 @@ const Details = () => {
             {data?.result?.propertyImages.slice(0, 2).map((img) => {
               return (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
-                  <img
+                  <Image
                     src={img || "/bighouse.png"}
+                    fill
                     className="object-contain"
                     alt="villa4"
                   />
                 </LoadImage>
               );
             })}
-            <div className="absolute z-10 bottom-4 right-5 md:right-14 bg-white px-4 py-2 rounded-full shadow-sm border hover:scale-105 active:scale-95 transition transform duration-200 ease-out  ">
+            <div className="absolute z-10 bottom-0 right-5 md:right-14 bg-white px-4 py-2 rounded-full shadow-sm border hover:scale-105 active:scale-95 transition transform duration-200 ease-out  ">
               <button onClick={() => setIsOpen(true)}>More Images</button>
             </div>
           </div>
@@ -272,7 +277,6 @@ const Details = () => {
           <div className="w-full">
             {cookies?.jwtToken ? (
               <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
-                {/* <MessageBox data={data} text="Get in Contact" /> */}
                 <MyMsg data={data} text="Get in Comfort" />
               </button>
             ) : (

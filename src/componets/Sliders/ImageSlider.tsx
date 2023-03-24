@@ -28,10 +28,10 @@ function ImageSlider({
   };
 
   return (
-    <div className="max-w-lg  h-[300px] md:h-[780px] w-full m-auto py-8 px-4 relative group">
+    <div className="max-w-full h-[300px]  md:h-[780px] w-full m-auto py-8 px-4 relative group">
       <div
         onClick={() => setIsOpen(false)}
-        className="absolute top-0 right-4 cursor-pointer bg-slate-200 w-10 h-10 rounded-full flex items-center justify-center "
+        className="absolute top-0 right-0 cursor-pointer bg-slate-200 w-10 h-10 rounded-full flex items-center justify-center "
       >
         <AiOutlineClose className="text-black text-xl" />
       </div>
@@ -105,8 +105,8 @@ export function MyModal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-7xl  my-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all relative">
-                  <div className=" h-full flex justify-center items-center">
+                <Dialog.Panel className="w-full max-w-3xl my-auto transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all relative">
+                  <div className=" h-full flex justify-center items-center ">
                     {children}
                   </div>
                 </Dialog.Panel>

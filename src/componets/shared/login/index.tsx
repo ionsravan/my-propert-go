@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { Dispatch, useState } from "react";
 import { useCookies } from "react-cookie";
 import { AiFillLock, AiOutlineMail } from "react-icons/ai";
 import { useAxios } from "src/utills/axios";
@@ -9,13 +9,16 @@ import { Input } from "../sharedInput";
 import { LoginSuccess } from "src/componets/successToast";
 import { ConnectWithGoogle } from "../LoginWithGoogle";
 import { Navbar } from "../signup/signupNavbar";
+import { SetStateAction } from "jotai";
+import { toast } from "react-toastify";
 
 export interface LoginProps {
   login: (
     email: string,
     password: string,
     instance: AxiosInstance,
-    url: string
+    url: string,
+    setLoading: Dispatch<SetStateAction<boolean>>
   ) => Promise<string | number>;
   redirectUrl: string;
   url: string;
@@ -56,6 +59,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
             }
           />
           <Input
+            type="password"
             value={password}
             setValue={setPassword}
             Icon={AiFillLock}
@@ -74,10 +78,19 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
               setSHowError(true);
               return;
             }
-            const result = await login(email, password, instance, url);
+            const result = await login(
+              email,
+              password,
+              instance,
+              url,
+              setLoading
+            );
             if (typeof result == "string") {
               setCookies("jwtToken", result);
-              LoginSuccess();
+              toast("Logged in Successfully", {
+                position: "bottom-center",
+                type: "success",
+              });
               router.push(redirectUrl);
             } else {
               if (result == 401) {

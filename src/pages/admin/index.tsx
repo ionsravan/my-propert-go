@@ -1,5 +1,11 @@
 import Image from "next/image";
-import React, { ReactElement } from "react";
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import {
   AiFillProfile,
   AiFillStar,
@@ -14,6 +20,7 @@ import { Menu } from "@headlessui/react";
 import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
 import imgs from "public.json";
+import { FetchState } from "src/lib/hooks/useFetch";
 
 const Card = ({
   name,
@@ -42,12 +49,14 @@ const ComapnyCard = ({
   img,
   stars,
   _id,
+  setAgent,
 }: {
   name: string;
   place: string;
   stars: number;
   img: string;
   _id: string;
+  setAgent: Dispatch<SetStateAction<Agent[]>>;
 }) => {
   const instance = useAxios();
   return (
@@ -79,10 +88,16 @@ const ComapnyCard = ({
                   agentId: _id,
                 },
               });
-              toast("Agent Deleted", {
-                className: "text-red-400",
-              });
+              if (res.status == 200) {
+                toast("Agent Deleted", {
+                  className: "text-red-400",
+                });
+                setAgent((prev) => {
+                  return prev.filter((agent) => agent._id !== _id);
+                });
+              }
             } catch (e) {
+              console.log(e);
               toast("Error Accured Try Again");
             }
           }}
@@ -99,6 +114,14 @@ const DashBoard = () => {
   const { data, error, status } = useFetch<response<Agent[]>>(
     "/admin/agent/getAllAgents"
   );
+  const [agents, setAgents] = useState<Agent[]>([]);
+
+  useEffect(() => {
+    if (data?.result.length == 0) return;
+    if (data?.result) {
+      setAgents(data?.result);
+    }
+  }, [data?.result]);
   return (
     <>
       <div className="flex justify-between w-full items-center">
@@ -129,18 +152,24 @@ const DashBoard = () => {
       </div>
       <div className="w-full overflow-scroll scrollbar-hide">
         <div className="flex space-x-4 scrollbar-hide ">
-          {data?.result.map((ag) => {
-            return (
-              <ComapnyCard
-                _id={ag._id}
-                key={ag._id}
-                name={ag?.name}
-                img={ag?.profilePhoto}
-                place=""
-                stars={3.4}
-              />
-            );
-          })}
+          {agents.length == 0 && status == FetchState.FETCHED && (
+            <p className="text-xl text-black">No Agents</p>
+          )}
+          {status === FetchState.FETCHING && <p>loading....</p>}
+          {status === FetchState.FETCHED &&
+            agents?.map((ag) => {
+              return (
+                <ComapnyCard
+                  setAgent={setAgents}
+                  _id={ag._id}
+                  key={ag._id}
+                  name={ag?.name}
+                  img={ag?.profilePhoto}
+                  place=""
+                  stars={3.4}
+                />
+              );
+            })}
         </div>
       </div>
     </>

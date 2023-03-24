@@ -2,27 +2,15 @@ import { AiFillProfile, AiOutlineMore, AiOutlineUsb } from "react-icons/ai";
 import { User } from "src/@types";
 
 import { Popover, Transition } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
+import { useAxios } from "src/utills/axios";
+import { toast } from "react-toastify";
+import { atom, useAtom } from "jotai";
+const usersAtom = atom<User[] | null>(null);
 
-const solutions = [
-  {
-    name: "Insights",
-    description: "Measure actions your users take",
-    href: "##",
-  },
-  {
-    name: "Automations",
-    description: "Create your own targeted content",
-    href: "##",
-  },
-  {
-    name: "Reports",
-    description: "Keep track of your growth",
-    href: "##",
-  },
-];
-
-export default function Example() {
+export default function Example({ _id }: { _id: string }) {
+  const instance = useAxios();
+  const [users, setUsers] = useAtom(usersAtom);
   return (
     <div className="w-full max-w-sm ">
       <Popover className="relative">
@@ -47,7 +35,42 @@ export default function Example() {
               <Popover.Panel className="absolute w-[100px] z-10 mt-3 -left-10 top-0   -translate-x-1/2 transform  sm:px-0 lg:max-w-3xl">
                 <div className="overflow-hidden rounded-lg w-full shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative  bg-white w-full ">
-                    <button className="w-full text-sm text-red-400">
+                    <button
+                      onClick={async () => {
+                        try {
+                          const res = await instance.delete(
+                            "/admin/user/deleteUser",
+                            {
+                              data: {
+                                userId: _id,
+                              },
+                            }
+                          );
+                          if (res.status == 200) {
+                            setUsers((prev) => {
+                              const users = prev?.filter(
+                                (item) => item._id !== _id
+                              );
+                              if (users) {
+                                return users;
+                              } else {
+                                return null;
+                              }
+                            });
+                            toast("User Deleted Succesfully", {
+                              type: "success",
+                              position: "bottom-center",
+                            });
+                          }
+                        } catch (e) {
+                          toast("Error Accured while deleting user", {
+                            position: "bottom-center",
+                            type: "error",
+                          });
+                        }
+                      }}
+                      className="w-full text-sm text-red-400"
+                    >
                       delete User
                     </button>
                   </div>
@@ -142,7 +165,7 @@ const AssetComponet = ({ name, _id, email, mobileNumber }: User) => {
         </div>
         <div className="col-start-6 col-span-1 flex justify-center  ">
           <p className="text-[#303030] text-center text-xl cursor-pointer">
-            <Example />
+            <Example _id={_id} />
           </p>
         </div>
       </div>
@@ -151,13 +174,19 @@ const AssetComponet = ({ name, _id, email, mobileNumber }: User) => {
 };
 
 export const AdminCustomers = ({ users }: { users: User[] }) => {
+  const [filtred, setFiltred] = useAtom(usersAtom);
+
+  useEffect(() => {
+    setFiltred(users);
+  }, []);
+
   return (
     <div className="w-full p-5 rounded-xl overflow-y-scroll">
       <div className="bg-primaryBlue p-5 px-8 rounded-lg">
         <AssetHead />
       </div>
       <div className="px-6 bg-white overflow-y-scroll">
-        {users.map((user) => {
+        {filtred?.map((user) => {
           return <AssetComponet {...user} key={user._id} />;
         })}
       </div>

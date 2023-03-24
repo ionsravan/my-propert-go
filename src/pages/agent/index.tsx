@@ -1,6 +1,12 @@
 import { AxiosInstance } from "axios";
 import Image from "next/image";
-import React, { ReactElement, useEffect } from "react";
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  useEffect,
+} from "react";
+import { toast } from "react-toastify";
 import { Agent, location, response, area, AvailableFor } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import { useAppContext } from "src/Context/AppContext";
@@ -91,7 +97,8 @@ export const addProperty = async (
   area: area | null,
   adress: string,
   propertyType: AvailableFor,
-  files: any
+  files: any,
+  setLoading: Dispatch<SetStateAction<boolean>>
 ) => {
   const data = new FormData();
   if (location?.name && location._id && area?.name && area?._id) {
@@ -111,12 +118,21 @@ export const addProperty = async (
     Array.from(files).forEach((file: any) => {
       data.append("photos", file);
     });
-    // for (const key of Object.keys(files)) {
-    //   data.append("photos", files[key]);
-    // }
   }
-  const res = await instance.post("/agent/property/addProperty", data);
-  return res;
+  try {
+    setLoading(true);
+    const res = await instance.post("/agent/property/addProperty", data);
+    setLoading(false);
+    return res;
+  } catch (e) {
+    toast("Error while adding property", {
+      position: "bottom-center",
+      type: "error",
+    });
+    console.log(e);
+    setLoading(false);
+    return null;
+  }
 };
 
 const AgentDashBoard = () => {
@@ -126,7 +142,6 @@ const AgentDashBoard = () => {
 
   useEffect(() => {
     if (data) {
-      console.log("hi");
       setAgentId(data?.result?._id);
     }
   }, [data]);

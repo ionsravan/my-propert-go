@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { HiCheckCircle } from "react-icons/hi";
 const OwnerCta = () => {
   return (
@@ -6,9 +7,12 @@ const OwnerCta = () => {
         <h1 className="text-white font-manrope font-extrabold text-3xl  md:text-5xl max-w-3xl text-center leading-normal">
           Are you a owner, login now to post your properties
         </h1>
-        <button className="max-w-max bg-white text-primaryBlue px-10 py-3 rounded-xl active:scale-95 transition duration-200 transform active:bg-gray-100">
-          Get Started
-        </button>
+        <Link href="/agent/login">
+          <button className="max-w-max bg-white text-primaryBlue px-10 py-3 rounded-xl active:scale-95 transition duration-200 transform active:bg-gray-100">
+            Get Started
+          </button>
+        </Link>
+
         <div className=" flex  flex-col sm:flex-row  w-full items-center space-y-6 sm:space-y-0 sm:justify-around">
           {/* create this is as a reusable componet */}
           <div className="flex items-center space-x-2  ">

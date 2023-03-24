@@ -1,12 +1,4 @@
-import axios from "axios";
-import React, {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
-import { useCookies } from "react-cookie";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Input } from "src/componets/shared/sharedInput";
 import { useAppContext } from "src/Context/AppContext";
@@ -34,7 +26,6 @@ import {
 } from "react-icons/md";
 import { area, location, response } from "src/@types";
 import { useFetch } from "src/lib/hooks/useFetch";
-import { MyModal } from "src/componets/Sliders/ImageSlider";
 
 interface SelectProps<T> {
   value: any;
@@ -118,6 +109,7 @@ export default function AddPropertyForm() {
   const [availableFor, setAvailableFor] = useState({ name: "Rent" });
   const [propertyType, setPropertyType] = useState({ name: "villa" });
   const [filesToupload, setFilesToUpload] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
@@ -334,23 +326,25 @@ export default function AddPropertyForm() {
                       area,
                       adress,
                       propertyType,
-                      filesToupload
+                      filesToupload,
+                      setLoading
                     )
-                  ).data.result._id;
+                  )?.data.result._id;
                   if (id) {
-                    toast("Property Added SUccesfully");
+                    toast("Property Added SUccesfully", {
+                      type: "success",
+                      position: "bottom-center",
+                    });
                     setShowModal(false);
                   }
-                  // await handleUploadClick(id, agentId);
                 }}
               >
-                submit
+                {loading ? "Adding Property.." : "submit"}
               </button>
             </div>
           </div>
         </div>
       </>
-      )
     </>
   );
 }

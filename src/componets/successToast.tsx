@@ -8,5 +8,8 @@ export const SignupSuccess = () => {
 };
 
 export const Agent = () => {
-  toast("Details sent to agent successfully");
+  toast("Details sent to agent successfully", {
+    position: "bottom-center",
+    type: "success",
+  });
 };

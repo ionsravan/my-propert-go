@@ -12,7 +12,7 @@ import { FaRupeeSign } from "react-icons/fa";
 import { Buyer, response } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import { useFetch } from "src/lib/hooks/useFetch";
+import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 
 interface LayoutProps {
   children: ReactNode;
@@ -159,13 +159,16 @@ const MessageCardBuyers = ({ _id, agent, property, user, message }: Buyer) => {
 };
 
 const Buyers = () => {
-  const { data } = useFetch<response<Buyer[]>>(
+  const { data, status } = useFetch<response<Buyer[]>>(
     "/agent/property/buyers/getAllBuyers"
   );
-  console.log(data);
   return (
     <>
       <div className="space-y-5">
+        {data?.result.length == 0 && status == FetchState.FETCHED && (
+          <p className="text-xl text-black">No Buyers Yet</p>
+        )}
+        {status === FetchState.FETCHING && <p>loading....</p>}
         {data?.result.map((buyer) => {
           return <MessageCardBuyers {...buyer} key={buyer._id} />;
         })}

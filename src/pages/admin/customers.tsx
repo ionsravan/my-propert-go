@@ -1,12 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import {
-  AiOutlineDelete,
-  AiOutlineEdit,
-  AiOutlineFilter,
-  AiOutlineSearch,
-} from "react-icons/ai";
-import { TbEdit } from "react-icons/tb";
-import { VscListFilter, VscTrash } from "react-icons/vsc";
+import { AiOutlineSearch } from "react-icons/ai";
+import { VscListFilter } from "react-icons/vsc";
 import { location, response, User } from "src/@types";
 import { AdminCustomers } from "src/componets/admin/adminCustomer";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
@@ -37,6 +31,8 @@ export const Button = ({
   );
 };
 
+const userTypes = ["All", "Premium"];
+
 // give main area a max widht
 const Customers = () => {
   const { data, error, status } = useFetch<response<User[]>>(
@@ -48,6 +44,7 @@ const Customers = () => {
   );
   const [results, setResults] = useState<location[] | null>(null);
   const [name, setName] = useState<string>("");
+  const [selected, setSelected] = useState("All");
   useEffect(() => {
     if (loc?.result.length == 0) return;
     if (loc?.result !== undefined) {
@@ -72,13 +69,27 @@ const Customers = () => {
       </div>
       <div className="flex justify-between mb-8">
         <div className="space-x-5">
-          <button className="text-primaryBlue p-2 border-b border-primaryBlue">
-            All
-          </button>
-          <button className="text-[#616161]">Premium</button>
+          {userTypes.map((u) => {
+            return (
+              <button
+                onClick={() => {
+                  setSelected(u);
+                }}
+                key={u}
+                className={` p-2 ${
+                  selected == u
+                    ? "text-primaryBlue  border-b border-primaryBlue"
+                    : "text-[#616161]"
+                }`}
+              >
+                {u}
+              </button>
+            );
+          })}
         </div>
 
         <div className="flex space-x-[12px]">
+          <Button name="Filter" Icon={VscListFilter} Color="" />
           <div className="flex items-center bg-white p-2 space-x-3">
             <AiOutlineSearch className="text-xl" />
             <input

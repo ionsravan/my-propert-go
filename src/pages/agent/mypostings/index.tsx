@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { AiFillStar, AiOutlineSearch } from "react-icons/ai";
 import { FaRupeeSign } from "react-icons/fa";
 import { TbEdit } from "react-icons/tb";
@@ -8,7 +8,7 @@ import { VscListFilter, VscTrash } from "react-icons/vsc";
 import { Agent, Propery, response } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import { useFetch } from "src/lib/hooks/useFetch";
+import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 import { Button } from "src/pages/admin/customers";
 import { PostingByDeveloper } from "..";
 
@@ -107,10 +107,19 @@ export const PostingCard = ({
     </div>
   );
 };
+const PropertyTypes = ["All", "Rent", "Sell", "PG"];
 
 const MyPosting = () => {
-  const { data } = useFetch<response<Agent>>("/agent/property");
+  const { data, status, error } = useFetch<response<Agent>>("/agent/property");
+  const [selected, setSelected] = useState(PropertyTypes[0]);
+  const [filtredResult, setFiltredResult] = useState<Propery[]>([]);
   console.log(data);
+  useEffect(() => {
+    if (data?.result) {
+      setFiltredResult(data?.result.properties);
+    }
+  }, [data?.result]);
+
   return (
     <>
       <div className="flex justify-between w-full items-center">
@@ -123,12 +132,49 @@ const MyPosting = () => {
       </div>
       <div className="space-y-3 md:space-y-0  md:flex justify-between  my-4">
         <div className="space-x-5">
-          <button className="text-primaryBlue p-2 border-b border-primaryBlue text-xs">
-            All
-          </button>
-          <button className="text-[#616161] text-xs">Rent</button>
-          <button className="text-[#616161] text-xs">Buy/Sell</button>
-          <button className="text-[#616161] text-xs">pG</button>
+          {PropertyTypes.map((t) => {
+            return (
+              <button
+                key={t}
+                onClick={() => {
+                  setSelected(t);
+                  if (t == "All") {
+                    console.log(t);
+                    data?.result.properties &&
+                      setFiltredResult(() => data?.result?.properties);
+                  } else if (t == "PG") {
+                    data?.result?.properties &&
+                      setFiltredResult(() => {
+                        return data?.result?.properties.filter((item) => {
+                          return item.propertyType == "pg";
+                        });
+                      });
+                  } else if (t == "Rent") {
+                    data?.result?.properties &&
+                      setFiltredResult(() => {
+                        return data?.result?.properties.filter((item) => {
+                          return item.availableFor == "Rent";
+                        });
+                      });
+                  } else if (t === "Sell") {
+                    data?.result?.properties &&
+                      setFiltredResult(() => {
+                        return data?.result?.properties.filter((item) => {
+                          return item.availableFor == "Sell";
+                        });
+                      });
+                  }
+                }}
+                className={`${
+                  selected == t
+                    ? "text-primaryBlue border-primaryBlue border-b"
+                    : "text-[#616161]"
+                } p-2   text-xs`}
+              >
+                {t}
+              </button>
+            );
+          })}
         </div>
         <div className="flex justify-between md:space-x-[12px]">
           <Button name="Filter" Icon={VscListFilter} Color="" />
@@ -144,14 +190,19 @@ const MyPosting = () => {
 
       <PostingByDeveloper />
       <div className="w-full space-y-5   scrollbar-hide mb-8">
-        {data?.result?.properties.map((property) => {
+        {selected !== "All" && filtredResult.length == 0 ? (
+          <>0 Results found for {selected}</>
+        ) : (
+          <></>
+        )}
+        {data?.result.properties.length == 0 &&
+          status == FetchState.FETCHED && (
+            <p className="text-xl text-black">No Properties Posted</p>
+          )}
+        {status === FetchState.FETCHING && <p>loading....</p>}
+        {filtredResult?.map((property) => {
           return (
             <>
-              <PostingCard key={property._id} {...property} />
-              <PostingCard key={property._id} {...property} />
-              <PostingCard key={property._id} {...property} />
-              <PostingCard key={property._id} {...property} />
-              <PostingCard key={property._id} {...property} />
               <PostingCard key={property._id} {...property} />
             </>
           );
