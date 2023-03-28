@@ -11,6 +11,7 @@ const usersAtom = atom<User[] | null>(null);
 export default function Example({ _id }: { _id: string }) {
   const instance = useAxios();
   const [users, setUsers] = useAtom(usersAtom);
+  const [loading, setLoading] = useState(false);
   return (
     <div className="w-full max-w-sm ">
       <Popover className="relative">
@@ -37,6 +38,7 @@ export default function Example({ _id }: { _id: string }) {
                   <div className="relative  bg-white w-full ">
                     <button
                       onClick={async () => {
+                        setLoading(true);
                         try {
                           const res = await instance.delete(
                             "/admin/user/deleteUser",
@@ -61,8 +63,10 @@ export default function Example({ _id }: { _id: string }) {
                               type: "success",
                               position: "bottom-center",
                             });
+                            setLoading(false);
                           }
                         } catch (e) {
+                          setLoading(false);
                           toast("Error Accured while deleting user", {
                             position: "bottom-center",
                             type: "error",
@@ -71,7 +75,7 @@ export default function Example({ _id }: { _id: string }) {
                       }}
                       className="w-full text-sm text-red-400"
                     >
-                      delete User
+                      {loading ? "deleting" : "delete"} User
                     </button>
                   </div>
                 </div>

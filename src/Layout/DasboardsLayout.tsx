@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { ReactNode, useLayoutEffect, useState } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { AiOutlineClose, AiOutlineLink, AiOutlineMenu } from "react-icons/ai";
 import { TbEdit } from "react-icons/tb";
@@ -18,11 +18,11 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
   const [cookies, setCookies] = useCookies(["jwtToken"]);
   const router = useRouter();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (cookies.jwtToken == undefined) {
       router.push(`${router.pathname}/login`);
     }
-  }, []);
+  }, [cookies.jwtToken, router.pathname]);
 
   return (
     <>

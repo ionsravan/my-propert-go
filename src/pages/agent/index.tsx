@@ -136,10 +136,9 @@ export const addProperty = async (
 };
 
 const AgentDashBoard = () => {
-  const instance = useAxios();
-  const { data } = useFetch<response<Agent>>("/agent/property");
-  const { setAgentId } = useAppContext();
+  const { data, error } = useFetch<response<Agent>>("/agent/property");
 
+  const { setAgentId } = useAppContext();
   useEffect(() => {
     if (data) {
       setAgentId(data?.result?._id);

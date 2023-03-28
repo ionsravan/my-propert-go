@@ -59,6 +59,7 @@ const ComapnyCard = ({
   setAgent: Dispatch<SetStateAction<Agent[]>>;
 }) => {
   const instance = useAxios();
+  const [loading, setLoading] = useState(false);
   return (
     <div className="bg-white w-full shrink-0 rounded-lg flex n  space-x-[17px]  p-5 max-w-[280px] relative">
       <div className="relative  flex rounded-full justify-center items-center h-[46px] w-[46px]">
@@ -82,6 +83,7 @@ const ComapnyCard = ({
       <div className="absolute top-2 right-4">
         <button
           onClick={async () => {
+            setLoading(true);
             try {
               const res = await instance.delete("/admin/agent/deleteAdmin", {
                 data: {
@@ -95,8 +97,10 @@ const ComapnyCard = ({
                 setAgent((prev) => {
                   return prev.filter((agent) => agent._id !== _id);
                 });
+                setLoading(false);
               }
             } catch (e) {
+              setLoading(false);
               console.log(e);
               toast("Error Accured Try Again");
             }
