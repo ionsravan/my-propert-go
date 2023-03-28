@@ -111,7 +111,7 @@ const ComapnyCard = ({
           }}
           className="text-red-400 px-3 hover:bg-gray-100"
         >
-          {loading ? "delete" : "deleting agent"}
+          {!loading ? "delete" : "deleting agent"}
         </button>
       </div>
     </div>
