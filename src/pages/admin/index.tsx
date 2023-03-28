@@ -92,7 +92,8 @@ const ComapnyCard = ({
               });
               if (res.status == 200) {
                 toast("Agent Deleted", {
-                  className: "text-red-400",
+                  type: "success",
+                  position: "bottom-center",
                 });
                 setAgent((prev) => {
                   return prev.filter((agent) => agent._id !== _id);
@@ -102,12 +103,15 @@ const ComapnyCard = ({
             } catch (e) {
               setLoading(false);
               console.log(e);
-              toast("Error Accured Try Again");
+              toast("Error Accured Try Again", {
+                position: "bottom-center",
+                type: "error",
+              });
             }
           }}
           className="text-red-400 px-3 hover:bg-gray-100"
         >
-          delete
+          {loading ? "delete" : "deleting agent"}
         </button>
       </div>
     </div>
