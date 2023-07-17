@@ -372,45 +372,45 @@ export default function Home() {
 
       <section className="py-2">
         <p className="max-w-7xl mx-auto px-5 md:px-10 text-xl">Why Wonderplots ?</p>
-      <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-        <table className="border-collapse w-full ">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border border-gray-300 font-bold">Connect+</th>
-              <th className="py-2 px-4 border border-gray-300 font-bold">Reach more</th>
-              <th className="py-2 px-4 border border-gray-300 font-bold">Lead Transfers</th>
-              <th className="py-2 px-4 border border-gray-300 font-bold">Property Care</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="py-2 px-4 border border-gray-300">
-                <ul className="list-disc list-inside decore">
-                  <li>Get assigned by owners for agents</li>
-                  <li>Connect with owners directly for your projects</li>
-                </ul>
-              </td>
-              <td className="py-2 px-4 border border-gray-300">
-                <ul className="list-disc list-inside">
-                  <li>Be visible to buyers for "x" times more</li>
-                  <li>Explore wide reach of properties in all categories</li>
-                </ul>
-              </td>
-              <td className="py-2 px-4 border border-gray-300">
-                <ul className="list-disc list-inside">
-                  <li>Agents can transfer leads to other agents</li>
-                  <li>Track the leads on your dashboard</li>
-                </ul>
-              </td>
-              <td className="py-2 px-4 border border-gray-300">
-                <ul className="list-disc list-inside">
-                  <li>Secure your property now</li>
-                  <li>Sell faster in the market</li>
-                </ul>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <table className="border-collapse w-full ">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Connect+</th>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Reach more</th>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Lead Transfers</th>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Property Care</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside decore">
+                    <li>Get assigned by owners for agents</li>
+                    <li>Connect with owners directly for your projects</li>
+                  </ul>
+                </td>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside">
+                    <li>Be visible to buyers for &quot;x&quot; times more</li>
+                    <li>Explore wide reach of properties in all categories</li>
+                  </ul>
+                </td>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside">
+                    <li>Agents can transfer leads to other agents</li>
+                    <li>Track the leads on your dashboard</li>
+                  </ul>
+                </td>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside">
+                    <li>Secure your property now</li>
+                    <li>Sell faster in the market</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
@@ -430,5 +430,3 @@ Home.getLayout = function getLayout(page: ReactElement) {
   return <Layout>{page}</Layout>;
 };
 
-
-// var array = [{name:"sk",createdAt: "2023-07-01T13:50:05.375Z"},{name:"vk",createdAt: "2023-06-30T13:24:44.402Z"},{name:"ck",createdAt: "2023-07-01T13:50:05.377Z"},{name:"dk",createdAt: "2023-06-30T13:24:44.452Z"}]

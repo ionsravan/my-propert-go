@@ -295,16 +295,16 @@ if(lat){
               </div>
             </div>
             {/* save button */}
-            <div className="flex items-center md:justify-between    space-x-8">
+            <div style={{marginTop:"45px"}} className="flex items-center justify-center md:justify-center space-x-8 ">
               <div className="flex items-center w-full md:w-auto">
                 <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
-                <p className="text-2xl font-manrope font-semibold text-primaryBlue">
+                <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
                   {data?.result.cost}
                 </p>
               </div>
               <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
                 <FaRegBookmark className="text-red-400" />
-                <p>save</p>
+                <p className="mt-1">save</p>
               </div>
             </div>
           </div>
@@ -313,13 +313,16 @@ if(lat){
         {/* Tags */}
         <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
           <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p>{data?.result.area.name}</p>
+            <p className="mt-1 mb-1">{data?.result.location.name}</p>
           </div>
           <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p>{data?.result.BHKconfig} Badroom</p>
+            <p className="mt-1 mb-1">{data?.result.BHKconfig} bhk</p>
           </div>
           <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p>Modern</p>
+            <p className="mt-1 mb-1">{data?.result.availableFor}</p>
+          </div>
+          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+            <p className="mt-1 mb-1">{data?.result.propertyType}</p>
           </div>
         </div>
 
@@ -453,7 +456,7 @@ if(lat){
           </div>
         </section>
         {/* revies */}
-        <section className=" py-16">
+        {/* <section className=" py-16">
           <div className="flex justify-between">
             <div>
               <h1 className="text-TitleColor font-manrope font-bold text-xl md:text-3xl">
@@ -483,7 +486,7 @@ if(lat){
 
             <CardCarousel id="review" data={reviewData} Card={ReviewCard} />
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );
