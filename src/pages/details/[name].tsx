@@ -54,6 +54,8 @@ function MyMsg({ data, text }: { data: any; text: string }) {
   function openModal() {
     setIsOpen(true);
   }
+  console.log("pull merge");
+  
 
   return (
     <>
