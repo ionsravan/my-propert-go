@@ -27,6 +27,7 @@ export function Input({
         {Icon && <Icon className="text-xl text-[#2C5FC3] " />}
         <label className="flex items-center w-full relative cursor-pointer  py-1 ">
           <input
+            // style={{border:"3px solid red"}}
             value={value}
             required
             type={type}

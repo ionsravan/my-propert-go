@@ -80,7 +80,7 @@ export function MyModal({
 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
+      <Transition  appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-30 " onClose={closeModal}>
           <Transition.Child
             as={Fragment}

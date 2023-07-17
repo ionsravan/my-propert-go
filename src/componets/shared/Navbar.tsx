@@ -1,32 +1,48 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { toast } from "react-toastify";
 
 const Nav = () => {
   const router = useRouter();
+  const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const NavItems = [
     {
-      name: "Buy",
+      name: "Development Sites",
       link: "/",
     },
     {
-      name: "For Tenets",
+      name: "Trending Properties",
       link: "/",
     },
     {
-      name: "For Owners",
+      name: "Interior Designing",
       link: "/",
     },
     {
-      name: "Help",
-      link: "/",
+      name: "Post Property",
+      link: "/addProperty",
     },
     {
       name: "Sign up",
       link: "/signup",
     },
   ];
+
+
+  const handleLogout = () => {
+    setTimeout(() => {
+      toast("Logout Succesfully", {
+        position: "bottom-center",
+        type: "success",
+      });
+      removeCookie("jwtToken");
+      router.push("/")
+    }, 1000);
+
+  }
   return (
     <nav className="flex-grow md:space-x-6 flex flex-col md:flex-row md:justify-end md:items-center space-y-3 md:space-y-0">
       {NavItems.map(({ link, name }, index) => {
@@ -36,16 +52,29 @@ const Nav = () => {
           </Link>
         );
       })}
-      <button
-        onClick={() => router.push("/login")}
-        className={`${
-          router?.pathname == "/"
-            ? "bg-white text-primaryBlue"
-            : "bg-primaryBlue text-white"
-        } px-6 rounded-full py-2 font-manrope`}
-      >
-        Login
-      </button>
+      {cookies?.jwtToken === undefined ? (
+        <button
+          onClick={() => router.push("/login")}
+          className={`${
+            router?.pathname == "/"
+              ? "bg-white text-primaryBlue"
+              : "bg-primaryBlue text-white"
+          } px-6 rounded-full py-2 font-manrope`}
+        >
+          Login
+        </button>
+      ) : (
+        <button
+        onClick={handleLogout}
+          className={`${
+            router?.pathname == "/"
+              ? "bg-white text-primaryBlue"
+              : "bg-primaryBlue text-white"
+          } px-6 rounded-full py-2 font-manrope`}
+        >
+          Logout
+        </button>
+      )}
     </nav>
   );
 };

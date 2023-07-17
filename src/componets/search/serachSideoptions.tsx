@@ -505,6 +505,10 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   const { data: areas, error } = useFetch<response<area[]>>(
     `/property/location/getAreaInLocation/${query}`
   );
+
+
+
+
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
 
   return (
