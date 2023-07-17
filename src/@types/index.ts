@@ -2,6 +2,7 @@ export type location = {
   name: string;
   _id?: string;
   locationId: string;
+  locationImages: string[];
 };
 
 export type area = {
@@ -31,11 +32,15 @@ export type Propery = {
   availableFor: string;
   description: string;
   propertyImages: string[];
+  primaryImage: string;
   purchaseRequests: any[];
   location: location;
   area: area;
   propertyType: string;
   amenities: string[];
+  createdAt:string;
+  featured:boolean;
+  toggle:string;
 };
 
 export interface ProperyResArr {

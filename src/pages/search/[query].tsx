@@ -72,7 +72,7 @@ const Search = () => {
           {/* top part */}
           <div className="p-4 md:pb-10 flex items-center justify-between">
             <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
-              {resCount} Results in {data?.result[0].location.name}
+            {resCount} Results in {data?.result && data.result[0]?.location?.name}
             </h1>
             <div
               className="lg:hidden block p-3 cursor-pointer"

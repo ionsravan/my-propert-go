@@ -178,6 +178,21 @@ export const homeChipsData: chipData[] = [
     value: "appartment",
     Icon: MdOutlineApartment,
   },
+  {
+    name: "Plots",
+    value: "plots",
+    Icon: MdOutlineApartment,
+  },
+  {
+    name: "Farm Lands",
+    value: "farmLands",
+    Icon: MdOutlineApartment,
+  },
+  {
+    name: "Individual House",
+    value: "individualHouse",
+    Icon: MdOutlineApartment,
+  },
 ];
 
 const Header = () => {

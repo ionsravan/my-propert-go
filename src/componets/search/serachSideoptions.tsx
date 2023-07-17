@@ -212,9 +212,18 @@ interface Props {
 
 const SearchSideOptions = ({ data, setData }: Props) => {
   const { query } = useRouter();
+  console.log(query.query,"quety")
+
+  
+
+  
   const { data: area, error } = useFetch<response<area[]>>(
     `/property/location/getAreaInLocation/${query.query}`
   );
+
+
+
+
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
   const { propertywithPhotos, setPropertyWithPhotos } = useFilterContext();
 

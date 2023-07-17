@@ -1,5 +1,6 @@
 import { GrLocation, GrStar } from "react-icons/gr";
 import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
+import {useEffect } from 'react'
 import Image from "next/image";
 import { LoadImage } from "../../componets/shared/img";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
@@ -20,7 +21,9 @@ import { scrollLeft, scrollRight } from "..";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Transition, Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
-
+import { AnyMxRecord } from "dns";
+import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import axios from 'axios';
 const reviewData = [
   {
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
@@ -36,11 +39,13 @@ const reviewData = [
   },
 ];
 
-function MyMsg({ data, text }: { data: any; text: string }) {
+function MyMsg({ data, text, onApiCall }: { data: any; text: string ; onApiCall: () => void;}) {
   let [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const instance = useAxios();
   const [loading, setLoading] = useState(false);
+  const [buttonText, setButtonText] = useState(text);
+
 
   function closeModal() {
     setIsOpen(false);
@@ -58,7 +63,7 @@ function MyMsg({ data, text }: { data: any; text: string }) {
           onClick={openModal}
           className="rounded-md b px-4 py-2 text-sm font-medium w-full text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75"
         >
-          {text}
+          {buttonText}
         </button>
       </div>
 
@@ -90,12 +95,12 @@ function MyMsg({ data, text }: { data: any; text: string }) {
                 <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white  text-left align-middle shadow-xl transition-all">
                   <Dialog.Title
                     as="h3"
-                    className="text-lg  text-lg leading-6 text-white font-bold bg-primaryBlue p-4"
+                    className="text-lg leading-6 text-white font-bold bg-primaryBlue p-4"
                   >
                     Talk To The Agent
                   </Dialog.Title>
                   <div className="mt-2 px-4">
-                    <h1 className="text-black ">Message</h1>
+                    <h1 className="text-black ">Message(Optional)</h1>
                     <textarea
                       id="description"
                       name="desccription"
@@ -130,8 +135,11 @@ function MyMsg({ data, text }: { data: any; text: string }) {
                               type: "success",
                             });
                             setLoading(false);
+                            onApiCall()
                             setMessage("");
+                            setButtonText("Already Contacted")
                             closeModal();
+
                           }
                         } catch (e) {
                           setLoading(false);
@@ -194,6 +202,67 @@ const Details = () => {
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
   console.log(data);
+  const [buttonColor, setButtonColor] = useState(false);
+  
+  const [lat, setLat] = useState<number>(0);
+  const [lng, setLng] = useState<number>(0);
+  const [center, setCenter] = useState({});
+
+
+  // Google Map Api 
+
+  var apiKey = "AIzaSyAm_75hdAbd0ukSKs2c-QG1IOkJcqgHEVQ";
+
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: apiKey,
+})
+
+
+if (!isLoaded) {
+    return <h1> Loading...</h1>
+}
+
+
+const fetchCoordinates = async (cityName: string) => {
+  try {
+    const response = await axios.get(
+      `https://maps.googleapis.com/maps/api/geocode/json`,
+      {
+        params: {
+          address: cityName,
+          key: apiKey,
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      const { lat, lng } = response.data.results[0].geometry.location;
+      setLat(lat);
+      setLng(lng);
+  
+    } else {
+      console.error('Geocoding request failed.');
+    }
+  } catch (error) {
+    console.error('Error fetching coordinates:', error);
+  }
+}
+
+if (data?.result.address) {
+  fetchCoordinates(data.result.address);
+}
+
+
+if(lat){
+  console.log(lat,lng,"lat/lng")
+}
+
+
+  const handleApiCall = () => {
+    setButtonColor(true);
+  };
+
+
 
   return (
     <div className=" bg-white">
@@ -202,7 +271,7 @@ const Details = () => {
         <div className="space-y-8 md:space-y-4 w-full">
           <small className="font-manrope">
             home / Appartment /{" "}
-            <span className="text-primaryBlue pl-1">{data?.result.name}</span>
+            <span className="text-primaryBlue pl-1">{data?.result.name || ""}</span>
           </small>
           {/* header section */}
           <div className=" md:flex justify-between items-start space-y-4">
@@ -256,9 +325,9 @@ const Details = () => {
 
         {/* main details content */}
         <section className="space-y-10">
-          <div className="relative w-full overflow-x-scroll flex space-x-2  ">
-            {data?.result?.propertyImages.slice(0, 2).map((img) => {
-              return (
+          <div className="relative w-full overflow-x-scroll flex space-x-2">
+            {(data?.result?.propertyImages && data.result.propertyImages.length > 0) ? (
+              data.result.propertyImages.slice(0, 2).map((img) => (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
                   <Image
                     src={img || "/bighouse.png"}
@@ -267,17 +336,25 @@ const Details = () => {
                     alt="villa4"
                   />
                 </LoadImage>
-              );
-            })}
-            <div className="absolute z-10 bottom-0 right-5 md:right-14 bg-white px-4 py-2 rounded-full shadow-sm border hover:scale-105 active:scale-95 transition transform duration-200 ease-out  ">
+              ))
+            ) : (
+              <Image
+                src="/bighouse.png"
+                fill
+                className="object-contain"
+                alt="villa4"
+              />
+            )}
+            <div className="absolute z-10 bottom-0 right-5 md:right-14 bg-white px-4 py-2 rounded-full shadow-sm border hover:scale-105 active:scale-95 transition transform duration-200 ease-out">
               <button onClick={() => setIsOpen(true)}>More Images</button>
             </div>
           </div>
 
+
           <div className="w-full">
             {cookies?.jwtToken ? (
-              <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
-                <MyMsg data={data} text="Get in Comfort" />
+              <button className={`bg-${buttonColor ? "current" : "primaryBlue"} text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}>
+                <MyMsg data={data} text="Get in Comfort" onApiCall={handleApiCall} />
               </button>
             ) : (
               <Link href={"/login"}>
@@ -324,7 +401,10 @@ const Details = () => {
         {/* maps */}
         <section className="md:flex space-y-5 md:space-y-0  md:space-x-8">
           <div className="h-[300px] md:h-[500px] relative grow">
-            <Image src={"/map.png"} fill className="object-fill" alt="villa4" />
+            {/* <Image src={"/map.png"} fill className="object-fill" alt="villa4" /> */}
+            <GoogleMap center={{ lat: lat, lng: lng }} zoom={15} mapContainerStyle={{ width: "100%",height:"100%" }}>
+                    {lat && lng && <Marker position={{ lat: lat, lng: lng }} />}
+            </GoogleMap>
           </div>
           <div className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center">
             <div className="flex flex-col items-center space-y-5 p-5 md:p-0">
@@ -337,23 +417,30 @@ const Details = () => {
                 />
               </div>
               <div className="w-full text-center">
-                <div className="flex items-center justify-center  ">
-                  <p className="font-manrope text-lg font-medium pr-2">
-                    {data?.result.agentId.name}
-                  </p>
-                  <HiCheckCircle className="text-primaryBlue text-xl" />
-                </div>
-                <p className="text-xs text-locColor font-manrope flex justify-center  items-center">
-                  Agent
-                  <span>
-                    <RxDotFilled className="text-lg" />
-                  </span>{" "}
-                  Joined 2020
-                </p>
+                {data?.result.agentId ? (
+                  <>
+                    <div className="flex items-center justify-center">
+                      <p className="font-manrope text-lg font-medium pr-2">
+                        {data?.result.agentId.name}
+                      </p>
+                      <HiCheckCircle className="text-primaryBlue text-xl" />
+                    </div>
+                    <p className="text-xs text-locColor font-manrope flex justify-center items-center">
+                      Agent
+                      <span>
+                        <RxDotFilled className="text-lg" />
+                      </span>{" "}
+                      Joined 2020
+                    </p>
+                  </>
+                ) : (
+                  <p>No agent information available</p>
+                )}
               </div>
+
               {cookies?.jwtToken ? (
                 <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
-                  <MyMsg data={data} text="Contact Agent" />
+                  <MyMsg data={data} text="Contact Agent" onApiCall={handleApiCall}/>
                 </button>
               ) : (
                 <Link href={"/login"}>

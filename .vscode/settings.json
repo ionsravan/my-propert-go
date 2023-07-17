@@ -1,6 +1,0 @@
-{
-    "editor.minimap.enabled": false,
-    "editor.quickSuggestionsDelay": 2,
-    "editor.suggest.filterGraceful": false,
-    "editor.suggest.insertMode": "replace"
-}
