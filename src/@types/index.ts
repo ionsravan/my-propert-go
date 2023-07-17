@@ -35,7 +35,18 @@ export type Propery = {
   location: location;
   area: area;
   propertyType: string;
+  toggle: string;
   amenities: string[];
+};
+export type ProperyFilter = {
+  size: string;
+  BHKconfig: string;
+  area: string;
+  propertyType: string;
+  amenities: string[];
+  minPrice: string;
+  maxPrice: string;
+  availableFor: string;
 };
 
 export interface ProperyResArr {
@@ -51,12 +62,22 @@ export interface response<T> {
   message: string;
   result: T;
 }
+export interface newResponse<T> {
+  message: string;
+  data: T;
+}
 
 export type User = {
   _id: string;
   name: string;
   email: string;
   mobileNumber: number;
+};
+export type Pagination = {
+  page: number;
+  limit: number;
+  totalPages: number;
+  totalUsers: number;
 };
 
 export type Buyer = {
@@ -74,4 +95,11 @@ export interface AvailableFor {
 export type amenity = {
   _id: string;
   name: string;
+};
+
+export type CustomerValuesProps = {
+  name: string;
+  password: string;
+  mobileNumber: string;
+  email: string;
 };

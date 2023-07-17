@@ -85,7 +85,7 @@ const Footer = () => {
             Email-
           </p>
           <p className="text-xs text-white/75 max-w-xs leading-normal">
-            Feedback@mypropertyGo.com)
+            Feedback@mypropertyGo.com
           </p>
         </div>
 

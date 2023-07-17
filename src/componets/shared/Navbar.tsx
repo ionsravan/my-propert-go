@@ -24,7 +24,7 @@ const Nav = () => {
     },
     {
       name: "Sign up",
-      link: "/",
+      link: "/signup",
     },
   ];
   return (
@@ -37,6 +37,7 @@ const Nav = () => {
         );
       })}
       <button
+        onClick={() => router.push("/login")}
         className={`${
           router?.pathname == "/"
             ? "bg-white text-primaryBlue"

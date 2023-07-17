@@ -9,6 +9,9 @@ const nextConfig = {
       },
     ],
   },
+  env: {
+    baseUrl: "https://my-property-go-backend.onrender.com/api",
+  },
 };
 
 module.exports = nextConfig;

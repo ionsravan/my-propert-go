@@ -20,6 +20,11 @@ import { scrollLeft, scrollRight } from "..";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { Transition, Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
+import CustomLoader from "src/componets/shared/Loader";
+import { Box, Card, CardContent, CardHeader } from "@mui/material";
+import { availableAmenities } from "src/@global/Data";
+import UserIcon from "src/@global/UserIcon";
+import { GiElevator } from "react-icons/gi";
 
 const reviewData = [
   {
@@ -192,9 +197,12 @@ const Details = () => {
   const { data, error, status } = useFetch<ProperyRes>(
     `property/getPropertyById/${id}`
   );
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
   console.log(data);
-
+  if (status === "FETCHING") {
+    return <CustomLoader />;
+  }
   return (
     <div className=" bg-white">
       <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
@@ -202,19 +210,19 @@ const Details = () => {
         <div className="space-y-8 md:space-y-4 w-full">
           <small className="font-manrope">
             home / Appartment /{" "}
-            <span className="text-primaryBlue pl-1">{data?.result.name}</span>
+            <span className="text-primaryBlue pl-1">{data?.result?.name}</span>
           </small>
           {/* header section */}
           <div className=" md:flex justify-between items-start space-y-4">
             {/* title */}
             <div className="space-y-2 ">
               <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
-                {data?.result.name}
+                {data?.result?.name}
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
                 <div className="flex items-center space-x-4">
                   <GrLocation className="text-xl" />
-                  <p className="text-2xl">{data?.result.area.name}</p>
+                  <p className="text-2xl">{data?.result?.area.name}</p>
                 </div>
                 <div className="flex items-center space-x-2">
                   <p className="flex items-center space-x-2">
@@ -230,7 +238,7 @@ const Details = () => {
               <div className="flex items-center w-full md:w-auto">
                 <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
                 <p className="text-2xl font-manrope font-semibold text-primaryBlue">
-                  {data?.result.cost}
+                  {data?.result?.cost}
                 </p>
               </div>
               <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
@@ -244,10 +252,10 @@ const Details = () => {
         {/* Tags */}
         <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
           <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p>{data?.result.area.name}</p>
+            <p>{data?.result?.area?.name}</p>
           </div>
           <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p>{data?.result.BHKconfig} Badroom</p>
+            <p>{data?.result?.BHKconfig} Bedroom</p>
           </div>
           <div className="px-3 py-1 border bg-gray-50 shadow-sm">
             <p>Modern</p>
@@ -257,7 +265,7 @@ const Details = () => {
         {/* main details content */}
         <section className="space-y-10">
           <div className="relative w-full overflow-x-scroll flex space-x-2  ">
-            {data?.result?.propertyImages.slice(0, 2).map((img) => {
+            {data?.result?.propertyImages?.map((img) => {
               return (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
                   <Image
@@ -276,9 +284,9 @@ const Details = () => {
 
           <div className="w-full">
             {cookies?.jwtToken ? (
-              <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
+              <div className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
                 <MyMsg data={data} text="Get in Comfort" />
-              </button>
+              </div>
             ) : (
               <Link href={"/login"}>
                 <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
@@ -291,7 +299,7 @@ const Details = () => {
             <MyModal isOpen={isOpen} setIsOpen={setIsOpen}>
               <ImageSlider
                 setIsOpen={setIsOpen}
-                slides={data?.result.propertyImages}
+                slides={data?.result?.propertyImages}
               />
             </MyModal>
           )}
@@ -339,7 +347,7 @@ const Details = () => {
               <div className="w-full text-center">
                 <div className="flex items-center justify-center  ">
                   <p className="font-manrope text-lg font-medium pr-2">
-                    {data?.result.agentId.name}
+                    {data?.result?.agentId?.name || ""}
                   </p>
                   <HiCheckCircle className="text-primaryBlue text-xl" />
                 </div>
@@ -352,9 +360,9 @@ const Details = () => {
                 </p>
               </div>
               {cookies?.jwtToken ? (
-                <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                <div className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                   <MyMsg data={data} text="Contact Agent" />
-                </button>
+                </div>
               ) : (
                 <Link href={"/login"}>
                   <button className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
@@ -365,6 +373,48 @@ const Details = () => {
             </div>
           </div>
         </section>
+
+        {/* amenities */}
+        <Card sx={{ borderRadius: 2 }}>
+          <CardHeader title="Amenities" />
+          <CardContent>
+            <Box
+              rowGap={3}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(4, 1fr)",
+              }}
+              sx={{
+                alignItems: "end",
+              }}
+            >
+              {data?.result?.amenities?.map((item, i) => {
+                let Icon = availableAmenities?.find((ele: any) => {
+                  let name = ele?.name;
+                  console.log("nammme", typeof name, "-----", item);
+                  return name === item;
+                });
+                const IconTag = GiElevator;
+
+                return (
+                  <div
+                    className="flex justify-start items-center text-black cursor-pointer leading-[32px] "
+                    key={i}
+                  >
+                    <IconTag className="w-[26px] h-[26px] " />
+                    <p className="text-lg text-[1rem] px-3">{item}</p>
+                  </div>
+                );
+              })}
+            </Box>
+          </CardContent>
+        </Card>
+        {/* <div className="md:flex md:space-x-2 space-y-3 md:space-y-0 font-manrope ">
+       
+        </div> */}
+
         {/* revies */}
         <section className=" py-16">
           <div className="flex justify-between">

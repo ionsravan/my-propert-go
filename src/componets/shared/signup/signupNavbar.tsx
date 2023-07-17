@@ -49,7 +49,7 @@ export const Navbar = () => {
   const router = useRouter();
   return (
     <header
-      className={`flex justify-between ${
+      className={`flex justify-between position-sticky top-0 ${
         router?.pathname == "/" ? "bg text-white" : ""
       } items-center px-6 py-5 ${
         router?.pathname == "/"

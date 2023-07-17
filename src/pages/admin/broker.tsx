@@ -11,6 +11,7 @@ import { TbEdit } from "react-icons/tb";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { response, Agent } from "src/@types";
+import CustomLoader from "src/componets/shared/Loader";
 
 const Card = ({
   name,
@@ -94,6 +95,8 @@ const Brokers = () => {
   );
   return (
     <div className=" w-full bg-[#F6F6F6] ">
+          {status === 'FETCHING' && <CustomLoader />}
+
       <div className="flex justify-between w-full mb-10 items-start ">
         <div>
           <h1 className="text-[#707EAE] text-[10.4px]">Hello Admin</h1>
