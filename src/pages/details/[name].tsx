@@ -1,6 +1,6 @@
 import { GrLocation, GrStar } from "react-icons/gr";
 import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
-import { useEffect } from 'react'
+import { useEffect } from "react";
 import {
   CatagoryCard,
   Header,
@@ -36,7 +36,10 @@ import { AnyMxRecord } from "dns";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import MediumHouseCard from "src/componets/HousCard/MediumHomeCard";
-import axios from 'axios';
+import axios from "axios";
+import CustomLoader from "src/componets/shared/Loader";
+import { Box, Card, CardContent, CardHeader } from "@mui/material";
+import { availableAmenities } from "src/@global/Data";
 const reviewData = [
   {
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
@@ -52,15 +55,20 @@ const reviewData = [
   },
 ];
 
-
-
-function MyMsg({ data, text, onApiCall }: { data: any; text: string; onApiCall: () => void; }) {
+function MyMsg({
+  data,
+  text,
+  onApiCall,
+}: {
+  data: any;
+  text: string;
+  onApiCall: () => void;
+}) {
   let [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const instance = useAxios();
   const [loading, setLoading] = useState(false);
   const [buttonText, setButtonText] = useState(text);
-
 
   function closeModal() {
     setIsOpen(false);
@@ -81,8 +89,6 @@ function MyMsg({ data, text, onApiCall }: { data: any; text: string; onApiCall: 
           {buttonText}
         </button>
       </div>
-
-
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={closeModal}>
@@ -152,11 +158,10 @@ function MyMsg({ data, text, onApiCall }: { data: any; text: string; onApiCall: 
                               type: "success",
                             });
                             setLoading(false);
-                            onApiCall()
+                            onApiCall();
                             setMessage("");
-                            setButtonText("Already Contacted")
+                            setButtonText("Already Contacted");
                             closeModal();
-
                           }
                         } catch (e) {
                           setLoading(false);
@@ -219,6 +224,7 @@ const Details = () => {
   );
   const [isOpen, setIsOpen] = useState<boolean>(false);
   console.log(data);
+
   const [buttonColor, setButtonColor] = useState(false);
 
   const [lat, setLat] = useState<number>(0);
@@ -230,7 +236,6 @@ const Details = () => {
     "property/getAllProperties"
   );
 
-
   useEffect(() => {
     if (newData?.result) {
       setSimilarData(newData?.result);
@@ -238,28 +243,31 @@ const Details = () => {
   }, [newData]);
 
   if (data?.result) {
-    console.log(data.result, "data")
+    console.log(data.result, "data");
   }
 
   if (newData?.result) {
-    console.log(similarData, "sim")
+    console.log(similarData, "sim");
   }
 
-  // Google Map Api 
+  // Google Map Api
 
   var apiKey = "AIzaSyAm_75hdAbd0ukSKs2c-QG1IOkJcqgHEVQ";
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
-  })
-
+  });
 
   if (!isLoaded) {
-    return <h1> Loading...</h1>
+    return <h1> Loading...</h1>;
   }
 
   if (data?.result) {
     console.log(data?.result.amenities, "amenities");
+  }
+
+  if (status === "FETCHING") {
+    return <CustomLoader />;
   }
 
   const fetchCoordinates = async (cityName: string) => {
@@ -278,30 +286,25 @@ const Details = () => {
         const { lat, lng } = response.data.results[0].geometry.location;
         setLat(lat);
         setLng(lng);
-
       } else {
-        console.error('Geocoding request failed.');
+        console.error("Geocoding request failed.");
       }
     } catch (error) {
-      console.error('Error fetching coordinates:', error);
+      console.error("Error fetching coordinates:", error);
     }
-  }
+  };
 
   if (data?.result.address) {
     fetchCoordinates(data.result.address);
   }
 
-
   if (lat) {
-    console.log(lat, lng, "lat/lng")
+    console.log(lat, lng, "lat/lng");
   }
-
 
   const handleApiCall = () => {
     setButtonColor(true);
   };
-
-
 
   return (
     <div className=" bg-white">
@@ -310,7 +313,9 @@ const Details = () => {
         <div className="space-y-8 md:space-y-4 w-full">
           <small className="font-manrope">
             home / Appartment /{" "}
-            <span className="text-primaryBlue pl-1">{data?.result.name || ""}</span>
+            <span className="text-primaryBlue pl-1">
+              {data?.result.name || ""}
+            </span>
           </small>
           {/* header section */}
           <div className=" md:flex justify-between items-start space-y-4">
@@ -334,7 +339,10 @@ const Details = () => {
               </div>
             </div>
             {/* save button */}
-            <div style={{ marginTop: "45px" }} className="flex items-center justify-center md:justify-center space-x-8 ">
+            <div
+              style={{ marginTop: "45px" }}
+              className="flex items-center justify-center md:justify-center space-x-8 "
+            >
               <div className="flex items-center w-full md:w-auto">
                 <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
                 <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
@@ -365,15 +373,26 @@ const Details = () => {
           </div>
         </div>
 
-        <div style={{padding:"15px",boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",paddingBottom:"20px",borderRadius:"8px"}} >
-          <p className="text-xl " >Top Facilities</p>
+        <div
+          style={{
+            padding: "15px",
+            boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+            paddingBottom: "20px",
+            borderRadius: "8px",
+          }}
+        >
+          <p className="text-xl ">Top Facilities</p>
           <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
             {data?.result.amenities.map((curElem, index) => (
-              <div key={index} className="px-3 py-1 border bg-gray-50 shadow-sm">
+              <div
+                key={index}
+                className="px-3 py-1 border bg-gray-50 shadow-sm"
+              >
                 <p className="mt-1 mb-1">{curElem}</p>
               </div>
             ))}
           </div>
+
           {/* <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
   {data?.result.amenities[0] ? JSON.parse(data.result.amenities[0]).map((curElem: string) => (
     <div key={curElem} className="px-3 py-1 border bg-gray-50 shadow-sm">
@@ -381,18 +400,13 @@ const Details = () => {
     </div>
   )) : null}
 </div> */}
-
         </div>
-
-
-
-
-
 
         {/* main details content */}
         <section className="space-y-10">
           <div className="relative w-full overflow-hidden flex justify-center items-center space-x-2">
-            {(data?.result?.propertyImages && data.result.propertyImages.length > 0) ? (
+            {data?.result?.propertyImages &&
+            data.result.propertyImages.length > 0 ? (
               data.result.propertyImages.slice(0, 2).map((img) => (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
                   <Image
@@ -416,11 +430,18 @@ const Details = () => {
             </div>
           </div>
 
-
           <div className="w-full">
             {cookies?.jwtToken ? (
-              <button className={`bg-${buttonColor ? "current" : "primaryBlue"} text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}>
-                <MyMsg data={data} text="Get in Comfort" onApiCall={handleApiCall} />
+              <button
+                className={`bg-${
+                  buttonColor ? "current" : "primaryBlue"
+                } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
+              >
+                <MyMsg
+                  data={data}
+                  text="Get in Comfort"
+                  onApiCall={handleApiCall}
+                />
               </button>
             ) : (
               <Link href={"/login"}>
@@ -438,8 +459,17 @@ const Details = () => {
               />
             </MyModal>
           )}
-          <div style={{ padding: "15px", paddingBottom: "20px", boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",borderRadius:"8px" }}>
-            <p style={{ fontSize: "20px", fontWeight: "normal" }}>Description</p>
+          <div
+            style={{
+              padding: "15px",
+              paddingBottom: "20px",
+              boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+              borderRadius: "8px",
+            }}
+          >
+            <p style={{ fontSize: "20px", fontWeight: "normal" }}>
+              Description
+            </p>
             <p className=" text-gray-800 font-manrope">
               {data?.result?.description}
             </p>
@@ -469,11 +499,18 @@ const Details = () => {
         <section className="md:flex space-y-5 md:space-y-0  md:space-x-8 justify-center items-center ">
           <div className="h-[300px] md:h-[500px] relative grow mr-6 mb-6">
             {/* <Image src={"/map.png"} fill className="object-fill" alt="villa4" /> */}
-            <GoogleMap center={{ lat: lat, lng: lng }} zoom={15} mapContainerStyle={{ width: "100%", height: "100%" }}>
+            <GoogleMap
+              center={{ lat: lat, lng: lng }}
+              zoom={15}
+              mapContainerStyle={{ width: "100%", height: "100%" }}
+            >
               {lat && lng && <Marker position={{ lat: lat, lng: lng }} />}
             </GoogleMap>
           </div>
-          <div style={{ margin: "0 auto" }} className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center ">
+          <div
+            style={{ margin: "0 auto" }}
+            className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center "
+          >
             <div className="flex flex-col items-center space-y-5 p-5 md:p-0">
               <div className="h-20 w-20 relative rounded-full">
                 <Image
@@ -507,7 +544,11 @@ const Details = () => {
 
               {cookies?.jwtToken ? (
                 <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
-                  <MyMsg data={data} text="Contact Agent" onApiCall={handleApiCall} />
+                  <MyMsg
+                    data={data}
+                    text="Contact Agent"
+                    onApiCall={handleApiCall}
+                  />
                 </button>
               ) : (
                 <Link href={"/login"}>
@@ -519,9 +560,58 @@ const Details = () => {
             </div>
           </div>
         </section>
-        <p style={{margin:"0"}}><span style={{fontSize:"20px",marginRight:"15px"}}>Full Address:</span> {data?.result.address}</p>
+
+        {/* amenities */}
+        <Card sx={{ borderRadius: 2 }}>
+          <CardHeader title="Amenities" />
+          <CardContent>
+            <Box
+              rowGap={3}
+              columnGap={2}
+              display="grid"
+              gridTemplateColumns={{
+                xs: "repeat(1, 1fr)",
+                sm: "repeat(4, 1fr)",
+              }}
+              sx={{
+                alignItems: "end",
+              }}
+            >
+              {data?.result?.amenities?.map((item, i) => {
+                let Icon = availableAmenities?.find((ele: any) => {
+                  let name = ele?.name;
+                  return name === item;
+                });
+                const IconTag = Icon.icon;
+
+                return (
+                  <div
+                    className="flex justify-start items-center text-black cursor-pointer leading-[32px] "
+                    key={i}
+                  >
+                    <IconTag className="w-[26px] h-[26px] " />
+                    <p className="text-lg text-[1rem] px-3">{item}</p>
+                  </div>
+                );
+              })}
+            </Box>
+          </CardContent>
+        </Card>
+
+        <p style={{ margin: "0" }}>
+          <span style={{ fontSize: "20px", marginRight: "15px" }}>
+            Full Address:
+          </span>{" "}
+          {data?.result.address}
+        </p>
         <section>
-          <div style={{ padding: "15px",  boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",borderRadius:"8px" }}>
+          <div
+            style={{
+              padding: "15px",
+              boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+              borderRadius: "8px",
+            }}
+          >
             {/* <p style={{textAlign:"center",fontSize:"30px",fontWeight:"bold"}}>WE'VE FOUND SIMILAR PROPERTIES FOR YOU</p> */}
             <div className="max-w-7xl mx-auto px-5 md:px-10 ">
               <div className="w-full flex items-center justify-between">
@@ -542,10 +632,7 @@ const Details = () => {
                 </div>
               </div>
               {similarData && (
-                <div
-                  id="feat"
-                  className="flex overflow-hidden space-x-6 py-10"
-                >
+                <div id="feat" className="flex overflow-hidden space-x-6 py-10">
                   <CardCarousel
                     id="feat"
                     data={similarData}
@@ -554,9 +641,7 @@ const Details = () => {
                 </div>
               )}
             </div>
-
           </div>
-
         </section>
         {/* revies */}
         {/* <section className=" py-16">

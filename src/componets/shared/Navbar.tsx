@@ -52,7 +52,7 @@ const Nav = () => {
           </Link>
         );
       })}
-      {cookies?.jwtToken === undefined ? (
+      {/* {cookies?.jwtToken === undefined ? (
         <button
           onClick={() => router.push("/login")}
           className={`${
@@ -74,7 +74,7 @@ const Nav = () => {
         >
           Logout
         </button>
-      )}
+      )} */}
     </nav>
   );
 };

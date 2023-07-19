@@ -10,6 +10,15 @@ export type area = {
   areaId: string;
   _id?: string;
 };
+export type availableAmenities = {
+  name: string;
+  icon: any;
+};
+
+export type ticketUpdate = {
+  ticketId: string;
+  ticketStatus: string;
+};
 
 export type Agent = {
   _id: string;
@@ -39,9 +48,9 @@ export type Propery = {
   propertyType: string;
   toggle: string;
   amenities: string[];
-  createdAt:string;
-  featured:boolean;
-  toggle:string;
+  createdAt: string;
+  featured: boolean;
+  toggle: string;
 };
 export type ProperyFilter = {
   size: string;

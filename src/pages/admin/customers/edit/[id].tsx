@@ -29,7 +29,7 @@ const defaultValues = {
   mobileNumber: "",
 };
 
-const addForm = {
+export const addForm = {
   "& .MuiInputBase-root": {
     borderRadius: "18px",
     border: "2px solid rgba(169, 169, 169, 0.28)",
@@ -40,7 +40,7 @@ const addForm = {
   },
 };
 
-let iconClass = "text-xl text-[#2C5FC3] mr-2";
+export const iconClass = "text-xl text-[#2C5FC3] mr-2";
 
 const EditCustomer = () => {
   const router = useRouter();

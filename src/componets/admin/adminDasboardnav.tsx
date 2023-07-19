@@ -14,9 +14,12 @@ import {
   AiOutlineUserSwitch,
 } from "react-icons/ai";
 import { RiUser3Line } from "react-icons/ri";
+import { BiSupport } from "react-icons/bi";
 import { MdOutlineApartment } from "react-icons/md";
 import { LucideProps } from "lucide-react";
 import { AdminNavbarIcons } from "./adminIcons";
+import { BsHouse } from "react-icons/bs";
+import { GiHouse } from "react-icons/gi";
 
 const Avtar = () => {
   return (
@@ -64,9 +67,7 @@ const AdminsideNav = () => {
 
   const handleURLQueries = (item: string) => {
     if (item) {
-      return (
-        router.asPath.includes(item)
-      );
+      return router.asPath.includes(item);
     }
   };
 
@@ -102,6 +103,13 @@ const AdminsideNav = () => {
           isActive={isNavLinkActive("/admin/orders")}
         />
       </Link>
+      <Link href={"/admin/property"}>
+        <SideNavItem
+          name="Properties"
+          Icon={AdminNavbarIcons.compnies}
+          isActive={isNavLinkActive("/admin/property")}
+        />
+      </Link>
       {/* <Link href={"/admin/broker"}>
         <SideNavItem
           name="Brokers"
@@ -116,6 +124,13 @@ const AdminsideNav = () => {
           isActive={isNavLinkActive("/admin/compnies")}
         />
       </Link> */}
+      <Link href={"/admin/tickets"}>
+        <SideNavItem
+          name="Tickets"
+          Icon={BiSupport}
+          isActive={isNavLinkActive("/admin/tickets")}
+        />
+      </Link>
     </div>
   );
 };
