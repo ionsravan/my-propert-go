@@ -1,6 +1,17 @@
 import { GrLocation, GrStar } from "react-icons/gr";
 import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
-import {useEffect } from 'react'
+import { useEffect } from 'react'
+import {
+  CatagoryCard,
+  Header,
+  HomeSectionTitle,
+  HouseCard,
+  // MediumHomeCard,
+  PopularCity,
+  Process,
+  Stats,
+  TestiMonials,
+} from "src/componets";
 import Image from "next/image";
 import { LoadImage } from "../../componets/shared/img";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
@@ -10,7 +21,7 @@ import { HiCheckCircle } from "react-icons/hi";
 import Layout from "src/Layout/main";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useRouter } from "next/router";
-import type { Propery, ProperyRes } from "src/@types";
+import type { Propery, ProperyRes, ProperyResArr } from "src/@types";
 import { useAxios } from "src/utills/axios";
 import { Agent } from "src/componets/successToast";
 import { useCookies } from "react-cookie";
@@ -23,6 +34,8 @@ import { Transition, Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { AnyMxRecord } from "dns";
 import { useJsApiLoader, GoogleMap, Marker } from "@react-google-maps/api";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import MediumHouseCard from "src/componets/HousCard/MediumHomeCard";
 import axios from 'axios';
 const reviewData = [
   {
@@ -39,7 +52,9 @@ const reviewData = [
   },
 ];
 
-function MyMsg({ data, text, onApiCall }: { data: any; text: string ; onApiCall: () => void;}) {
+
+
+function MyMsg({ data, text, onApiCall }: { data: any; text: string; onApiCall: () => void; }) {
   let [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const instance = useAxios();
@@ -66,6 +81,8 @@ function MyMsg({ data, text, onApiCall }: { data: any; text: string ; onApiCall:
           {buttonText}
         </button>
       </div>
+
+
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={closeModal}>
@@ -203,11 +220,30 @@ const Details = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   console.log(data);
   const [buttonColor, setButtonColor] = useState(false);
-  
+
   const [lat, setLat] = useState<number>(0);
   const [lng, setLng] = useState<number>(0);
   const [center, setCenter] = useState({});
+  const [similarData, setSimilarData] = useState<Propery[] | null>([]);
 
+  const { data: newData } = useFetch<ProperyResArr>(
+    "property/getAllProperties"
+  );
+
+
+  useEffect(() => {
+    if (newData?.result) {
+      setSimilarData(newData?.result);
+    }
+  }, [newData]);
+
+  if (data?.result) {
+    console.log(data.result, "data")
+  }
+
+  if (newData?.result) {
+    console.log(similarData, "sim")
+  }
 
   // Google Map Api 
 
@@ -215,47 +251,50 @@ const Details = () => {
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
-})
+  })
 
 
-if (!isLoaded) {
+  if (!isLoaded) {
     return <h1> Loading...</h1>
-}
-
-
-const fetchCoordinates = async (cityName: string) => {
-  try {
-    const response = await axios.get(
-      `https://maps.googleapis.com/maps/api/geocode/json`,
-      {
-        params: {
-          address: cityName,
-          key: apiKey,
-        },
-      }
-    );
-
-    if (response.status === 200) {
-      const { lat, lng } = response.data.results[0].geometry.location;
-      setLat(lat);
-      setLng(lng);
-  
-    } else {
-      console.error('Geocoding request failed.');
-    }
-  } catch (error) {
-    console.error('Error fetching coordinates:', error);
   }
-}
 
-if (data?.result.address) {
-  fetchCoordinates(data.result.address);
-}
+  if (data?.result) {
+    console.log(data?.result.amenities, "amenities");
+  }
+
+  const fetchCoordinates = async (cityName: string) => {
+    try {
+      const response = await axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json`,
+        {
+          params: {
+            address: cityName,
+            key: apiKey,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        const { lat, lng } = response.data.results[0].geometry.location;
+        setLat(lat);
+        setLng(lng);
+
+      } else {
+        console.error('Geocoding request failed.');
+      }
+    } catch (error) {
+      console.error('Error fetching coordinates:', error);
+    }
+  }
+
+  if (data?.result.address) {
+    fetchCoordinates(data.result.address);
+  }
 
 
-if(lat){
-  console.log(lat,lng,"lat/lng")
-}
+  if (lat) {
+    console.log(lat, lng, "lat/lng")
+  }
 
 
   const handleApiCall = () => {
@@ -295,7 +334,7 @@ if(lat){
               </div>
             </div>
             {/* save button */}
-            <div style={{marginTop:"45px"}} className="flex items-center justify-center md:justify-center space-x-8 ">
+            <div style={{ marginTop: "45px" }} className="flex items-center justify-center md:justify-center space-x-8 ">
               <div className="flex items-center w-full md:w-auto">
                 <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
                 <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
@@ -326,9 +365,33 @@ if(lat){
           </div>
         </div>
 
+        <div style={{padding:"15px",boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",paddingBottom:"20px",borderRadius:"8px"}} >
+          <p className="text-xl " >Top Facilities</p>
+          <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+            {data?.result.amenities.map((curElem, index) => (
+              <div key={index} className="px-3 py-1 border bg-gray-50 shadow-sm">
+                <p className="mt-1 mb-1">{curElem}</p>
+              </div>
+            ))}
+          </div>
+          {/* <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+  {data?.result.amenities[0] ? JSON.parse(data.result.amenities[0]).map((curElem: string) => (
+    <div key={curElem} className="px-3 py-1 border bg-gray-50 shadow-sm">
+      <p className="mt-1 mb-1">{curElem}</p>
+    </div>
+  )) : null}
+</div> */}
+
+        </div>
+
+
+
+
+
+
         {/* main details content */}
         <section className="space-y-10">
-          <div className="relative w-full overflow-x-scroll flex space-x-2">
+          <div className="relative w-full overflow-hidden flex justify-center items-center space-x-2">
             {(data?.result?.propertyImages && data.result.propertyImages.length > 0) ? (
               data.result.propertyImages.slice(0, 2).map((img) => (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
@@ -375,12 +438,13 @@ if(lat){
               />
             </MyModal>
           )}
-          <div>
+          <div style={{ padding: "15px", paddingBottom: "20px", boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",borderRadius:"8px" }}>
+            <p style={{ fontSize: "20px", fontWeight: "normal" }}>Description</p>
             <p className=" text-gray-800 font-manrope">
               {data?.result?.description}
             </p>
           </div>
-          <div className="md:flex md:space-x-8 space-y-4 md:space-y-0">
+          <div className=" flex flex-col items-center justify-center space-y-4  sm:flex-row sm:space-x-4 sm:justify-start sm:space-y-0 ">
             <div className="border rounded-md space-y-2  h-28 shadow-sm  w-32 flex flex-col justify-center items-center">
               <p className="text-4xl font-manrope font-semibold text-primaryBlue">
                 {data?.result?.BHKconfig}
@@ -402,14 +466,14 @@ if(lat){
           </div>
         </section>
         {/* maps */}
-        <section className="md:flex space-y-5 md:space-y-0  md:space-x-8">
-          <div className="h-[300px] md:h-[500px] relative grow">
+        <section className="md:flex space-y-5 md:space-y-0  md:space-x-8 justify-center items-center ">
+          <div className="h-[300px] md:h-[500px] relative grow mr-6 mb-6">
             {/* <Image src={"/map.png"} fill className="object-fill" alt="villa4" /> */}
-            <GoogleMap center={{ lat: lat, lng: lng }} zoom={15} mapContainerStyle={{ width: "100%",height:"100%" }}>
-                    {lat && lng && <Marker position={{ lat: lat, lng: lng }} />}
+            <GoogleMap center={{ lat: lat, lng: lng }} zoom={15} mapContainerStyle={{ width: "100%", height: "100%" }}>
+              {lat && lng && <Marker position={{ lat: lat, lng: lng }} />}
             </GoogleMap>
           </div>
-          <div className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center">
+          <div style={{ margin: "0 auto" }} className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center ">
             <div className="flex flex-col items-center space-y-5 p-5 md:p-0">
               <div className="h-20 w-20 relative rounded-full">
                 <Image
@@ -443,7 +507,7 @@ if(lat){
 
               {cookies?.jwtToken ? (
                 <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
-                  <MyMsg data={data} text="Contact Agent" onApiCall={handleApiCall}/>
+                  <MyMsg data={data} text="Contact Agent" onApiCall={handleApiCall} />
                 </button>
               ) : (
                 <Link href={"/login"}>
@@ -454,6 +518,45 @@ if(lat){
               )}
             </div>
           </div>
+        </section>
+        <p style={{margin:"0"}}><span style={{fontSize:"20px",marginRight:"15px"}}>Full Address:</span> {data?.result.address}</p>
+        <section>
+          <div style={{ padding: "15px",  boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",borderRadius:"8px" }}>
+            {/* <p style={{textAlign:"center",fontSize:"30px",fontWeight:"bold"}}>WE'VE FOUND SIMILAR PROPERTIES FOR YOU</p> */}
+            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+              <div className="w-full flex items-center justify-between">
+                <HomeSectionTitle text="WE'VE FOUND SIMILAR PROPERTIES FOR YOU" />
+                <div className="hidden md:flex space-x-4 ">
+                  <button
+                    onClick={() => scrollLeft("feat")}
+                    className="p-2 m-2 rounded-full bg-white"
+                  >
+                    <FiChevronLeft />
+                  </button>
+                  <button
+                    onClick={() => scrollRight("feat")}
+                    className="p-2 m-2 rounded-full bg-white"
+                  >
+                    <FiChevronRight />
+                  </button>
+                </div>
+              </div>
+              {similarData && (
+                <div
+                  id="feat"
+                  className="flex overflow-hidden space-x-6 py-10"
+                >
+                  <CardCarousel
+                    id="feat"
+                    data={similarData}
+                    Card={MediumHouseCard}
+                  />
+                </div>
+              )}
+            </div>
+
+          </div>
+
         </section>
         {/* revies */}
         {/* <section className=" py-16">
