@@ -11,6 +11,11 @@ export type area = {
   _id?: string;
 };
 
+export type ticketUpdate = {
+  ticketId: string;
+  ticketStatus: string;
+};
+
 export type Agent = {
   _id: string;
   type: string;

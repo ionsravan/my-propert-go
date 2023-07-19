@@ -24,6 +24,7 @@ import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
+import { tableStyles } from "../tickets";
 
 export const Button = ({
   name,
@@ -256,33 +257,7 @@ const Customers = () => {
               onPageSizeChange={(newPageSize: number) =>
                 setPageState((old) => ({ ...old, pageSize: newPageSize }))
               }
-              sx={{
-                "& .MuiDataGrid-cellContent": {
-                  wordBreak: "break-word",
-                  whiteSpace: "break-spaces",
-                  paddingY: 1.5,
-                },
-                "& .MuiDataGrid-columnHeaders": {
-                  bgcolor: "#0078DB",
-                  borderRadius: 2,
-                  color: "white",
-                },
-                "& .MuiDataGrid-iconSeparator": {
-                  display: "none",
-                },
-                "& .MuiDataGrid-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
-                  {
-                    display: "none",
-                  },
-                "& .MuiDataGrid-cell": {
-                  borderBottom: "none",
-                  paddingY: 1.5,
-                },
-                "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
-                  {
-                    outline: "none !important",
-                  },
-              }}
+              sx={tableStyles}
             />
           </Card>
         </Grid>

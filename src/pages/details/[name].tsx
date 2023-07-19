@@ -216,9 +216,9 @@ const Details = () => {
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   console.log(data);
-  if (status === "FETCHING") {
-    return <CustomLoader />;
-  }
+
+
+
   const [buttonColor, setButtonColor] = useState(false);
 
   const [lat, setLat] = useState<number>(0);
@@ -235,6 +235,10 @@ const Details = () => {
 
   if (!isLoaded) {
     return <h1> Loading...</h1>;
+  }
+
+  if (status === "FETCHING") {
+    return <CustomLoader />;
   }
 
   const fetchCoordinates = async (cityName: string) => {
