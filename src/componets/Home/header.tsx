@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import { AiFillHome, AiOutlineCheck, AiOutlineSearch } from "react-icons/ai";
-import { MdOutlineApartment, MdVilla } from "react-icons/md";
+import { MdFamilyRestroom, MdOutlineApartment, MdVilla } from "react-icons/md";
 import { SlArrowRight } from "react-icons/sl";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { response, location } from "src/@types/index";
@@ -9,6 +9,9 @@ import Link from "next/link";
 import { useAppContext } from "src/Context/AppContext";
 import { Combobox, Transition } from "@headlessui/react";
 import { IconType } from "react-icons";
+import { useRouter } from "next/router";
+import { GiFarmTractor } from "react-icons/gi";
+import { BsPinMapFill } from "react-icons/bs";
 
 function Search() {
   const [selected, setSelected] = useState<any>(null);
@@ -17,6 +20,8 @@ function Search() {
   const { data } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
   );
+
+  const router = useRouter();
 
   useEffect(() => {
     if (data?.result) {
@@ -55,7 +60,7 @@ function Search() {
             />
             <Combobox.Button className="">
               <div className="rounded-full  md:min-w-[120px]  py-2  md:py-3 md:flex border justify-center items-center space-x-1 active:scale-95 transition transform duration-200 active:bg-green-700 cursor-pointer bg-green-500">
-                <Link href={`/search/${location?._id}`}>
+                <Link href={`/search/${location?._id}/${location?.name}`}>
                   <div className="font-manrope text-sm md:text-lg text-white">
                     <span className="hidden md:block">search</span>
                     <span className="md:hidden block">
@@ -86,6 +91,7 @@ function Search() {
                     onClick={() => {
                       setQuery(loc.name);
                       setLocation(loc);
+                      router.push(`/search/${loc?._id}/${loc?.name}`);
                     }}
                     key={loc._id}
                     className={({ active }) =>
@@ -178,20 +184,21 @@ export const homeChipsData: chipData[] = [
     value: "appartment",
     Icon: MdOutlineApartment,
   },
+  // plots ,farm lands ,indivudual house
   {
     name: "Plots",
     value: "plots",
-    Icon: MdOutlineApartment,
+    Icon: BsPinMapFill,
   },
   {
     name: "Farm Lands",
     value: "farmLands",
-    Icon: MdOutlineApartment,
+    Icon: GiFarmTractor,
   },
   {
-    name: "Individual House",
-    value: "individualHouse",
-    Icon: MdOutlineApartment,
+    name: "Indivudual House",
+    value: "indivudualHouse",
+    Icon: MdFamilyRestroom,
   },
 ];
 
@@ -220,7 +227,7 @@ const Header = () => {
         </p>
       </div>
       <div className="flex space-x-4 mb-8 ">
-        {homeChipsData.map(({ Icon, name, value }) => {
+        {homeChipsData.slice(0,3).map(({ Icon, name, value }) => {
           return (
             <div
               key={name}
@@ -229,7 +236,7 @@ const Header = () => {
               }}
             >
               <HomeChip
-                Icon={AiFillHome}
+                Icon={Icon}
                 text={name}
                 textColor={
                   searchFilter == value ? "text-primaryBlue" : "text-white"

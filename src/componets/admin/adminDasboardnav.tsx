@@ -61,6 +61,23 @@ const SideNavItem = ({ name, Icon, isActive }: SideNavItemProps) => {
 
 const AdminsideNav = () => {
   const router = useRouter();
+
+  const handleURLQueries = (item: string) => {
+    if (item) {
+      return (
+        router.asPath.includes(item)
+      );
+    }
+  };
+
+  const isNavLinkActive = (item: string) => {
+    if (router.pathname === item || handleURLQueries(item)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className="w-full overflow-hidden  font-manrope">
       <h1 className="text-xl text-black font-bold pl-7 pb-9">My Property Go</h1>
@@ -75,23 +92,30 @@ const AdminsideNav = () => {
         <SideNavItem
           name="Customer"
           Icon={AdminNavbarIcons.customer}
-          isActive={router.pathname == "/admin/customers"}
+          isActive={isNavLinkActive("/admin/customers")}
         />
       </Link>
-      <Link href={"/admin/broker"}>
+      <Link href={"/admin/orders"}>
+        <SideNavItem
+          name="Orders"
+          Icon={AdminNavbarIcons.compnies}
+          isActive={isNavLinkActive("/admin/orders")}
+        />
+      </Link>
+      {/* <Link href={"/admin/broker"}>
         <SideNavItem
           name="Brokers"
           Icon={AdminNavbarIcons.brokers}
-          isActive={router.pathname == "/admin/broker"}
+          isActive={isNavLinkActive("/admin/broker")}
         />
       </Link>
       <Link href={"/admin/compnies"}>
         <SideNavItem
           name="Companies"
           Icon={AdminNavbarIcons.compnies}
-          isActive={router.pathname == "/admin/compnies"}
+          isActive={isNavLinkActive("/admin/compnies")}
         />
-      </Link>
+      </Link> */}
     </div>
   );
 };

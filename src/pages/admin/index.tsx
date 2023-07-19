@@ -21,6 +21,7 @@ import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
 import imgs from "public.json";
 import { FetchState } from "src/lib/hooks/useFetch";
+import CustomLoader from "src/componets/shared/Loader";
 
 const Card = ({
   name,
@@ -163,7 +164,7 @@ const DashBoard = () => {
           {agents.length == 0 && status == FetchState.FETCHED && (
             <p className="text-xl text-black">No Agents</p>
           )}
-          {status === FetchState.FETCHING && <p>loading....</p>}
+          {status === FetchState.FETCHING && <CustomLoader />}
           {status === FetchState.FETCHED &&
             agents?.map((ag) => {
               return (
