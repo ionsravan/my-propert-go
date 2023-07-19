@@ -144,6 +144,9 @@ const AgentDashBoard = () => {
       setAgentId(data?.result?._id);
     }
   }, [data]);
+  if(data){
+    console.log(data.result,"res")
+  }
   return (
     <>
       <div className="flex justify-between w-full items-center font-manrope">

@@ -43,7 +43,8 @@ import {
 } from "react-icons/md";
 import { area, location, response } from "src/@types";
 import { useFetch } from "src/lib/hooks/useFetch";
-// import "../styles/addProperty.css"
+import styles from "../styles/addProperty.module.css";
+
 import { cx } from "../utills/all";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
@@ -63,8 +64,8 @@ const AddProperty = () => {
   const [propertyTypeError, setPropertyTypeError] = useState("");
   const [availabeFor, setAvailableFor] = useState("sale");
   const [availabeForError, setAvailableForError] = useState("");
-  // const [toggle, setToggle] = useState("Property");
-  // const [toggleError, setToggleError] = useState("");
+  const [toggle, setToggle] = useState("Property");
+  const [toggleError, setToggleError] = useState("");
   const [isPropertyActive, setPropertyActive] = useState(true);
   const [isProjectActive, setProjectActive] = useState(false);
 
@@ -89,14 +90,14 @@ const AddProperty = () => {
   const [area, setArea] = useState("");
   const [areaError, setAreaError] = useState("");
 
-  // const [areaValue, setAreaValue] = useState("");
-  // const [areaValueError, setAreaValueError] = useState("");
+  const [areaValue, setAreaValue] = useState("2345");
+  const [areaValueError, setAreaValueError] = useState("");
 
-  // const [areaType, setAreaType] = useState("");
-  // const [areaTypeError, setAreaTypeError] = useState("");
+  const [areaType, setAreaType] = useState("sqyy");
+  const [areaTypeError, setAreaTypeError] = useState("");
 
-  // const [size, setSize] = useState("");
-  // const [sizeError, setSizeError] = useState("");
+  const [size, setSize] = useState("4354");
+  const [sizeError, setSizeError] = useState("");
 
   const [floorNumber, setFloorNumber] = useState("");
   const [floorNumberError, setFloorNumberError] = useState("");
@@ -489,7 +490,8 @@ const AddProperty = () => {
   //   }
   // };
 
-
+  // dfhjdhjhsjhkshfjs
+// dfjsfhs
   const availableAmenities = [
     "Drinking Water",
     "Car Parking",
@@ -544,13 +546,13 @@ const AddProperty = () => {
     bodyFormData.append('buildingType', buildingType);
     bodyFormData.append('cost', String(parseInt(price, 10)));
     bodyFormData.append('description', description);
-    // bodyFormData.append('size', String(parseInt(size, 10)));
+    bodyFormData.append('size', String(parseInt(size, 10)));
     bodyFormData.append('availableFor', availabeFor);
-    // bodyFormData.append('toggle', toggle);
+    bodyFormData.append('toggle', toggle);
     bodyFormData.append('BHKconfig', String(parseInt(bhkConfig, 10)));
     bodyFormData.append('area', area);
-    // bodyFormData.append('areaValue', String(parseInt(areaValue, 10)));
-    // bodyFormData.append('areaType', areaType);
+    bodyFormData.append('areaValue', String(parseInt(areaValue, 10)));
+    bodyFormData.append('areaType', areaType);
     bodyFormData.append('floorNo', floorNumber);
     bodyFormData.append('towerVlock', tower);
     bodyFormData.append('floorCount', floorCount);
@@ -1486,7 +1488,7 @@ const AddProperty = () => {
 
               </div>
 
-              {/* 
+              {/*
               <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                
                 <input
