@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil } from "react-icons/bs";
+import { BsPencil, BsPencilFill } from "react-icons/bs";
 import { MdDeleteForever } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
@@ -74,11 +74,15 @@ const Customers = () => {
 
   async function getAllUsers() {
     let pr = selected === "All" ? false : true;
+
+    let params =
+      selected === "Premium"
+        ? `?premium=${pr || false}&&search=${name || ""}`
+        : `?search=${name || ""}`;
+
     try {
       setLoading(true);
-      const res = await instance.get(
-        `/admin/user/getAllUsers?premium=${pr || false}&&search=${name || ""}`
-      );
+      const res = await instance.get(`/admin/user/getAllUsers${params}`);
       if (res.data) {
         setUsers(res?.data?.data);
         setPagination(res?.data?.pagination);
@@ -154,7 +158,7 @@ const Customers = () => {
               onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
               color="primary"
             >
-              <BsPencil />
+              <BsPencilFill />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">

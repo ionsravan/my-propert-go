@@ -4,6 +4,8 @@ import {
   Grid,
   IconButton,
   LinearProgress,
+  MenuItem,
+  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -12,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil } from "react-icons/bs";
+import { BsEyeFill, BsPencil, BsPencilFill } from "react-icons/bs";
 import { MdDeleteForever } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
@@ -64,7 +66,7 @@ const Property = () => {
   });
 
   const instance = useAxios();
-  const [users, setUsers] = useState<User[] | undefined | null>([]);
+  const [properties, setProperties] = useState<User[] | undefined | null>([]);
   const [pagination, setPagination] = useState<Pagination | undefined | null>(
     null
   );
@@ -72,7 +74,7 @@ const Property = () => {
   const [selected, setSelected] = useState("All");
   const router = useRouter();
 
-  async function getAllUsers() {
+  async function getAllProperties() {
     let pr = selected === "All" ? false : true;
     try {
       setLoading(true);
@@ -80,7 +82,7 @@ const Property = () => {
         `/property/getAllProperties?search=${name || ""}`
       );
       if (res.data) {
-        setUsers(res?.data?.result);
+        setProperties(res?.data?.result);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }
@@ -91,7 +93,7 @@ const Property = () => {
   }
 
   useEffect(() => {
-    getAllUsers();
+    getAllProperties();
   }, [selected, name]);
 
   async function deleteCustomer() {
@@ -102,7 +104,7 @@ const Property = () => {
         toast.success("Customer Deleted Successfully");
         setDeleteLoading(false);
         setDeleteOpen(false);
-        getAllUsers();
+        getAllProperties();
       }
     } catch (e) {
       setDeleteLoading(false);
@@ -110,11 +112,28 @@ const Property = () => {
     }
   }
 
+  function handleChange(value: string, id: string) {
+    setProperties((prev) =>
+      prev.map((selectedExercise) => {
+        if (selectedExercise._id === id) {
+          return {
+            ...selectedExercise,
+            ["status"]: value,
+          };
+        }
+
+        return selectedExercise;
+      })
+    );
+
+    // onSubmit({ ticketStatus: value, ticketId: id });
+  }
+
   const all_customer_columns: GridColDef[] = [
     {
-      flex: 0.25,
+      flex: 0.15,
       field: "name",
-      headerName: "USER NAME",
+      headerName: "Name",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
@@ -125,47 +144,79 @@ const Property = () => {
       ),
     },
     {
-      flex: 0.25,
-      field: "email",
-      headerName: "EMAIl",
+      flex: 0.1,
+      field: "BHKconfig",
+      headerName: "BHK",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
-      field: "mobileNumber",
-      headerName: "MOBILE",
-      flex: 0.2,
+      field: "address",
+      headerName: "Address",
+      flex: 0.15,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
+    },
+    {
+      field: "availableFor",
+      headerName: "Available For",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    },
+    {
+      field: "cost",
+      headerName: "Price",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      flex: 0.15,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Select
+          fullWidth
+          size="small"
+          onChange={(e) => handleChange(e.target.value, row?._id)}
+          value={row?.status || "Active"}
+        >
+          <MenuItem value="Active">Active</MenuItem>
+          <MenuItem value="InActivate">InActivate</MenuItem>
+        </Select>
+      ),
     },
     {
       field: "action",
-      headerName: "ACTION",
+      headerName: "Action",
       flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
         <Box>
-          <Tooltip title="Edit">
+          <Tooltip title="View">
             <IconButton
-              onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+              onClick={() => router.push(`/details/${row._id}`)}
               color="primary"
             >
-              <BsPencil />
+              <BsEyeFill />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title="Edit">
             <IconButton
-              onClick={() => {
-                setDeleteId(row?._id);
-                setDeleteOpen(true);
-              }}
-              color="error"
+              onClick={() => router.push("/addProperty")}
+              color="primary"
             >
-              <MdDeleteForever />
+              <BsPencilFill />
             </IconButton>
           </Tooltip>
         </Box>
@@ -178,7 +229,7 @@ const Property = () => {
       <div className="flex justify-between items-center">
         <div className="mb-5">
           <h1 className="text-[#707EAE] text-[10.4px]">Hello Admin</h1>
-          <h2 className="text-TitleColor font-bold text-3xl">Customers</h2>
+          <h2 className="text-TitleColor font-bold text-3xl">Properties</h2>
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
@@ -236,7 +287,7 @@ const Property = () => {
         <Grid item xs={12}>
           <Card sx={{ borderRadius: 2 }}>
             <DataGrid
-              rows={users || []}
+              rows={properties || []}
               columns={all_customer_columns}
               getRowId={(row) => row._id}
               autoHeight
@@ -245,18 +296,18 @@ const Property = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pagination
-              rowsPerPageOptions={[5, 10, 25]}
-              rowCount={pagination?.totalUsers || 0}
-              page={pageState.page - 1}
-              pageSize={pageState.pageSize}
-              paginationMode="server"
-              onPageChange={(newPage: number) => {
-                setPageState((old) => ({ ...old, page: newPage + 1 }));
-              }}
-              onPageSizeChange={(newPageSize: number) =>
-                setPageState((old) => ({ ...old, pageSize: newPageSize }))
-              }
+              // pagination
+              // rowsPerPageOptions={[5, 10, 25]}
+              // rowCount={pagination?.totalUsers || 0}
+              // page={pageState.page - 1}
+              // pageSize={pageState.pageSize}
+              // paginationMode="server"
+              // onPageChange={(newPage: number) => {
+              //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
+              // onPageSizeChange={(newPageSize: number) =>
+              //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+              // }
               sx={tableStyles}
             />
           </Card>

@@ -562,7 +562,7 @@ const Details = () => {
         </section>
 
         {/* amenities */}
-        <Card sx={{ borderRadius: 2 }}>
+        {/* <Card sx={{ borderRadius: 2 }}>
           <CardHeader title="Amenities" />
           <CardContent>
             <Box
@@ -596,7 +596,7 @@ const Details = () => {
               })}
             </Box>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <p style={{ margin: "0" }}>
           <span style={{ fontSize: "20px", marginRight: "15px" }}>

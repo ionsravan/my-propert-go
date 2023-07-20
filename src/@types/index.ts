@@ -117,3 +117,13 @@ export type CustomerValuesProps = {
   mobileNumber: string;
   email: string;
 };
+export type leadsProps = {
+  lead: number;
+};
+export type plansProps = {
+  numOfLeads: number;
+  name: string;
+  text: string;
+  price: number;
+  tags: string[];
+};

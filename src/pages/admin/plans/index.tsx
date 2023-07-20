@@ -1,6 +1,7 @@
 import {
   Box,
   Card,
+  Chip,
   CircularProgress,
   Grid,
   IconButton,
@@ -13,8 +14,12 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil } from "react-icons/bs";
-import { MdDeleteForever } from "react-icons/md";
+import { BsPencil, BsTags } from "react-icons/bs";
+import {
+  MdDeleteForever,
+  MdDescription,
+  MdSubscriptions,
+} from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
@@ -24,6 +29,7 @@ import {
   location,
   newResponse,
   Pagination,
+  plansProps,
   response,
   User,
 } from "src/@types";
@@ -37,18 +43,28 @@ import { tableStyles } from "../tickets";
 import Modal from "src/componets/shared/modal";
 import FormProvider from "src/componets/shared/RHF/FormProvider";
 import RHFTextField from "src/componets/shared/RHF/RHFTextField";
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addForm, iconClass } from "../customers/edit/[id]";
 import { SiGoogleads } from "react-icons/si";
+import { BiMoney } from "react-icons/bi";
+import { CgAdd, CgClose } from "react-icons/cg";
 
 const NewCompanyValidationSchema = Yup.object().shape({
-  lead: Yup.number().required("Lead count is required"),
+  numOfLeads: Yup.string().required("Lead count is required"),
+  price: Yup.string().required("Price is required"),
+  name: Yup.string().required("Plan Name is required"),
+  text: Yup.string().required("Description is required"),
+  tags: Yup.array().of(Yup.string().required("Tag is required").nullable()),
 });
 
 const defaultValues = {
-  lead: "",
+  numOfLeads: "",
+  name: "",
+  text: "",
+  price: "",
+  tags: ["Edit this Tags"],
 };
 
 export const Button = ({
@@ -76,7 +92,7 @@ export const Button = ({
 };
 
 // give main area a max widht
-const Orders = () => {
+const Plans = () => {
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -87,21 +103,19 @@ const Orders = () => {
   });
 
   const instance = useAxios();
-  const [users, setUsers] = useState<User[] | undefined | null>([]);
+  const [plans, setPlans] = useState<User[] | undefined | null>([]);
   const [pagination, setPagination] = useState<Pagination | undefined | null>(
     null
   );
-  const [name, setName] = useState<string>("");
-  const [selected, setSelected] = useState("All");
-  const router = useRouter();
 
-  const methods: any = useForm<leadsProps>({
+  const methods = useForm<plansProps>({
     mode: "onChange",
     resolver: yupResolver(NewCompanyValidationSchema),
     defaultValues,
   });
 
   const {
+    control,
     handleSubmit,
     setValue,
     watch,
@@ -109,12 +123,17 @@ const Orders = () => {
     formState: { errors, isSubmitting, isValid },
   } = methods;
 
-  async function getAllOrders() {
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "tags",
+  });
+
+  async function getAllPlans() {
     try {
       setLoading(true);
-      const res = await instance.get(`/admin/user/getAllUsers?confirm=true`);
+      const res = await instance.get(`/user/plan/getAllPlans`);
       if (res.data) {
-        setUsers(res?.data?.data);
+        setPlans(res?.data?.plans);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }
@@ -125,23 +144,20 @@ const Orders = () => {
   }
 
   useEffect(() => {
-    getAllOrders();
+    getAllPlans();
   }, []);
 
-  async function onSubmit(data: { lead: number }) {
+  async function onSubmit(data: plansProps) {
     try {
       setDeleteLoading(true);
-      let body = {
-        userId: deleteId,
-        count: data.lead,
-      };
-      const res = await instance.post("/admin/leads/increaseLeadCount", body);
+
+      const res = await instance.post("/admin/plan/addPlan", data);
       if (res.data) {
         toast.success("Leads Added Successfully");
         setDeleteLoading(false);
         setDeleteOpen(false);
-        getAllOrders();
-        setValue("lead", "");
+        getAllPlans();
+        reset(defaultValues);
       }
     } catch (e) {
       setDeleteLoading(false);
@@ -149,38 +165,38 @@ const Orders = () => {
     }
   }
 
-  const all_customer_columns: GridColDef[] = [
+  const all_plans_columns: GridColDef[] = [
     {
       flex: 0.2,
       field: "name",
-      headerName: "USER NAME",
+      headerName: "Name",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
-        <Typography variant="body1" fontWeight={500}>
+        <Typography variant="body1" textTransform="capitalize" fontWeight={500}>
           {row?.name}
         </Typography>
       ),
     },
     {
-      flex: 0.2,
-      field: "email",
-      headerName: "EMAIl",
+      flex: 0.25,
+      field: "text",
+      headerName: "Description",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
-      field: "mobileNumber",
-      headerName: "MOBILE",
-      flex: 0.2,
+      field: "price",
+      headerName: "Price",
+      flex: 0.15,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
-      field: "leadCount",
+      field: "numOfLeads",
       headerName: "LEADS",
       flex: 0.1,
       align: "left",
@@ -188,44 +204,50 @@ const Orders = () => {
       disableColumnMenu: true,
     },
     {
-      field: "action",
-      headerName: "ACTION",
-      flex: 0.1,
+      field: "tags",
+      headerName: "Tags",
+      flex: 0.2,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
-        <Box>
-          <button
-            onClick={() => {
-              setDeleteId(row?._id);
-              setDeleteOpen(true);
-            }}
-            className=" text-[#0066FF] font-medium justify-center w-full text-[1rem]  py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
-          >
-            Add Leads
-          </button>
+        <Box display="flex" sx={{flexWrap:"wrap",gap:2}}>
+          {row?.tags?.map((item: string, i: number) => (
+            <Chip key={i} label={item} />
+          ))}
         </Box>
       ),
     },
   ];
+
+  console.log("fields", watch("tags"));
 
   return (
     <div className=" w-full bg-[#F6F6F6] ">
       <div className="flex justify-between items-center">
         <div className="mb-5">
           <h1 className="text-[#707EAE] text-[10.4px]">Hello Admin</h1>
-          <h2 className="text-TitleColor font-bold text-3xl">Orders</h2>
+          <h2 className="text-TitleColor font-bold text-3xl">Plans</h2>
         </div>
-        <div className="max-w-[140px] text-sm  w-full"></div>
+        <div className="max-w-[140px] text-sm  w-full">
+          <button
+            onClick={() => setDeleteOpen(true)}
+            className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+          >
+            <span>
+              <TbEdit />
+            </span>
+            <span>Add New</span>
+          </button>
+        </div>
       </div>
 
       <Grid container spacing={6} sx={{ pb: 4 }}>
         <Grid item xs={12}>
           <Card sx={{ borderRadius: 2 }}>
             <DataGrid
-              rows={users || []}
-              columns={all_customer_columns}
+              rows={plans || []}
+              columns={all_plans_columns}
               getRowId={(row) => row._id}
               autoHeight
               components={{
@@ -233,7 +255,7 @@ const Orders = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pagination
+              pagination={true}
               rowsPerPageOptions={[5, 10, 25]}
               rowCount={pagination?.totalUsers || 0}
               page={pageState.page - 1}
@@ -252,21 +274,113 @@ const Orders = () => {
       </Grid>
 
       <Modal
-        title="Add Leads"
+        title="Add Plan"
         open={deleteOpen}
+        scroll="paper"
         closeDialog={() => setDeleteOpen(false)}
         size="sm"
       >
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <RHFTextField
+            placeholder="Plan Name"
+            InputProps={{
+              startAdornment: <MdSubscriptions className={iconClass} />,
+            }}
+            sx={{ mt: 2, ...addForm }}
+            name="name"
+            type="text"
+          />
+          <RHFTextField
+            placeholder="Description"
+            InputProps={{
+              startAdornment: <MdDescription className={iconClass} />,
+            }}
+            sx={{ mt: 2, ...addForm }}
+            name="text"
+            type="text"
+          />
+          <RHFTextField
+            placeholder="Price"
+            InputProps={{
+              startAdornment: <BiMoney className={iconClass} />,
+            }}
+            sx={{ mt: 2, ...addForm }}
+            name="price"
+            type="number"
+          />
+          <RHFTextField
             placeholder="Leads"
             InputProps={{
               startAdornment: <SiGoogleads className={iconClass} />,
             }}
-            sx={addForm}
-            name="lead"
+            sx={{ mt: 2, ...addForm }}
+            name="numOfLeads"
             type="number"
           />
+          <Grid container spacing={4}>
+            {fields?.length > 0
+              ? fields.map((field, index) => (
+                  <Grid
+                    sx={{ mt: 2 }}
+                    key={field?.id}
+                    item
+                    xs={12}
+                    display="flex"
+                  >
+                    <RHFTextField
+                      name={`tags.${index}`}
+                      InputProps={{
+                        startAdornment: <BsTags className={iconClass} />,
+                      }}
+                      sx={addForm}
+                      placeholder="Enter Tags"
+                    />
+                    <IconButton
+                      color="error"
+                      sx={{
+                        display: watch("tags")?.length > 1 ? "flex" : "none",
+                        width: "fit-content",
+                        borderRadius: "8px",
+                      }}
+                      onClick={() => remove(index)}
+                    >
+                      <CgClose />
+                    </IconButton>
+                  </Grid>
+                ))
+              : null}
+
+            <Grid
+              item
+              xs={12}
+              sx={{ mt: 2 }}
+              display="flex"
+              justifyContent="flex-end"
+            >
+              <button
+                onClick={() => {
+                  append("");
+                }}
+                type="button"
+                className=" text-white font-medium justify-center w-32 bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
+              >
+                <span>
+                  <CgAdd />
+                </span>
+                <span>Add Tag</span>
+              </button>
+            </Grid>
+          </Grid>
+
+          {/* <RHFTextField
+            placeholder="Leads"
+            InputProps={{
+              startAdornment: <SiGoogleads className={iconClass} />,
+            }}
+            sx={{mt:2,...addForm}}
+            name="numOfLeads"
+            type="number"
+          /> */}
           <button
             type="submit"
             disabled={deleteLoading}
@@ -286,8 +400,8 @@ const Orders = () => {
   );
 };
 
-Orders.getLayout = function getLayout(page: ReactElement) {
+Plans.getLayout = function getLayout(page: ReactElement) {
   return <DashBoardLayout Navbar={AdminsideNav}>{page}</DashBoardLayout>;
 };
 
-export default Orders;
+export default Plans;

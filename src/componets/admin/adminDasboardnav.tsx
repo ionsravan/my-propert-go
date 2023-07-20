@@ -15,11 +15,11 @@ import {
 } from "react-icons/ai";
 import { RiUser3Line } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
-import { MdOutlineApartment } from "react-icons/md";
+import { MdOutlineApartment, MdSubscriptions } from "react-icons/md";
 import { LucideProps } from "lucide-react";
 import { AdminNavbarIcons } from "./adminIcons";
 import { BsHouse } from "react-icons/bs";
-import { GiHouse } from "react-icons/gi";
+import { GiBuyCard, GiHouse } from "react-icons/gi";
 
 const Avtar = () => {
   return (
@@ -99,8 +99,15 @@ const AdminsideNav = () => {
       <Link href={"/admin/orders"}>
         <SideNavItem
           name="Orders"
-          Icon={AdminNavbarIcons.compnies}
+          Icon={GiBuyCard}
           isActive={isNavLinkActive("/admin/orders")}
+        />
+      </Link>
+      <Link href={"/admin/plans"}>
+        <SideNavItem
+          name="Plans"
+          Icon={MdSubscriptions}
+          isActive={isNavLinkActive("/admin/plans")}
         />
       </Link>
       <Link href={"/admin/property"}>
