@@ -136,7 +136,7 @@ export const addProperty = async (
 };
 
 const AgentDashBoard = () => {
-  const { data, error } = useFetch<response<Agent>>("/agent/property");
+  const { data, error } = useFetch<response<Agent>>("/user/property");
 
   const { setAgentId } = useAppContext();
   useEffect(() => {

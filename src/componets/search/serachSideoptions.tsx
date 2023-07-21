@@ -490,6 +490,29 @@ const PropertiesFilter = ({
   );
 };
 
+
+const useFetchAreasAndAms = (query: string) => {
+  const [areas, setAreas] = useState<response<area[]> | null>(null);
+  const [ams, setAms] = useState<response<amenity[]> | null>(null);
+
+  useEffect(() => {
+    const fetchAreas = async () => {
+      const response =  useFetch<response<area[]>>(`/property/location/getAreaInLocation/${query}`);
+      setAreas(response);
+    };
+
+    const fetchAms = async () => {
+      const response =  useFetch<response<amenity[]>>("/getAllAmenities");
+      setAms(response);
+    };
+
+    fetchAreas();
+    fetchAms();
+  }, [query]);
+
+  return { areas, ams };
+};
+
 interface Props {
   data: Propery[] | undefined | null;
   setData: Dispatch<SetStateAction<Propery[] | undefined | null>>;
@@ -498,18 +521,20 @@ interface Props {
 
 const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   const router = useRouter();
+  const { query, name } = router.query;
+
+
+  const { areas, ams } = useFetchAreasAndAms(query);
+
   if (!router.isReady) {
     return <CustomLoader />;
   }
-  const { query, name } = router.query;
-  const { data: areas, error } = useFetch<response<area[]>>(
-    `/property/location/getAreaInLocation/${query}`
-  );
 
+  // const { data: areas, error } = useFetch<response<area[]>>(
+  //   `/property/location/getAreaInLocation/${query}`
+  // );
 
-
-
-  const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
+  // const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
 
   return (
     <>
