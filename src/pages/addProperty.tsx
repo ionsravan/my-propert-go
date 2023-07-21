@@ -48,6 +48,7 @@ import styles from "../styles/addProperty.module.css";
 import { cx } from "../utills/all";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
+import { availableAmenities } from "src/@global/Data";
 
 const AddProperty = () => {
   const [cookies] = useCookies(["jwtToken"]);
@@ -492,23 +493,23 @@ const AddProperty = () => {
 
   // dfhjdhjhsjhkshfjs
 // dfjsfhs
-  const availableAmenities = [
-    "Drinking Water",
-    "Car Parking",
-    "Lift",
-    "Power Backup",
-    "Intercom",
-    "CCTV Surveillance",
-    "Play Area",
-    "Vastu Complaint",
-    "Solar Water Heaer",
-    "Water Softner Plant",
-    "Munciple Water Connection",
-    "Under Ground Drainage",
-    "Compound wall",
-    "Roads",
-    "Park",
-  ];
+//   const availableAmenities = [
+//     "Drinking Water",
+//     "Car Parking",
+//     "Lift",
+//     "Power Backup",
+//     "Intercom",
+//     "CCTV Surveillance",
+//     "Play Area",
+//     "Vastu Complaint",
+//     "Solar Water Heaer",
+//     "Water Softner Plant",
+//     "Munciple Water Connection",
+//     "Under Ground Drainage",
+//     "Compound wall",
+//     "Roads",
+//     "Park",
+//   ];
 
   const handlePostProperty = async () => {
 
@@ -1925,15 +1926,15 @@ const AddProperty = () => {
                         height: "17px",
                       }}
                       type="checkbox"
-                      checked={amenities.includes(amenity)}
-                      onChange={() => handleAmenityToggle(amenity)}
+                      checked={amenities.includes(amenity.name)}
+                      onChange={() => handleAmenityToggle(amenity.name)}
                     />
                     <label
                       style={{ margin: "0" }}
                       // key={index}
                       className="amenity-checkbox"
                     >
-                      {amenity}
+                      {amenity.name}
                     </label>
                   </div>
                 ))}

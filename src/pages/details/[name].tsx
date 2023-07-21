@@ -40,6 +40,7 @@ import axios from "axios";
 import CustomLoader from "src/componets/shared/Loader";
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
+import {GiLift} from "react-icons/gi";
 const reviewData = [
   {
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
@@ -382,24 +383,32 @@ const Details = () => {
           }}
         >
           <p className="text-xl ">Top Facilities</p>
-          <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-            {data?.result.amenities.map((curElem, index) => (
-              <div
-                key={index}
-                className="px-3 py-1 border bg-gray-50 shadow-sm"
-              >
-                <p className="mt-1 mb-1">{curElem}</p>
-              </div>
-            ))}
-          </div>
+          {/*<div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">*/}
+          {/*  {data?.result.amenities.map((curElem, index) => (*/}
+          {/*    <div*/}
+          {/*      key={index}*/}
+          {/*      className="px-3 py-1 border bg-gray-50 shadow-sm"*/}
+          {/*    >*/}
+          {/*      <p className="mt-1 mb-1">{curElem}</p>*/}
+          {/*    </div>*/}
+          {/*  ))}*/}
+          {/*</div>*/}
 
-          {/* <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-  {data?.result.amenities[0] ? JSON.parse(data.result.amenities[0]).map((curElem: string) => (
-    <div key={curElem} className="px-3 py-1 border bg-gray-50 shadow-sm">
+           <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+  {data?.result.amenities ? JSON.parse(data.result.amenities).map((curElem: string) => {
+      let Icon = availableAmenities?.find((ele: any) => {
+        let name = ele?.name;
+        return name === curElem;
+      });
+     const IconTag = Icon?.icon;
+     console.log(IconTag,"Icon")
+    return (
+    <div key={curElem} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-gray-50 shadow-sm">
+      {IconTag ? <IconTag /> : null}
       <p className="mt-1 mb-1">{curElem}</p>
     </div>
-  )) : null}
-</div> */}
+  ) } ) : null}
+</div>
         </div>
 
         {/* main details content */}
@@ -562,41 +571,48 @@ const Details = () => {
         </section>
 
         {/* amenities */}
-        <Card sx={{ borderRadius: 2 }}>
-          <CardHeader title="Amenities" />
-          <CardContent>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: "repeat(1, 1fr)",
-                sm: "repeat(4, 1fr)",
-              }}
-              sx={{
-                alignItems: "end",
-              }}
-            >
-              {data?.result?.amenities?.map((item, i) => {
-                let Icon = availableAmenities?.find((ele: any) => {
-                  let name = ele?.name;
-                  return name === item;
-                });
-                const IconTag = Icon.icon;
+        {/*<Card sx={{ borderRadius: 2 }}>*/}
+        {/*  <CardHeader title="Amenities" />*/}
+        {/*  <CardContent>*/}
+        {/*    <Box*/}
+        {/*      rowGap={3}*/}
+        {/*      columnGap={2}*/}
+        {/*      display="grid"*/}
+        {/*      gridTemplateColumns={{*/}
+        {/*        xs: "repeat(1, 1fr)",*/}
+        {/*        sm: "repeat(4, 1fr)",*/}
+        {/*      }}*/}
+        {/*      sx={{*/}
+        {/*        alignItems: "end",*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      {data?.result?.amenities?.map((item, i) => {*/}
+        {/*        let Icon = availableAmenities?.find((ele: any) => {*/}
+        {/*          let name = ele?.name;*/}
+        {/*          return name === item;*/}
+        {/*        });*/}
+        {/*        const IconTag = Icon?.icon;*/}
 
-                return (
-                  <div
-                    className="flex justify-start items-center text-black cursor-pointer leading-[32px] "
-                    key={i}
-                  >
-                    <IconTag className="w-[26px] h-[26px] " />
-                    <p className="text-lg text-[1rem] px-3">{item}</p>
-                  </div>
-                );
-              })}
-            </Box>
-          </CardContent>
-        </Card>
+        {/*        return (*/}
+        {/*          <div*/}
+        {/*            className="flex justify-start items-center text-black cursor-pointer leading-[32px] "*/}
+        {/*            key={i}*/}
+        {/*          >*/}
+        {/*            <GiLift className="w-[26px] h-[26px] " />*/}
+        {/*            <p className="text-lg text-[1rem] px-3">{item}</p>*/}
+        {/*          </div>*/}
+        {/*        );*/}
+        {/*      })}*/}
+        {/*      <div*/}
+        {/*          className="flex justify-start items-center text-black cursor-pointer leading-[32px] "*/}
+        {/*          // key={i}*/}
+        {/*      >*/}
+        {/*        <GiLift className="w-[26px] h-[26px] " />*/}
+        {/*        <p className="text-lg text-[1rem] px-3">Lift</p>*/}
+        {/*      </div>*/}
+        {/*    </Box>*/}
+        {/*  </CardContent>*/}
+        {/*</Card>*/}
 
         <p style={{ margin: "0" }}>
           <span style={{ fontSize: "20px", marginRight: "15px" }}>

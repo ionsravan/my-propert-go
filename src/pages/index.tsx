@@ -16,7 +16,7 @@ import { HomeChip, homeChipsData } from "src/componets/Home/header";
 import MediumHouseCard from "src/componets/HousCard/MediumHomeCard";
 import Tour from "src/componets/Home/Tour";
 import { useFetch } from "src/lib/hooks/useFetch";
-import { Propery, ProperyRes, ProperyResArr } from "src/@types";
+import { Propery, ProperyRes, ProperyResArr,response } from "src/@types";
 import Layout from "src/Layout/main";
 import { ReactElement, useEffect, useRef } from "react";
 import { useState } from "react";
@@ -183,12 +183,15 @@ export default function Home() {
   }, [Filtred]);
 
 
+  if(toggleData){
+    console.log(toggleData,"toggle")
+  }
+
   useEffect(() => {
     console.log('costFiltred:', costFiltred);
     console.log('featuredFiltred:', featuredFiltred);
     console.log('toggleData:', toggleData);
-  }, [costFiltred]);
-
+  }, [Filtred]);
 
 
   return (
@@ -397,39 +400,97 @@ export default function Home() {
       </section>
 
 
-      <section className=" py-16">
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-between">
-            <HomeSectionTitle text="Projects" />
-            <div className="hidden md:flex space-x-4 ">
-              <button
-                onClick={() => scrollLeft("toggle")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronLeft />
-              </button>
-              <button
-                onClick={() => scrollRight("toggle")}
-                className="p-2 m-2 rounded-full bg-white"
-              >
-                <FiChevronRight />
-              </button>
-            </div>
-          </div>
-          {data && (
-            <div
-              id="toggle"
-              className="flex overflow-hidden space-x-6 py-10"
-            >
-              <CardCarousel
-                id="toggle"
-                data={toggleData}
-                Card={MediumHouseCard}
-              />
-            </div>
-          )}
+      {/*<section className=" py-16">*/}
+      {/*  <div className="max-w-7xl mx-auto px-5 md:px-10 ">*/}
+      {/*    <div className="w-full flex items-center justify-between">*/}
+      {/*      <HomeSectionTitle text="Projects" />*/}
+      {/*      <div className="hidden md:flex space-x-4 ">*/}
+      {/*        <button*/}
+      {/*          onClick={() => scrollLeft("toggle")}*/}
+      {/*          className="p-2 m-2 rounded-full bg-white"*/}
+      {/*        >*/}
+      {/*          <FiChevronLeft />*/}
+      {/*        </button>*/}
+      {/*        <button*/}
+      {/*          onClick={() => scrollRight("toggle")}*/}
+      {/*          className="p-2 m-2 rounded-full bg-white"*/}
+      {/*        >*/}
+      {/*          <FiChevronRight />*/}
+      {/*        </button>*/}
+      {/*      </div>*/}
+      {/*    </div>*/}
+      {/*    {data && (*/}
+      {/*      <div*/}
+      {/*        id="toggle"*/}
+      {/*        className="flex overflow-hidden space-x-6 py-10"*/}
+      {/*      >*/}
+      {/*        <CardCarousel*/}
+      {/*          id="toggle"*/}
+      {/*          data={toggleData}*/}
+      {/*          Card={MediumHouseCard}*/}
+      {/*        />*/}
+      {/*      </div>*/}
+      {/*    )}*/}
+      {/*  </div>*/}
+      {/*</section>*/}
+
+      <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
+        <HomeSectionTitle text="Projects" />
+        <div className="relative space-x-4 pt-10 ">
+          <Carousel
+              ssr
+              partialVisbile
+              itemClass="image-item"
+              responsive={responsive}
+              autoPlay={true}
+              swipeable={true}
+              draggable={true}
+              infinite={true}
+              transitionDuration={4000}
+          >
+            {toggleData ? (
+                toggleData.map((property, i) => <Slider key={i} property={property} />)
+            ) : (
+                <p>Loading...</p>
+            )}
+          </Carousel>
         </div>
       </section>
+
+
+
+
+
+      {/*<section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">*/}
+      {/*  <HomeSectionTitle text="Our Products" />*/}
+      {/*  <div className="relative space-x-4 pt-10 ">*/}
+      {/*    <Carousel*/}
+      {/*        ssr*/}
+      {/*        partialVisbile*/}
+      {/*        itemClass="image-item"*/}
+      {/*        responsive={responsive}*/}
+      {/*        autoPlay={true}*/}
+      {/*        swipeable={true}*/}
+      {/*        draggable={true}*/}
+      {/*        infinite={true}*/}
+      {/*        transitionDuration={4000}*/}
+      {/*    >*/}
+      {/*      {costFiltred ? (*/}
+      {/*          costFiltred.map((property, i) => <Slider key={i} property={property} />)*/}
+      {/*      ) : (*/}
+      {/*          <p>Loading...</p>*/}
+      {/*      )}*/}
+      {/*    </Carousel>*/}
+      {/*  </div>*/}
+      {/*</section>*/}
+
+
+
+
+
+
+
+
 
       <section className="py-2">
         <p className="max-w-7xl mx-auto px-5 md:px-10 text-xl">Why Wonderplots ?</p>
@@ -483,26 +544,26 @@ export default function Home() {
       <Stats />
       <Process />
       <TestiMonials />
-      <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
-        <HomeSectionTitle text="Our Products" />
-        <div className="relative space-x-4 pt-10 ">
-          <Carousel
-            ssr
-            partialVisbile
-            itemClass="image-item"
-            responsive={responsive}
-            autoPlay={true}
-            swipeable={true}
-            draggable={true}
-            infinite={true}
-            transitionDuration={4000}
-          >
-            {images?.map((image,i) => {
-              return <Slider key={i} images={image.images} />;
-            })}
-          </Carousel>
-        </div>
-      </section>
+      {/*<section style={{border:"2px solid red"}} className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">*/}
+      {/*  <HomeSectionTitle text="Our Products" />*/}
+      {/*  <div className="relative space-x-4 pt-10 ">*/}
+      {/*    <Carousel*/}
+      {/*      ssr*/}
+      {/*      partialVisbile*/}
+      {/*      itemClass="image-item"*/}
+      {/*      responsive={responsive}*/}
+      {/*      autoPlay={true}*/}
+      {/*      swipeable={true}*/}
+      {/*      draggable={true}*/}
+      {/*      infinite={true}*/}
+      {/*      transitionDuration={4000}*/}
+      {/*    >*/}
+      {/*      {images?.map((image,i) => {*/}
+      {/*        return <Slider key={i} images={image.images} />;*/}
+      {/*      })}*/}
+      {/*    </Carousel>*/}
+      {/*  </div>*/}
+      {/*</section>*/}
     </>
   );
 }

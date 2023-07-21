@@ -13,7 +13,7 @@ import {
   AiOutlineMore,
 } from "react-icons/ai";
 import { Agent, response } from "src/@types";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import AdminsideNav from "../../componets/user/adminDasboardnav";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { Menu } from "@headlessui/react";

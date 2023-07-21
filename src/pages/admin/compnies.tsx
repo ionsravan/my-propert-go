@@ -8,7 +8,7 @@ import {
 } from "react-icons/ai";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { TbEdit } from "react-icons/tb";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import AdminsideNav from "../../componets/user/adminDasboardnav";
 
 const Card = ({
   name,

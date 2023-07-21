@@ -1,11 +1,14 @@
 import React from "react";
+import { Propery, ProperyRes, ProperyResArr,response } from "src/@types";
 
-const Slider = ({ images }: { images: string }) => {
+
+const Slider = ({ property }: { property: Propery }) => {
+  const { propertyImages, name, location,cost,address } = property;
   return (
     <div>
       <div className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
         <div className="resfeaturedProjectsCard__imageBox imgHover">
-          <img className="lazyLoadImg" src={images} alt="Lumbini Elysee" />
+          <img className="lazyLoadImg" src={propertyImages && propertyImages.length > 0 ? propertyImages[0] : "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60" }alt="Lumbini Elysee" />
           <div className="resfeaturedProjectsCard__featuredLarge">
             <div className="fp_homepage__badges__featuredRegular">
               <div>Featured</div>
@@ -42,12 +45,12 @@ const Slider = ({ images }: { images: string }) => {
             href="https://www.99acres.com/lumbini-elysee-financial-district-hyderabad-npxid-r406584"
             target="_blank"
           >
-            <div className="list_header_bold spacer8 f16">Lumbini Elysee</div>
+            <div className="list_header_bold spacer8 f16">{name}</div>
           </a>
           <div className="input_placeholder_inactive_resFP spacer16 f14">
-            3,4 BHK Apartment, Financial District, Hyderabad
+            {address}
           </div>
-          <div className="list_header_semiBold f16">₹ 1.95 - 3.9 Cr </div>
+          <div className="list_header_semiBold f16">₹ {cost}Cr </div>
         </div>
       </div>
     </div>

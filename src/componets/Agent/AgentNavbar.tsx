@@ -1,7 +1,7 @@
 import { LucideProps } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AdminNavbarIcons } from "../admin/adminIcons";
+import { AdminNavbarIcons } from "../user/adminIcons";
 
 // sideNavItem
 interface SideNavItemProps {

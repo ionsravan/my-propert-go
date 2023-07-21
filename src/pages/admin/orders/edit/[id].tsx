@@ -5,7 +5,7 @@ import { AiOutlineMail, AiOutlineNumber, AiOutlineUser } from "react-icons/ai";
 import { MdArrowBack } from "react-icons/md";
 import { CustomerValuesProps, User } from "src/@types";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import AdminsideNav from "../../../../componets/user/adminDasboardnav";
 import CustomLoader from "src/componets/shared/Loader";
 import FormProvider from "src/componets/shared/RHF/FormProvider";
 import RHFTextField from "src/componets/shared/RHF/RHFTextField";
@@ -98,7 +98,7 @@ const EditOrders = () => {
       if (res.data) {
         toast.success("Customer updated Successfully");
         setLoading(false);
-        router.push("/admin/customers");
+        router.push("/user/customers");
       }
     } catch (e) {
       setLoading(false);
@@ -116,7 +116,7 @@ const EditOrders = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/admin/customers")}
+            onClick={() => router.push("/user/customers")}
             className=" text-black font-medium justify-center w-full bg-white rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>

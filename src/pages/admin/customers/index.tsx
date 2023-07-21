@@ -18,8 +18,8 @@ import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
 import { location, newResponse, Pagination, response, User } from "src/@types";
-import { AdminCustomers } from "src/componets/admin/adminCustomer";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import { AdminCustomers } from "../../../componets/user/adminCustomer";
+import AdminsideNav from "../../../componets/user/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
@@ -182,7 +182,7 @@ const Customers = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/admin/customers/add")}
+            onClick={() => router.push("/user/customers/add")}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>

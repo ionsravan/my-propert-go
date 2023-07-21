@@ -14,7 +14,12 @@ import {
   AiOutlineUserSwitch,
 } from "react-icons/ai";
 import { RiUser3Line } from "react-icons/ri";
+import { BiSupport } from "react-icons/bi";
 import { MdOutlineApartment } from "react-icons/md";
+import { LucideProps } from "lucide-react";
+import { AdminNavbarIcons } from "./adminIcons";
+import { BsHouse } from "react-icons/bs";
+import { GiHouse } from "react-icons/gi";
 
 const Avtar = () => {
   return (
@@ -57,47 +62,77 @@ const SideNavItem = ({ name, Icon, isActive }: SideNavItemProps) => {
   );
 };
 
-const SideNav = () => {
+const AdminsideNav = () => {
   const router = useRouter();
+
+  const handleURLQueries = (item: string) => {
+    if (item) {
+      return router.asPath.includes(item);
+    }
+  };
+
+  const isNavLinkActive = (item: string) => {
+    if (router.pathname === item || handleURLQueries(item)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className="w-full overflow-hidden  font-manrope">
       <h1 className="text-xl text-black font-bold pl-7 pb-9">My Property Go</h1>
-      <Link href={"/company"}>
+      <Link href={"/user"}>
         <SideNavItem
           name="Dashboard"
-          Icon={AiOutlineHome}
-          isActive={router.pathname == "/company"}
+          Icon={AdminNavbarIcons.home}
+          isActive={router.pathname == "/user"}
         />
       </Link>
-      <Link href={"/company/mypostings"}>
+      <Link href={"/user/customers"}>
         <SideNavItem
-          name="My Posting"
-          Icon={AiOutlineUserSwitch}
-          isActive={
-            router.pathname == "/company/mypostings" ||
-            router.pathname == "/company/mypostings/edit"
-          }
+          name="Customer"
+          Icon={AdminNavbarIcons.customer}
+          isActive={isNavLinkActive("/user/customers")}
         />
       </Link>
-      <Link href={"/company/buyers"}>
+      <Link href={"/user/orders"}>
         <SideNavItem
-          name="Buyers"
-          Icon={RiUser3Line}
-          isActive={
-            router.pathname == "/company/buyers" ||
-            router.pathname == "/company/mypostings/apartments"
-          }
+          name="Orders"
+          Icon={AdminNavbarIcons.compnies}
+          isActive={isNavLinkActive("/user/orders")}
+        />
+      </Link>
+      <Link href={"/user/property"}>
+        <SideNavItem
+          name="Properties"
+          Icon={AdminNavbarIcons.compnies}
+          isActive={isNavLinkActive("/user/property")}
+        />
+      </Link>
+      {/* <Link href={"/user/broker"}>
+        <SideNavItem
+          name="Brokers"
+          Icon={AdminNavbarIcons.brokers}
+          isActive={isNavLinkActive("/user/broker")}
         />
       </Link>
       <Link href={"/user/compnies"}>
         <SideNavItem
-          name="My Profile"
-          Icon={MdOutlineApartment}
-          isActive={router.pathname == "/user/compnies"}
+          name="Companies"
+          Icon={AdminNavbarIcons.compnies}
+          isActive={isNavLinkActive("/user/compnies")}
+        />
+      </Link> */}
+      <Link href={"/user/tickets"}>
+        <SideNavItem
+          name="Tickets"
+          Icon={BiSupport}
+          isActive={isNavLinkActive("/user/tickets")}
         />
       </Link>
     </div>
   );
 };
 
-export default SideNav;
+export default AdminsideNav;

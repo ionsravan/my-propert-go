@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
 import { MdArrowBack } from "react-icons/md";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import AdminsideNav from "../../../componets/user/adminDasboardnav";
 
-import AddEditCustomer from "src/componets/admin/AddEditCustomer";
+import AddEditCustomer from "../../../componets/user/AddEditCustomer";
 
 const AddCustomer = () => {
   const router = useRouter();
@@ -16,7 +16,7 @@ const AddCustomer = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/admin/customers")}
+            onClick={() => router.push("/user/customers")}
             className=" text-black font-medium justify-center w-full bg-white rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>

@@ -50,7 +50,6 @@ export type Propery = {
   amenities: string[];
   createdAt: string;
   featured: boolean;
-  toggle: string;
 };
 export type ProperyFilter = {
   size: string;

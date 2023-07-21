@@ -20,7 +20,7 @@ import {
   ticketUpdate,
   User,
 } from "src/@types";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import AdminsideNav from "../../../componets/user/adminDasboardnav";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useAxios } from "src/utills/axios";
 
@@ -184,7 +184,7 @@ const TIcketsManagement = () => {
       ),
     },
   ];
-  // router.post("/admin/ticket/changeTicketStatus", adminAuthMiddleware,changeTicketStatus);
+  // router.post("/user/ticket/changeTicketStatus", adminAuthMiddleware,changeTicketStatus);
 
   async function onSubmit(data: ticketUpdate) {
     try {
