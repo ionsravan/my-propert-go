@@ -50,10 +50,10 @@ export const Button = ({
   );
 };
 
-const userTypes = ["All", "Premium"];
+const userTypes = ["All", "Projects"];
 
 // give main area a max widht
-const Orders = () => {
+const Property = () => {
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -73,11 +73,14 @@ const Orders = () => {
   const router = useRouter();
 
   async function getAllUsers() {
+    let pr = selected === "All" ? false : true;
     try {
       setLoading(true);
-      const res = await instance.get(`/admin/user/getAllUsers`);
+      const res = await instance.get(
+        `/property/getAllProperties?search=${name || ""}`
+      );
       if (res.data) {
-        setUsers(res?.data?.data);
+        setUsers(res?.data?.result);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }
@@ -89,7 +92,7 @@ const Orders = () => {
 
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [selected, name]);
 
   async function deleteCustomer() {
     try {
@@ -175,11 +178,11 @@ const Orders = () => {
       <div className="flex justify-between items-center">
         <div className="mb-5">
           <h1 className="text-[#707EAE] text-[10.4px]">Hello Admin</h1>
-          <h2 className="text-TitleColor font-bold text-3xl">Orders</h2>
+          <h2 className="text-TitleColor font-bold text-3xl">Customers</h2>
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/admin/customers/add")}
+            onClick={() => router.push("/addProperty")}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>
@@ -220,22 +223,6 @@ const Orders = () => {
               value={name}
               onChange={(e) => {
                 setName(e.target.value);
-                if (e.target.value.length > 0) {
-                  setUsers((prev) => {
-                    const filtred = data?.result?.filter((str) => {
-                      return str.name.includes(name);
-                    });
-                    if (filtred !== undefined) {
-                      return filtred;
-                    } else {
-                      return null;
-                    }
-                  });
-                } else {
-                  if (data?.result !== undefined) {
-                    setUsers(data?.result);
-                  }
-                }
               }}
               placeholder="search"
               className="outline-none"
@@ -271,7 +258,6 @@ const Orders = () => {
                 setPageState((old) => ({ ...old, pageSize: newPageSize }))
               }
               sx={tableStyles}
-
             />
           </Card>
         </Grid>
@@ -291,8 +277,8 @@ const Orders = () => {
   );
 };
 
-Orders.getLayout = function getLayout(page: ReactElement) {
+Property.getLayout = function getLayout(page: ReactElement) {
   return <DashBoardLayout Navbar={AdminsideNav}>{page}</DashBoardLayout>;
 };
 
-export default Orders
+export default Property;
