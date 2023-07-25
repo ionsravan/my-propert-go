@@ -216,10 +216,9 @@ const Location = ({
   );
 };
 
-// const LocationsFilter = ({ areas }: { areas: area[] }) => {
-  
-//   const { area, setArea } = useFilterContext();
-//   const isSelected = (name: string) => area.indexOf(name) !== -1;
+const LocationsFilter = ({ areas }: { areas: area[] }) => {
+  const { area, setArea } = useFilterContext();
+  const isSelected = (name:string) => area.indexOf(name) !== -1;
 
 //   return (
 //     <div>

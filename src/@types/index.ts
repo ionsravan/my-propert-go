@@ -157,3 +157,18 @@ export type CustomerValuesProps = {
   mobileNumber: string;
   email: string;
 };
+export type leadsProps = {
+  lead: number;
+};
+export type leadsChangeProps = {
+  leadId: string;
+  newAgentId: string;
+  agentId: string;
+};
+export type plansProps = {
+  numOfLeads: string;
+  name: string;
+  text: string;
+  price: string;
+  tags: string[];
+};
