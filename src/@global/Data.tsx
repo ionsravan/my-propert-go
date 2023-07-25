@@ -7,7 +7,7 @@ import { FcLandscape } from "react-icons/fc";
 import { RiCommunityFill, RiCommunityLine } from "react-icons/ri";
 import { AiOutlineWifi } from "react-icons/ai";
 import { MdLocalParking } from "react-icons/md";
-import { SiAstro } from "react-icons/si";
+// import { SiAstro } from "react-icons/si";
 
 export const availableAmenities = [
   { name: "Swimming Pool", icon: FaSwimmingPool },
@@ -30,7 +30,7 @@ export const availableAmenities = [
   { name: "Gated Community", icon: RiCommunityLine },
   { name: "Wi-Fi Connectivity", icon:AiOutlineWifi },
   { name: "Car Parking", icon: MdLocalParking},
-  { name: "Vastu Compliant", icon: SiAstro },
+  { name: "Vastu Compliant", icon: RiCommunityLine },
   { name: "Senior Citizen Area", icon: "" },
   { name: "Shopping Center", icon: "" },
   { name: "Yoga/Meditation Area", icon: "" },

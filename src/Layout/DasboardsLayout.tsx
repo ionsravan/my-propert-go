@@ -32,7 +32,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
           <div className="p-3 py-6">
             <button
               onClick={() => {
-                setShowModal(!showModal);
+                router.push("/addProperty")
               }}
               className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
             >
@@ -45,7 +45,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
         </div>
 
         <div className="flex px-6 md:px-[50px] relative flex-col w-full overflow-scroll pt-10 h-screen">
-          <div className=" w-full justify-end  md:hidden flex">
+          <div style={{border:"2px solid red"}} className=" w-full justify-end  md:hidden flex">
             <button
               className="text-2xl top-8 "
               onClick={() => {

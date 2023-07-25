@@ -56,6 +56,7 @@ export const useFilterContext = () => {
 export const FilterContextProvder = ({ children }: IContextProps) => {
   const [selected, setSelected] = useState<string[]>([]);
   const [area, setArea] = useState<string[]>([]);
+
   const [BHKconfig, setBHKconfig] = useState("");
   const [availableFor, setAvailableFor] = useState("");
   const [propertyType, setPropertyType] = useState("");
@@ -169,7 +170,7 @@ const SearchAll = () => {
     possession,
   ]);
 
-  console.log("min",min,max)
+  console.log("min", min, max)
 
   return (
     <>
@@ -198,9 +199,8 @@ const SearchAll = () => {
             />
           </div>
           <div
-            className={`absolute z-40 top-0 left-0 transition-all duration-150 ease-in-out  ${
-              open ? "-translate-x-0" : "-translate-x-full"
-            }  border  h-screen overflow-scroll   bg-white w-full shrink  max-w-[290px]  rounded-lg p-4`}
+            className={`absolute z-40 top-0 left-0 transition-all duration-150 ease-in-out  ${open ? "-translate-x-0" : "-translate-x-full"
+              }  border  h-screen overflow-scroll   bg-white w-full shrink  max-w-[290px]  rounded-lg p-4`}
           >
             <SearchSideOptions
               data={PropertyResult}

@@ -50,6 +50,27 @@ export type Propery = {
   amenities: string[];
   createdAt: string;
   featured: boolean;
+  buildingType:string;
+  areaValue:string;
+  areaType:string;
+  floorNo:number;
+  floorCount:number;
+  unitNo:number;
+  // additionalRooms:string[];
+  // furnishingStatus:string[];
+  // possessionStatus:string[];
+  // ageOfProerty:string[];
+  // numOfBathroom:string[];
+  // numOfParking:string[];
+  // view:string[];
+  // city:string;
+  // userType:string;
+  // liftFacility:string;
+  // authority:string[];
+
+
+
+
 };
 export type ProperyFilter = {
   size: string;
@@ -99,7 +120,27 @@ export type Buyer = {
   message: string;
   property: Propery;
   user: User;
+  userId:string;
+  userName:string;
+  userEmail:string;
+  propertyName:string;
 };
+
+export type Tickets = {
+  _id: string;
+  agent: string;
+  message: string;
+  property: Propery;
+  user: User;
+  userId:string;
+  userName:string;
+  userEmail:string;
+  propertyName:string;
+  tittle:string;
+  ticketStatus:string;
+};
+
+
 
 export interface AvailableFor {
   name: string;

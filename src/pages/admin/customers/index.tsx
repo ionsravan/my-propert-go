@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"; 
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -245,18 +245,18 @@ const Customers = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pagination
-              rowsPerPageOptions={[5, 10, 25]}
-              rowCount={pagination?.totalUsers || 0}
-              page={pageState.page - 1}
-              pageSize={pageState.pageSize}
-              paginationMode="server"
-              onPageChange={(newPage: number) => {
-                setPageState((old) => ({ ...old, page: newPage + 1 }));
-              }}
-              onPageSizeChange={(newPageSize: number) =>
-                setPageState((old) => ({ ...old, pageSize: newPageSize }))
-              }
+              // pagination
+              // rowsPerPageOptions={[5, 10, 25]}
+              // rowCount={pagination?.totalUsers || 0}
+              // page={pageState.page - 1}
+              // pageSize={pageState.pageSize}
+              // paginationMode="server"
+              // onPageChange={(newPage: number) => {
+              //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
+              // onPageSizeChange={(newPageSize: number) =>
+              //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+              // }
               sx={tableStyles}
             />
           </Card>

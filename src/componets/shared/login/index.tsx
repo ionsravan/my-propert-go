@@ -33,6 +33,32 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
   const [loading, setLoading] = useState(false);
   const [showError, setSHowError] = useState<boolean>(false);
   const [error, setErorr] = useState<string>("");
+
+
+
+
+
+  // useEffec(() => {
+  //   // Function to handle storing _id in localStorage
+  //   const storeIdInLocalStorage = (id) => {
+  //     localStorage.setItem("userId", id);
+  //   };
+
+  //   // Check if the token is present in cookies, and if so, store the _id in localStorage
+  //   if (cookies && cookies.jwtToken) {
+  //     const token = cookies.jwtToken;
+  //     try {
+  //       // Decode the JWT token manually
+  //       const tokenParts = token.split(".");
+  //       const decodedToken = JSON.parse(atob(tokenParts[1]));
+  //       if (decodedToken && decodedToken._id) {
+  //         storeIdInLocalStorage(decodedToken._id);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error decoding token:", error);
+  //     }
+  //   }
+  // }, [cookies]);
   return (
     <div className="grow  ">
       <Navbar />
@@ -85,6 +111,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
               url,
               setLoading
             );
+            console.log("Login Response:", result);
             if (typeof result == "string") {
               setCookies("jwtToken", result);
               toast("Logged in Successfully", {

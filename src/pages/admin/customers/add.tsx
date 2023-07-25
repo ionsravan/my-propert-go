@@ -2,9 +2,10 @@ import { useRouter } from "next/router";
 import React, { ReactElement } from "react";
 import { MdArrowBack } from "react-icons/md";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import AdminsideNav from "../../../componets/user/adminDasboardnav";
+import AddEditCustomer from "src/componets/admin/AddEditCustomer";
+import AdminsideNav from "src/componets/admin/adminDasboardnav";
 
-import AddEditCustomer from "../../../componets/user/AddEditCustomer";
+
 
 const AddCustomer = () => {
   const router = useRouter();

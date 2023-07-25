@@ -19,12 +19,13 @@ import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
 import { location, newResponse, Pagination, response, User } from "src/@types";
 import { AdminCustomers } from "../../../componets/user/adminCustomer";
-import AdminsideNav from "../../../componets/user/adminDasboardnav";
+// import AdminsideNav from "../../../componets/user/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
+import AdminsideNav from "src/componets/admin/adminDasboardnav";
 
 export const Button = ({
   name,

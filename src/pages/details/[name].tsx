@@ -40,7 +40,7 @@ import axios from "axios";
 import CustomLoader from "src/componets/shared/Loader";
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
-import {GiLift} from "react-icons/gi";
+import { GiLift } from "react-icons/gi";
 const reviewData = [
   {
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
@@ -374,48 +374,12 @@ const Details = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            padding: "15px",
-            boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
-            paddingBottom: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <p className="text-xl ">Top Facilities</p>
-          {/*<div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">*/}
-          {/*  {data?.result.amenities.map((curElem, index) => (*/}
-          {/*    <div*/}
-          {/*      key={index}*/}
-          {/*      className="px-3 py-1 border bg-gray-50 shadow-sm"*/}
-          {/*    >*/}
-          {/*      <p className="mt-1 mb-1">{curElem}</p>*/}
-          {/*    </div>*/}
-          {/*  ))}*/}
-          {/*</div>*/}
-
-           <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-  {data?.result.amenities ? JSON.parse(data.result.amenities).map((curElem: string) => {
-      let Icon = availableAmenities?.find((ele: any) => {
-        let name = ele?.name;
-        return name === curElem;
-      });
-     const IconTag = Icon?.icon;
-     console.log(IconTag,"Icon")
-    return (
-    <div key={curElem} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-gray-50 shadow-sm">
-      {IconTag ? <IconTag /> : null}
-      <p className="mt-1 mb-1">{curElem}</p>
-    </div>
-  ) } ) : null}
-</div>
-        </div>
 
         {/* main details content */}
         <section className="space-y-10">
           <div className="relative w-full overflow-hidden flex justify-center items-center space-x-2">
             {data?.result?.propertyImages &&
-            data.result.propertyImages.length > 0 ? (
+              data.result.propertyImages.length > 0 ? (
               data.result.propertyImages.slice(0, 2).map((img) => (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
                   <Image
@@ -442,13 +406,12 @@ const Details = () => {
           <div className="w-full">
             {cookies?.jwtToken ? (
               <button
-                className={`bg-${
-                  buttonColor ? "current" : "primaryBlue"
-                } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
+                className={`bg-${buttonColor ? "current" : "primaryBlue"
+                  } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
               >
                 <MyMsg
                   data={data}
-                  text="Get in Comfort"
+                  text="Get in Contact"
                   onApiCall={handleApiCall}
                 />
               </button>
@@ -468,6 +431,39 @@ const Details = () => {
               />
             </MyModal>
           )}
+
+
+          <div
+            style={{
+              padding: "15px",
+              boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+              paddingBottom: "20px",
+              borderRadius: "8px",
+            }}
+          >
+            <p className="text-xl ">Top Facilities</p>
+
+            <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+              {data?.result.amenities ? JSON.parse(data.result.amenities).map((curElem: string) => {
+                let Icon = availableAmenities?.find((ele: any) => {
+                  let name = ele?.name;
+                  return name === curElem;
+                });
+                const IconTag = Icon?.icon;
+                console.log(IconTag, "Icon")
+                return (
+                  <div key={curElem} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-gray-50 shadow-sm">
+                    {IconTag ? <IconTag /> : null}
+                    <p className="mt-1 mb-1">{curElem}</p>
+                  </div>
+                )
+              }) : null}
+            </div>
+          </div>
+
+
+
+
           <div
             style={{
               padding: "15px",

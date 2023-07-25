@@ -10,6 +10,7 @@ import "react-multi-carousel/lib/styles.css";
 import "../styles/addProperty.css";
 
 
+
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
 };

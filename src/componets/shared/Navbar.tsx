@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useCookies } from "react-cookie";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { FaUserAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const Nav = () => {
@@ -25,10 +26,10 @@ const Nav = () => {
       name: "Post Property",
       link: "/addProperty",
     },
-    {
-      name: "Sign up",
-      link: "/signup",
-    },
+    // {
+    //   name: "Sign up",
+    //   link: "/signup",
+    // },
   ];
 
 
@@ -52,29 +53,29 @@ const Nav = () => {
           </Link>
         );
       })}
-      {/* {cookies?.jwtToken === undefined ? (
+      {cookies?.jwtToken === undefined ? (
         <button
-          onClick={() => router.push("/login")}
+          onClick={() => router.push("/signup")}
           className={`${
             router?.pathname == "/"
               ? "bg-white text-primaryBlue"
               : "bg-primaryBlue text-white"
           } px-6 rounded-full py-2 font-manrope`}
         >
-          Login
+          Sign up
         </button>
       ) : (
         <button
-        onClick={handleLogout}
+        onClick={() => router.push("/agent")}
           className={`${
             router?.pathname == "/"
               ? "bg-white text-primaryBlue"
               : "bg-primaryBlue text-white"
-          } px-6 rounded-full py-2 font-manrope`}
+          } px-2 rounded-full py-2 font-manrope`}
         >
-          Logout
+          <FaUserAlt/>
         </button>
-      )} */}
+      )}
     </nav>
   );
 };

@@ -110,15 +110,19 @@ export const PostingCard = ({
 const PropertyTypes = ["All", "Rent", "Sell", "PG"];
 
 const MyPosting = () => {
-  const { data, status, error } = useFetch<response<Agent>>("/agent/property");
+  const { data, status, error } = useFetch<response<Agent>>("/user/property");
   const [selected, setSelected] = useState(PropertyTypes[0]);
   const [filtredResult, setFiltredResult] = useState<Propery[]>([]);
   console.log(data);
   useEffect(() => {
-    if (data?.result) {
-      setFiltredResult(data?.result.properties);
+    if (data) {
+      setFiltredResult(data?.result);
     }
-  }, [data?.result]);
+  }, [data]);
+
+  if(filtredResult){
+    console.log(filtredResult,"filter")
+  }
 
   return (
     <>
@@ -126,11 +130,12 @@ const MyPosting = () => {
         <div>
           <h2 className="text-black font-bold text-[22px]">My Property</h2>
           <p className="text-[#091E42] text-sm">
-            {data?.result.properties.length} Listings
+            {/* { data ? data?.result.properties.length : 0} Listings */}
+             Listings
           </p>
         </div>
       </div>
-      <div className="space-y-3 md:space-y-0  md:flex justify-between  my-4">
+      {/* <div className="space-y-3 md:space-y-0  md:flex justify-between  my-4">
         <div className="space-x-5">
           {PropertyTypes.map((t) => {
             return (
@@ -180,16 +185,17 @@ const MyPosting = () => {
           <Button name="Filter" Icon={VscListFilter} Color="" />
           <Button name="Search" Icon={AiOutlineSearch} Color="" />
         </div>
-      </div>
-      <h1 className="text-lg text-black">Leads</h1>
+      </div> */}
+
+      {/* <h1 className="text-lg text-black">Leads</h1> */}
       <div className="flex space-x-[17px] mt-6 mb-8">
-        <Card name="Properties" Value={18} />
-        <Card name="On Discussion" Value={8} />
-        <Card name="Views" Value={"130k"} />
+        <Card name="Properties" Value={filtredResult.length} />
+        {/* <Card name="On Discussion" Value={8} /> */}
+        {/* <Card name="Views" Value={"130k"} /> */}
       </div>
 
-      <PostingByDeveloper />
-      <div className="w-full space-y-5   scrollbar-hide mb-8">
+      {/* <PostingByDeveloper /> */}
+      {/* <div className="w-full space-y-5   scrollbar-hide mb-8">
         {selected !== "All" && filtredResult.length == 0 ? (
           <>0 Results found for {selected}</>
         ) : (
@@ -207,7 +213,19 @@ const MyPosting = () => {
             </>
           );
         })}
-      </div>
+      </div> */}
+      <div className="w-full space-y-5   scrollbar-hide mb-8">
+
+      {filtredResult?.length > 0 ? (
+              filtredResult.map((curElem) => {
+                return <PostingCard key={curElem._id}  {...curElem} />;
+              })
+            ) : (
+              <p> Loading....</p>
+            )}
+
+        </div>
+
     </>
   );
 };

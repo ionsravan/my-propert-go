@@ -1,10 +1,11 @@
 import React from "react";
 import { Propery, ProperyRes, ProperyResArr, response } from "src/@types";
 import Image from 'next/image';
+import Link from "next/link";
 
 
 const Slider = ({ property }: { property: Propery }) => {
-  const { propertyImages, name, location, cost, address } = property;
+  const { propertyImages, name, location, cost, address, _id } = property;
   return (
     <div>
       <div className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
@@ -12,8 +13,8 @@ const Slider = ({ property }: { property: Propery }) => {
           <Image className="lazyLoadImg"
             src={propertyImages && propertyImages.length > 0 ? propertyImages[0] : "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"}
             alt="Lumbini Elysee"
-            width={800} 
-            height={600} 
+            width={800}
+            height={600}
           />
           <div className="resfeaturedProjectsCard__featuredLarge">
             <div className="fp_homepage__badges__featuredRegular">
@@ -46,17 +47,15 @@ const Slider = ({ property }: { property: Propery }) => {
           src="https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt="Lumbini Elysee"
           width={800}
-          height={600} 
+          height={600}
 
         />
         <div className="resfeaturedProjectsCard__contentText pageComponent">
-          <a
-            href="https://www.99acres.com/lumbini-elysee-financial-district-hyderabad-npxid-r406584"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <div className="list_header_bold spacer8 f16">{name}</div>
-          </a>
+          <Link href={`/details/${_id}`}>
+     
+              <div className="list_header_bold spacer8 f16">{name}</div>
+        
+          </Link>
           <div className="input_placeholder_inactive_resFP spacer16 f14">
             {address}
           </div>

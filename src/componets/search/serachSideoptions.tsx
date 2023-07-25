@@ -182,11 +182,12 @@ const Location = ({
 }) => {
   const { area, setArea } = useFilterContext();
 
+  let newArea = [...area]
   return (
     <div
       onClick={() => {
         let newArray: string[] = [];
-        if (!area.includes(name)) {
+        if (!newArea.includes(name)) {
           newArray.push(name);
         } else {
           newArray.splice(newArray.indexOf(name), 1);
@@ -215,29 +216,30 @@ const Location = ({
   );
 };
 
-const LocationsFilter = ({ areas }: { areas: area[] }) => {
-  const { area, setArea } = useFilterContext();
-  const isSelected = (name: string) => area.indexOf(name) !== -1;
+// const LocationsFilter = ({ areas }: { areas: area[] }) => {
+  
+//   const { area, setArea } = useFilterContext();
+//   const isSelected = (name: string) => area.indexOf(name) !== -1;
 
-  return (
-    <div>
-      <h1 className="text-[16px] pb-5">Area</h1>
-      <div className="space-y-3">
-        {areas.map((a: area) => {
-          const checkSelect = isSelected(a.name);
-          return (
-            <Location
-              setEnabled={setArea}
-              enabled={checkSelect}
-              key={a._id}
-              name={a.name}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <h1 className="text-[16px] pb-5">Area</h1>
+//       <div className="space-y-3">
+//         {areas.map((a: area) => {
+//           const checkSelect = isSelected(a.name);
+//           return (
+//             <Location
+//               setEnabled={setArea}
+//               enabled={checkSelect}
+//               key={a._id}
+//               name={a.name}
+//             />
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
 
 const BhkFilter = () => {
   const { BHKconfig, setBHKconfig } = useFilterContext();
@@ -381,10 +383,11 @@ const BudgetFilter = () => {
   }, 2000);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    console.log("newValue", newValue);
-    setValue(newValue as number[]);
-    minDebounced(newValue[0]);
-    maxDebounced(newValue[1]);
+    if (Array.isArray(newValue)) {
+      setValue(newValue);
+      minDebounced(newValue[0]);
+      maxDebounced(newValue[1]);
+    }
   };
 
   return (
@@ -490,29 +493,6 @@ const PropertiesFilter = ({
   );
 };
 
-
-const useFetchAreasAndAms = (query: string) => {
-  const [areas, setAreas] = useState<response<area[]> | null>(null);
-  const [ams, setAms] = useState<response<amenity[]> | null>(null);
-
-  useEffect(() => {
-    const fetchAreas = async () => {
-      const response =  useFetch<response<area[]>>(`/property/location/getAreaInLocation/${query}`);
-      setAreas(response);
-    };
-
-    const fetchAms = async () => {
-      const response =  useFetch<response<amenity[]>>("/getAllAmenities");
-      setAms(response);
-    };
-
-    fetchAreas();
-    fetchAms();
-  }, [query]);
-
-  return { areas, ams };
-};
-
 interface Props {
   data: Propery[] | undefined | null;
   setData: Dispatch<SetStateAction<Propery[] | undefined | null>>;
@@ -521,20 +501,17 @@ interface Props {
 
 const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   const router = useRouter();
+
   const { query, name } = router.query;
+  const { data: areas, error } = useFetch<response<area[]>>(
+    `/property/location/getAreaInLocation/${query}`
+  );
 
-
-  const { areas, ams } = useFetchAreasAndAms(query);
+  const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
 
   if (!router.isReady) {
     return <CustomLoader />;
   }
-
-  // const { data: areas, error } = useFetch<response<area[]>>(
-  //   `/property/location/getAreaInLocation/${query}`
-  // );
-
-  // const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
 
   return (
     <>
@@ -577,9 +554,9 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
           <SidBarItemContainer isBottomBorder>
             <BhkFilter />
           </SidBarItemContainer>
-          <SidBarItemContainer isBottomBorder>
+          {/* <SidBarItemContainer isBottomBorder>
             {areas && <LocationsFilter areas={areas.result} />}
-          </SidBarItemContainer>
+          </SidBarItemContainer> */}
           <SidBarItemContainer isBottomBorder>
             <TypeFilter />
           </SidBarItemContainer>

@@ -83,10 +83,20 @@ const AgentNavbar = () => {
       </Link>
       <Link href={"/agent/buyers"}>
         <SideNavItem
-          name="Buyers"
+          name="Leads"
           Icon={AdminNavbarIcons.customer}
           isActive={
             router.pathname == "/agent/buyers" ||
+            router.pathname == "/agent/mypostings/apartments"
+          }
+        />
+      </Link>
+      <Link href={"/agent/tickets"}>
+        <SideNavItem
+          name="Tickets"
+          Icon={icons.postings}
+          isActive={
+            router.pathname == "/agent/tickets" ||
             router.pathname == "/agent/mypostings/apartments"
           }
         />

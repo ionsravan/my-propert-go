@@ -9,11 +9,20 @@ import {
   IconButton,
   Typography,
   alpha,
+  FadeProps,
+  Breakpoint
 } from "@mui/material";
-import React, { forwardRef } from "react";
+import React, { forwardRef,ReactNode } from "react";
 import { CgClose } from "react-icons/cg";
 
-const Transition = forwardRef(function Transition(props, ref) {
+// const Transition = forwardRef(function Transition(props, ref) {
+//   return <Fade ref={ref} {...props} />;
+// });
+
+const Transition = forwardRef<HTMLDivElement, FadeProps>(function Transition(
+  props,
+  ref
+) {
   return <Fade ref={ref} {...props} />;
 });
 

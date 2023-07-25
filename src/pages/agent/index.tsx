@@ -5,9 +5,10 @@ import React, {
   ReactElement,
   SetStateAction,
   useEffect,
+  useState,
 } from "react";
 import { toast } from "react-toastify";
-import { Agent, location, response, area, AvailableFor } from "src/@types";
+import { Agent, location, response, area, AvailableFor, Propery } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import { useAppContext } from "src/Context/AppContext";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
@@ -25,11 +26,17 @@ const Card = ({ name, Value }: { name: string; Value: number | string }) => {
   );
 };
 
-const SuggestionCard = () => {
+
+interface SuggestionCardProps {
+  propertiesData: Agent; 
+}
+
+const SuggestionCard = ({ propertiesData }: SuggestionCardProps) => {
+  // console.log("PropertiesData inside SuggestionCard:", propertiesData);
   return (
-    <div className="flex flex-col items-center space-y-3  p-5   relative">
-      <div className=" p-1 border-2 border-primaryBlue rounded-full w-max  flex justify-center  ">
-        <div className="h-[86px] w-[86px]  relative rounded-full">
+    <div className="flex flex-col items-center space-y-3 p-5 relative">
+      <div className="p-1 border-2 border-primaryBlue rounded-full w-max flex justify-center">
+        <div className="h-[86px] w-[86px] relative rounded-full">
           <Image
             src={"/home.png"}
             fill
@@ -37,21 +44,26 @@ const SuggestionCard = () => {
             alt="villa4"
           />
         </div>
-        <div className="bg-[#2E5CA0] flex justify-center items-center absolute p-1 px-2  z-20 top-2  ">
+        <div className="bg-[#2E5CA0] flex justify-center items-center absolute p-1 px-2 z-20 top-2">
           <p className="text-white text-xs">9</p>
         </div>
       </div>
-      <div className="text-TitleColor ">
-        <h1 className="text-sm  font-normal">SLV Central Park</h1>
+      <div className="text-TitleColor">
+        <h1 className="text-sm font-normal">{propertiesData.name}</h1>
         <p className="text-[11px] opacity-60 text-[#8993A4]">
-          Whitefield, Banglore
+          {/* {propertiesData.location} */}
         </p>
       </div>
     </div>
   );
 };
 
-export const PostingByDeveloper = () => {
+
+interface PostingByDeveloperProps {
+  propertiesData: Agent[]; // Define the type of 'propertiesData' prop as an array of 'Agent'
+}
+export const PostingByDeveloper = ({ propertiesData }: PostingByDeveloperProps) => {
+  console.log("PropertiesData inside SuggestionCard:", propertiesData);
   return (
     <>
       {" "}
@@ -71,12 +83,14 @@ export const PostingByDeveloper = () => {
             </button>
           </div>
           <div className="flex mt-8 space-x-5 overflow-scroll">
-            <SuggestionCard />
-            <SuggestionCard />
-            <SuggestionCard />
-            <SuggestionCard />
-            <SuggestionCard />
-            <SuggestionCard />
+          {propertiesData?.length > 0 ? (
+              propertiesData.map((curElem) => {
+                return <SuggestionCard key={curElem._id} propertiesData={curElem} />;
+              })
+            ) : (
+              <p> Loading....</p>
+            )}
+
           </div>
         </div>
       </div>
@@ -136,24 +150,32 @@ export const addProperty = async (
 };
 
 const AgentDashBoard = () => {
-  const { data, error } = useFetch<response<Agent>>("/agent/property");
+  const { data, error } = useFetch<response<Agent>>("/user/property");
+  const [propertiesData, setPropertiesData] = useState<Agent[]>([]);
 
   const { setAgentId } = useAppContext();
   useEffect(() => {
     if (data) {
       setAgentId(data?.result?._id);
+      setPropertiesData(data?.result)
     }
   }, [data]);
-  if(data){
-    console.log(data.result,"res")
+  if (data) {
+    console.log(propertiesData, "res")
   }
+
+  // if (!data) {
+  //   setPropertiesData([]);
+  // }
+
   return (
     <>
       <div className="flex justify-between w-full items-center font-manrope">
         <div>
           <h1 className="text-[#707EAE] text-[10.94px]">broker</h1>
           <h2 className="text-TitleColor font-bold text-[26px]">
-            Hello {data?.result?.name}
+            {/* Hello {data?.result?.name} */}
+            Hello
           </h2>
         </div>
       </div>
@@ -170,7 +192,7 @@ const AgentDashBoard = () => {
           <Card name="Views" Value={"130k"} />
         </div>
       </div>
-      <PostingByDeveloper />
+      <PostingByDeveloper propertiesData={propertiesData} />
     </>
   );
 };
