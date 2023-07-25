@@ -14,7 +14,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil, BsTags } from "react-icons/bs";
+import { BsPencil, BsPencilFill, BsTags } from "react-icons/bs";
 import {
   MdDeleteForever,
   MdDescription,
@@ -97,6 +97,7 @@ const Plans = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string>("");
+  const [modalName, setModalName] = useState<string>("Add");
   const [pageState, setPageState] = useState({
     page: 1,
     pageSize: 10,
@@ -150,8 +151,14 @@ const Plans = () => {
   async function onSubmit(data: plansProps) {
     try {
       setDeleteLoading(true);
+      let bodyData = data;
+      let url =
+        modalName === "Add" ? "/admin/plan/addPlan" : "/admin/editPlanElement";
+      if (modalName === "Update") {
+        bodyData._id = deleteId;
+      }
 
-      const res = await instance.post("/admin/plan/addPlan", data);
+      const res = await instance.post(url, data);
       if (res.data) {
         toast.success("Leads Added Successfully");
         setDeleteLoading(false);
@@ -163,6 +170,21 @@ const Plans = () => {
       setDeleteLoading(false);
       console.log(e);
     }
+  }
+  function openEdit(data: any) {
+    setModalName("Update");
+    setDeleteOpen(true);
+    setDeleteId(data?._id);
+    setValue("numOfLeads", data?.numOfLeads || 0);
+    setValue("name", data?.name);
+    setValue("price", data?.price);
+    setValue("text", data?.text);
+    setValue("tags", data?.tags);
+  }
+
+  function closeModal() {
+    reset(defaultValues);
+    setDeleteOpen(false);
   }
 
   const all_plans_columns: GridColDef[] = [
@@ -211,10 +233,38 @@ const Plans = () => {
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
-        <Box display="flex" sx={{flexWrap:"wrap",gap:2}}>
+        <Box display="flex" sx={{ flexWrap: "wrap", gap: 2 }}>
           {row?.tags?.map((item: string, i: number) => (
             <Chip key={i} label={item} />
           ))}
+        </Box>
+      ),
+    },
+    {
+      field: "action",
+      headerName: "ACTION",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Box>
+          <Tooltip title="Edit">
+            <IconButton onClick={() => openEdit(row)} color="primary">
+              <BsPencilFill />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton
+              onClick={() => {
+                // setDeleteId(row?._id);
+                setDeleteOpen(true);
+              }}
+              color="error"
+            >
+              <MdDeleteForever />
+            </IconButton>
+          </Tooltip>
         </Box>
       ),
     },
@@ -231,7 +281,10 @@ const Plans = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => setDeleteOpen(true)}
+            onClick={() => {
+              setModalName("Add");
+              setDeleteOpen(true);
+            }}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>
@@ -255,18 +308,18 @@ const Plans = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pagination={true}
-              rowsPerPageOptions={[5, 10, 25]}
-              rowCount={pagination?.totalUsers || 0}
-              page={pageState.page - 1}
-              pageSize={pageState.pageSize}
-              paginationMode="server"
-              onPageChange={(newPage: number) => {
-                setPageState((old) => ({ ...old, page: newPage + 1 }));
-              }}
-              onPageSizeChange={(newPageSize: number) =>
-                setPageState((old) => ({ ...old, pageSize: newPageSize }))
-              }
+              // pagination={true}
+              // rowsPerPageOptions={[5, 10, 25]}
+              // rowCount={pagination?.totalUsers || 0}
+              // page={pageState.page - 1}
+              // pageSize={pageState.pageSize}
+              // paginationMode="server"
+              // onPageChange={(newPage: number) => {
+              //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
+              // onPageSizeChange={(newPageSize: number) =>
+              //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+              // }
               sx={tableStyles}
             />
           </Card>
@@ -274,10 +327,10 @@ const Plans = () => {
       </Grid>
 
       <Modal
-        title="Add Plan"
+        title={`${modalName} Plan`}
         open={deleteOpen}
         scroll="paper"
-        closeDialog={() => setDeleteOpen(false)}
+        closeDialog={closeModal}
         size="sm"
       >
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -391,7 +444,7 @@ const Plans = () => {
             {deleteLoading ? (
               <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />
             ) : (
-              "Add Lead"
+              `${modalName} Plan`
             )}
           </button>
         </FormProvider>

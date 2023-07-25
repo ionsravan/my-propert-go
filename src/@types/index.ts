@@ -120,10 +120,15 @@ export type CustomerValuesProps = {
 export type leadsProps = {
   lead: number;
 };
+export type leadsChangeProps = {
+  leadId: string;
+  newAgentId: string;
+  agentId: string;
+};
 export type plansProps = {
-  numOfLeads: number;
+  numOfLeads: string;
   name: string;
   text: string;
-  price: number;
+  price: string;
   tags: string[];
 };

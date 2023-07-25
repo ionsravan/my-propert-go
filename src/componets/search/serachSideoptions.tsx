@@ -217,7 +217,7 @@ const Location = ({
 
 const LocationsFilter = ({ areas }: { areas: area[] }) => {
   const { area, setArea } = useFilterContext();
-  const isSelected = (name: string) => area.indexOf(name) !== -1;
+  const isSelected = (name:string) => area.indexOf(name) !== -1;
 
   return (
     <div>
@@ -505,9 +505,6 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   const { data: areas, error } = useFetch<response<area[]>>(
     `/property/location/getAreaInLocation/${query}`
   );
-
-
-
 
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
 

@@ -1,10 +1,12 @@
 import {
   Box,
   Card,
+  Chip,
   CircularProgress,
   Grid,
   IconButton,
   LinearProgress,
+  MenuItem,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -13,8 +15,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil } from "react-icons/bs";
-import { MdDeleteForever } from "react-icons/md";
+import { BsPencil, BsPencilFill } from "react-icons/bs";
+import { MdDeleteForever, MdMoney } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
@@ -42,6 +44,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addForm, iconClass } from "../customers/edit/[id]";
 import { SiGoogleads } from "react-icons/si";
+import Image from "src/componets/shared/Image";
+import { RHFSelect } from "src/componets/shared/RHF/RHFSelect";
 
 const NewCompanyValidationSchema = Yup.object().shape({
   lead: Yup.number().required("Lead count is required"),
@@ -50,6 +54,15 @@ const NewCompanyValidationSchema = Yup.object().shape({
 const defaultValues = {
   lead: "",
 };
+const NewPaidSchema = Yup.object().shape({
+  paid: Yup.boolean().required("Paid is required"),
+});
+
+const defaultValuesPaid = {
+  paid: false,
+};
+
+const userStatusObj = { pending: "primary", paid: "success" };
 
 export const Button = ({
   name,
@@ -81,6 +94,7 @@ const Orders = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string>("");
+  const [edit, setEdit] = useState<boolean>(false);
   const [pageState, setPageState] = useState({
     page: 1,
     pageSize: 10,
@@ -101,6 +115,12 @@ const Orders = () => {
     defaultValues,
   });
 
+  const methodsPaid: any = useForm<leadsProps>({
+    mode: "onChange",
+    resolver: yupResolver(NewPaidSchema),
+    defaultValuesPaid,
+  });
+
   const {
     handleSubmit,
     setValue,
@@ -109,12 +129,19 @@ const Orders = () => {
     formState: { errors, isSubmitting, isValid },
   } = methods;
 
+  const {
+    handleSubmit: handleSubmitPaid,
+    setValue: setValuePaid,
+    reset: resetPaid,
+    formState: {},
+  } = methodsPaid;
+
   async function getAllOrders() {
     try {
       setLoading(true);
-      const res = await instance.get(`/admin/user/getAllUsers?confirm=true`);
+      const res = await instance.get(`/admin/getAllOrders`);
       if (res.data) {
-        setUsers(res?.data?.data);
+        setUsers(res?.data?.orders);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }
@@ -149,32 +176,52 @@ const Orders = () => {
     }
   }
 
+  async function onPaidSubmit(data: { lead: number }) {
+    try {
+      setDeleteLoading(true);
+
+      let bodyData = { ...data };
+      bodyData.id = deleteId;
+      const res = await instance.put("/admin/editPlanElement", bodyData);
+      if (res.data) {
+        toast.success("Leads Added Successfully");
+        setDeleteLoading(false);
+        setDeleteOpen(false);
+        setUsers(res?.data?.plans);
+        setValue("paid", false);
+      }
+    } catch (e) {
+      setDeleteLoading(false);
+      console.log(e);
+    }
+  }
+
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.2,
-      field: "name",
+      field: "userName",
       headerName: "USER NAME",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
         <Typography variant="body1" fontWeight={500}>
-          {row?.name}
+          {row?.userName}
         </Typography>
       ),
     },
     {
       flex: 0.2,
-      field: "email",
+      field: "userEmail",
       headerName: "EMAIl",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
-      field: "mobileNumber",
-      headerName: "MOBILE",
-      flex: 0.2,
+      field: "planName",
+      headerName: "PLAN NAME",
+      flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
@@ -188,23 +235,72 @@ const Orders = () => {
       disableColumnMenu: true,
     },
     {
-      field: "action",
-      headerName: "ACTION",
+      field: "screenshot",
+      headerName: "SCREENSHOT",
       flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
         <Box>
+          {row?.screenshot?.length > 0 ? (
+            <Image src={row?.screenshot[0]} border={true} zoom={true}></Image>
+          ) : null}
+        </Box>
+      ),
+    },
+    {
+      field: "paid",
+      headerName: "STATUS",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Chip
+          // skin="light"
+          size="small"
+          label={row?.paid ? "paid" : "pending"}
+          color={userStatusObj[row?.paid ? "paid" : "pending"]}
+          sx={{
+            textTransform: "capitalize",
+            "& .MuiChip-label": { lineHeight: "18px" },
+          }}
+        />
+      ),
+    },
+    {
+      field: "action",
+      headerName: "ACTION",
+      flex: 0.15,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Box display="flex" alignItems="center" gap={2}>
           <button
             onClick={() => {
-              setDeleteId(row?._id);
+              setDeleteId(row?.userId);
               setDeleteOpen(true);
+              setEdit(false);
             }}
             className=" text-[#0066FF] font-medium justify-center w-full text-[1rem]  py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             Add Leads
           </button>
+          <Tooltip title="Edit">
+            <IconButton
+              onClick={() => {
+                setDeleteId(row?._id);
+                setDeleteOpen(true);
+                setEdit(true);
+                setValuePaid("paid", row?.paid);
+              }}
+              color="primary"
+            >
+              <BsPencilFill />
+            </IconButton>
+          </Tooltip>
         </Box>
       ),
     },
@@ -233,18 +329,18 @@ const Orders = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pagination
-              rowsPerPageOptions={[5, 10, 25]}
-              rowCount={pagination?.totalUsers || 0}
-              page={pageState.page - 1}
-              pageSize={pageState.pageSize}
-              paginationMode="server"
-              onPageChange={(newPage: number) => {
-                setPageState((old) => ({ ...old, page: newPage + 1 }));
-              }}
-              onPageSizeChange={(newPageSize: number) =>
-                setPageState((old) => ({ ...old, pageSize: newPageSize }))
-              }
+              // pagination
+              // rowsPerPageOptions={[5, 10, 25]}
+              // rowCount={pagination?.totalUsers || 0}
+              // page={pageState.page - 1}
+              // pageSize={pageState.pageSize}
+              // paginationMode="server"
+              // onPageChange={(newPage: number) => {
+              //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
+              // onPageSizeChange={(newPageSize: number) =>
+              //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+              // }
               sx={tableStyles}
             />
           </Card>
@@ -252,35 +348,67 @@ const Orders = () => {
       </Grid>
 
       <Modal
-        title="Add Leads"
+        title={edit ? "Update Status" : "Add Leads"}
         open={deleteOpen}
         closeDialog={() => setDeleteOpen(false)}
         size="sm"
       >
-        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <RHFTextField
-            placeholder="Leads"
-            InputProps={{
-              startAdornment: <SiGoogleads className={iconClass} />,
-            }}
-            sx={addForm}
-            name="lead"
-            type="number"
-          />
-          <button
-            type="submit"
-            disabled={deleteLoading}
-            className={`${
-              deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-            } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+        {edit ? (
+          <FormProvider
+            methods={methodsPaid}
+            onSubmit={handleSubmitPaid(onPaidSubmit)}
           >
-            {deleteLoading ? (
-              <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />
-            ) : (
-              "Add Lead"
-            )}
-          </button>
-        </FormProvider>
+            <RHFSelect
+              placeholder="Paid Status"
+              InputProps={{
+                startAdornment: <MdMoney className={iconClass} />,
+              }}
+              sx={addForm}
+              name="paid"
+            >
+              <MenuItem value={true}>Paid</MenuItem>
+              <MenuItem value={false}>Pending</MenuItem>
+            </RHFSelect>
+            <button
+              type="submit"
+              disabled={deleteLoading}
+              className={`${
+                deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+            >
+              {deleteLoading ? (
+                <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />
+              ) : (
+                "Update Paid Status"
+              )}
+            </button>
+          </FormProvider>
+        ) : (
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <RHFTextField
+              placeholder="Leads"
+              InputProps={{
+                startAdornment: <SiGoogleads className={iconClass} />,
+              }}
+              sx={addForm}
+              name="lead"
+              type="number"
+            />
+            <button
+              type="submit"
+              disabled={deleteLoading}
+              className={`${
+                deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+            >
+              {deleteLoading ? (
+                <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />
+              ) : (
+                "Add Lead"
+              )}
+            </button>
+          </FormProvider>
+        )}
       </Modal>
     </div>
   );

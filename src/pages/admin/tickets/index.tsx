@@ -224,18 +224,18 @@ const TIcketsManagement = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pagination
-              pageSize={pageState.pageSize || 10}
-              rowCount={pagination?.totalUsers || 0}
-              page={pageState.page - 1}
-              paginationMode="server"
-              rowsPerPageOptions={[5, 10, 25]}
-              onPageChange={(newPage: number) => {
-                setPageState((old) => ({ ...old, page: newPage + 1 }));
-              }}
-              onPageSizeChange={(newPageSize: number) =>
-                setPageState((old) => ({ ...old, pageSize: newPageSize }))
-              }
+              // pagination
+              // pageSize={pageState.pageSize || 10}
+              // rowCount={pagination?.totalUsers || 0}
+              // page={pageState.page - 1}
+              // paginationMode="server"
+              // rowsPerPageOptions={[5, 10, 25]}
+              // onPageChange={(newPage: number) => {
+              //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
+              // onPageSizeChange={(newPageSize: number) =>
+              //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+              // }
               sx={tableStyles}
             />
           </Card>

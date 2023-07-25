@@ -20,6 +20,7 @@ import { LucideProps } from "lucide-react";
 import { AdminNavbarIcons } from "./adminIcons";
 import { BsHouse } from "react-icons/bs";
 import { GiBuyCard, GiHouse } from "react-icons/gi";
+import { SiGoogleads } from "react-icons/si";
 
 const Avtar = () => {
   return (
@@ -115,6 +116,13 @@ const AdminsideNav = () => {
           name="Properties"
           Icon={AdminNavbarIcons.compnies}
           isActive={isNavLinkActive("/admin/property")}
+        />
+      </Link>
+      <Link href={"/admin/leads"}>
+        <SideNavItem
+          name="Leads"
+          Icon={SiGoogleads}
+          isActive={isNavLinkActive("/admin/leads")}
         />
       </Link>
       {/* <Link href={"/admin/broker"}>
