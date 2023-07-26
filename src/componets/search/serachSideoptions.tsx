@@ -239,6 +239,7 @@ const LocationsFilter = ({ areas }: { areas: area[] }) => {
 //     </div>
 //   );
 // };
+}
 
 const BhkFilter = () => {
   const { BHKconfig, setBHKconfig } = useFilterContext();
