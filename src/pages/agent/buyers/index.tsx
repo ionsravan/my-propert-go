@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { ReactElement, ReactNode, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 import {
   AiFillStar,
   AiOutlineMail,
@@ -87,7 +87,7 @@ const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userNa
           >
             View
           </button>
-          <button className="text-[#2E7B32]">Reply</button>
+          {/* <button className="text-[#2E7B32]">Reply</button> */}
         </div>
       </div>
       <div className="md:flex justify-between">
@@ -158,15 +158,23 @@ const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userNa
   );
 };
 
-let userId:string = "649ac09732b08547ed03b09a"
+// let userId:string = "649ac09732b08547ed03b09a"
 
 const Buyers = () => {
   // const { data, status } = useFetch<response<Buyer[]>>(
   //   "/agent/property/buyers/getAllBuyers"
   // );
+  const [userId, setUserId] = useState<string | null>(null);
   const { data, status } = useFetch<response<Buyer[]>>(
     `/user/getLeadsByUserId/${userId}`
   );
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
+  }, []);
+
+
   return (
     <>
       <div className="mb-6">
@@ -176,7 +184,7 @@ const Buyers = () => {
         {data?.result.length == 0 && status == FetchState.FETCHED && (
           <p className="text-xl text-black">No Buyers Yet</p>
         )}
-        {status === FetchState.FETCHING && <p>loading....</p>}
+        {status === FetchState.FETCHING && <p> No Data Available</p>}
         {data?.result.map((buyer) => {
           return <MessageCardBuyers {...buyer} key={buyer._id} />;
         })}

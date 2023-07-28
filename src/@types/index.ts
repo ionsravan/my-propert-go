@@ -28,6 +28,7 @@ export type Agent = {
   mobileNumber: number;
   properties: Propery[];
   profilePhoto: string;
+  agentId: string; 
 };
 
 export type Propery = {

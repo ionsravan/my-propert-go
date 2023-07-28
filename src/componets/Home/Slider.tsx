@@ -2,10 +2,12 @@ import React from "react";
 import { Propery, ProperyRes, ProperyResArr, response } from "src/@types";
 import Image from 'next/image';
 import Link from "next/link";
+import { FaRupeeSign } from "react-icons/fa";
+import { HiLocationMarker } from "react-icons/hi";
 
 
 const Slider = ({ property }: { property: Propery }) => {
-  const { propertyImages, name, location, cost, address, _id } = property;
+  const { propertyImages, name, location, cost, address, _id, areaValue, size } = property;
   return (
     <div>
       <div className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
@@ -41,17 +43,17 @@ const Slider = ({ property }: { property: Propery }) => {
           </div>
         </div>
         <div className="resfeaturedProjectsCard__contentBox pageComponent"></div>
-
-        <Image
+        {/* 
+        <Image style={{border:"2px solid red"}}
           className="lazyLoadImg resfeaturedProjectsCard__iconImg"
           src="https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
           alt="Lumbini Elysee"
           width={800}
           height={600}
 
-        />
+        /> */}
         <div className="resfeaturedProjectsCard__contentText pageComponent">
-          <Link href={`/details/${_id}`}>
+          {/* <Link href={`/details/${_id}`}>
      
               <div className="list_header_bold spacer8 f16">{name}</div>
         
@@ -59,7 +61,31 @@ const Slider = ({ property }: { property: Propery }) => {
           <div className="input_placeholder_inactive_resFP spacer16 f14">
             {address}
           </div>
-          <div className="list_header_semiBold f16">₹ {cost}Cr </div>
+          <div className="list_header_semiBold f16">₹ {cost}Cr </div> */}
+
+          <div className="space-y-1 px-3 mt-2 ">
+          <Link href={`/details/${_id}`}>
+            <h1 className="text-2xl font-semibold text-TitleColor">{name}</h1>
+            </Link>
+            <div className="flex justify-between items-end ">
+              <div className="flex flex-col">
+                <p className="flex items-center text-md "><HiLocationMarker style={{ marginRight: "5px" }} />{location.name}</p>
+                <p className="flex items-center text-primaryBlue text-lg">
+                  <FaRupeeSign />
+                  <span className="font-normal ">{cost}</span>
+                </p>
+              </div>
+
+              <div className="flex flex-col mb-2">
+                <p className="flex items-center justify-center   space-x-2 text-right">
+                  {/* <GrStar className="text-yellow-500 text-xl" /> */}
+                  <span className="text-md font-medium mb-1">₹{areaValue}/Sq.Yd</span>
+                </p>
+                <p className="text-xs font-medium ">Area:{size} Sq.Yd</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>

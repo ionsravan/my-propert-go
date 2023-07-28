@@ -35,6 +35,7 @@ type modal = {
   scroll?: "body" | "paper" | undefined;
   id?: string;
   fullScreen?: boolean;
+  closePopup: () => void;
 };
 
 function Modal(props: modal) {

@@ -1,8 +1,15 @@
 import { GrLocation, GrStar } from "react-icons/gr";
 import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
+import {GiLift,GiHandTruck } from "react-icons/gi";
+// import {HiMiniBuildingOffice2 } from "react-icons/hi";
+// import {BiSolidParking } from "react-icons/bi";
+import {MdBathroom } from "react-icons/md";
+// import {BsBuildingFillExclamation } from "react-icons/bs";
+import { FaParking, FaBed, FaBath, FaCar, FaBuilding, FaUser, FaKey, FaHome, FaRuler, FaArrowAltCircleUp } from "react-icons/fa";
 import { useEffect } from "react";
 import {
   CatagoryCard,
+
   Header,
   HomeSectionTitle,
   HouseCard,
@@ -40,7 +47,7 @@ import axios from "axios";
 import CustomLoader from "src/componets/shared/Loader";
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
-import { GiLift } from "react-icons/gi";
+// import { GiLift } from "react-icons/gi";
 const reviewData = [
   {
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
@@ -215,6 +222,18 @@ const ReviewCard = ({ text }: { text: string }) => {
   );
 };
 
+const SpecificationItem = ({ Icon, text, tagName }) => {
+  return (
+    <div style={{ width:"400px",display: "flex", alignItems: "center", justifyContent: "start", margin: "10px 0" }}>
+      <div style={{width:"200px",display: "flex", alignItems: "center", justifyContent: "start"}}>
+      <Icon />
+      <p style={{ margin: "0", marginLeft: "10px" }}>{tagName}:</p>
+      </div>
+      <p style={{ margin: "0", marginLeft: "40px" }}>{text}</p>
+    </div>
+  );
+};
+
 const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -326,37 +345,59 @@ const Details = () => {
                 {data?.result.name}
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
-                <div className="flex items-center space-x-4">
-                  <GrLocation className="text-xl" />
-                  <p className="text-2xl">{data?.result.area.name}</p>
+                <div className="flex items-center justify-center space-x-4">
+                  <GrLocation className="text-2xl" />
+                  <p className="text-2xl m-0">{data?.result.location.name}</p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className=" space-x-2">
                   <p className="flex items-center space-x-2">
-                    <GrStar className="text-2xl text-yellow-300" />
-                    <span className="text-sm md:text-2xl">4.6</span>
+                    {/* <GrStar className="text-2xl text-yellow-300" /> */}
+                    {/* <span className="text-sm md:text-2xl">4.6</span> */}
                   </p>
-                  <p className="text-xs md:text-xl">(23 reviews)</p>
+                  <p className="text-xs md:text-xl">₹{data?.result.areaValue}/Sq.Yd</p>
+
                 </div>
+
+
               </div>
-            </div>
-            {/* save button */}
-            <div
-              style={{ marginTop: "45px" }}
-              className="flex items-center justify-center md:justify-center space-x-8 "
-            >
-              <div className="flex items-center w-full md:w-auto">
-                <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
-                <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
-                  {data?.result.cost}
+
+              <div className="m-0 p-0">
+                <p style={{ margin: "0" }}>
+                  <span style={{ fontSize: "20px", marginRight: "10px" }}>
+                    Address:
+                  </span>{" "}
+                  {data?.result.address}
                 </p>
               </div>
-              <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
-                <FaRegBookmark className="text-red-400" />
-                <p className="mt-1">save</p>
-              </div>
+
             </div>
+
+
+            {/* save button */}
+            <div className="flex flex-col ">
+              <div
+                style={{ marginTop: "45px", }}
+                className="flex items-center justify-center md:justify-center space-x-8 "
+              >
+                <div className="flex items-center w-full md:w-auto">
+                  <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
+                  <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
+                    {data?.result.cost}
+                  </p>
+                </div>
+                <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
+                  <FaRegBookmark className="text-red-400" />
+                  <p className="mt-1">save</p>
+                </div>
+              </div>
+              <p className="text-lg font-medium mt-4 ">Area:{data?.result.size} Sq.Yd</p>
+            </div>
+
           </div>
         </div>
+
+
+
 
         {/* Tags */}
         <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
@@ -431,6 +472,46 @@ const Details = () => {
               />
             </MyModal>
           )}
+
+          <div
+            style={{
+              padding: "15px",
+              boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+              paddingBottom: "20px",
+              borderRadius: "8px",
+            }}
+          >
+            <p className="text-xl ">Specifications</p>
+
+            <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+           <div style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"start"}} className="specificationCotainer">
+            <div className="leftSideContainer">
+
+            <SpecificationItem Icon={FaHome} tagName={"Property Type"} text={data?.result.propertyType} />
+            <SpecificationItem Icon={FaBuilding} tagName={"Building Type"} text={data?.result.buildingType} />
+            <SpecificationItem Icon={FaUser} tagName={"User Type"} text={data?.result?.userType} />
+            <SpecificationItem Icon={FaRegBookmark} tagName={"Available for"} text={data?.result.availableFor} />
+            <SpecificationItem Icon={FaRegBookmark} tagName={"Age of the Property"} text={data?.result.ageOfProperty} />
+            <SpecificationItem Icon={FaRuler} tagName={"Area"} text={data?.result.size} />
+            <SpecificationItem Icon={GiLift} tagName={"Lift Facility"} text={data?.result.liftFacility} />
+            
+
+           
+            </div>
+            <div style={{marginRight:"300px"}} className="rightSideContainer">
+            <SpecificationItem Icon={FaRegBookmark} tagName={"Authority"} text={data?.result.authority} />
+            <SpecificationItem Icon={FaBed} tagName={"BHK Configure"} text={data?.result.BHKconfig} />
+            <SpecificationItem Icon={FaRegBookmark} tagName={"Additional Rooms"} text={data?.result.additionalRooms} />
+            <SpecificationItem Icon={FaRegBookmark} tagName={"Possession Status"} text={data?.result.possessionStatus} />
+            <SpecificationItem Icon={GiHandTruck} tagName={"Furnishing Status"} text={data?.result.furnishingStatus} />
+            <SpecificationItem Icon={FaBed} tagName={"Floor No."} text={data?.result.floorNo} />
+            <SpecificationItem Icon={MdBathroom} tagName={"No. of Bathroom"} text={data?.result.numOfBathroom} />
+            <SpecificationItem Icon={FaParking} tagName={"No. of Parking"} text={data?.result.numOfParking} />
+
+            </div>
+           </div>
+            </div>
+          </div>
 
 
           <div
@@ -612,10 +693,11 @@ const Details = () => {
 
         <p style={{ margin: "0" }}>
           <span style={{ fontSize: "20px", marginRight: "15px" }}>
-            Full Address:
+            Address:
           </span>{" "}
           {data?.result.address}
         </p>
+
         <section>
           <div
             style={{
@@ -644,7 +726,7 @@ const Details = () => {
                 </div>
               </div>
               {similarData && (
-                <div id="feat" className="flex overflow-hidden space-x-6 py-10">
+                <div id="feat" className="flex overflow-hidden w-full">
                   <CardCarousel
                     id="feat"
                     data={similarData}

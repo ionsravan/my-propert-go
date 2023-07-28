@@ -14,6 +14,8 @@ import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 
 interface Props {
   Icon: React.ElementType;
@@ -34,6 +36,8 @@ const ProfileItem = ({ Icon, name, value }: Props) => {
 };
 
 const Profile = () => {
+  const router = useRouter();
+  const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const { data } = useFetch<response<Agent>>("/agent/property");
   const [file, setFile] = useState<any>(null);
   const instance = useAxios();
@@ -61,11 +65,31 @@ const Profile = () => {
     }
   };
 
+  const deleteCookie = (name) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
+
+  const handleLogout = () => {
+    setTimeout(() => {
+      // removeCookie("jwtToken");
+      deleteCookie('jwtToken');
+
+      toast("Logout Succesfully", {
+        position: "bottom-center",
+        type: "success",
+      });
+     
+      router.push("/")
+    }, 1000);
+
+  }
+
   return (
     <>
       <div>
-        <div className="mb-5">
+        <div className="mb-5 flex justify-between">
           <h1 className="text-2xl font-bold text-black">My Profile</h1>
+          <button onClick={handleLogout} className="text-white font-medium  bg-[#0066FF] rounded-full px-5 py-1  transition transform active:scale-95 duration-200">Logout</button>
         </div>
         <div className="h-20 w-20 relative rounded-full">
           <>

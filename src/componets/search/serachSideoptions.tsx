@@ -239,6 +239,7 @@ const LocationsFilter = ({ areas }: { areas: area[] }) => {
 //     </div>
 //   );
 // };
+}
 
 const BhkFilter = () => {
   const { BHKconfig, setBHKconfig } = useFilterContext();
@@ -577,5 +578,7 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
     </>
   );
 };
+
+
 
 export default SearchSideOptions;

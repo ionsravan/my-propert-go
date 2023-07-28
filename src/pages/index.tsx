@@ -538,12 +538,10 @@ export default function Home() {
 
 
 
-
-      {/* <h1>{loc?.[0].name}</h1> */}
-      <Tour />
-      <Stats />
+      {/* <Tour /> */}
+      {/* <Stats /> */}
       <Process />
-      <TestiMonials />
+      {/* <TestiMonials /> */}
       {/*<section style={{border:"2px solid red"}} className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">*/}
       {/*  <HomeSectionTitle text="Our Products" />*/}
       {/*  <div className="relative space-x-4 pt-10 ">*/}

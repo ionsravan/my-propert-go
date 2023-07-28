@@ -221,7 +221,7 @@ const MyPosting = () => {
                 return <PostingCard key={curElem._id}  {...curElem} />;
               })
             ) : (
-              <p> Loading....</p>
+              <p> No Data Available</p>
             )}
 
         </div>
