@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { HiCheckCircle } from "react-icons/hi";
 const OwnerCta = () => {
+  const router = useRouter();
   return (
     <section className="bg-primaryBlue min-h-[500px] w-full flex flex-col justify-center">
       <div className="flex flex-col items-center justify-center space-y-12 h-full max-w-7xl mx-auto py-16">
@@ -8,7 +10,7 @@ const OwnerCta = () => {
           Are you a owner, login now to post your properties
         </h1>
         <Link href="/agent/login">
-          <button className="max-w-max bg-white text-primaryBlue px-10 py-3 rounded-xl active:scale-95 transition duration-200 transform active:bg-gray-100">
+          <button onClick={() => router.push("/signup")} className="max-w-max bg-white text-primaryBlue px-10 py-3 rounded-xl active:scale-95 transition duration-200 transform active:bg-gray-100">
             Get Started
           </button>
         </Link>

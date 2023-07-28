@@ -49,9 +49,11 @@ import { cx } from "../utills/all";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
 import { availableAmenities } from "src/@global/Data";
+import { useRouter } from "next/router";
 
 const AddProperty = () => {
   const [cookies] = useCookies(["jwtToken"]);
+  const router = useRouter();
 
   const [saleActive, setSaleActive] = useState(true);
   const [rentActive, setRentActive] = useState(false);
@@ -94,7 +96,7 @@ const AddProperty = () => {
   const [areaValue, setAreaValue] = useState("2345");
   const [areaValueError, setAreaValueError] = useState("");
 
-  const [areaType, setAreaType] = useState("sqyy");
+  const [areaType, setAreaType] = useState("Sq.Yd");
   const [areaTypeError, setAreaTypeError] = useState("");
 
   const [size, setSize] = useState("4354");
@@ -589,6 +591,8 @@ const AddProperty = () => {
           },
         }
       );
+      toast("Property Added Succesfully")
+      router.push("/agent")
     } catch (error) {
       console.error("Error while adding property:", error);
     }

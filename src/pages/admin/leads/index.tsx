@@ -288,7 +288,7 @@ const Leads = () => {
             name="agentId"
           >
             {users?.map((item: User, i: number) => (
-              <MenuItem value={item?._id}>{item?.name}</MenuItem>
+              <MenuItem key={i} value={item?._id}>{item?.name}</MenuItem>
             ))}
           </RHFSelect>
           <InputLabel sx={{ mt: 2, ml: 1 }}>New Agent</InputLabel>
@@ -302,7 +302,7 @@ const Leads = () => {
             name="newAgentId"
           >
             {users?.map((item: User, i: number) => (
-              <MenuItem value={item?._id}>{item?.name}</MenuItem>
+              <MenuItem key={i} value={item?._id}>{item?.name}</MenuItem>
             ))}
           </RHFSelect>
           <button

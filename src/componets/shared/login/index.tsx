@@ -11,6 +11,7 @@ import { ConnectWithGoogle } from "../LoginWithGoogle";
 import { Navbar } from "../signup/signupNavbar";
 import { SetStateAction } from "jotai";
 import { toast } from "react-toastify";
+import OtpAuthentication from "src/pages/OtpAuthentication";
 
 export interface LoginProps {
   login: (
@@ -35,40 +36,16 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
   const [error, setErorr] = useState<string>("");
 
 
-
-
-
-  // useEffec(() => {
-  //   // Function to handle storing _id in localStorage
-  //   const storeIdInLocalStorage = (id) => {
-  //     localStorage.setItem("userId", id);
-  //   };
-
-  //   // Check if the token is present in cookies, and if so, store the _id in localStorage
-  //   if (cookies && cookies.jwtToken) {
-  //     const token = cookies.jwtToken;
-  //     try {
-  //       // Decode the JWT token manually
-  //       const tokenParts = token.split(".");
-  //       const decodedToken = JSON.parse(atob(tokenParts[1]));
-  //       if (decodedToken && decodedToken._id) {
-  //         storeIdInLocalStorage(decodedToken._id);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error decoding token:", error);
-  //     }
-  //   }
-  // }, [cookies]);
   return (
     <div className="grow  ">
       <Navbar />
-      <div className="py-24 px-12">
+      <div  className="py-14 px-12">
         <div className="space-y-5 text-sm text-gray-500 max-w-[400px]">
           <h1 className="text-3xl lg:text-4xl font-extrabold font-manrope text-black">
             {"Welcome Back !"}
           </h1>
         </div>
-        <div className="space-y-6 max-w-xl py-10">
+        {/* <div className="space-y-6 max-w-xl py-10">
           <p className="text-red-400">{error}</p>
           <Input
             value={email}
@@ -133,9 +110,22 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
           } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out`}
         >
           {loading ? "loading..." : "Login"}
-        </button>
-        <ConnectWithFaceBook />
-        <ConnectWithGoogle />
+        </button> */}
+
+
+        {/* <ConnectWithFaceBook /> */}
+        {/* <ConnectWithGoogle /> */}
+        {/* <button style={{display:"block",margin:"35px 170px"}}
+            className="bg-[#2C5FC3] text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mt-5"
+            onClick={() => router.push("/OtpAuthentication")}
+          >
+            Sign in using Mobile Number
+          </button> */}
+
+          <div className="space-y-6 max-w-xl py-10 mx-11">
+          <OtpAuthentication/>
+          </div>
+          
       </div>
     </div>
   );

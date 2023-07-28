@@ -15,12 +15,15 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { FetchState } from "src/lib/hooks/useFetch";
-import Modal from 'react-modal';
+// import Modal from 'react-modal';
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import Modal from "src/componets/shared/modal";
 
 
-let userId: string = "649ac09732b08547ed03b09a"
+// let userId: string = "649ac09732b08547ed03b09a"
+
+
 
 interface FormData {
   tittle: string;
@@ -73,7 +76,7 @@ const CustomPopup: React.FC = () => {
     } catch (error) {
       console.error("Error while adding property:", error);
     }
- 
+
     setFormData({
       tittle: '',
       message: '',
@@ -91,91 +94,50 @@ const CustomPopup: React.FC = () => {
     }));
   };
 
+  return <>
 
-  return (
-    <>
-      {/* <button  className="popup-trigger">
-        Open Popup
-      </button> */}
-    <button
-        onClick={openPopup}
-        className="flex items-center justify-center px-4 py-2 bg-gray-200 text-white rounded-lg shadow hover:bg-gray-300"
-      >
-        <span className="text-2xl font-bold mr-2">+</span> Add
-      </button>
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-4 w-80">
-            <button
-              className="absolute top-2 right-2 text-gray-500"
-              onClick={closePopup}
-            >
-              close
-            </button>
-            <div className="flex justify-between">
-              <h2 className="text-xl font-bold mb-4">Add Ticket</h2>
-              <button  onClick={closePopup}>
-                x
-              </button>
-            </div>
-            <form>
-              <div className="mb-4">
-                <label htmlFor="tittle" className="block font-bold mb-1">
-                  Title:
-                </label>
-                <input
-                  type="text"
-                  id="tittle"
-                  name="tittle"
-                  value={formData.tittle}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg"
-                  required
-                />
-              </div>
-              {/* <div className="mb-4">
-                <label htmlFor="name" className="block font-bold mb-1">
-                  Name:
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg"
-                  required
-                />
-              </div> */}
-              <div className="mb-4">
-                <label htmlFor="message" className="block font-bold mb-1">
-                  Message:
-                </label>
-                <input
-                  type="text"
-                  id="message"
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border rounded-lg"
-                  required
-                />
-              </div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  onClick={handleFormSubmit}
-                  className="px-4 py-2 bg-gray-500 text-white rounded-lg shadow hover:bg-gray-600"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </>
-  );
+    <form>
+      <div className="mb-4">
+        <label htmlFor="tittle" className="block font-bold mb-1">
+          Title:
+        </label>
+        <input
+          type="text"
+          id="tittle"
+          name="tittle"
+          value={formData.tittle}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-lg"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="message" className="block font-bold mb-1">
+          Message:
+        </label>
+        <input
+          type="text"
+          id="message"
+          name="message"
+          value={formData.message}
+          onChange={handleInputChange}
+          className="w-full px-3 py-2 border rounded-lg"
+          required
+        />
+      </div>
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          style={{ fontWeight: "normal" }}
+          onClick={handleFormSubmit}
+          className="px-4 py-2 bg-[#0066FF] rounded-full text-white  shadow"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+
+  </>
 };
 
 
@@ -190,13 +152,13 @@ const TicketCard = ({ tittle, userEmail, userName, message, ticketStatus }) => {
     <div className="bg-white text-black rounded-lg shadow-lg p-6 mt-5">
       <div className="mb-6">
         <div className="flex justify-between">
-        <p className="text-xl font-bold mb-2">Title: {tittle}</p>
-        <p className="text-lg font-bold">Ticket Status: {ticketStatus}</p>
+          <p className="text-xl font-bold mb-2">Title: {tittle}</p>
+          <p className="text-lg font-bold">Ticket Status: {ticketStatus}</p>
         </div>
 
         <p className="text-lg font-bold mb-2">Name: {userName}</p>
         <p className="text-lg font-bold mb-2">Message: {message}</p>
-      
+
       </div>
     </div>
 
@@ -205,9 +167,16 @@ const TicketCard = ({ tittle, userEmail, userName, message, ticketStatus }) => {
 };
 const Ticket = () => {
 
+  const [userId, setUserId] = useState<string | null>(null);
+
   const { data, status } = useFetch<response<Tickets[]>>(
     `/user/ticket/getTicketByUserId/${userId}`
   );
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
+  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -232,17 +201,30 @@ const Ticket = () => {
       <div className="mb-6">
         <div className="flex justify-between">
           <h1 className="text-[22px] font-bold text-black mb-5">Tickets</h1>
-          <div>
+          {/* <div>
             <CustomPopup/>
-          </div>
+          </div> */}
+          <button className="text-white font-medium justify-center bg-[#0066FF] rounded-full py-0 px-5 flex space-x-2 items-center transition transform active:scale-95 duration-200" onClick={openModal}>
+            <span style={{ marginRight: "5px", fontSize: "1.5rem" }}>+</span> Add
+          </button>
+          <Modal
+            open={isModalOpen}
+            closeDialog={closeModal}
+            title="Add Tickets"
+            size="sm"
+          >
 
+            <CustomPopup closePopup={closeModal} />
+          </Modal>
 
         </div>
 
         <div className="space-y-5">
-          {data?.ticket.map((buyer) => {
-            return <TicketCard {...buyer} key={buyer._id} />;
-          })}
+          {data?.ticket.length > 0 ? (
+            data.ticket.map((buyer) => <TicketCard {...buyer} key={buyer._id} />)
+          ) : (
+            <p>No Tickets Available</p>
+          )}
         </div>
       </div>
     </>

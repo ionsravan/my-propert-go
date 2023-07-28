@@ -16,10 +16,10 @@ const Nav = () => {
       name: "Help",
       link: "/",
     },
-    {
-      name: "Sing up",
-      link: "/signup",
-    },
+    // {
+    //   name: "Sing up",
+    //   link: "/signup",
+    // },
   ];
   return (
     <nav className="flex-grow space-x-4 flex justify-end items-center text-sm">
@@ -30,7 +30,7 @@ const Nav = () => {
           </Link>
         );
       })}
-      <Link href={"/login"}>
+      {/* <Link href={"/login"}>
         <button
           className={`${
             router?.pathname == "/"
@@ -40,7 +40,7 @@ const Nav = () => {
         >
           Login
         </button>
-      </Link>
+      </Link> */}
     </nav>
   );
 };

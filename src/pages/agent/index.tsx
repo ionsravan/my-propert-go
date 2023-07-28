@@ -88,7 +88,7 @@ export const PostingByDeveloper = ({ propertiesData }: PostingByDeveloperProps) 
                 return <SuggestionCard key={curElem._id} propertiesData={curElem} />;
               })
             ) : (
-              <p> Loading....</p>
+              <p> No Data Available</p>
             )}
 
           </div>
@@ -154,12 +154,45 @@ const AgentDashBoard = () => {
   const [propertiesData, setPropertiesData] = useState<Agent[]>([]);
 
   const { setAgentId } = useAppContext();
+  // useEffect(() => {
+  //   if (data?.result) {
+  //     const userId = data?.result?[0].agentId;
+  //     console.log(userId, "userId");
+  //     setAgentId(data?.result?._id);
+  //     setPropertiesData(data?.result)
+  //     // localStorage.setItem("userId", userId);
+  //     console.log(userId, "userId");
+  //   }
+  // }, [data]);
+  // useEffect(() => {
+  //   if (data?.result && data.result.length > 0) {
+  //     const firstAgent = data.result[0];
+  //     const userId = firstAgent.agentId;
+  //     setAgentId(firstAgent._id);
+  //     setPropertiesData(data.result);
+  //     localStorage.setItem("userId", userId);
+  //     console.log(userId, "userId");
+  //   }
+  // }, [data]);
+
+
   useEffect(() => {
-    if (data) {
-      setAgentId(data?.result?._id);
-      setPropertiesData(data?.result)
+    if (data?.result && data.result.length > 0) {
+      const firstAgent = data.result[0];
+      const userId = firstAgent.agentId;
+      setAgentId(firstAgent._id);
+      setPropertiesData(data.result);
+      localStorage.setItem("userId", userId);
+      console.log(userId, "userId");
+    } else {
+      // const defaultUserId = "649ac09732b08547ed03b09a";
+      // localStorage.setItem("userId", defaultUserId);
+      // toast(" No Data Available")
+      // console.log(defaultUserId, "userId (default)");
     }
   }, [data]);
+  
+
   if (data) {
     console.log(propertiesData, "res")
   }

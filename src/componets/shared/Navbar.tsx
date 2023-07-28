@@ -55,14 +55,14 @@ const Nav = () => {
       })}
       {cookies?.jwtToken === undefined ? (
         <button
-          onClick={() => router.push("/signup")}
+          onClick={() => router.push("/login")}
           className={`${
             router?.pathname == "/"
               ? "bg-white text-primaryBlue"
               : "bg-primaryBlue text-white"
           } px-6 rounded-full py-2 font-manrope`}
         >
-          Sign up
+          Login
         </button>
       ) : (
         <button

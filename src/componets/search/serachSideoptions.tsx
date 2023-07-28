@@ -579,4 +579,6 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   );
 };
 
+
+
 export default SearchSideOptions;
