@@ -45,7 +45,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
             {"Welcome Back !"}
           </h1>
         </div>
-        <div className="space-y-6 max-w-xl py-10">
+        {/* <div className="space-y-6 max-w-xl py-10">
           <p className="text-red-400">{error}</p>
           <Input
             value={email}
@@ -110,7 +110,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
           } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out`}
         >
           {loading ? "loading..." : "Login"}
-        </button>
+        </button> */}
 
 
         {/* <ConnectWithFaceBook /> */}
@@ -123,7 +123,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
           </button> */}
 
           <div className="space-y-6 max-w-xl py-10 mx-11">
-          {/* <OtpAuthentication/> */}
+          <OtpAuthentication/>
           </div>
           
       </div>

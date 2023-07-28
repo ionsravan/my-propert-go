@@ -102,9 +102,14 @@ const OtpAuthentication = () => {
                 setShowVerify(true);
                 //   setLoading(false);
             }
-        } catch (e) {
+        } catch (error) {
             // setLoading(false);
-            console.log(e);
+            if (error.response && error.response.status === 400) {
+                const errorMessage = error.response.data.message || "User Already Registered, Try Login ";
+                toast.error(errorMessage);
+            } else {
+                toast.error("An error occurred. Please try again later.");
+            }
         }
 
     };

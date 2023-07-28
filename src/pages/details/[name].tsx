@@ -1,9 +1,9 @@
 import { GrLocation, GrStar } from "react-icons/gr";
 import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
-import {GiLift,GiHandTruck } from "react-icons/gi";
+import { GiLift, GiHandTruck } from "react-icons/gi";
 // import {HiMiniBuildingOffice2 } from "react-icons/hi";
 // import {BiSolidParking } from "react-icons/bi";
-import {MdBathroom } from "react-icons/md";
+import { MdBathroom } from "react-icons/md";
 // import {BsBuildingFillExclamation } from "react-icons/bs";
 import { FaParking, FaBed, FaBath, FaCar, FaBuilding, FaUser, FaKey, FaHome, FaRuler, FaArrowAltCircleUp } from "react-icons/fa";
 import { useEffect } from "react";
@@ -224,15 +224,24 @@ const ReviewCard = ({ text }: { text: string }) => {
 
 const SpecificationItem = ({ Icon, text, tagName }) => {
   return (
-    <div style={{ width:"400px",display: "flex", alignItems: "center", justifyContent: "start", margin: "10px 0" }}>
-      <div style={{width:"200px",display: "flex", alignItems: "center", justifyContent: "start"}}>
-      <Icon />
-      <p style={{ margin: "0", marginLeft: "10px" }}>{tagName}:</p>
+    <div style={{ width: "400px", display: "flex", alignItems: "center", justifyContent: "start", margin: "10px 0" }}>
+      <div style={{ width: "200px", display: "flex", alignItems: "center", justifyContent: "start" }}>
+        <Icon />
+        <p style={{ margin: "0", marginLeft: "10px" }}>{tagName}:</p>
       </div>
       <p style={{ margin: "0", marginLeft: "40px" }}>{text}</p>
     </div>
   );
 };
+
+
+// const propertyImages = [
+//   'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+//   // 'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+//   // 'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+//   // 'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+//   // Add more image URLs here as needed
+// ];
 
 const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -484,34 +493,96 @@ const Details = () => {
             <p className="text-xl ">Specifications</p>
 
             <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-           <div style={{width:"100%",display:"flex",justifyContent:"space-between",alignItems:"start"}} className="specificationCotainer">
-            <div className="leftSideContainer">
+              <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "start" }} className="specificationCotainer">
+                <div className="leftSideContainer">
 
-            <SpecificationItem Icon={FaHome} tagName={"Property Type"} text={data?.result.propertyType} />
-            <SpecificationItem Icon={FaBuilding} tagName={"Building Type"} text={data?.result.buildingType} />
-            <SpecificationItem Icon={FaUser} tagName={"User Type"} text={data?.result?.userType} />
-            <SpecificationItem Icon={FaRegBookmark} tagName={"Available for"} text={data?.result.availableFor} />
-            <SpecificationItem Icon={FaRegBookmark} tagName={"Age of the Property"} text={data?.result.ageOfProperty} />
-            <SpecificationItem Icon={FaRuler} tagName={"Area"} text={data?.result.size} />
-            <SpecificationItem Icon={GiLift} tagName={"Lift Facility"} text={data?.result.liftFacility} />
-            
+                  <SpecificationItem Icon={FaHome} tagName={"Property Type"} text={data?.result.propertyType} />
+                  <SpecificationItem Icon={FaBuilding} tagName={"Building Type"} text={data?.result.buildingType} />
+                  <SpecificationItem Icon={FaUser} tagName={"User Type"} text={data?.result?.userType} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Available for"} text={data?.result.availableFor} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Age of the Property"} text={data?.result.ageOfProperty} />
+                  <SpecificationItem Icon={FaRuler} tagName={"Area"} text={data?.result.size} />
+                  <SpecificationItem Icon={GiLift} tagName={"Lift Facility"} text={data?.result.liftFacility} />
+                  <SpecificationItem Icon={FaBuilding} tagName={"Toggle"} text={data?.result.toggle} />
 
-           
-            </div>
-            <div style={{marginRight:"300px"}} className="rightSideContainer">
-            <SpecificationItem Icon={FaRegBookmark} tagName={"Authority"} text={data?.result.authority} />
-            <SpecificationItem Icon={FaBed} tagName={"BHK Configure"} text={data?.result.BHKconfig} />
-            <SpecificationItem Icon={FaRegBookmark} tagName={"Additional Rooms"} text={data?.result.additionalRooms} />
-            <SpecificationItem Icon={FaRegBookmark} tagName={"Possession Status"} text={data?.result.possessionStatus} />
-            <SpecificationItem Icon={GiHandTruck} tagName={"Furnishing Status"} text={data?.result.furnishingStatus} />
-            <SpecificationItem Icon={FaBed} tagName={"Floor No."} text={data?.result.floorNo} />
-            <SpecificationItem Icon={MdBathroom} tagName={"No. of Bathroom"} text={data?.result.numOfBathroom} />
-            <SpecificationItem Icon={FaParking} tagName={"No. of Parking"} text={data?.result.numOfParking} />
 
-            </div>
-           </div>
+
+                </div>
+                <div style={{ marginRight: "300px" }} className="rightSideContainer">
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Authority"} text={data?.result.authority} />
+                  <SpecificationItem Icon={FaBed} tagName={"BHK Configure"} text={data?.result.BHKconfig} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Additional Rooms"} text={data?.result.additionalRooms} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Possession Status"} text={data?.result.possessionStatus} />
+                  <SpecificationItem Icon={GiHandTruck} tagName={"Furnishing Status"} text={data?.result.furnishingStatus} />
+                  <SpecificationItem Icon={FaBed} tagName={"Floor No."} text={data?.result.floorNo} />
+                  <SpecificationItem Icon={MdBathroom} tagName={"No. of Bathroom"} text={data?.result.numOfBathroom} />
+                  <SpecificationItem Icon={FaParking} tagName={"No. of Parking"} text={data?.result.numOfParking} />
+
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* <div style={{padding:"0 100px"}}>
+            <div style={{ border: "1px solid grey", }} className="flex p-4 space-x-6 ">
+              <div style={{width:"60%"}} className=" h-80 bg-gray-200">
+                {propertyImages.length > 0 && (
+                  <img src={propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
+                )}
+              </div>
+              <div className="flex-1 h-80 flex flex-col justify-between  ">
+                {propertyImages.slice(1, 3).map((image, index) => (
+                  <div style={{ height: "47%" }} className="w-full " key={index}>
+                    <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
+                  </div>
+                ))}
+                {propertyImages.length <= 2 && (
+                  <div className="h-1/2 w-full flex justify-center items-center text-gray-600">
+                    No more images
+                  </div>
+                )}
+              </div>
+            </div>
+          </div> */}
+
+
+          {data?.result?.toggle === "Property" ? <div style={{
+            padding: "15px",
+            boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+            paddingBottom: "20px",
+            borderRadius: "8px",
+
+          }}>
+            <p style={{ fontSize: "20px" }}>Project Images</p>
+            <div style={{ padding: "0 150px",marginBottom:"20px" }} className="flex p-4 space-x-6">
+              <div style={{ width: "60%" }} className="h-80 bg-gray-200">
+                {data?.result.propertyImages?.length > 0 && (
+                  <img src={data.result.propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
+                )}
+              </div>
+              <div className="flex-1 h-80 flex flex-col justify-between">
+                {data?.result.propertyImages?.slice(1, 3).map((image, index) => (
+                  <div style={{ height: "47%" }} className="w-full" key={index}>
+                    <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
+                  </div>
+                ))}
+                {data?.result.propertyImages?.length <= 2 && (
+                  <div style={{ height: "47%" }} className="w-full flex justify-center items-center text-gray-600 border border-gray-600">
+                    No more images
+                  </div>
+                )}
+                {data?.result.propertyImages?.length === 1 && (
+                  <div style={{ height: "47%" }} className="w-full flex justify-center items-center text-gray-600 border border-gray-600">
+                    No more images
+                  </div>
+                )}
+              </div>
+            </div>
+          </div> : null}
+
+
+
+
 
 
           <div
