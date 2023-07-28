@@ -19,6 +19,10 @@ export type ticketUpdate = {
   ticketId: string;
   ticketStatus: string;
 };
+export type propertyStatus = {
+  propertyId: string;
+  status: string;
+};
 
 export type Agent = {
   _id: string;

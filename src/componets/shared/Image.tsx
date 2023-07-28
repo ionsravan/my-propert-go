@@ -16,12 +16,18 @@ const Image = ({ zoom, ...rest }: any) => {
     return (
       <>
         {click ? (
-          <div onClick={unsetFlag} className="lightbox show">
-            <img {...rest} className="show_image"></img>
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+            }}
+          >
+            <div onClick={unsetFlag} className="lightbox show">
+              <img {...rest} className="show_image"></img>
+            </div>
           </div>
-        ) : (
-          <img {...rest} onClick={setFlag}></img>
-        )}
+        ) : null}
+        <img {...rest} onClick={setFlag}></img>
       </>
     );
 };

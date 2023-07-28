@@ -120,17 +120,17 @@ const ComapnyCard = ({
 };
 
 const DashBoard = () => {
-  const { data, error, status } = useFetch<response<Agent[]>>(
-    "/admin/agent/getAllAgents"
-  );
-  const [agents, setAgents] = useState<Agent[]>([]);
+  // const { data, error, status } = useFetch<response<Agent[]>>(
+  //   "/admin/agent/getAllAgents"
+  // );
+  // const [agents, setAgents] = useState<Agent[]>([]);
 
-  useEffect(() => {
-    if (data?.result.length == 0) return;
-    if (data?.result) {
-      setAgents(data?.result);
-    }
-  }, [data?.result]);
+  // useEffect(() => {
+  //   if (data?.result.length == 0) return;
+  //   if (data?.result) {
+  //     setAgents(data?.result);
+  //   }
+  // }, [data?.result]);
   return (
     <>
       <div className="flex justify-between w-full items-center">
@@ -156,7 +156,7 @@ const DashBoard = () => {
         </div>
         <div></div>
       </div> */}
-      <div>
+      {/* <div>
         <h1 className="text-black font-bold text-lg mb-4">All Compenies</h1>
       </div>
       <div className="w-full overflow-scroll scrollbar-hide">
@@ -180,7 +180,7 @@ const DashBoard = () => {
               );
             })}
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

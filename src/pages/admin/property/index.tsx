@@ -4,6 +4,8 @@ import {
   Grid,
   IconButton,
   LinearProgress,
+  MenuItem,
+  Select,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -17,7 +19,15 @@ import { MdDeleteForever } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
-import { location, newResponse, Pagination, response, User } from "src/@types";
+import {
+  location,
+  newResponse,
+  Pagination,
+  propertyStatus,
+  response,
+  ticketUpdate,
+  User,
+} from "src/@types";
 import { AdminCustomers } from "../../../componets/user/adminCustomer";
 import AdminsideNav from "../../../componets/admin/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
@@ -25,6 +35,7 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
+import Image from "src/componets/shared/Image";
 
 export const Button = ({
   name,
@@ -110,11 +121,57 @@ const Property = () => {
     }
   }
 
+  function handleChange(value: string, id: string) {
+    setUsers((prev) =>
+      prev.map((selectedExercise) => {
+        if (selectedExercise._id === id) {
+          return {
+            ...selectedExercise,
+            ["status"]: value,
+          };
+        }
+
+        return selectedExercise;
+      })
+    );
+
+    onSubmit({ status: value, propertyId: id });
+  }
+
+  async function onSubmit(data: propertyStatus) {
+    try {
+      setLoading(true);
+      const res = await instance.put(
+        "/admin/property/changePropertyStatus",
+        data
+      );
+      if (res.data) {
+        toast.success("Property updated Successfully");
+        setLoading(false);
+      }
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
+  }
+
   const all_customer_columns: GridColDef[] = [
     {
-      flex: 0.25,
+      flex: 0.1,
+      field: "primaryImage",
+      headerName: "Image",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) =>
+        row?.primaryImage ? (
+          <Image src={row?.primaryImage} border={true} zoom={true}></Image>
+        ) : null,
+    },
+    {
+      flex: 0.15,
       field: "name",
-      headerName: "USER NAME",
+      headerName: "Name",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
@@ -125,20 +182,63 @@ const Property = () => {
       ),
     },
     {
-      flex: 0.25,
-      field: "email",
-      headerName: "EMAIl",
+      flex: 0.05,
+      field: "BHKconfig",
+      headerName: "BHK",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
-      field: "mobileNumber",
-      headerName: "MOBILE",
-      flex: 0.2,
+      flex: 0.12,
+      field: "propertyType",
+      headerName: "Property Type",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
+    },
+    {
+      field: "address",
+      headerName: "Address",
+      flex: 0.13,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    },
+    {
+      field: "size",
+      headerName: "Size",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    },
+    {
+      field: "cost",
+      headerName: "Price",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    },
+    {
+      flex: 0.15,
+      field: "status",
+      headerName: "Status",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Select
+          fullWidth
+          size="small"
+          onChange={(e) => handleChange(e.target.value, row?._id)}
+          value={row?.status ? row?.status : "active"}
+        >
+          <MenuItem value="active">Active</MenuItem>
+          <MenuItem value="inactive">InActive</MenuItem>
+        </Select>
+      ),
     },
     {
       field: "action",
@@ -182,7 +282,7 @@ const Property = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/addProperty")}
+            onClick={() => router.push("/admin/property/add")}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>
@@ -266,8 +366,8 @@ const Property = () => {
       {/* {users && <AdminCustomers users={users} />} */}
 
       <ConfirmBox
-        title="Customer"
-        name="customer"
+        title="Property"
+        name="property"
         open={deleteOpen}
         closeDialog={() => setDeleteOpen(false)}
         toDoFunction={deleteCustomer}
