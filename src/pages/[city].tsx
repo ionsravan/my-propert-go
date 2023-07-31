@@ -314,7 +314,7 @@ const CityPage = () => {
                 {data && (
                     <div
                         id="feat"
-                        className="flex overflow-hidden space-x-6 py-10"
+                        className="flex overflow-hidden space-x-6"
                     >
                         <CardCarousel
                             id="feat"

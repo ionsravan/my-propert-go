@@ -11,8 +11,11 @@ import {
 import { FaRupeeSign } from "react-icons/fa";
 import { Buyer, response } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
+import CircularSpinner from "src/componets/circularLoader";
+// import CircularSpinner from "src/componets/circularLoader";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { FetchState, useFetch } from "src/lib/hooks/useFetch";
+// import circularLoader from "../components/circularLoader";
 
 interface LayoutProps {
   children: ReactNode;
@@ -31,20 +34,18 @@ export const BuyersPageLayout = ({ children }: LayoutProps) => {
           <div className="space-x-5 text-sm text-[#616161]">
             <Link href={"/agent/buyers"}>
               <button
-                className={` p-2  ${
-                  router.pathname == "/agent/buyers" ? ActiveStyle : " "
-                }  `}
+                className={` p-2  ${router.pathname == "/agent/buyers" ? ActiveStyle : " "
+                  }  `}
               >
                 All
               </button>
             </Link>
             <Link href={"/agent/buyers/apartment"}>
               <button
-                className={`p-2 ${
-                  router.pathname == "/agent/buyers/apartment"
+                className={`p-2 ${router.pathname == "/agent/buyers/apartment"
                     ? ActiveStyle
                     : " "
-                }`}
+                  }`}
               >
                 Apartment wise
               </button>
@@ -175,9 +176,26 @@ const Buyers = () => {
   }, []);
 
 
-  return (
-    <>
+
+  return <>
       <div className="mb-6">
+        <h1 className="text-[22px] font-bold text-black mb-5">Leads</h1>
+
+        <div className="space-y-5">
+          {status === FetchState.FETCHING ? (
+            <div style={{height:"100%"}} className="flex justify-center items-center h-40">
+              <CircularSpinner />
+            </div>
+          ) : data?.result.length === 0 ? (
+            <p className="text-xl text-black">No Buyers Yet</p>
+          ) : (
+            data?.result.map((buyer) => {
+              return <MessageCardBuyers {...buyer} key={buyer._id} />;
+            })
+          )}
+        </div>
+      </div>
+      {/* <div className="mb-6">
           <h1 className="text-[22px] font-bold text-black mb-5">Leads</h1>
 
       <div className="space-y-5">
@@ -189,9 +207,9 @@ const Buyers = () => {
           return <MessageCardBuyers {...buyer} key={buyer._id} />;
         })}
       </div>
-      </div>
+      </div> */}
     </>
-  );
+
 };
 Buyers.getLayout = function getLayout(page: ReactElement) {
   return (

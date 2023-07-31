@@ -8,8 +8,9 @@ import React, {
   useState,
 } from "react";
 import { toast } from "react-toastify";
-import { Agent, location, response, area, AvailableFor, Propery } from "src/@types";
+import { Agent, location, response, area, AvailableFor, Propery, Buyer, Tickets } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
+import CircularSpinner from "src/componets/circularLoader";
 import { useAppContext } from "src/Context/AppContext";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
@@ -28,7 +29,7 @@ const Card = ({ name, Value }: { name: string; Value: number | string }) => {
 
 
 interface SuggestionCardProps {
-  propertiesData: Agent; 
+  propertiesData: Agent;
 }
 
 const SuggestionCard = ({ propertiesData }: SuggestionCardProps) => {
@@ -60,9 +61,10 @@ const SuggestionCard = ({ propertiesData }: SuggestionCardProps) => {
 
 
 interface PostingByDeveloperProps {
-  propertiesData: Agent[]; // Define the type of 'propertiesData' prop as an array of 'Agent'
+  propertiesData: Agent[];
+  isLoading: Agent[];
 }
-export const PostingByDeveloper = ({ propertiesData }: PostingByDeveloperProps) => {
+export const PostingByDeveloper = ({ propertiesData, isLoading }: PostingByDeveloperProps) => {
   console.log("PropertiesData inside SuggestionCard:", propertiesData);
   return (
     <>
@@ -82,16 +84,25 @@ export const PostingByDeveloper = ({ propertiesData }: PostingByDeveloperProps) 
               view All
             </button>
           </div>
-          <div className="flex mt-8 space-x-5 overflow-scroll">
-          {propertiesData?.length > 0 ? (
-              propertiesData.map((curElem) => {
-                return <SuggestionCard key={curElem._id} propertiesData={curElem} />;
-              })
+
+          <div>
+            {isLoading ? (
+              <CircularSpinner />
             ) : (
-              <p> No Data Available</p>
+              <div className="flex mt-8 space-x-5 overflow-hidden">
+                {propertiesData?.length > 0 ? (
+                  propertiesData.map((curElem) => {
+                    return <SuggestionCard key={curElem._id} propertiesData={curElem} />;
+                  })
+                ) : (
+                  <p> No Data Available</p>
+                )}
+
+              </div>
             )}
 
           </div>
+
         </div>
       </div>
     </>
@@ -152,6 +163,21 @@ export const addProperty = async (
 const AgentDashBoard = () => {
   const { data, error } = useFetch<response<Agent>>("/user/property");
   const [propertiesData, setPropertiesData] = useState<Agent[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [userId, setUserId] = useState<string | null>(null);
+  const { data: leads } = useFetch<response<Buyer[]>>(
+    `/user/getLeadsByUserId/${userId}`
+  );
+
+  const { data: tickets } = useFetch<response<Tickets[]>>(
+    `/user/ticket/getTicketByUserId/${userId}`
+  );
+
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    setUserId(storedUserId);
+  }, []);
 
   const { setAgentId } = useAppContext();
   // useEffect(() => {
@@ -184,6 +210,7 @@ const AgentDashBoard = () => {
       setPropertiesData(data.result);
       localStorage.setItem("userId", userId);
       console.log(userId, "userId");
+      setIsLoading(false)
     } else {
       // const defaultUserId = "649ac09732b08547ed03b09a";
       // localStorage.setItem("userId", defaultUserId);
@@ -191,7 +218,7 @@ const AgentDashBoard = () => {
       // console.log(defaultUserId, "userId (default)");
     }
   }, [data]);
-  
+
 
   if (data) {
     console.log(propertiesData, "res")
@@ -213,19 +240,19 @@ const AgentDashBoard = () => {
         </div>
       </div>
       <div className="flex space-x-[17px] mt-6 mb-8">
-        <Card name="Properties" Value={18} />
-        <Card name="On Discussion" Value={8} />
-        <Card name="Views" Value={"130k"} />
+        <Card name="Properties" Value={propertiesData ? propertiesData.length : 0} />
+        <Card name="Leads" Value={leads ? leads.result.length : 0} />
+        <Card name="Tickets" Value={tickets ? tickets.ticket.length : 0} />
       </div>
-      <div className="mb-8">
+      {/* <div className="mb-8">
         <h1 className="text-black text-lg">Leads</h1>
         <div className="flex space-x-[17px] mt-5">
           <Card name="Properties" Value={18} />
           <Card name="On Discussion" Value={8} />
           <Card name="Views" Value={"130k"} />
         </div>
-      </div>
-      <PostingByDeveloper propertiesData={propertiesData} />
+      </div> */}
+      <PostingByDeveloper isLoading={isLoading} propertiesData={propertiesData} />
     </>
   );
 };

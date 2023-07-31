@@ -546,7 +546,7 @@ const Details = () => {
           </div> */}
 
 
-          {data?.result?.toggle === "Property" ? <div style={{
+          {data?.result?.toggle === "Project" ? <div style={{
             padding: "15px",
             boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
             paddingBottom: "20px",
@@ -668,9 +668,10 @@ const Details = () => {
             style={{ margin: "0 auto" }}
             className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center "
           >
-            <div className="flex flex-col items-center space-y-5 p-5 md:p-0">
+            <div className="flex flex-col items-center space-y-5 md:p-0 px-5">
               <div className="h-20 w-20 relative rounded-full">
                 <Image
+                style={{marginTop:"20px"}}
                   src={data?.result?.agentId?.profilePhoto as string}
                   fill
                   className="object-fill rounded-full"
@@ -700,7 +701,7 @@ const Details = () => {
               </div>
 
               {cookies?.jwtToken ? (
-                <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                <button style={{marginBottom:"30px"}} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                   <MyMsg
                     data={data}
                     text="Contact Agent"

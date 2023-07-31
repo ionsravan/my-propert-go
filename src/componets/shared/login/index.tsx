@@ -23,9 +23,11 @@ export interface LoginProps {
   ) => Promise<string | number>;
   redirectUrl: string;
   url: string;
+  isAdmin: boolean;
 }
 
-export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
+export const LoginTemplate = ({ login, redirectUrl, url, isAdmin }: LoginProps) => {
+  console.log(redirectUrl,isAdmin,"admin")
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [cookies, setCookies] = useCookies(["jwtToken"]);
@@ -39,78 +41,87 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
   return (
     <div className="grow  ">
       <Navbar />
-      <div  className="py-14 px-12">
+      <div className="py-14 px-12">
         <div className="space-y-5 text-sm text-gray-500 max-w-[400px]">
           <h1 className="text-3xl lg:text-4xl font-extrabold font-manrope text-black">
             {"Welcome Back !"}
           </h1>
         </div>
-        {/* <div className="space-y-6 max-w-xl py-10">
-          <p className="text-red-400">{error}</p>
-          <Input
-            value={email}
-            setValue={setEmail}
-            Icon={AiOutlineMail}
-            placeholder="Email"
-            showError={showError}
-            err={
-              email == ""
-                ? "This Field is required"
-                : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-                ? ""
-                : "Enter Valid Email"
-            }
-          />
-          <Input
-            type="password"
-            value={password}
-            setValue={setPassword}
-            Icon={AiFillLock}
-            placeholder="Password"
-            showError={showError}
-            err={password == "" ? "Enter Valid Password" : ""}
-          />
-        </div>
 
-        <button
-          onClick={async () => {
-            if (
-              email == "" ||
-              !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-            ) {
-              setSHowError(true);
-              return;
-            }
-            const result = await login(
-              email,
-              password,
-              instance,
-              url,
-              setLoading
-            );
-            console.log("Login Response:", result);
-            if (typeof result == "string") {
-              setCookies("jwtToken", result);
-              toast("Logged in Successfully", {
-                position: "bottom-center",
-                type: "success",
-              });
-              router.push(redirectUrl);
-            } else {
-              if (result == 401) {
-                console.log(result);
-                setErorr("Email or Password is wrong");
-              } else {
-                setErorr("Some Error Accured Try Again !");
+        {redirectUrl === "/admin" ? (<div>
+
+          <div className="space-y-6 max-w-xl py-10">
+            <p className="text-red-400">{error}</p>
+            <Input
+              value={email}
+              setValue={setEmail}
+              Icon={AiOutlineMail}
+              placeholder="Email"
+              showError={showError}
+              err={
+                email == ""
+                  ? "This Field is required"
+                  : /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+                    ? ""
+                    : "Enter Valid Email"
               }
-            }
-          }}
-          className={`${
-            loading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-          } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out`}
-        >
-          {loading ? "loading..." : "Login"}
-        </button> */}
+            />
+            <Input
+              type="password"
+              value={password}
+              setValue={setPassword}
+              Icon={AiFillLock}
+              placeholder="Password"
+              showError={showError}
+              err={password == "" ? "Enter Valid Password" : ""}
+            />
+          </div>
+
+          <button
+            onClick={async () => {
+              if (
+                email == "" ||
+                !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+              ) {
+                setSHowError(true);
+                return;
+              }
+              const result = await login(
+                email,
+                password,
+                instance,
+                url,
+                setLoading
+              );
+              console.log("Login Response:", result);
+              if (typeof result == "string") {
+                setCookies("jwtToken", result);
+                toast("Logged in Successfully", {
+                  position: "bottom-center",
+                  type: "success",
+                });
+                router.push(redirectUrl);
+              } else {
+                if (result == 401) {
+                  console.log(result);
+                  setErorr("Email or Password is wrong");
+                } else {
+                  setErorr("Some Error Accured Try Again !");
+                }
+              }
+            }}
+            className={`${loading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out`}
+          >
+            {loading ? "loading..." : "Login"}
+          </button>
+
+        </div> ) : (<div className="space-y-6 max-w-xl py-10 mx-11">
+          <OtpAuthentication />
+        </div>)}
+
+
+
 
 
         {/* <ConnectWithFaceBook /> */}
@@ -122,10 +133,8 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
             Sign in using Mobile Number
           </button> */}
 
-          <div className="space-y-6 max-w-xl py-10 mx-11">
-          <OtpAuthentication/>
-          </div>
-          
+
+
       </div>
     </div>
   );

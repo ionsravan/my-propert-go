@@ -11,6 +11,7 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 import { Button } from "src/pages/admin/customers";
 import { PostingByDeveloper } from "..";
+import CircularSpinner from "src/componets/circularLoader";
 
 const Card = ({ name, Value }: { name: string; Value: number | string }) => {
   return (
@@ -113,15 +114,17 @@ const MyPosting = () => {
   const { data, status, error } = useFetch<response<Agent>>("/user/property");
   const [selected, setSelected] = useState(PropertyTypes[0]);
   const [filtredResult, setFiltredResult] = useState<Propery[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   console.log(data);
   useEffect(() => {
     if (data) {
       setFiltredResult(data?.result);
+      setIsLoading(false);
     }
   }, [data]);
 
-  if(filtredResult){
-    console.log(filtredResult,"filter")
+  if (filtredResult) {
+    console.log(filtredResult, "filter")
   }
 
   return (
@@ -131,7 +134,7 @@ const MyPosting = () => {
           <h2 className="text-black font-bold text-[22px]">My Property</h2>
           <p className="text-[#091E42] text-sm">
             {/* { data ? data?.result.properties.length : 0} Listings */}
-             Listings
+            Listings
           </p>
         </div>
       </div>
@@ -214,17 +217,21 @@ const MyPosting = () => {
           );
         })}
       </div> */}
-      <div className="w-full space-y-5   scrollbar-hide mb-8">
-
-      {filtredResult?.length > 0 ? (
+      <div>
+        {isLoading ? (
+          <CircularSpinner /> 
+        ) : (
+          <div className="w-full space-y-5 scrollbar-hide mb-8">
+            {filtredResult?.length > 0 ? (
               filtredResult.map((curElem) => {
-                return <PostingCard key={curElem._id}  {...curElem} />;
+                return <PostingCard key={curElem._id} {...curElem} />;
               })
             ) : (
               <p> No Data Available</p>
             )}
-
-        </div>
+          </div>
+        )}
+      </div>
 
     </>
   );

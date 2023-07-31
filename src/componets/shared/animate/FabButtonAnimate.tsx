@@ -63,3 +63,4 @@ function AnimateWrap({ size, children, sxWrap }: AnimateWrapProp) {
     </Box>
   );
 }
+

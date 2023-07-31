@@ -12,6 +12,7 @@ const Login = () => {
           url="/agent/login"
           login={loginController}
           redirectUrl="/agent"
+          isAdmin={false}
         />
       </SignupLoginFormContainer>
     </>

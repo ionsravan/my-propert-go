@@ -45,7 +45,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
         </div>
 
         <div className="flex px-6 md:px-[50px] relative flex-col w-full overflow-scroll pt-10 h-screen">
-          <div style={{border:"2px solid red"}} className=" w-full justify-end  md:hidden flex">
+          <div className=" w-full justify-end  md:hidden flex">
             <button
               className="text-2xl top-8 "
               onClick={() => {
