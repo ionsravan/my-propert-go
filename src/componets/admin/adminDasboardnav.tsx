@@ -15,7 +15,7 @@ import {
 } from "react-icons/ai";
 import { RiUser3Line } from "react-icons/ri";
 import { BiSupport } from "react-icons/bi";
-import { MdOutlineApartment, MdPictureInPicture, MdSubscriptions } from "react-icons/md";
+import { MdMap, MdOutlineApartment, MdPictureInPicture, MdSubscriptions } from "react-icons/md";
 import { LucideProps } from "lucide-react";
 import { AdminNavbarIcons } from "./adminIcons";
 import { BsHouse } from "react-icons/bs";
@@ -109,6 +109,13 @@ const AdminsideNav = () => {
           name="Plans"
           Icon={MdSubscriptions}
           isActive={isNavLinkActive("/admin/plans")}
+        />
+      </Link>
+      <Link href={"/admin/locations"}>
+        <SideNavItem
+          name="Locations"
+          Icon={MdMap}
+          isActive={isNavLinkActive("/admin/locations")}
         />
       </Link>
       <Link href={"/admin/property"}>
