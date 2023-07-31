@@ -19,26 +19,29 @@ import { FetchState } from "src/lib/hooks/useFetch";
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import Modal from "src/componets/shared/modal";
+import CircularSpinner from "src/componets/circularLoader";
 
 
 // let userId: string = "649ac09732b08547ed03b09a"
 
 
 
-interface FormData {
-  tittle: string;
-  message: string;
-}
+// interface FormData {
+//   tittle: string;
+//   message: string;
+// }
 
 
 
 const CustomPopup: React.FC = () => {
   const [cookies] = useCookies(["jwtToken"]);
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
-    tittle: '',
-    message: '',
-  });
+  const [tittle, setTittle] = useState("")
+  const [message, setMessage] = useState("")
+  // const [formData, setFormData] = useState<FormData>({
+  //   tittle: '',
+  //   message: '',
+  // });
 
   const openPopup = () => {
     setIsOpen(true);
@@ -50,6 +53,11 @@ const CustomPopup: React.FC = () => {
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const formData = {
+      tittle:tittle,
+      message:message
+    }
 
     console.log('Form Data:', formData);
 
@@ -77,23 +85,35 @@ const CustomPopup: React.FC = () => {
       console.error("Error while adding property:", error);
     }
 
-    setFormData({
-      tittle: '',
-      message: '',
-    });
+setTittle("")
+setMessage("")
     closePopup();
   };
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
+  // const handleInputChange = (
+  //   e: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [name]: value,
+  //   }));
+  // };
+
+  
+  const handleTittle = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedTittle = event.target.value;
+    setTittle(selectedTittle);
   };
 
+  const handleMessage = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedMessage = event.target.value;
+    setMessage(selectedMessage);
+  };
+
+
+
+  const tittleNames = ["Assign Agent","Billing", "Plan Change", "Others"]
   return <>
 
     <form>
@@ -101,7 +121,7 @@ const CustomPopup: React.FC = () => {
         <label htmlFor="tittle" className="block font-bold mb-1">
           Title:
         </label>
-        <input
+        {/* <input
           type="text"
           id="tittle"
           name="tittle"
@@ -109,7 +129,20 @@ const CustomPopup: React.FC = () => {
           onChange={handleInputChange}
           className="w-full px-3 py-2 border rounded-lg"
           required
-        />
+        /> */}
+                 <select
+                  style={{margin:"20px 0"}}
+                  className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                    // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
+                    value={tittle}
+                    onChange={handleTittle}
+                  >
+                    {tittleNames.map((tittle, index) => (
+                      <option style={{ border: "none",margin:"10px 0",padding:"10px 0" }} key={index} value={tittle}>
+                        {tittle}
+                      </option>
+                    ))}
+                  </select>
       </div>
       <div className="mb-4">
         <label htmlFor="message" className="block font-bold mb-1">
@@ -119,8 +152,8 @@ const CustomPopup: React.FC = () => {
           type="text"
           id="message"
           name="message"
-          value={formData.message}
-          onChange={handleInputChange}
+          value={message}
+          onChange={handleMessage}
           className="w-full px-3 py-2 border rounded-lg"
           required
         />
@@ -168,6 +201,7 @@ const TicketCard = ({ tittle, userEmail, userName, message, ticketStatus }) => {
 const Ticket = () => {
 
   const [userId, setUserId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { data, status } = useFetch<response<Tickets[]>>(
     `/user/ticket/getTicketByUserId/${userId}`
@@ -189,8 +223,10 @@ const Ticket = () => {
   };
 
   useEffect(() => {
-    if (data?.result) {
-      console.log(data.result, "datta")
+    if (data?.success) {
+      console.log(data, "datta")
+      setIsLoading(false)
+
     }
   }, [data])
 
@@ -218,6 +254,9 @@ const Ticket = () => {
           </Modal>
 
         </div>
+        {isLoading ? (
+          <CircularSpinner /> 
+        ) : (
 
         <div className="space-y-5">
           {data?.ticket.length > 0 ? (
@@ -226,6 +265,7 @@ const Ticket = () => {
             <p>No Tickets Available</p>
           )}
         </div>
+        )}
       </div>
     </>
   );

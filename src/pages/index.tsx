@@ -24,6 +24,7 @@ import CardCarousel from "src/componets/Sliders/cardCaursel";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import Carousel from "react-multi-carousel";
 import Slider from "src/componets/Home/Slider";
+import { FaHome } from "react-icons/fa";
 
 const images = [
   {
@@ -175,7 +176,7 @@ export default function Home() {
       const featuredProperties = Filtred?.filter(property => property.featured) ?? [];
       setFeaturedFiltred(featuredProperties);
 
-      const toggleProperties = Filtred?.filter(property => property.toggle === "project") ?? [];
+      const toggleProperties = Filtred?.filter(property => property.toggle === "Project") ?? [];
       setToggleData(toggleProperties);
     };
 
@@ -193,6 +194,10 @@ export default function Home() {
     console.log('toggleData:', toggleData);
   }, [Filtred]);
 
+
+  const handleCardClick = () => {
+    window.open('', '_blank');
+  };
 
   return (
     <>
@@ -278,7 +283,7 @@ export default function Home() {
       <section className="bg-cityBg py-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           <HomeSectionTitle
-            text="Explore Real State in Popular Indian Cities"
+            text="Explore Properties in Popular Indian Cities"
             color="text-white"
           />
           <div className="flex overflow-scroll space-x-6 scrollbar-hide py-10">
@@ -294,7 +299,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className=" py-16">
+      <section className="pt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Trending / Newly listed" />
@@ -316,7 +321,7 @@ export default function Home() {
           {data && (
             <div
               id="feat"
-              className="flex overflow-hidden space-x-6 py-10"
+              className="flex overflow-hidden space-x-6"
             >
               <CardCarousel
                 id="feat"
@@ -329,7 +334,7 @@ export default function Home() {
       </section>
 
 
-      <section className=" py-16">
+      <section className="py-4">
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Budget Properties for you" />
@@ -351,7 +356,7 @@ export default function Home() {
           {data && (
             <div
               id="cost"
-              className="flex overflow-hidden space-x-6 py-10"
+              className="flex overflow-hidden space-x-6"
             >
               <CardCarousel
                 id="cost"
@@ -365,7 +370,7 @@ export default function Home() {
 
 
 
-      <section className=" py-16">
+      <section className="py-4">
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Featured Properties" />
@@ -387,7 +392,7 @@ export default function Home() {
           {data && (
             <div
               id="featured"
-              className="flex overflow-hidden space-x-6 py-10"
+              className="flex overflow-hidden space-x-6"
             >
               <CardCarousel
                 id="featured"
@@ -434,7 +439,7 @@ export default function Home() {
       {/*  </div>*/}
       {/*</section>*/}
 
-      <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
+      <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4]v py-4 ">
         <HomeSectionTitle text="Projects" />
         <div className="relative space-x-4 pt-10 ">
           <Carousel
@@ -492,8 +497,8 @@ export default function Home() {
 
 
 
-      <section className="py-2">
-        <p className="max-w-7xl mx-auto px-5 md:px-10 text-xl">Why Wonderplots ?</p>
+      <section className="py-4">
+        <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">Why Wonderplots ?</p>
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <table className="border-collapse w-full ">
             <thead>
@@ -537,11 +542,75 @@ export default function Home() {
       </section>
 
 
+      <section className="py-4">
+      <div className="container mx-auto py-12">
+        <div className="text-center mb-4">
+          <p className="text-4xl font-bold font-manrope">Services from Wonderplots</p>
+          {/* <p className="text-2xl font-semibold">Why Us?</p> */}
+          {/* <div className="flex justify-center items-center">
+            <FaHome className="text-4xl text-blue-500" />
+          </div> */}
+        </div>
+        <div className="flex flex-wrap justify-center">
+          {/* Card 1 */}
+          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+              <div className="text-4xl text-blue-500">
+                {/* Icon here (You can use an icon library or an SVG) */}
+                <FaHome/>
+              </div>
+              <h3 className="text-xl font-semibold mt-4">
+                Interior Designing
+              </h3>
+              <p className="text-gray-600 mt-2 text-center">
+                Transform your space. Create beautiful, functional interiors.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2 */}
+          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+              <div className="text-4xl text-blue-500">
+                {/* Icon here */}
+                <FaHome/>
+              </div>
+              <h3 className="text-xl font-semibold mt-4">
+                Property Care
+              </h3>
+              <p className="text-gray-600 mt-2 text-center">
+                Experience hassle-free property ownership with our essential management services - a must for every property owner.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+              <div className="text-4xl text-blue-500">
+                {/* Icon here */}
+                <FaHome/>
+              </div>
+              <h3 className="text-xl font-semibold mt-4">
+                Shipping Container Homes
+              </h3>
+              <p className="text-gray-600 mt-2 text-center">
+                Experience unique, versatile living with sustainable shipping container homes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
 
       {/* <Tour /> */}
       {/* <Stats /> */}
       <Process />
       {/* <TestiMonials /> */}
+
+      
       {/*<section style={{border:"2px solid red"}} className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">*/}
       {/*  <HomeSectionTitle text="Our Products" />*/}
       {/*  <div className="relative space-x-4 pt-10 ">*/}

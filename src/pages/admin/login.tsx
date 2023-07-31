@@ -12,6 +12,7 @@ const Login = () => {
           url="/admin/login"
           login={loginController}
           redirectUrl="/admin"
+ 
         />
       </SignupLoginFormContainer>
     </>

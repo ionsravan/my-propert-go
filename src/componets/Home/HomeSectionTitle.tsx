@@ -8,7 +8,7 @@ interface Props {
 const HomeSectionTitle = ({ text, color, titleColro, borderColor }: Props) => {
   return (
     <div className="space-y-4">
-      <div className="flex items-center space-x-1">
+      {/* <div className="flex items-center space-x-1">
         <div
           className={`w-16 border-t ${
             borderColor ? borderColor : "border-primaryBlue/60"
@@ -21,7 +21,7 @@ const HomeSectionTitle = ({ text, color, titleColro, borderColor }: Props) => {
         >
           Our Recomendations
         </p>
-      </div>
+      </div> */}
       <h1
         className={`${
           color ? color : "text-TitleColor"

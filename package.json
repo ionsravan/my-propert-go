@@ -46,6 +46,7 @@
     "tailwind-scrollbar-hide": "^1.1.7",
     "typescript": "4.9.4",
     "ua-parser-js": "^1.0.35",
+    "yarn": "^1.22.19",
     "yup": "^1.2.0"
   },
   "devDependencies": {

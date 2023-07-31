@@ -62,7 +62,7 @@ const icons = {
 const AgentNavbar = () => {
   const router = useRouter();
   return (
-    <div className="w-full overflow-hidden  font-manrope">
+    <div className="w-full overflow-y-scroll font-manrope">
       <h1 className="text-xl text-black font-bold pl-7 pb-9">My Property Go</h1>
       <Link href={"/agent"}>
         <SideNavItem
@@ -115,6 +115,20 @@ const AgentNavbar = () => {
           name="My Profile"
           Icon={icons.profile}
           isActive={router.pathname == "/agent/profile"}
+        />
+      </Link>
+      <Link href={"/agent/notifications"}>
+        <SideNavItem
+          name="Notifications"
+          Icon={icons.profile}
+          isActive={router.pathname == "/agent/notifications"}
+        />
+      </Link>
+      <Link href={"/agent/myPropertyCare"}>
+        <SideNavItem
+          name="My Property Care"
+          Icon={icons.profile}
+          isActive={router.pathname == "/agent/myPropertyCare"}
         />
       </Link>
     </div>

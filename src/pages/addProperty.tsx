@@ -50,10 +50,17 @@ import Image from "next/image";
 import { useCookies } from "react-cookie";
 import { availableAmenities } from "src/@global/Data";
 import { useRouter } from "next/router";
+import CircularSpinner from "src/componets/circularLoader";
 
 const AddProperty = () => {
+
+  const { data: loc } = useFetch<response<location[]>>(
+    "/property/location/getAllLocation"
+  );
+
   const [cookies] = useCookies(["jwtToken"]);
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [saleActive, setSaleActive] = useState(true);
   const [rentActive, setRentActive] = useState(false);
@@ -67,7 +74,7 @@ const AddProperty = () => {
   const [propertyTypeError, setPropertyTypeError] = useState("");
   const [availabeFor, setAvailableFor] = useState("sale");
   const [availabeForError, setAvailableForError] = useState("");
-  const [toggle, setToggle] = useState("Property");
+  const [toggle, setToggle] = useState("Project");
   const [toggleError, setToggleError] = useState("");
   const [isPropertyActive, setPropertyActive] = useState(true);
   const [isProjectActive, setProjectActive] = useState(false);
@@ -473,6 +480,11 @@ const AddProperty = () => {
     setAreaUnits(selectedAreaOption);
   };
 
+  const handleLocation = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedLocation = event.target.value;
+    setLocality(selectedLocation);
+  };
+
   const handleAmenityToggle = (amenity: string) => {
     if (amenities.includes(amenity)) {
       setAmenities(amenities.filter((item) => item !== amenity));
@@ -494,26 +506,28 @@ const AddProperty = () => {
   // };
 
   // dfhjdhjhsjhkshfjs
-// dfjsfhs
-//   const availableAmenities = [
-//     "Drinking Water",
-//     "Car Parking",
-//     "Lift",
-//     "Power Backup",
-//     "Intercom",
-//     "CCTV Surveillance",
-//     "Play Area",
-//     "Vastu Complaint",
-//     "Solar Water Heaer",
-//     "Water Softner Plant",
-//     "Munciple Water Connection",
-//     "Under Ground Drainage",
-//     "Compound wall",
-//     "Roads",
-//     "Park",
-//   ];
+  // dfjsfhs
+  //   const availableAmenities = [
+  //     "Drinking Water",
+  //     "Car Parking",
+  //     "Lift",
+  //     "Power Backup",
+  //     "Intercom",
+  //     "CCTV Surveillance",
+  //     "Play Area",
+  //     "Vastu Complaint",
+  //     "Solar Water Heaer",
+  //     "Water Softner Plant",
+  //     "Munciple Water Connection",
+  //     "Under Ground Drainage",
+  //     "Compound wall",
+  //     "Roads",
+  //     "Park",
+  //   ];
 
   const handlePostProperty = async () => {
+    setIsLoading(false)
+
 
     if (amenities.length === 0) {
       setAmenitiesError('Please select at least one amenity');
@@ -591,8 +605,10 @@ const AddProperty = () => {
           },
         }
       );
-      toast("Property Added Succesfully")
+      setIsLoading(false)
       router.push("/agent")
+      toast("Property Added Succesfully")
+
     } catch (error) {
       console.error("Error while adding property:", error);
     }
@@ -660,7 +676,7 @@ const AddProperty = () => {
       return;
     }
 
-      if (buildingType.trim() === '') {
+    if (buildingType.trim() === '') {
       setBuildingTypeError('Please Fill the Building type');
 
       setTimeout(() => {
@@ -1086,88 +1102,89 @@ const AddProperty = () => {
 
   return (
     <>
-      <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
-        {/* <p>Property Listing for</p> */}
-        <div style={{ margin: "20px 0" }} className="property-listing-form">
-          <div style={{ marginBottom: "20px", padding: "20px 0" }}>
-            <div className="paginationContainer">
-              <button
-                className={`paginationButton ${activeStep === 1 ? "active" : ""
-                  }`}
-                onClick={() => handleStepClick(1)}
-              >
-                <MdApartment style={{ fontSize: "25px" }} />  Property Details
-              </button>
-              <button
-                className={`paginationButton ${activeStep === 2 ? "active" : ""
-                  }`}
-                onClick={() => handleStepClick(2)}
-              >
-                <MdApartment style={{ fontSize: "25px" }} />   Additional Details
-              </button>
-              <button
-                className={`paginationButton ${activeStep === 3 ? "active" : ""
-                  }`}
-                onClick={() => handleStepClick(3)}
-              >
-                <MdApartment style={{ fontSize: "25px" }} />   Amenities
-              </button>
-            </div>
-
-            <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div className="progressBarContainer">
-                <div
-                  className="progressBar"
-                  style={{ "--activeStep": `${activeStep}` } as React.CSSProperties}
-                ></div>
-              </div>
-
-              <div className="circleContainer">
-                <p style={{ margin: "0" }} className={`circle ${activeStep >= 2 ? "active" : ""}`}>1</p>
-
-                <p style={{ margin: "0" }} className={`circle ${activeStep === 3 ? "active" : ""}`}>2</p>
-
-                <p style={{ margin: "0" }} className={`circle`}>3</p>
-              </div>
-
-            </div>
-
-          </div>
-
-          {activeStep === 1 && (
-            <>
-              <div>
-                <p
-                  style={{
-                    fontSize: "20px",
-                    fontWeight: "bold",
-                    borderBottom: "1px solid grey",
-                    paddingBottom: "10px",
-                  }}
+      {isLoading ?
+        <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
+          {/* <p>Property Listing for</p> */}
+          <div style={{ margin: "20px 0" }} className="property-listing-form">
+            <div style={{ marginBottom: "20px", padding: "20px 0" }}>
+              <div className="paginationContainer">
+                <button
+                  className={`paginationButton ${activeStep === 1 ? "active" : ""
+                    }`}
+                  onClick={() => handleStepClick(1)}
                 >
-                  {" "}
-                  Provide details about your Property
-                </p>
+                  <MdApartment style={{ fontSize: "25px" }} />  Property Details
+                </button>
+                <button
+                  className={`paginationButton ${activeStep === 2 ? "active" : ""
+                    }`}
+                  onClick={() => handleStepClick(2)}
+                >
+                  <MdApartment style={{ fontSize: "25px" }} />   Additional Details
+                </button>
+                <button
+                  className={`paginationButton ${activeStep === 3 ? "active" : ""
+                    }`}
+                  onClick={() => handleStepClick(3)}
+                >
+                  <MdApartment style={{ fontSize: "25px" }} />   Amenities
+                </button>
+              </div>
 
-                <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Who You Are:</p>
+              <div style={{ width: "100%", display: "flex", flexDirection: "column", alignItems: "center" }}>
+                <div className="progressBarContainer">
+                  <div
+                    className="progressBar"
+                    style={{ "--activeStep": `${activeStep}` } as React.CSSProperties}
+                  ></div>
+                </div>
 
+                <div className="circleContainer">
+                  <p style={{ margin: "0" }} className={`circle ${activeStep >= 2 ? "active" : ""}`}>1</p>
 
-                {userTypeNames.map((name, index) => (
-                  <button
-                    key={index}
-                    style={{ marginRight: "20px" }}
-                    onClick={() => handleUserType(name)}
-                    className={`button ${userType === name ? "active" : ""}`}
+                  <p style={{ margin: "0" }} className={`circle ${activeStep === 3 ? "active" : ""}`}>2</p>
+
+                  <p style={{ margin: "0" }} className={`circle`}>3</p>
+                </div>
+
+              </div>
+
+            </div>
+
+            {activeStep === 1 && (
+              <>
+                <div>
+                  <p
+                    style={{
+                      fontSize: "20px",
+                      fontWeight: "bold",
+                      borderBottom: "1px solid grey",
+                      paddingBottom: "10px",
+                    }}
                   >
-                    {name}
-                  </button>
-                ))}
-                {userTypeError && <p className="error">{userTypeError}</p>}
+                    {" "}
+                    Provide details about your Property
+                  </p>
+
+                  <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Who You Are:</p>
+
+
+                  {userTypeNames.map((name, index) => (
+                    <button
+                      key={index}
+                      style={{ marginRight: "20px" }}
+                      onClick={() => handleUserType(name)}
+                      className={`button ${userType === name ? "active" : ""}`}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                  {userTypeError && <p className="error">{userTypeError}</p>}
 
 
 
 
-                {/* <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
+                  {/* <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
 
                 <button
                   style={{}}
@@ -1188,67 +1205,20 @@ const AddProperty = () => {
 
 
 
-                <p style={{ marginBottom: "15px", marginTop: "15px" }}>
-                  Property Listing Form:
-                </p>
-
-                <div style={{ display: "flex" }} className="propertyListingDiv">
-                  <button
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    onClick={handleSaleClick}
-                    className={`button ${saleActive ? "active" : ""}`}
-                  >
-                    <BsFillHouseFill style={{ marginRight: "5px" }} /> Sale
-                  </button>
-                  <button
-                    style={{
-                      marginLeft: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    onClick={handleRentClick}
-                    className={`button ${rentActive ? "active" : ""}`}
-                  >
-                    <RiHome4Fill style={{ marginRight: "5px" }} />
-                    Rent
-                  </button>
-                  <button
-                    style={{
-                      marginLeft: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                    onClick={handleDevelopmentClick}
-                    className={`button ${developmentActive ? "active" : ""}`}
-                  >
-                    <RiBuilding4Fill style={{ marginRight: "5px" }} />{" "}
-                    Development Site
-                  </button>
-                </div>
-
-                {availabeForError && <p className="error">{availabeForError}</p>}
-
-              
-
-                { developmentActive === false ? <>
-    
-                <p style={{ marginBottom: "15px", marginTop: "15px" }}>
-                    Building Type
+                  <p style={{ marginBottom: "15px", marginTop: "15px" }}>
+                    Property Listing Form:
                   </p>
 
-                  <div style={{ display: "flex" }} className="buildingType">
+                  <div style={{ display: "flex" }} className="propertyListingDiv">
                     <button
                       style={{
                         display: "flex",
                         alignItems: "center",
                       }}
-                      onClick={handleResidentialClick}
-                      className={`button ${residentialActive ? "active" : ""}`}
+                      onClick={handleSaleClick}
+                      className={`button ${saleActive ? "active" : ""}`}
                     >
-                      <FaHome style={{ marginRight: "5px" }} /> Residential
+                      <BsFillHouseFill style={{ marginRight: "5px" }} /> Sale
                     </button>
                     <button
                       style={{
@@ -1256,20 +1226,67 @@ const AddProperty = () => {
                         display: "flex",
                         alignItems: "center",
                       }}
-                      onClick={handleCommercialClick}
-                      className={`button ${commercialActive ? "active" : ""}`}
+                      onClick={handleRentClick}
+                      className={`button ${rentActive ? "active" : ""}`}
+                    >
+                      <RiHome4Fill style={{ marginRight: "5px" }} />
+                      Rent
+                    </button>
+                    <button
+                      style={{
+                        marginLeft: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                      onClick={handleDevelopmentClick}
+                      className={`button ${developmentActive ? "active" : ""}`}
                     >
                       <RiBuilding4Fill style={{ marginRight: "5px" }} />{" "}
-                      Commercial
+                      Development Site
                     </button>
-
                   </div>
-                
-                
-                </> : null
-                
-                
-                }
+
+                  {availabeForError && <p className="error">{availabeForError}</p>}
+
+
+
+                  {developmentActive === false ? <>
+
+                    <p style={{ marginBottom: "15px", marginTop: "15px" }}>
+                      Building Type
+                    </p>
+
+                    <div style={{ display: "flex" }} className="buildingType">
+                      <button
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onClick={handleResidentialClick}
+                        className={`button ${residentialActive ? "active" : ""}`}
+                      >
+                        <FaHome style={{ marginRight: "5px" }} /> Residential
+                      </button>
+                      <button
+                        style={{
+                          marginLeft: "20px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                        onClick={handleCommercialClick}
+                        className={`button ${commercialActive ? "active" : ""}`}
+                      >
+                        <RiBuilding4Fill style={{ marginRight: "5px" }} />{" "}
+                        Commercial
+                      </button>
+
+                    </div>
+
+
+                  </> : null
+
+
+                  }
 
                   {buildingTypeError && <p className="error">{buildingTypeError}</p>}
 
@@ -1277,95 +1294,95 @@ const AddProperty = () => {
 
 
 
-              </div>
-
-
-
-              {residentialActive ? <>
-                <p style={{ marginBottom: "15px", marginTop: "15px" }}>
-                  Property Type
-                </p>
-                <div className="propertyTypeContainer">
-                  {residentialNames.map((name, index) => {
-                    const Icon = residentialIcons[index];
-                    return (
-                      <button
-                        key={index}
-                        style={{ margin: "10px" }}
-                        onClick={() => handleButtonClick(name)}
-                        className={`button ${activeButton === name ? "active" : ""
-                          }`}
-                      >
-                        {Icon && (
-                          <Icon
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "5px",
-                              marginRight: "5px",
-                            }}
-                            className="icon"
-                          />
-                        )}{" "}
-                        {name}
-                      </button>
-                    );
-                  })}
                 </div>
-              </> : commercialActive ? <>
-                <p style={{ marginBottom: "15px", marginTop: "15px" }}>
-                  Property Type
-                </p>
-                <div className="propertyTypeContainer">
-                  {commercialNames.map((name, index) => {
-                    const Icon = commercialIcons[index];
-                    return (
-                      <button
-                        key={index}
-                        style={{ margin: "10px" }}
-                        onClick={() => handleButtonClick(name)}
-                        className={`button ${activeButton === name ? "active" : ""
-                          }`}
-                      >
-                        {Icon && (
-                          <Icon
-                            style={{
-                              display: "inline-block",
-                              marginBottom: "5px",
-                              marginRight: "5px",
-                            }}
-                            className="icon"
-                          />
-                        )}{" "}
-                        {name}
-                      </button>
-                    );
-                  })}
+
+
+
+                {residentialActive ? <>
+                  <p style={{ marginBottom: "15px", marginTop: "15px" }}>
+                    Property Type
+                  </p>
+                  <div className="propertyTypeContainer">
+                    {residentialNames.map((name, index) => {
+                      const Icon = residentialIcons[index];
+                      return (
+                        <button
+                          key={index}
+                          style={{ margin: "10px" }}
+                          onClick={() => handleButtonClick(name)}
+                          className={`button ${activeButton === name ? "active" : ""
+                            }`}
+                        >
+                          {Icon && (
+                            <Icon
+                              style={{
+                                display: "inline-block",
+                                marginBottom: "5px",
+                                marginRight: "5px",
+                              }}
+                              className="icon"
+                            />
+                          )}{" "}
+                          {name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </> : commercialActive ? <>
+                  <p style={{ marginBottom: "15px", marginTop: "15px" }}>
+                    Property Type
+                  </p>
+                  <div className="propertyTypeContainer">
+                    {commercialNames.map((name, index) => {
+                      const Icon = commercialIcons[index];
+                      return (
+                        <button
+                          key={index}
+                          style={{ margin: "10px" }}
+                          onClick={() => handleButtonClick(name)}
+                          className={`button ${activeButton === name ? "active" : ""
+                            }`}
+                        >
+                          {Icon && (
+                            <Icon
+                              style={{
+                                display: "inline-block",
+                                marginBottom: "5px",
+                                marginRight: "5px",
+                              }}
+                              className="icon"
+                            />
+                          )}{" "}
+                          {name}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </> : null}
+                {propertyTypeError && <p className="error">{propertyTypeError}</p>}
+
+
+                <div style={{ margin: "20px 0" }}
+                  className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                >
+                  {/* <label style={{marginTop:"5px"}} htmlFor="city">City:</label> */}
+                  <input
+                    placeholder="Enter City"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="city"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+
+
                 </div>
-              </> : null}
-              {propertyTypeError && <p className="error">{propertyTypeError}</p>}
+                {cityError && <p className="error">{cityError}</p>}
 
-
-              <div style={{ margin: "20px 0" }}
-                className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
-              >
-                {/* <label style={{marginTop:"5px"}} htmlFor="city">City:</label> */}
-                <input
-                  placeholder="Enter City"
-                  required
-                  className="inputField"
-                  type="text"
-                  id="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                />
-
-
-              </div>
-              {cityError && <p className="error">{cityError}</p>}
-
-              <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-                {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
-                <input
+                {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}> */}
+                  {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
+                  {/* <input
                   placeholder="Enter Location"
                   required
                   className="inputField"
@@ -1373,45 +1390,59 @@ const AddProperty = () => {
                   id="location"
                   value={locality}
                   onChange={(e) => setLocality(e.target.value)}
-                />
+                /> */}
 
-              </div>
-              {localityError && <p className="error">{localityError}</p>}
+                  <select
+                  style={{margin:"20px 0"}}
+                  className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                    // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
+                    value={locality}
+                    onChange={handleLocation}
+                  >
+                    {loc?.result.map((location) => (
+                      <option style={{ border: "none",margin:"10px 0",padding:"10px 0" }} key={location._id} value={location.name}>
+                        {location.name}
+                      </option>
+                    ))}
+                  </select>
 
-
-              <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-                {/* <label style={{marginTop:"5px"}}  htmlFor="price">Project Name</label> */}
-                <input
-                  placeholder="Enter Project/Building Name"
-                  required
-                  className="inputField"
-                  type="text"
-                  id="name"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                />
-
-              </div>
-              {projectNameError && <p className="error">{projectNameError}</p>}
+                {/* </div> */}
+                {localityError && <p className="error">{localityError}</p>}
 
 
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label style={{marginTop:"5px"}}  htmlFor="price">Project Name</label> */}
+                  <input
+                    placeholder="Enter Project/Building Name"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="name"
+                    value={projectName}
+                    onChange={(e) => setProjectName(e.target.value)}
+                  />
 
-              <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-                {/* <label style={{ marginTop: "5px" }} htmlFor="price">Locality Price</label> */}
-                <input
-                  placeholder=" Enter Price"
-                  required
-                  className="inputField"
-                  type="text"
-                  id="price"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </div>
-              {priceError && <p className="error">{priceError}</p>}
+                </div>
+                {projectNameError && <p className="error">{projectNameError}</p>}
 
 
-              {/* 
+
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label style={{ marginTop: "5px" }} htmlFor="price">Locality Price</label> */}
+                  <input
+                    placeholder=" Enter Price"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="price"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                  />
+                </div>
+                {priceError && <p className="error">{priceError}</p>}
+
+
+                {/* 
 
               {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (
                 <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd`}>
@@ -1432,68 +1463,68 @@ const AddProperty = () => {
 
 
 
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
-                <label htmlFor="price">Number of Bhk</label>
-                <div className="securityDepositDiv">
-                  {bhkConfigsNames.map((name, index) => (
-                    <button
-                      key={index}
-                      style={{ margin: "10px" }}
-                      onClick={() => handleBhkClick(name)}
-                      className={`button ${bhkConfig === name ? "active" : ""}`}
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div></> : null}
-              {bhkConfigError && <p className="error">{bhkConfigError}</p>}
-
-
-
-
-
-
-              <div className="AreaSection" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-
-                <div style={{ margin: "0 0" }} className="group bg-white focus-within:border-blue-500 border w-1/2 space-x-4 flex justify-center items-center px-4 jj bd">
-                  {/* <label style={{ marginTop: "5px" }} htmlFor="area">Area</label> */}
-                  <input
-                    placeholder="Enter Area"
-                    required
-                    className="inputField"
-                    type="text"
-                    id="area"
-                    value={area}
-                    onChange={(e) => setArea(e.target.value)}
-                  />
-                </div>
-
-                {areaError && <p className="error">{areaError}</p>}
-
-                <div style={{ width: "50%", marginLeft: "30px" }}>
-
-                  <select
-                    style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
-                    value={areaUnits}
-                    onChange={handleAreaUnits}
-                  >
-                    {areaUnitNames.map((option) => (
-                      <option style={{ border: "none" }} key={option} value={option}>
-                        {option}
-                      </option>
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                  <label htmlFor="price">Number of Bhk</label>
+                  <div className="securityDepositDiv">
+                    {bhkConfigsNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handleBhkClick(name)}
+                        className={`button ${bhkConfig === name ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
                     ))}
-                  </select>
-                  {areaUnitsError && <p className="error">{areaUnitsError}</p>}
+                  </div></> : null}
+                {bhkConfigError && <p className="error">{bhkConfigError}</p>}
+
+
+
+
+
+
+                <div className="AreaSection" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+
+                  <div style={{ margin: "0 0" }} className="group bg-white focus-within:border-blue-500 border w-1/2 space-x-4 flex justify-center items-center px-4 jj bd">
+                    {/* <label style={{ marginTop: "5px" }} htmlFor="area">Area</label> */}
+                    <input
+                      placeholder="Enter Area"
+                      required
+                      className="inputField"
+                      type="text"
+                      id="area"
+                      value={area}
+                      onChange={(e) => setArea(e.target.value)}
+                    />
+                  </div>
+
+                  {areaError && <p className="error">{areaError}</p>}
+
+                  <div style={{ width: "50%", marginLeft: "30px" }}>
+
+                    <select
+                      style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
+                      value={areaUnits}
+                      onChange={handleAreaUnits}
+                    >
+                      {areaUnitNames.map((option) => (
+                        <option style={{ border: "none" }} key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                    {areaUnitsError && <p className="error">{areaUnitsError}</p>}
+
+                  </div>
+
+                  {areaError && <p className="error">{areaError}</p>}
+
+
 
                 </div>
 
-                {areaError && <p className="error">{areaError}</p>}
-
-
-
-              </div>
-
-              {/*
+                {/*
               <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                
                 <input
@@ -1508,7 +1539,7 @@ const AddProperty = () => {
               </div>
               {areaValueError && <p className="error">{areaValueError}</p>} */}
 
-              {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
               
                 <input
@@ -1524,22 +1555,22 @@ const AddProperty = () => {
               {areaTypeError && <p className="error">{areaTypeError}</p>} */}
 
 
-              <p style={{ marginBottom: "15px", marginTop: "15px" }}>Select Regulatory Authority:</p>
+                <p style={{ marginBottom: "15px", marginTop: "15px" }}>Select Regulatory Authority:</p>
 
 
-              {regulatoryNames.map((name, index) => (
-                <button
-                  key={index}
-                  style={{ marginRight: "20px" }}
-                  onClick={() => handleRegulatory(name)}
-                  className={`button ${regulatory === name ? "active" : ""}`}
-                >
-                  {name}
-                </button>
-              ))}
-              {regulatoryError && <p className="error">{regulatoryError}</p>}
+                {regulatoryNames.map((name, index) => (
+                  <button
+                    key={index}
+                    style={{ marginRight: "20px" }}
+                    onClick={() => handleRegulatory(name)}
+                    className={`button ${regulatory === name ? "active" : ""}`}
+                  >
+                    {name}
+                  </button>
+                ))}
+                {regulatoryError && <p className="error">{regulatoryError}</p>}
 
-              {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
                 <input
                   placeholder="Enter Size"
@@ -1553,440 +1584,444 @@ const AddProperty = () => {
               </div>
               {sizeError && <p className="error">{sizeError}</p>} */}
 
-              <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-                {/* <label style={{ marginTop: "5px" }} htmlFor="address">Address</label> */}
-                <input
-                  placeholder="Enter Address"
-                  required
-                  className="inputField"
-                  type="text"
-                  id="address"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                />
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label style={{ marginTop: "5px" }} htmlFor="address">Address</label> */}
+                  <input
+                    placeholder="Enter Address"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
 
-              </div>
-              {addressError && <p className="error">{addressError}</p>}
+                </div>
+                {addressError && <p className="error">{addressError}</p>}
 
-              <button
-                className="next-button"
-                onClick={handlePropertiesDetails}
-              >
-                Save and Continue
-              </button>
-            </>
-          )}
+                <button
+                  className="next-button"
+                  onClick={handlePropertiesDetails}
+                >
+                  Save and Continue
+                </button>
+              </>
+            )}
 
-          {activeStep === 2 && (
-            <div>
-              <p
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  borderBottom: "1px solid grey",
-                  paddingBottom: "10px",
-                }}
-              >
-                {" "}
-                Additional Details
-              </p>
-
-
+            {activeStep === 2 && (
+              <div>
+                <p
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    borderBottom: "1px solid grey",
+                    paddingBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  Additional Details
+                </p>
 
 
-              <div className="m-4">
-                <label className="inline-block mb-2 text-gray-500">
-                  Select Primary Image (jpg,png,svg,jpeg)
-                </label>
-                <div className="flex items-center  w-full">
-                  <div className="w-full flex max-w-md overflow-x-scroll">
-                    {renderPrimaryPhotos(primaryFilesToUpload)}
-                  </div>
-                  <label className=" max-w-[150px] flex flex-col w-full h-40 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
-                    <div className="flex flex-col items-center justify-center pt-7">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
-                        Select a photo
-                      </p>
-                    </div>
-                    <input
-                      onChange={handlePrimaryImageChange}
-                      type="file"
-                      className="opacity-0"
-                    />
+
+
+                <div className="m-4">
+                  <label className="inline-block mb-2 text-gray-500">
+                    Select Primary Image (jpg,png,svg,jpeg)
                   </label>
-                </div>
-              </div>
-
-
-
-              <div className="m-4">
-                <label className="inline-block mb-2 text-gray-500">
-                  Select Property Images (jpg,png,svg,jpeg)
-                </label>
-                <div className="flex items-center  w-full">
-                  <div className="w-full flex max-w-md overflow-x-scroll">
-                    {renderPhotos(filesToupload)}
-                  </div>
-                  <label className=" max-w-[150px] flex flex-col w-full h-40 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
-                    <div className="flex flex-col items-center justify-center pt-7">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
-                        Select a photo
-                      </p>
+                  <div className="flex items-center  w-full">
+                    <div className="w-full flex max-w-md overflow-x-scroll">
+                      {renderPrimaryPhotos(primaryFilesToUpload)}
                     </div>
-                    <input
-                      onChange={handleImageChange}
-                      type="file"
-                      className="opacity-0"
-                    />
-                  </label>
-                </div>
-              </div>
-
-
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
-                <label htmlFor="price">Additional Rooms</label>
-                <div className="securityDepositDiv">
-                  {additionalRoomNames.map((name, index) => (
-                    <button
-                      key={index}
-                      style={{ margin: "10px" }}
-                      onClick={() => handleAdditionalRoomClick(name)}
-                      className={`button ${addtionalRoomButton === name ? "active" : ""
-                        }`}
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div></> : null}
-              {addtionalRoomButtonError && <p className="error">{addtionalRoomButtonError}</p>}
-
-              <label htmlFor="price">Possession Status</label>
-              <div className="securityDepositDiv">
-                {possessionNames.map((name, index) => (
-                  <button
-                    key={index}
-                    style={{ margin: "10px" }}
-                    onClick={() => handlePossessionClick(name)}
-                    className={`button ${possession === name ? "active" : ""}`}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
-              {possessionError && <p className="error">{possessionError}</p>}
-
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
-                <label htmlFor="price">Furnishing Status</label>
-                <div className="securityDepositDiv">
-                  {furnishingNames.map((name, index) => (
-                    <button
-                      key={index}
-                      style={{ margin: "10px" }}
-                      onClick={() => handleFurnishedClick(name)}
-                      className={`button ${furnished === name ? "active" : ""}`}
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div></> : null}
-              {furnishedError && <p className="error">{furnishedError}</p>}
-
-              <label htmlFor="price">Age of Property (Years)</label>
-              <div className="securityDepositDiv">
-                {ageNames.map((name, index) => (
-                  <button
-                    key={index}
-                    style={{ margin: "10px" }}
-                    onClick={() => handleAgeClick(name)}
-                    className={`button ${age === name ? "active" : ""}`}
-                  >
-                    {name}
-                  </button>
-                ))}
-              </div>
-              {ageError && <p className="error">{ageError}</p>}
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
-                <label htmlFor="price">Number of Bathroom</label>
-                <div className="securityDepositDiv">
-                  {bathroomNames.map((name, index) => (
-                    <button
-                      key={index}
-                      style={{ margin: "10px" }}
-                      onClick={() => handleBathroomClick(name)}
-                      className={`button ${bathroom === name ? "active" : ""}`}
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div></> : null}
-              {bathroomError && <p className="error">{bathroomError}</p>}
-
-
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Number of Parking</label>
-                <div className="securityDepositDiv">
-                  {parkingNames.map((name, index) => (
-                    <button
-                      key={index}
-                      style={{ margin: "10px" }}
-                      onClick={() => handleParkingClick(name)}
-                      className={`button ${parking === name ? "active" : ""}`}
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div></> : null}
-              {parkingError && <p className="error">{parkingError}</p>}
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Lift Facility</label>
-                <div className="securityDepositDiv">
-                  {liftNames.map((name, index) => (
-                    <button
-                      key={index}
-                      style={{ margin: "10px" }}
-                      onClick={() => handleLiftClick(name)}
-                      className={`button ${lift === name ? "active" : ""}`}
-                    >
-                      {name}
-                    </button>
-                  ))}
-                </div></> : null}
-              {liftError && <p className="error">{liftError}</p>}
-
-              <div style={{ display: "flex" }} className="viewFacingContainer">
-
-                <div style={{ width: "50%" }} className="facingContainer">
-                  <label htmlFor="price">Facing of the Property</label>
-
-                  <select
-                    style={{ width: "100%", margin: "10px 0", height: "45px", paddingLeft: "10px", borderRadius: "7px", display: "block" }}
-                    value={selectedViewFacing}
-                    onChange={handleViewFacingChange}
-                  >
-                    {facingOptions.map((option) => (
-                      <option style={{}} key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  {selectedViewFacingError && <p className="error">{selectedViewFacingError}</p>}
-                </div>
-
-                <div style={{ width: "50%", marginLeft: "20px" }} className="facingContainer">
-                  <label htmlFor="price">View of the Property</label>
-
-                  <select
-                    style={{ width: "100%", margin: "10px 0", height: "45px", paddingLeft: "10px", borderRadius: "7px", display: "block" }}
-                    value={selectedView}
-                    onChange={handleViewChange}
-                  >
-                    {viewOptions.map((option) => (
-                      <option style={{}} key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  {selectedViewError && <p className="error">{selectedViewError}</p>}
-                </div>
-
-              </div>
-
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-
-                {/* <label htmlFor="floor">Floor No.</label> */}
-                <input
-                  required
-                  className="inputField"
-                  type="text"
-                  id="floor"
-                  placeholder="Floor No."
-                  value={floorNumber}
-                  onChange={(e) => setFloorNumber(e.target.value)}
-                />
-              </div>) : null}
-              {floorNumberError && <p className="error">{floorNumberError}</p>}
-
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-
-                {/* <label htmlFor="tower">Tower/Block</label> */}
-                <input
-                  required
-                  className="inputField"
-                  type="text"
-                  id="tower"
-                  placeholder="Tower/Block"
-                  value={tower}
-                  onChange={(e) => setTower(e.target.value)}
-                />
-              </div>) : null}
-              {towerError && <p className="error">{towerError}</p>}
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-                {/* <label htmlFor="floorCount">Total Floor Count</label> */}
-                <input
-                  required
-                  className="inputField"
-                  type="text"
-                  id="floorCount"
-                  placeholder="Total Floor Count"
-                  value={floorCount}
-                  onChange={(e) => setFloorCount(e.target.value)}
-                />
-              </div>) : null}
-              {floorCountError && <p className="error">{floorCountError}</p>}
-
-              {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-                {/* <label htmlFor="UnitNumber">Unit NO</label> */}
-                <input
-                  required
-                  className="inputField"
-                  type="text"
-                  id="unitNumber"
-                  placeholder="Unit No"
-                  value={unitNumber}
-                  onChange={(e) => setUnitNumber(e.target.value)}
-                />
-              </div> : null}
-              {unitNumberError && <p className="error">{unitNumberError}</p>}
-
-              <button style={{ marginTop: "7px" }}
-                className="next-button"
-                onClick={handleAdditionalDetails}
-              >
-                Save and Continue
-              </button>
-              <button style={{ marginTop: "7px" }} className="previous-button" onClick={handlePrevious}>
-                Previous
-              </button>
-            </div>
-          )}
-
-          {activeStep === 3 && (
-            <div>
-              <p
-                style={{
-                  fontSize: "20px",
-                  fontWeight: "bold",
-                  borderBottom: "1px solid grey",
-                  paddingBottom: "10px",
-                }}
-              >
-                {" "}
-                Amenities
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap" }}>
-                {availableAmenities.map((amenity, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      margin: "5px",
-                      display: "flex",
-                      padding: "5px",
-                      alignItems: "center",
-                    }}
-                    className="amenitiesDiv"
-                  >
-                    <input
-                      // key={index}
-                      required
-                      style={{
-                        marginRight: "5px",
-                        width: "17px",
-                        height: "17px",
-                      }}
-                      type="checkbox"
-                      checked={amenities.includes(amenity.name)}
-                      onChange={() => handleAmenityToggle(amenity.name)}
-                    />
-                    <label
-                      style={{ margin: "0" }}
-                      // key={index}
-                      className="amenity-checkbox"
-                    >
-                      {amenity.name}
+                    <label className=" max-w-[150px] flex flex-col w-full h-40 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                      <div className="flex flex-col items-center justify-center pt-7">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                          Select a photo
+                        </p>
+                      </div>
+                      <input
+                        onChange={handlePrimaryImageChange}
+                        type="file"
+                        className="opacity-0"
+                      />
                     </label>
                   </div>
-                ))}
+                </div>
+
+
+
+                <div className="m-4">
+                  <label className="inline-block mb-2 text-gray-500">
+                    Select Property Images (jpg,png,svg,jpeg)
+                  </label>
+                  <div className="flex items-center  w-full">
+                    <div className="w-full flex max-w-md overflow-x-scroll">
+                      {renderPhotos(filesToupload)}
+                    </div>
+                    <label className=" max-w-[150px] flex flex-col w-full h-40 border-4 border-dashed hover:bg-gray-100 hover:border-gray-300">
+                      <div className="flex flex-col items-center justify-center pt-7">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="w-12 h-12 text-gray-400 group-hover:text-gray-600"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        <p className="pt-1 text-sm tracking-wider text-gray-400 group-hover:text-gray-600">
+                          Select a photo
+                        </p>
+                      </div>
+                      <input
+                        onChange={handleImageChange}
+                        type="file"
+                        className="opacity-0"
+                      />
+                    </label>
+                  </div>
+                </div>
+
+
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                  <label htmlFor="price">Additional Rooms</label>
+                  <div className="securityDepositDiv">
+                    {additionalRoomNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handleAdditionalRoomClick(name)}
+                        className={`button ${addtionalRoomButton === name ? "active" : ""
+                          }`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div></> : null}
+                {addtionalRoomButtonError && <p className="error">{addtionalRoomButtonError}</p>}
+
+                <label htmlFor="price">Possession Status</label>
+                <div className="securityDepositDiv">
+                  {possessionNames.map((name, index) => (
+                    <button
+                      key={index}
+                      style={{ margin: "10px" }}
+                      onClick={() => handlePossessionClick(name)}
+                      className={`button ${possession === name ? "active" : ""}`}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+                {possessionError && <p className="error">{possessionError}</p>}
+
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                  <label htmlFor="price">Furnishing Status</label>
+                  <div className="securityDepositDiv">
+                    {furnishingNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handleFurnishedClick(name)}
+                        className={`button ${furnished === name ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div></> : null}
+                {furnishedError && <p className="error">{furnishedError}</p>}
+
+                <label htmlFor="price">Age of Property (Years)</label>
+                <div className="securityDepositDiv">
+                  {ageNames.map((name, index) => (
+                    <button
+                      key={index}
+                      style={{ margin: "10px" }}
+                      onClick={() => handleAgeClick(name)}
+                      className={`button ${age === name ? "active" : ""}`}
+                    >
+                      {name}
+                    </button>
+                  ))}
+                </div>
+                {ageError && <p className="error">{ageError}</p>}
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                  <label htmlFor="price">Number of Bathroom</label>
+                  <div className="securityDepositDiv">
+                    {bathroomNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handleBathroomClick(name)}
+                        className={`button ${bathroom === name ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div></> : null}
+                {bathroomError && <p className="error">{bathroomError}</p>}
+
+
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Number of Parking</label>
+                  <div className="securityDepositDiv">
+                    {parkingNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handleParkingClick(name)}
+                        className={`button ${parking === name ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div></> : null}
+                {parkingError && <p className="error">{parkingError}</p>}
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Lift Facility</label>
+                  <div className="securityDepositDiv">
+                    {liftNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handleLiftClick(name)}
+                        className={`button ${lift === name ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div></> : null}
+                {liftError && <p className="error">{liftError}</p>}
+
+                <div style={{ display: "flex" }} className="viewFacingContainer">
+
+                  <div style={{ width: "50%" }} className="facingContainer">
+                    <label htmlFor="price">Facing of the Property</label>
+
+                    <select
+                      style={{ width: "100%", margin: "10px 0", height: "45px", paddingLeft: "10px", borderRadius: "7px", display: "block" }}
+                      value={selectedViewFacing}
+                      onChange={handleViewFacingChange}
+                    >
+                      {facingOptions.map((option) => (
+                        <option style={{}} key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                    {selectedViewFacingError && <p className="error">{selectedViewFacingError}</p>}
+                  </div>
+
+                  <div style={{ width: "50%", marginLeft: "20px" }} className="facingContainer">
+                    <label htmlFor="price">View of the Property</label>
+
+                    <select
+                      style={{ width: "100%", margin: "10px 0", height: "45px", paddingLeft: "10px", borderRadius: "7px", display: "block" }}
+                      value={selectedView}
+                      onChange={handleViewChange}
+                    >
+                      {viewOptions.map((option) => (
+                        <option style={{}} key={option} value={option}>
+                          {option}
+                        </option>
+                      ))}
+                    </select>
+                    {selectedViewError && <p className="error">{selectedViewError}</p>}
+                  </div>
+
+                </div>
+
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+
+                  {/* <label htmlFor="floor">Floor No.</label> */}
+                  <input
+                    required
+                    className="inputField"
+                    type="text"
+                    id="floor"
+                    placeholder="Floor No."
+                    value={floorNumber}
+                    onChange={(e) => setFloorNumber(e.target.value)}
+                  />
+                </div>) : null}
+                {floorNumberError && <p className="error">{floorNumberError}</p>}
+
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+
+                  {/* <label htmlFor="tower">Tower/Block</label> */}
+                  <input
+                    required
+                    className="inputField"
+                    type="text"
+                    id="tower"
+                    placeholder="Tower/Block"
+                    value={tower}
+                    onChange={(e) => setTower(e.target.value)}
+                  />
+                </div>) : null}
+                {towerError && <p className="error">{towerError}</p>}
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label htmlFor="floorCount">Total Floor Count</label> */}
+                  <input
+                    required
+                    className="inputField"
+                    type="text"
+                    id="floorCount"
+                    placeholder="Total Floor Count"
+                    value={floorCount}
+                    onChange={(e) => setFloorCount(e.target.value)}
+                  />
+                </div>) : null}
+                {floorCountError && <p className="error">{floorCountError}</p>}
+
+                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label htmlFor="UnitNumber">Unit NO</label> */}
+                  <input
+                    required
+                    className="inputField"
+                    type="text"
+                    id="unitNumber"
+                    placeholder="Unit No"
+                    value={unitNumber}
+                    onChange={(e) => setUnitNumber(e.target.value)}
+                  />
+                </div> : null}
+                {unitNumberError && <p className="error">{unitNumberError}</p>}
+
+                <button style={{ marginTop: "7px" }}
+                  className="next-button"
+                  onClick={handleAdditionalDetails}
+                >
+                  Save and Continue
+                </button>
+                <button style={{ marginTop: "7px" }} className="previous-button" onClick={handlePrevious}>
+                  Previous
+                </button>
               </div>
-              {amenitiesError && <p className="error">{amenitiesError}</p>}
+            )}
 
-              <h2 style={{ fontWeight: "bold", marginBottom: "10px" }}>
-                Property Description
-              </h2>
-              <span>
-                Please write a detailed description about property so clients
-                can understand property better{" "}
-              </span>
-              <textarea
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="A detailed description means  70% higher chance of Leads"
-                style={{ width: "100%", padding: "7px", marginTop: "10px" }}
-                name=""
-                id=""
-                cols={30}
-                rows={5}
-              ></textarea>
-              {descriptionError && <p className="error">{descriptionError}</p>}
+            {activeStep === 3 && (
+              <div>
+                <p
+                  style={{
+                    fontSize: "20px",
+                    fontWeight: "bold",
+                    borderBottom: "1px solid grey",
+                    paddingBottom: "10px",
+                  }}
+                >
+                  {" "}
+                  Amenities
+                </p>
+                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {availableAmenities.map((amenity, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        margin: "5px",
+                        display: "flex",
+                        padding: "5px",
+                        alignItems: "center",
+                      }}
+                      className="amenitiesDiv"
+                    >
+                      <input
+                        // key={index}
+                        required
+                        style={{
+                          marginRight: "5px",
+                          width: "17px",
+                          height: "17px",
+                        }}
+                        type="checkbox"
+                        checked={amenities.includes(amenity.name)}
+                        onChange={() => handleAmenityToggle(amenity.name)}
+                      />
+                      <label
+                        style={{ margin: "0" }}
+                        // key={index}
+                        className="amenity-checkbox"
+                      >
+                        {amenity.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+                {amenitiesError && <p className="error">{amenitiesError}</p>}
 
-              <button
-                onClick={handlePostProperty}
-                style={{
-                  margin: "20px",
-                  backgroundColor: "rgb(88,191,147)",
-                  padding: "15px",
-                  borderRadius: "10px",
-                }}
-              >
-                Submit
-              </button>
+                <h2 style={{ fontWeight: "bold", marginBottom: "10px" }}>
+                  Property Description
+                </h2>
+                <span>
+                  Please write a detailed description about property so clients
+                  can understand property better{" "}
+                </span>
+                <textarea
+                  onChange={(e) => setDescription(e.target.value)}
+                  placeholder="A detailed description means  70% higher chance of Leads"
+                  style={{ width: "100%", padding: "7px", marginTop: "10px" }}
+                  name=""
+                  id=""
+                  cols={30}
+                  rows={5}
+                ></textarea>
+                {descriptionError && <p className="error">{descriptionError}</p>}
 
-              {/* <button className="next-button" onClick={handleAmenitiesSubmit}>
+                <button
+                  onClick={handlePostProperty}
+                  style={{
+                    margin: "20px",
+                    backgroundColor: "rgb(88,191,147)",
+                    padding: "15px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  Submit
+                </button>
+
+                {/* <button className="next-button" onClick={handleAmenitiesSubmit}>
                 Submit
               </button> */}
-              <button className="previous-button" onClick={handlePrevious}>
-                Previous
-              </button>
+                <button className="previous-button" onClick={handlePrevious}>
+                  Previous
+                </button>
+
+              </div>
+            )}
+            <div>
             </div>
-          )}
-          <div>
           </div>
         </div>
-      </div>
+        : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
+          <CircularSpinner />
+        </div>}
     </>
   );
 };

@@ -9,14 +9,14 @@ const OwnerCta = () => {
         <h1 className="text-white font-manrope font-extrabold text-3xl  md:text-5xl max-w-3xl text-center leading-normal">
           Are you a owner, login now to post your properties
         </h1>
-        <Link href="/agent/login">
-          <button onClick={() => router.push("/signup")} className="max-w-max bg-white text-primaryBlue px-10 py-3 rounded-xl active:scale-95 transition duration-200 transform active:bg-gray-100">
+        <Link href="/login">
+          <button onClick={() => router.push("/login")} className="max-w-max bg-white text-primaryBlue px-10 py-3 rounded-xl active:scale-95 transition duration-200 transform active:bg-gray-100">
             Get Started
           </button>
         </Link>
 
-        <div className=" flex  flex-col sm:flex-row  w-full items-center space-y-6 sm:space-y-0 sm:justify-around">
-          {/* create this is as a reusable componet */}
+        {/* <div className=" flex  flex-col sm:flex-row  w-full items-center space-y-6 sm:space-y-0 sm:justify-around">
+       
           <div className="flex items-center space-x-2  ">
             <HiCheckCircle className=" text-white/80 text-lg" />
             <p className="text-white/90 text-sm">Fully orgnized componets</p>
@@ -29,7 +29,7 @@ const OwnerCta = () => {
             <HiCheckCircle className=" text-white/80 text-lg" />
             <p className="text-white/90 text-sm">Fully orgnized componets</p>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );

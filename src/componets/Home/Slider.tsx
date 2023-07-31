@@ -43,15 +43,15 @@ const Slider = ({ property }: { property: Propery }) => {
           </div>
         </div>
         <div className="resfeaturedProjectsCard__contentBox pageComponent"></div>
-        {/* 
-        <Image style={{border:"2px solid red"}}
+        
+        <Image 
           className="lazyLoadImg resfeaturedProjectsCard__iconImg"
-          src="https://images.pexels.com/photos/2581922/pexels-photo-2581922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+          src={propertyImages && propertyImages.length > 0 ? propertyImages[1] : "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"}
           alt="Lumbini Elysee"
           width={800}
           height={600}
 
-        /> */}
+        />
         <div className="resfeaturedProjectsCard__contentText pageComponent">
           {/* <Link href={`/details/${_id}`}>
      

@@ -196,15 +196,16 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text {
     .resfeaturedProjectsCard__featuredProjectCard img.resfeaturedProjectsCard__iconImg {
         left: 0;
         right: 0;
-        width: 52px;
-        height: 52px;
-        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        /* border-radius: 50%; */
         margin: auto;
         position: absolute;
         bottom: 130px;
         background: #FFFFFF;
         z-index: 1;
-        object-fit: contain;
+        object-fit: cover;
+        /* border: 2px solid red; */
     }
 
     .resfeaturedProjectsCard__featuredProjectCard .resfeaturedProjectsCard__contentText {
@@ -429,7 +430,7 @@ input[type="text"]:not(:placeholder-shown) ~ .input-text {
 
 .resfeaturedProjectsCard__featuredProjectCard.fpUpgrade  .resfeaturedProjectsCard__contentBox {height:185px}
 
-.resfeaturedProjectsCard__featuredProjectCard.fpUpgrade  img.resfeaturedProjectsCard__iconImg {width: 64px; height: 64px;right:auto;left:75px;bottom: 161px;}
+.resfeaturedProjectsCard__featuredProjectCard.fpUpgrade  img.resfeaturedProjectsCard__iconImg {width: 50px; height: 50px;right:auto;left:83px;bottom: 172px;}
 
 .resfeaturedProjectsCard__featuredProjectCard.fpUpgrade  .resfeaturedProjectsCard__contentText {bottom: 40px; }
 
