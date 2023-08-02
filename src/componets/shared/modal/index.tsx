@@ -27,7 +27,6 @@ const Transition = forwardRef<HTMLDivElement, FadeProps>(function Transition(
 });
 
 type modal = {
-  closeDialog: any;
   children: ReactNode;
   open: boolean;
   title: string;
@@ -35,7 +34,7 @@ type modal = {
   scroll?: "body" | "paper" | undefined;
   id?: string;
   fullScreen?: boolean;
-  closePopup: () => void;
+  closeDialog: () => void;
 };
 
 function Modal(props: modal) {

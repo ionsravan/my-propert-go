@@ -17,7 +17,7 @@ const AddCustomer = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/user/customers")}
+            onClick={() => router.push("/admin/customers")}
             className=" text-black font-medium justify-center w-full bg-white rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>

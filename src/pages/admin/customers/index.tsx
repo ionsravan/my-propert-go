@@ -7,7 +7,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"; 
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -25,6 +25,7 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
+import CustomPagination from "src/componets/customPagination";
 
 export const Button = ({
   name,
@@ -58,26 +59,25 @@ const Customers = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string>("");
-  const [pageState, setPageState] = useState({
-    page: 1,
-    pageSize: 10,
-  });
-
   const instance = useAxios();
   const [users, setUsers] = useState<User[] | undefined | null>([]);
-  const [pagination, setPagination] = useState<Pagination | undefined | null>(
+  const [pagination, setPagination] = useState<Pagination | null>(
     null
   );
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 10,
+  });
   const [name, setName] = useState<string>("");
   const [selected, setSelected] = useState("All");
   const router = useRouter();
 
   async function getAllUsers() {
-    let pr = selected === "All" ? false : true;
+    let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
     try {
       setLoading(true);
       const res = await instance.get(
-        `/admin/user/getAllUsers?premium=${pr || false}&&search=${name || ""}`
+        `/admin/user/getAllUsers?page=${paginationModel?.page+1||1}&&limit=${paginationModel?.pageSize||10}&&${pr}`
       );
       if (res.data) {
         setUsers(res?.data?.data);
@@ -92,7 +92,7 @@ const Customers = () => {
 
   useEffect(() => {
     getAllUsers();
-  }, [selected, name]);
+  }, [selected, name,paginationModel?.page,paginationModel?.pageSize]);
 
   async function deleteCustomer() {
     try {
@@ -182,7 +182,7 @@ const Customers = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/user/customers/add")}
+            onClick={() => router.push("/admin/customers/add")}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>
@@ -201,11 +201,10 @@ const Customers = () => {
                   setSelected(u);
                 }}
                 key={u}
-                className={` p-2 ${
-                  selected == u
-                    ? "text-primaryBlue  border-b border-primaryBlue"
-                    : "text-[#616161]"
-                }`}
+                className={` p-2 ${selected == u
+                  ? "text-primaryBlue  border-b border-primaryBlue"
+                  : "text-[#616161]"
+                  }`}
               >
                 {u}
               </button>
@@ -245,6 +244,15 @@ const Customers = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+
+              pagination
+              paginationModel={paginationModel}
+              pageSizeOptions={[10,25,50]}
+              rowCount={pagination?.totalUsers}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+
+
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalUsers || 0}
