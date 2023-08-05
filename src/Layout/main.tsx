@@ -6,6 +6,7 @@ interface Props {
   children: ReactNode;
   onlyNav?: boolean;
 }
+
 const Layout = ({ children, onlyNav }: Props) => {
   const router = useRouter();
   console.log(router.pathname);
