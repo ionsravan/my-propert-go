@@ -2,7 +2,9 @@ import { useRouter } from "next/router";
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { AiOutlineClose, AiOutlineLink, AiOutlineMenu } from "react-icons/ai";
+import { BiLogOut } from "react-icons/bi";
 import { TbEdit } from "react-icons/tb";
+import { toast } from "react-toastify";
 import { MyModal } from "src/componets/Sliders/ImageSlider";
 import { useAppContext } from "src/Context/AppContext";
 import AddPropertyForm from "src/pages/agent/addProperty";
@@ -15,7 +17,7 @@ interface Props {
 const DashBoardLayout = ({ children, Navbar }: Props) => {
   const { showModal, setShowModal } = useAppContext();
   const [open, setOpen] = useState<boolean>(false);
-  const [cookies, setCookies] = useCookies(["jwtToken"]);
+  const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,22 +26,30 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
     }
   }, [cookies.jwtToken, router.pathname]);
 
+  const handleLogout = () => {
+    removeCookie("jwtToken");
+    router.push("/login")
+    toast.success("Logout Succesfully", {
+      position: "bottom-center",
+      type: "success",
+    });
+  }
+
   return (
     <>
       <div className="flex h-screen overflow-x-hidden font-manrope bg-[#F6F6F6] overflow-y-scroll relative">
+
         <div className="justify-between hidden bg-white min-h-screen h-full pt-10 pr-4 md:flex flex-col w-full max-w-[300px] sticky top-0 ">
           <Navbar />
           <div className="p-3 py-6">
             <button
-              onClick={() => {
-                router.push("/addProperty")
-              }}
+              onClick={handleLogout}
               className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
             >
               <span>
-                <TbEdit />
+                <BiLogOut />
               </span>
-              <span>Add New</span>
+              <span>Logout</span>
             </button>
           </div>
         </div>
@@ -62,22 +72,19 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
         </MyModal>
       </div>
       <div
-        className={`justify-between absolute top-0 z-50 p-5 transition-all ease-in duration-200 ${
-          open ? "-translate-x-8" : "-translate-x-full"
-        }    bg-white min-h-screen h-full pt-10 pr-4 flex flex-col w-full max-w-[300px] p `}
+        className={`justify-between absolute top-0 z-50 p-5 transition-all ease-in duration-200 ${open ? "-translate-x-8" : "-translate-x-full"
+          }    bg-white min-h-screen h-full pt-10 pr-4 flex flex-col w-full max-w-[300px] p `}
       >
         <Navbar />
         <div className="p-3 py-6">
           <button
-            onClick={() => {
-              setShowModal(!showModal);
-            }}
+            onClick={handleLogout}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>
-              <TbEdit />
+              <BiLogOut />
             </span>
-            <span>Add New</span>
+            <span>Logout</span>
           </button>
         </div>
       </div>

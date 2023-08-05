@@ -74,7 +74,6 @@ const Profile = () => {
       // removeCookie("jwtToken");
       deleteCookie('jwtToken');
       localStorage.removeItem('userId');
-
       toast("Logout Succesfully", {
         position: "bottom-center",
         type: "success",

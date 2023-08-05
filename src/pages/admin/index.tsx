@@ -120,19 +120,35 @@ const ComapnyCard = ({
 };
 
 const DashBoard = () => {
-  // const { data, error, status } = useFetch<response<Agent[]>>(
-  //   "/admin/agent/getAllAgents"
-  // );
-  // const [agents, setAgents] = useState<Agent[]>([]);
+  // /admin/getCountOfAll
+  const [dashboardData, setDashboardData] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   if (data?.result.length == 0) return;
-  //   if (data?.result) {
-  //     setAgents(data?.result);
-  //   }
-  // }, [data?.result]);
+  const instance = useAxios();
+
+  async function getAllLocations() {
+    try {
+      setLoading(true);
+
+      const res = await instance.get(`/admin/getCountOfAll`);
+      if (res.data) {
+        setDashboardData(res?.data);
+        setLoading(false);
+      }
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    getAllLocations();
+  }, []);
   return (
     <>
+
+      {loading ? <CustomLoader /> : null}
+
       <div className="flex justify-between w-full items-center">
         <div>
           <h1 className="text-[#707EAE] text-[10.94px]">Hello Admin</h1>
@@ -140,9 +156,10 @@ const DashBoard = () => {
         </div>
       </div>
       <div className="flex space-x-[17px] mt-6 mb-8">
-        <Card Icon={imgs.Profile} name="Total Students" Value={2598} />
-        <Card Icon={imgs.data} name="Brokers" Value={2598} />
-        <Card Icon={imgs.data} name="Companies" Value={2598} />
+        <Card Icon={imgs.Profile} name="Total Users" Value={dashboardData?.userCount || 0} />
+        <Card Icon={imgs.data} name="Total Properties" Value={dashboardData?.propertyCount || 0} />
+        <Card Icon={imgs.data} name="Total Orders" Value={dashboardData?.ordersCount || 0} />
+        <Card Icon={imgs.data} name="Tickets" Value={dashboardData?.ticketCount || 0} />
       </div>
       {/* <div className="bg-white rounded-sm mb-9 p-6  ">
         <div>
