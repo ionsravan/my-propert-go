@@ -9,6 +9,9 @@ import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
 import "../styles/addProperty.css";
 
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import '../styles/globals.css';
+
 
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

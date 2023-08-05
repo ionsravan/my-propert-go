@@ -344,6 +344,7 @@ const Details = () => {
             home / Appartment /{" "}
             <span className="text-primaryBlue pl-1">
               {data?.result.name || ""}
+              
             </span>
           </small>
           {/* header section */}
@@ -351,7 +352,8 @@ const Details = () => {
             {/* title */}
             <div className="space-y-2 ">
               <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
-                {data?.result.name}
+                {/* {data?.result.name} */}
+                {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk Flat for ${data?.result?.availableFor} in ${data?.result?.address}, ${data?.result?.location.name}  `}
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
                 <div className="flex items-center justify-center space-x-4">

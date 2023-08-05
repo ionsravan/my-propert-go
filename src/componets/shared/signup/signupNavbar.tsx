@@ -5,13 +5,13 @@ const Nav = () => {
   const router = useRouter();
   const NavItems = [
     {
-      name: "Appartment",
+      name: "Home",
       link: "/",
     },
-    {
-      name: "Corpers Trade",
-      link: "/",
-    },
+    // {
+    //   name: "Corpers Trade",
+    //   link: "/",
+    // },
     {
       name: "Help",
       link: "/",

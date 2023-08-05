@@ -5,6 +5,48 @@ import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import CircularSpinner from 'src/componets/circularLoader';
 
+
+const TermsAndConditions = () => {
+    const [agreed, setAgreed] = useState(false);
+
+    const handleAgree = () => {
+        setAgreed(true);
+    };
+
+    return (
+        <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+            <div className="bg-white p-8 rounded-lg shadow-md w-96">
+                <h1 className="text-2xl font-bold mb-4">Terms and Conditions</h1>
+                <div className="h-40 overflow-y-scroll mb-4">
+                    {/* Replace this with your actual terms and conditions content */}
+                    <p className="text-gray-600">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet posuere elit. Nulla quis tristique sapien. Integer sodales nisl eu felis ultrices, ac iaculis purus eleifend. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce vel orci sit amet augue vestibulum consectetur. Duis cursus auctor orci, in dictum dolor facilisis non. Vestibulum eu diam nec dui rhoncus fringilla. Vivamus nec sem eu mauris consequat malesuada.
+                        {/* Continue with more content */}
+                    </p>
+                </div>
+                <div className="flex items-center">
+                    <input
+                        type="checkbox"
+                        id="agreeCheckbox"
+                        className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                        checked={agreed}
+                        onChange={handleAgree}
+                    />
+                    <label htmlFor="agreeCheckbox" className="ml-2 text-gray-700">
+                        I agree to the Terms and Conditions
+                    </label>
+                </div>
+                <button
+                    className={`mt-4 py-2 px-4 rounded-md ${agreed ? 'bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
+                    disabled={!agreed}
+                >
+                    Continue
+                </button>
+            </div>
+        </div>
+    );
+};
+
 const OtpAuthentication = () => {
     const router = useRouter();
     const instance = useAxios();
@@ -25,6 +67,7 @@ const OtpAuthentication = () => {
     const [isVerifyLoading, setIsVerifyLoading] = useState(true);
     const [registerLoading, setRegisterLoading] = useState(true);
     const [registerVerify, setRegisterVerify] = useState(true);
+    const [showTerms, setShowTerms] = useState(false);
 
     const handleLoginClick = () => {
         setShowLogin(true);
@@ -76,9 +119,10 @@ const OtpAuthentication = () => {
                 setCookies("jwtToken", res.data.token);
                 setIsVerifyLoading(false)
                 router.push("/")
+                // setShowTerms(true);
                 toast.success("Otp fetch Successfully");
 
-               
+
                 //   setLoading(false);
             }
         } catch (e) {
@@ -145,7 +189,7 @@ const OtpAuthentication = () => {
                 setRegisterVerify(false)
                 router.push("/")
                 toast.success("Otp fetch Successfully");
-             
+
                 //   setLoading(false);
             }
         } catch (e) {
@@ -183,15 +227,20 @@ const OtpAuthentication = () => {
                         <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="otp">
                             Enter your mobile number to get started.
                         </label>
-                        <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            type="text"
-                            id="otp"
-                            name="otp"
-                            value={loginValue}
-                            onChange={(e) => setLoginValue(e.target.value)}
-                            required
-                        />
+                        <div style={{ height: "50px", margin: "0 0" }}
+                            className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                        >
+                            <input
+                                // style={{width:"100%"}}
+                                className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                type="text"
+                                id="otp"
+                                name="otp"
+                                value={loginValue}
+                                onChange={(e) => setLoginValue(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
                     <div className=" px-14 flex items-center justify-center">
                         <button
@@ -209,7 +258,7 @@ const OtpAuthentication = () => {
             </div>}
 
         </> : <>
-        {isVerifyLoading ?  <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
+            {isVerifyLoading ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
                 <h1 className="text-2xl font-bold mb-6">Login</h1>
 
                 <form onSubmit={handleOtpLoginSubmit}>
@@ -217,15 +266,19 @@ const OtpAuthentication = () => {
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="otp">
                             Enter Otp
                         </label>
-                        <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            type="text"
-                            id="otp"
-                            name="otp"
-                            value={loginOtp}
-                            onChange={(e) => setLoginOtp(e.target.value)}
-                            required
-                        />
+                        <div style={{ height: "50px", margin: "0 0" }}
+                            className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                        >
+                            <input
+                                className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                type="text"
+                                id="otp"
+                                name="otp"
+                                value={loginOtp}
+                                onChange={(e) => setLoginOtp(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
                     <div className="flex items-center justify-center">
                         <button
@@ -236,12 +289,12 @@ const OtpAuthentication = () => {
                         </button>
                     </div>
                 </form>
-            </div> :  <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
+            </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
                 <CircularSpinner />
-            </div> }
-           
-            </> : !showVerify ? <>
-            {registerLoading ?    <div>
+            </div>}
+
+        </> : !showVerify ? <>
+            {registerLoading ? <div>
                 <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
                     {/* <div className="min-h-screen flex items-center justify-center bg-gray-100">
                     <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md"> */}
@@ -255,57 +308,73 @@ const OtpAuthentication = () => {
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
                                 Name
                             </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={registerFormData.name}
-                                onChange={handleRegisterChange}
-                                required
-                            />
+                            <div style={{ height: "50px", margin: "0 0" }}
+                                className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                            >
+                                <input
+                                    className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    value={registerFormData.name}
+                                    onChange={handleRegisterChange}
+                                    required
+                                />
+                            </div>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                                 Email
                             </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="email"
-                                id="email"
-                                name="email"
-                                value={registerFormData.email}
-                                onChange={handleRegisterChange}
-                                required
-                            />
+                            <div style={{ height: "50px", margin: "0 0" }}
+                                className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                            >
+                                <input
+                                    className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={registerFormData.email}
+                                    onChange={handleRegisterChange}
+                                    required
+                                />
+                            </div>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                                 Password
                             </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="password"
-                                id="password"
-                                name="password"
-                                value={registerFormData.password}
-                                onChange={handleRegisterChange}
-                                required
-                            />
+                            <div style={{ height: "50px", margin: "0 0" }}
+                                className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                            >
+                                <input
+                                    className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    value={registerFormData.password}
+                                    onChange={handleRegisterChange}
+                                    required
+                                />
+                            </div>
                         </div>
                         <div className="mb-4">
                             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="mobileNumber">
                                 Mobile Number
                             </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                type="text"
-                                id="mobileNumber"
-                                name="mobileNumber"
-                                value={registerFormData.mobileNumber}
-                                onChange={handleRegisterChange}
-                                required
-                            />
+                            <div style={{ height: "50px", margin: "0 0" }}
+                                className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                            >
+                                <input
+                                    className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                    type="text"
+                                    id="mobileNumber"
+                                    name="mobileNumber"
+                                    value={registerFormData.mobileNumber}
+                                    onChange={handleRegisterChange}
+                                    required
+                                />
+                            </div>
                         </div>
                         <div className="flex items-center justify-center">
                             <button
@@ -325,26 +394,30 @@ const OtpAuthentication = () => {
                 </div>
             </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
                 <CircularSpinner />
-            </div>  }
-         
-           
-        </> :  <>
-        {registerVerify ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
+            </div>}
+
+
+        </> : <>
+            {registerVerify ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
                 <h1 className="text-2xl font-bold mb-6">Verify Mobile No.</h1>
                 <form onSubmit={handleOtpSubmit}>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="otp">
                             Enter OTP
                         </label>
-                        <input
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                            type="text"
-                            id="otp"
-                            name="otp"
-                            value={otpValue}
-                            onChange={(e) => setOtpValue(e.target.value)}
-                            required
-                        />
+                        <div style={{ height: "50px", margin: "0 0" }}
+                            className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                        >
+                            <input
+                                className=" appearance-none border-none outline-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                                type="text"
+                                id="otp"
+                                name="otp"
+                                value={otpValue}
+                                onChange={(e) => setOtpValue(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
                     <div className="flex items-center justify-center">
                         <button
@@ -357,10 +430,10 @@ const OtpAuthentication = () => {
                 </form>
             </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
                 <CircularSpinner />
-            </div> }
-            
-  </>
-        
+            </div>}
+
+        </>
+
         }
 
     </>

@@ -56,24 +56,24 @@ const Nav = () => {
       {cookies?.jwtToken === undefined ? (
         <button
           onClick={() => router.push("/login")}
-          className={`${
-            router?.pathname == "/"
-              ? "bg-white text-primaryBlue"
+          style={{border:"2px solid black"}}
+          className={`${router?.pathname == "/"
+              ? "bg-white text-black"
               : "bg-primaryBlue text-white"
-          } px-6 rounded-full py-2 font-manrope`}
+            } px-6 rounded-full py-2 font-manrope`}
         >
           Login
         </button>
       ) : (
         <button
-        onClick={() => router.push("/agent")}
-          className={`${
-            router?.pathname == "/"
-              ? "bg-white text-primaryBlue"
-              : "bg-primaryBlue text-white"
-          } px-2 rounded-full py-2 font-manrope`}
+        
+          onClick={() => router.push("/agent")}
+          className={`${router?.pathname == "/"
+              ? "bg-white text-black"
+              : "bg-white text-black"
+            } px-2 rounded-full py-2 font-manrope`}
         >
-          <FaUserAlt/>
+          <FaUserAlt />
         </button>
       )}
     </nav>
@@ -83,22 +83,37 @@ const Nav = () => {
 const Navbar = () => {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+
+  // box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
   return (
     <>
       <header
-        className={`flex justify-between relative overflow-hidden ${
-          router?.pathname == "/" ? "bg text-white" : "bg-white"
-        } items-center px-6 py-5 ${
-          router?.pathname == "/"
-            ? " overflow-hidden "
-            : "shadow-md overflow-hidden sticky top-0 z-30"
-        } `}
+           style={{boxShadow:"rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px"}}
+           className={`flex justify-between overflow-hidden z-[1200] sticky  top-0 ${
+            router?.pathname == "/"
+              ? "bg-white text-black  "
+              : "bg-white"
+          } items-center px-6 py-5 ${
+            router?.pathname == "/"
+              ? "overflow-hidden " 
+              : "shadow-md overflow-hidden "
+          } `}
+    // className={`flex justify-between relative overflow-hidden ${router?.pathname == "/" ? "bg-primaryBlue text-white sticky top-0" : "bg-white"
+    //       } items-center px-6 py-5 ${router?.pathname == "/"
+    //         ? " overflow-hidden sticky top-0 "
+    //         : "shadow-md overflow-hidden sticky top-0 z-30"
+    //       } `}
       >
-        <div className="md:pl-6 pl-4">
+        {/* <div style={{border:"2px solid red",width:"200px",height:"30px"}} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer ">
           <h1 className="text-2xl font-manrope font-extrabold">
             My Property Go
           </h1>
+          <img style={{width:"100%",objectFit:"cover" }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
+        </div> */}
+        <div style={{ width: "200px", height: "30px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
+          <img style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
         </div>
+
         <div className="md:block hidden   ">
           <Nav />
         </div>

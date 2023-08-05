@@ -17,7 +17,8 @@ const MediumHouseCard = ({
   primaryImage,
   areaValue,
   size,
-  location
+  location,
+  availableFor
 
 }: Propery) => {
   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
@@ -33,7 +34,7 @@ const MediumHouseCard = ({
           />
         </div>
         <div className="space-y-1 px-3 ">
-          <h1 className="text-2xl font-semibold text-TitleColor">{name}</h1>
+          <h1 className="text-2xl font-semibold text-TitleColor">{`${BHKconfig}Bhk Flat for ${availableFor} in...   `}</h1>
           <div  className="flex justify-between items-end ">
             <div  className="flex flex-col">
               <p className="flex items-center text-md "><HiLocationMarker style={{marginRight:"5px"}} />{location.name}</p>

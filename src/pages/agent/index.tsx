@@ -1,5 +1,6 @@
 import { AxiosInstance } from "axios";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, {
   Dispatch,
   ReactElement,
@@ -7,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
 import { Agent, location, response, area, AvailableFor, Propery, Buyer, Tickets } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
@@ -164,6 +166,8 @@ const AgentDashBoard = () => {
   const { data, error } = useFetch<response<Agent>>("/user/property");
   const [propertiesData, setPropertiesData] = useState<Agent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const router = useRouter();
+  const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
 
   const [userId, setUserId] = useState<string | null>(null);
   const { data: leads } = useFetch<response<Buyer[]>>(
@@ -209,6 +213,7 @@ const AgentDashBoard = () => {
       setAgentId(firstAgent._id);
       setPropertiesData(data.result);
       localStorage.setItem("userId", userId);
+      localStorage.setItem("isAdmin", false);
       console.log(userId, "userId");
       setIsLoading(false)
     } else {
@@ -226,17 +231,44 @@ const AgentDashBoard = () => {
 
   // if (!data) {
   //   setPropertiesData([]);
-  // }
+  // }''
+
+
+
+
+  const deleteCookie = (name) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
+
+  const handleLogout = () => {
+    setTimeout(() => {
+      // removeCookie("jwtToken");
+      deleteCookie('jwtToken');
+      localStorage.removeItem('userId');
+      router.push("/")
+
+      toast("Logout Succesfully", {
+        position: "bottom-center",
+        type: "success",
+      });
+     
+     
+    }, 1000);
+
+  }
 
   return (
     <>
-      <div className="flex justify-between w-full items-center font-manrope">
+      <div  className="flex justify-between w-full items-center font-manrope">
         <div>
-          <h1 className="text-[#707EAE] text-[10.94px]">broker</h1>
+          <h1 className="text-[#707EAE] text-[10.94px]">user</h1>
           <h2 className="text-TitleColor font-bold text-[26px]">
             {/* Hello {data?.result?.name} */}
             Hello
           </h2>
+        </div>
+        <div>
+        <button onClick={handleLogout} className="text-white font-medium  bg-[#0066FF] rounded-full px-5 py-1  transition transform active:scale-95 duration-200">Logout</button>
         </div>
       </div>
       <div className="flex space-x-[17px] mt-6 mb-8">

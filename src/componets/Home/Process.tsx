@@ -5,7 +5,7 @@ const Process = () => {
     <section className="px-10 py-16">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-4xl font-bold font-manrope">
-          The Process at My Propert Go
+          The Process at Wonderplots
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-3 py-10">
           <div className="max-w-[250px] space-y-2">

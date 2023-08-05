@@ -67,7 +67,7 @@ const CustomPopup: React.FC = () => {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
             "authorization": `Bearer ${cookies.jwtToken}`,
           },
         }

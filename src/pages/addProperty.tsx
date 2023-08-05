@@ -51,6 +51,8 @@ import { useCookies } from "react-cookie";
 import { availableAmenities } from "src/@global/Data";
 import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
+import { Layout } from "lucide-react";
+import { Navbar } from "src/componets";
 
 const AddProperty = () => {
 
@@ -74,7 +76,7 @@ const AddProperty = () => {
   const [propertyTypeError, setPropertyTypeError] = useState("");
   const [availabeFor, setAvailableFor] = useState("sale");
   const [availabeForError, setAvailableForError] = useState("");
-  const [toggle, setToggle] = useState("Project");
+  const [toggle, setToggle] = useState("");
   const [toggleError, setToggleError] = useState("");
   const [isPropertyActive, setPropertyActive] = useState(true);
   const [isProjectActive, setProjectActive] = useState(false);
@@ -166,6 +168,9 @@ const AddProperty = () => {
 
   const [lift, setLift] = useState("");
   const [liftError, setLiftError] = useState("");
+  const [metaTittle, setMetaTittle] = useState("");
+  const [metaDiscription, setMetaDiscription] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const handleSaleClick = () => {
     setSaleActive(true);
@@ -493,17 +498,17 @@ const AddProperty = () => {
     }
   };
 
-  // const handleToggle = (type: string) => {
-  //   if (type === "property") {
-  //     setPropertyActive(true);
-  //     setProjectActive(false);
-  //     setToggle("Property");
-  //   } else if (type === "project") {
-  //     setPropertyActive(false);
-  //     setProjectActive(true);
-  //     setToggle("Project");
-  //   }
-  // };
+  const handleToggle = (type: string) => {
+    if (type === "Property") {
+      setPropertyActive(true);
+      setProjectActive(false);
+      setToggle("Property");
+    } else if (type === "Project") {
+      setPropertyActive(false);
+      setProjectActive(true);
+      setToggle("Project");
+    }
+  };
 
   // dfhjdhjhsjhkshfjs
   // dfjsfhs
@@ -1098,11 +1103,16 @@ const AddProperty = () => {
 
   }
 
-
+  useEffect(() => {
+    const adminValue = localStorage.getItem("isAdmin");
+    setIsAdmin(adminValue);
+  }, []);
 
   return (
     <>
+    <Navbar/>
       {isLoading ?
+      
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
           {/* <p>Property Listing for</p> */}
           <div style={{ margin: "20px 0" }} className="property-listing-form">
@@ -1184,11 +1194,11 @@ const AddProperty = () => {
 
 
 
-                  {/* <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
+             { isAdmin === true ? <> <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
 
                 <button
                   style={{}}
-                  onClick={() => handleToggle("property")}
+                  onClick={() => handleToggle("Property")}
                   className={`button ${isPropertyActive ? "active" : ""}`}
                 >
                   <MdApartment style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Property
@@ -1196,12 +1206,12 @@ const AddProperty = () => {
 
                 <button
                   style={{ marginLeft: "20px" }}
-                  onClick={() => handleToggle("project")}
+                  onClick={() => handleToggle("Project")}
                   className={`button ${isProjectActive ? "active" : ""}`}
                 >
                   <BsBuilding style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Project
-                </button>
-                {toggleError && <p className="error">{toggleError}</p>} */}
+                </button> </> : null}
+                {/* {toggleError && <p className="error">{toggleError}</p>} */}
 
 
 
@@ -1249,7 +1259,6 @@ const AddProperty = () => {
                   {availabeForError && <p className="error">{availabeForError}</p>}
 
 
-
                   {developmentActive === false ? <>
 
                     <p style={{ marginBottom: "15px", marginTop: "15px" }}>
@@ -1291,11 +1300,7 @@ const AddProperty = () => {
                   {buildingTypeError && <p className="error">{buildingTypeError}</p>}
 
 
-
-
-
                 </div>
-
 
 
                 {residentialActive ? <>
@@ -1461,8 +1466,6 @@ const AddProperty = () => {
               {bhkConfigError && <p className="error">{bhkConfigError}</p>} */}
 
 
-
-
                 {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Number of Bhk</label>
                   <div className="securityDepositDiv">
@@ -1478,10 +1481,6 @@ const AddProperty = () => {
                     ))}
                   </div></> : null}
                 {bhkConfigError && <p className="error">{bhkConfigError}</p>}
-
-
-
-
 
 
                 <div className="AreaSection" style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -1519,8 +1518,6 @@ const AddProperty = () => {
                   </div>
 
                   {areaError && <p className="error">{areaError}</p>}
-
-
 
                 </div>
 
@@ -1993,6 +1990,32 @@ const AddProperty = () => {
                   rows={5}
                 ></textarea>
                 {descriptionError && <p className="error">{descriptionError}</p>}
+
+             { isAdmin === true ? <div style={{ margin: "20px 0" }}
+                  className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                >
+                  {/* <label style={{marginTop:"5px"}} htmlFor="city">City:</label> */}
+                  <input
+                    placeholder="Meta Tittle"
+                    required
+                    className="inputField"
+                    type="text"
+                    // id="city"
+                    value={metaTittle}
+                    onChange={(e) => setMetaTittle(e.target.value)}
+                  />
+
+
+                </div> : null}
+             { isAdmin === true ?    <textarea
+                  onChange={(e) => setMetaDiscription(e.target.value)}
+                  placeholder="Meta Discription"
+                  style={{ width: "100%", padding: "7px", marginTop: "10px" }}
+                  name=""
+                  id=""
+                  cols={30}
+                  rows={5}
+                ></textarea>  : null}
 
                 <button
                   onClick={handlePostProperty}

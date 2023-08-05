@@ -253,36 +253,36 @@ const BhkFilter = () => {
           name="1 BHK"
           values="1"
         />
-        <FilterCheckBox
+        {/* <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "1.5"}
           name="1.5 BHK"
           values="1.5"
-        />
+        /> */}
         <FilterCheckBox
           setEnabled={setBHKconfig}
-          enabled={BHKconfig === "3"}
+          enabled={BHKconfig === "2"}
           name="2 BHK"
           values="2"
         />
-        <FilterCheckBox
+        {/* <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "3.5"}
           name="2.5 BHK"
           values="2.5"
-        />
+        /> */}
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "3"}
           name="3 BHK"
           values="3"
         />
-        <FilterCheckBox
+        {/* <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "3.5"}
           name="3.5 BHK"
           values="3.5"
-        />
+        /> */}
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "4"}
@@ -451,6 +451,7 @@ const TypeFilter = ({
     { label: "villa", value: "villa" },
     { label: "appartment", value: "appartment" },
     { label: "pg", value: "pg" },
+    { label: "building type", value: "building type" },
   ],
 }: {
   areas?: any;
@@ -515,7 +516,7 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
 
   return (
     <>
-      <div className="font-manrope top-2 overflow-hidden">
+      <div  className="font-manrope top-2 overflow-hidden">
         <h1 className="text-TitleColor font-bold text-2xl py-2 ">Properties</h1>
         <div className="text-TitleColor">
           {/* <SidBarItemContainer isBottomBorder>

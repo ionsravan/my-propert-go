@@ -11,7 +11,8 @@ const Layout = ({ children, onlyNav }: Props) => {
   console.log(router.pathname);
 
   return (
-    <div className="overflow-hidden bg-[#F5F5F5]">
+    // <div  className="overflow-hidden bg-[#F5F5F5]">
+    <>
       <Navbar />
       <main className="overflow-x-hidden">{children}</main>
       <>
@@ -22,7 +23,7 @@ const Layout = ({ children, onlyNav }: Props) => {
           </>
         ) : null}
       </>
-    </div>
+    </>
   );
 };
 

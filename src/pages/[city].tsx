@@ -1,6 +1,6 @@
 import {useRouter} from "next/router";
 import Image from "next/image";
-import {Header, HomeSectionTitle, HouseCard, PopularCity, Process, Stats, TestiMonials} from "../componets";
+import {Header, HomeSectionTitle, HouseCard, OwnerCta, PopularCity, Process, Stats, TestiMonials} from "../componets";
 import {HomeChip, homeChipsData} from "../componets/Home/header";
 import {FiChevronLeft, FiChevronRight} from "react-icons/fi";
 import CardCarousel from "../componets/Sliders/cardCaursel";
@@ -15,6 +15,7 @@ import {useFetch} from "../lib/hooks/useFetch";
 import Layout from "../Layout/main";
 import Footer from "../componets/shared/Footer";
 import Navbar from "../componets/shared/Navbar";
+import { FaHome } from "react-icons/fa";
 
 
 const images = [
@@ -171,27 +172,35 @@ const CityPage = () => {
             const featuredProperties = Filtred?.filter(property => property.featured && property.location.name === city) ?? [];
             setFeaturedFiltred(featuredProperties);
 
-            const toggleProperties = Filtred?.filter(property => property.toggle === "project" && property.location.name === city) ?? [];
+            const toggleProperties = Filtred?.filter(property => property.toggle === "Project" && property.location.name === city) ?? [];
             setToggleData(toggleProperties);
 
             const trendingProperties = Filtred?.filter(property => property.location.name === city) ?? [];
-            setTrending(trendingProperties);
+            setTrending(() => trendingProperties);
         };
 
         filterProperties();
+    }, [Filtred,city]);
+
+
+    // useEffect(() => {
+    //     console.log('costFiltred:', costFiltred);
+    //     console.log('featuredFiltred:', featuredFiltred);
+    //     console.log('toggleData:', toggleData);
+    // }, [costFiltred]);
+    useEffect(() => {
+        console.log('trneding', trending);
+
     }, [Filtred]);
 
 
-    useEffect(() => {
-        console.log('costFiltred:', costFiltred);
-        console.log('featuredFiltred:', featuredFiltred);
-        console.log('toggleData:', toggleData);
-    }, [costFiltred]);
+    const handleCardClick = () => {
+        window.open('', '_blank');
+      };
 
 
     return <>
     {/*<h1>{city}</h1>*/}
-
 
 <Navbar/>
         <div className="min-h-[70vh] bg relative py-32 px-5 md:px-10">
@@ -292,199 +301,257 @@ const CityPage = () => {
                 </div>
             </div>
         </section>
-        <section className=" py-16">
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                <div className="w-full flex items-center justify-between">
-                    <HomeSectionTitle text="Trending / Newly listed" />
-                    <div className="hidden md:flex space-x-4 ">
-                        <button
-                            onClick={() => scrollLeft("feat")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronLeft />
-                        </button>
-                        <button
-                            onClick={() => scrollRight("feat")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronRight />
-                        </button>
-                    </div>
-                </div>
-                {data && (
-                    <div
-                        id="feat"
-                        className="flex overflow-hidden space-x-6"
-                    >
-                        <CardCarousel
-                            id="feat"
-                            data={trending}
-                            Card={MediumHouseCard}
-                        />
-                    </div>
-                )}
+        <section className="pt-16">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
+            <HomeSectionTitle text="Trending / Newly listed" />
+            <div className="hidden md:flex space-x-4 ">
+              <button
+                onClick={() => scrollLeft("feat")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("feat")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronRight />
+              </button>
             </div>
-        </section>
-
-
-        <section className=" py-16">
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                <div className="w-full flex items-center justify-between">
-                    <HomeSectionTitle text="Budget Properties for you" />
-                    <div className="hidden md:flex space-x-4 ">
-                        <button
-                            onClick={() => scrollLeft("cost")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronLeft />
-                        </button>
-                        <button
-                            onClick={() => scrollRight("cost")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronRight />
-                        </button>
-                    </div>
-                </div>
-                {data && (
-                    <div
-                        id="cost"
-                        className="flex overflow-hidden space-x-6 py-10"
-                    >
-                        <CardCarousel
-                            id="cost"
-                            data={costFiltred}
-                            Card={MediumHouseCard}
-                        />
-                    </div>
-                )}
+          </div>
+          {data && (
+            <div
+              id="feat"
+              className="flex overflow-hidden space-x-6"
+            >
+              <CardCarousel
+                id="feat"
+                data={trending}
+                Card={MediumHouseCard}
+              />
             </div>
-        </section>
+          )}
+        </div>
+      </section>
 
 
-
-        <section className=" py-16">
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                <div className="w-full flex items-center justify-between">
-                    <HomeSectionTitle text="Featured Properties" />
-                    <div className="hidden md:flex space-x-4 ">
-                        <button
-                            onClick={() => scrollLeft("featured")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronLeft />
-                        </button>
-                        <button
-                            onClick={() => scrollRight("featured")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronRight />
-                        </button>
-                    </div>
-                </div>
-                {data && (
-                    <div
-                        id="featured"
-                        className="flex overflow-hidden space-x-6 py-10"
-                    >
-                        <CardCarousel
-                            id="featured"
-                            data={featuredFiltred}
-                            Card={MediumHouseCard}
-                        />
-                    </div>
-                )}
+        <section className="py-4">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
+            <HomeSectionTitle text="Budget Properties for you" />
+            <div className="hidden md:flex space-x-4 ">
+              <button
+                onClick={() => scrollLeft("cost")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("cost")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronRight />
+              </button>
             </div>
-        </section>
-
-
-        <section className=" py-16">
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                <div className="w-full flex items-center justify-between">
-                    <HomeSectionTitle text="Projects" />
-                    <div className="hidden md:flex space-x-4 ">
-                        <button
-                            onClick={() => scrollLeft("toggle")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronLeft />
-                        </button>
-                        <button
-                            onClick={() => scrollRight("toggle")}
-                            className="p-2 m-2 rounded-full bg-white"
-                        >
-                            <FiChevronRight />
-                        </button>
-                    </div>
-                </div>
-                {data && (
-                    <div
-                        id="toggle"
-                        className="flex overflow-hidden space-x-6 py-10"
-                    >
-                        <CardCarousel
-                            id="toggle"
-                            data={toggleData}
-                            Card={MediumHouseCard}
-                        />
-                    </div>
-                )}
+          </div>
+          {data && (
+            <div
+              id="cost"
+              className="flex overflow-hidden space-x-6"
+            >
+              <CardCarousel
+                id="cost"
+                data={costFiltred}
+                Card={MediumHouseCard}
+              />
             </div>
-        </section>
+          )}
+        </div>
+      </section>
 
-        <section className="py-2">
-            <p className="max-w-7xl mx-auto px-5 md:px-10 text-xl">Why Wonderplots ?</p>
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-                <table className="border-collapse w-full ">
-                    <thead>
-                    <tr>
-                        <th className="py-2 px-4 border border-gray-300 font-bold">Connect+</th>
-                        <th className="py-2 px-4 border border-gray-300 font-bold">Reach more</th>
-                        <th className="py-2 px-4 border border-gray-300 font-bold">Lead Transfers</th>
-                        <th className="py-2 px-4 border border-gray-300 font-bold">Property Care</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td className="py-2 px-4 border border-gray-300">
-                            <ul className="list-disc list-inside decore">
-                                <li>Get assigned by owners for agents</li>
-                                <li>Connect with owners directly for your projects</li>
-                            </ul>
-                        </td>
-                        <td className="py-2 px-4 border border-gray-300">
-                            <ul className="list-disc list-inside">
-                                <li>Be visible to buyers for &quot;x&quot; times more</li>
-                                <li>Explore wide reach of properties in all categories</li>
-                            </ul>
-                        </td>
-                        <td className="py-2 px-4 border border-gray-300">
-                            <ul className="list-disc list-inside">
-                                <li>Agents can transfer leads to other agents</li>
-                                <li>Track the leads on your dashboard</li>
-                            </ul>
-                        </td>
-                        <td className="py-2 px-4 border border-gray-300">
-                            <ul className="list-disc list-inside">
-                                <li>Secure your property now</li>
-                                <li>Sell faster in the market</li>
-                            </ul>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+
+
+        <section className="py-4">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
+            <HomeSectionTitle text="Featured Properties" />
+            <div className="hidden md:flex space-x-4 ">
+              <button
+                onClick={() => scrollLeft("featured")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("featured")}
+                className="p-2 m-2 rounded-full bg-white"
+              >
+                <FiChevronRight />
+              </button>
             </div>
-        </section>
+          </div>
+          {data && (
+            <div
+              id="featured"
+              className="flex overflow-hidden space-x-6"
+            >
+              <CardCarousel
+                id="featured"
+                data={featuredFiltred}
+                Card={MediumHouseCard}
+              />
+            </div>
+          )}
+        </div>
+      </section>
+
+
+        <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4]v py-4 ">
+        <HomeSectionTitle text="Projects" />
+        <div className="relative space-x-4 pt-10 ">
+          <Carousel
+              ssr
+              partialVisbile
+              itemClass="image-item"
+              responsive={responsive}
+              autoPlay={true}
+              swipeable={true}
+              draggable={true}
+              infinite={true}
+              transitionDuration={4000}
+          >
+            {toggleData ? (
+                toggleData.map((property, i) => <Slider key={i} property={property} />)
+            ) : (
+                <p>Loading...</p>
+            )}
+          </Carousel>
+        </div>
+      </section>
+
+        
+
+
+
+
+        <section className="py-4">
+        <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">Why Wonderplots ?</p>
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <table className="border-collapse w-full ">
+            <thead>
+              <tr>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Connect+</th>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Reach more</th>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Lead Transfers</th>
+                <th className="py-2 px-4 border border-gray-300 font-bold">Property Care</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside decore">
+                    <li>Get assigned by owners for agents</li>
+                    <li>Connect with owners directly for your projects</li>
+                  </ul>
+                </td>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside">
+                    <li>Be visible to buyers for &quot;x&quot; times more</li>
+                    <li>Explore wide reach of properties in all categories</li>
+                  </ul>
+                </td>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside">
+                    <li>Agents can transfer leads to other agents</li>
+                    <li>Track the leads on your dashboard</li>
+                  </ul>
+                </td>
+                <td className="py-2 px-4 border border-gray-300">
+                  <ul className="list-disc list-inside">
+                    <li>Secure your property now</li>
+                    <li>Sell faster in the market</li>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+
+
+        <section className="py-4">
+      <div className="container mx-auto py-12">
+        <div className="text-center mb-4">
+          <p className="text-4xl font-bold font-manrope">Services from Wonderplots</p>
+          {/* <p className="text-2xl font-semibold">Why Us?</p> */}
+          {/* <div className="flex justify-center items-center">
+            <FaHome className="text-4xl text-blue-500" />
+          </div> */}
+        </div>
+        <div className="flex flex-wrap justify-center">
+          {/* Card 1 */}
+          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+              <div className="text-4xl text-blue-500">
+                {/* Icon here (You can use an icon library or an SVG) */}
+                <FaHome/>
+              </div>
+              <h3 className="text-xl font-semibold mt-4">
+                Interior Designing
+              </h3>
+              <p className="text-gray-600 mt-2 text-center">
+                Transform your space. Create beautiful, functional interiors.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 2 */}
+          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+              <div className="text-4xl text-blue-500">
+                {/* Icon here */}
+                <FaHome/>
+              </div>
+              <h3 className="text-xl font-semibold mt-4">
+                Property Care
+              </h3>
+              <p className="text-gray-600 mt-2 text-center">
+                Experience hassle-free property ownership with our essential management services - a must for every property owner.
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+              <div className="text-4xl text-blue-500">
+                {/* Icon here */}
+                <FaHome/>
+              </div>
+              <h3 className="text-xl font-semibold mt-4">
+                Shipping Container Homes
+              </h3>
+              <p className="text-gray-600 mt-2 text-center">
+                Experience unique, versatile living with sustainable shipping container homes.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
 
 
 
         {/* <h1>{loc?.[0].name}</h1> */}
-        <Tour />
-        <Stats />
+        {/* <Tour /> */}
+        {/* <Stats /> */}
         <Process />
-        <TestiMonials />
-        <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
+        {/* <TestiMonials /> */}
+        {/* <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
             <HomeSectionTitle text="Projects" />
             <div className="relative space-x-4 pt-10 ">
                 <Carousel
@@ -505,7 +572,8 @@ const CityPage = () => {
                     )}
                 </Carousel>
             </div>
-        </section>
+        </section> */}
+        <OwnerCta/>
         <Footer/>
 
     </>
