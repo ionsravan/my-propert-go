@@ -6,6 +6,7 @@ import { AiOutlineHome, AiOutlineInfo, AiOutlineMail, AiOutlinePhone } from 'rea
 import { BiBookmark } from 'react-icons/bi';
 import { FaBuilding, FaLocationArrow } from 'react-icons/fa';
 import { MdPeople } from 'react-icons/md';
+import { SiGoogleads } from 'react-icons/si';
 import { Pagination, User } from 'src/@types';
 import DashBoardLayout from 'src/Layout/DasboardsLayout';
 import AdminsideNav from 'src/componets/admin/adminDasboardnav';
@@ -20,19 +21,7 @@ const CustomerDetail = () => {
     const [users, setUsers] = useState<User[] | any | undefined | null>([]);
     const [property, setProperty] = useState<any | undefined | null>([]);
     const hideText = false
-    // const hideText = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'))
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    const [pagination, setPagination] = useState<Pagination | null>(
-        null
-    );
-    const [paginationModel, setPaginationModel] = useState({
-        page: 0,
-        pageSize: 10,
-    });
-    const [name, setName] = useState<string>("");
     const [activeTab, setActiveTab] = useState<string>('account')
-    const [selected, setSelected] = useState("All");
     const router = useRouter();
 
     const { id } = router.query
@@ -54,20 +43,16 @@ const CustomerDetail = () => {
         }
     }
     const handleChange = (event: SyntheticEvent, value: string) => {
-        // setIsLoading(true)
         setActiveTab(value)
     }
 
-
-
     useEffect(() => {
         if (id) {
-
             getAllUsers();
         }
     }, [id]);
 
-    if(loading){
+    if (loading) {
         return <CustomLoader />
     }
 
@@ -116,23 +101,13 @@ const CustomerDetail = () => {
                         <Grid item xs={12}>
                             <TabPanel sx={{ p: 0 }} value={'account'}>
                                 <>
-                                    <div className="mb-5 flex justify-between">
-                                        <h1 className="text-2xl font-bold text-black">My Profile</h1>
-                                    </div>
-
-
                                     <div className="my-5 space-y-5">
                                         <h2 className="text-xl text-TitleColor font-bold ">
                                             {users?.name}
                                         </h2>
-    
+
                                     </div>
                                     <div className="text-[#4A4A4A] space-y-5 mt-10">
-                                        <ProfileItem
-                                            name="EXEPERENCE"
-                                            value={`${4} years`}
-                                            Icon={AiOutlineInfo}
-                                        />
                                         <ProfileItem
                                             name="MOBILE NUMBER"
                                             value={`${users?.mobileNumber} `}
@@ -149,9 +124,9 @@ const CustomerDetail = () => {
                                             Icon={AiOutlineHome}
                                         />
                                         <ProfileItem
-                                            name="OPRATING AREA"
-                                            value={`Gie   GEo `}
-                                            Icon={FaLocationArrow}
+                                            name="Lead COUNT"
+                                            value={users?.leadCount}
+                                            Icon={SiGoogleads}
                                         />
                                     </div>
                                 </>
