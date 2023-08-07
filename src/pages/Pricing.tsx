@@ -192,7 +192,9 @@ const PricingPage = () => {
     });
   };
 
-
+const handleSubscribe = (id) => {
+  console.log(id,"iddd")
+}
 
 
   return <>
@@ -202,7 +204,7 @@ const PricingPage = () => {
           {plans.map((pack, index) => (
             <div style={{ width: "400px" }} key={pack.id} className="mb-10 mx-4">
               <div style={{ height: "100%", position: "relative", paddingBottom: "60px" }} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-                <h1 className="text-lg text-center text-gray-800 font-semibold mb-4">{pack.title}</h1>
+                <h1 className="text-2xl text-center text-gray-800 font-semibold mb-4">{pack.name.toUpperCase()}</h1>
                 <h2 className="text-3xl text-center text-primaryBlue font-bold">${pack.price}</h2>
 
                 <div className="custom-separator my-4 mx-auto bg-primary h-px"></div>
@@ -217,6 +219,7 @@ const PricingPage = () => {
                 </ul>
                 <button
                   style={{ position: "absolute", bottom: "20px", left: "130px", padding: "10px 35px", borderRadius: "20px" }}
+                  onClick={() => handleSubscribe(pack._id)}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 >
                   Subscribe

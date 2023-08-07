@@ -1,20 +1,19 @@
 import {useRouter} from "next/router";
 import Image from "next/image";
-import {Header, HomeSectionTitle, HouseCard, OwnerCta, PopularCity, Process, Stats, TestiMonials} from "../componets";
-import {HomeChip, homeChipsData} from "../componets/Home/header";
+import {Footer, Header, HomeSectionTitle, HouseCard, OwnerCta, PopularCity, Process, Stats, TestiMonials} from "../../componets"
+import {HomeChip, homeChipsData} from "../../componets/Home/header";
 import {FiChevronLeft, FiChevronRight} from "react-icons/fi";
-import CardCarousel from "../componets/Sliders/cardCaursel";
-import MediumHouseCard from "../componets/HousCard/MediumHomeCard";
-import Tour from "../componets/Home/Tour";
+import CardCarousel from "../../componets/Sliders/cardCaursel";
+import MediumHouseCard from "../../componets/HousCard/MediumHomeCard";
+import Tour from "../../componets/Home/Tour";
 import Carousel from "react-multi-carousel";
-import Slider from "../componets/Home/Slider";
-import Home, {scrollLeft, scrollRight} from "./index";
+import Slider from "../../componets/Home/Slider";
+import Home, {scrollLeft, scrollRight} from "../index";
 import {ReactElement, useEffect, useState} from "react";
-import {location, Propery, ProperyResArr, response} from "../@types";
-import {useFetch} from "../lib/hooks/useFetch";
-import Layout from "../Layout/main";
-import Footer from "../componets/shared/Footer";
-import Navbar from "../componets/shared/Navbar";
+import {location, Propery, ProperyResArr, response} from "../../@types";
+import {useFetch} from "../../lib/hooks/useFetch";
+import Layout from "../../Layout/main";
+import Navbar from "../../componets/shared/Navbar";
 import { FaHome } from "react-icons/fa";
 
 
@@ -122,9 +121,9 @@ const CityPage = () => {
 
 
     useEffect(() => {
-        console.log(data?.result, "result")
-        if (data && data.result) {
-            setFiltred(data.result)
+        console.log(data?.data, "result")
+        if (data && data.data) {
+            setFiltred(data.data)
         }
     }, [data]);
 

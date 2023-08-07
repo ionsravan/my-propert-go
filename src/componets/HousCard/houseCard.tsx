@@ -49,7 +49,7 @@ const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,area
           </div>
         </div>
         
-        <div className="flex space-x-2 items-center mt-0">
+        {/* <div className="flex space-x-2 items-center mt-0">
           <div className="relative h-10 w-10 rounded-full ">
             <Image
               src={"/agent.png"}
@@ -64,7 +64,7 @@ const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,area
               Manchester kentecy
             </p>
           </div>
-        </div>
+        </div> */}
         <div className="absolute top-6 right-4 md:right-6 ">
           <HomeChip
             bg="bg-white"

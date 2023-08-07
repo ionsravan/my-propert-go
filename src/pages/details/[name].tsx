@@ -266,8 +266,8 @@ const Details = () => {
   );
 
   useEffect(() => {
-    if (newData?.result) {
-      setSimilarData(newData?.result);
+    if (newData?.data) {
+      setSimilarData(newData?.data);
     }
   }, [newData]);
 

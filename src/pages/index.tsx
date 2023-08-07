@@ -116,7 +116,7 @@ export default function Home() {
     "/property/location/getAllLocation"
   );
 
-  // {loc?.result.map((location) => {
+  // {loc?.result.map((location) => { 
   //   console.log("Location Name:", location.name); 
   // })}
 
@@ -137,9 +137,9 @@ export default function Home() {
 
 
   useEffect(() => {
-    console.log(data?.result, "result")
-    if (data && data.result) {
-      setFiltred(data.result)
+    console.log(data?.data, "result")
+    if (data && data.data) {
+      setFiltred(data.data)
     }
   }, [data]);
 
@@ -227,9 +227,12 @@ export default function Home() {
           </div>
         </div>
       </section> */}
-      <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12 w-full">
-        <HomeSectionTitle text="Featured House" />
-        <div className="relative ">
+      <section className="pb-16 px-5 md:px-10  bg-[#F4F4F4] pt-12 w-full">
+        <div className="max-w-7xl mx-auto px-5 md:px-10">
+        <HomeSectionTitle  text="Featured House" />
+        </div>
+   
+        <div className="relative max-w-7xl mx-auto px-5 md:px-10">
           <div className="flex space-x-4 pt-10 items-center">
             {homeChipsData.map(({ name, value, Icon }) => {
               return (
@@ -273,7 +276,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div >
+        <div className="max-w-7xl mx-auto px-5 md:px-10" >
           {Filtred?.length ? (
             <CardCarousel id="house" data={featuredData} Card={HouseCard} />
           ) : (

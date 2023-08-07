@@ -9,7 +9,7 @@ interface Props {
 }
 const PopularCity = ({ img,name }: Props) => {
     return (
-        <Link href={`/${name}`}>
+        <Link href={`/city/${name}`}>
             <div className="min-w-[173px] max-w-[173px] font-manrope space-y-4">
                 <div className="relative h-[173px]">
                     <Image src={img} fill alt="home" className="object-fill rounded-lg"/>
