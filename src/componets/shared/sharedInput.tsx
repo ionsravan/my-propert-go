@@ -32,7 +32,7 @@ export function Input({
             required
             type={type}
             placeholder={placeholder}
-            className="h-10 w-full px-2   bg-white border-none outline-none focus  transition duration-200"
+            className="h-10 w-full px-2 bg-white border-none outline-none focus  transition duration-200"
             onChange={(e) => {
               setValue(e.target.value);
             }}

@@ -15,6 +15,7 @@ import {useFetch} from "../../lib/hooks/useFetch";
 import Layout from "../../Layout/main";
 import Navbar from "../../componets/shared/Navbar";
 import { FaHome } from "react-icons/fa";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 
 const images = [
@@ -202,19 +203,20 @@ const CityPage = () => {
     {/*<h1>{city}</h1>*/}
 
 <Navbar/>
-        <div className="min-h-[70vh] bg relative py-32 px-5 md:px-10">
-            <div className="absolute bottom-0 right-0">
-                <div className="h-96 relative w-80 ">
-                    <Image
-                        src={"/bars.png"}
-                        fill
-                        className="object-fill "
-                        alt="villa4"
-                    />
-                </div>
-            </div>
-            <Header />
+<div style={{backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")' }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
+        <div className="absolute bottom-0 right-0">
+          <div className="h-96 relative w-80">
+            {/* <Image
+              style={{ border: "2px solid red" }}
+              src={"/bars.png"}
+              fill
+              className="object-fill"
+              alt="villa4"
+            /> */}
+          </div>
         </div>
+        <Header />
+      </div>
         {/* <section className=" py-10 px-10 w-full  mx-auto overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto">
           <HomeSectionTitle text="Getting Started" />
@@ -225,7 +227,7 @@ const CityPage = () => {
           </div>
         </div>
       </section> */}
-        <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
+        {/* <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4] pt-12">
             <HomeSectionTitle text="Featured House" />
             <div className="relative ">
                 <div className="flex space-x-4 pt-10 items-center">
@@ -252,7 +254,7 @@ const CityPage = () => {
                     })}
                 </div>
 
-                {/* buttons */}
+            
                 <div className="md:block hidden">
                     <div className="absolute right-0 top-8 ">
                         <button
@@ -280,8 +282,72 @@ const CityPage = () => {
                     </p>
                 )}
             </div>
-        </section>
-        <section className="bg-cityBg py-16">
+        </section> */}
+  
+
+
+        <section className="pb-16 px-5 md:px-10  bg-[#F4F4F4] pt-12 w-full">
+        <div className="max-w-7xl mx-auto px-5 md:px-10">
+        <HomeSectionTitle  text="Featured House" />
+        </div>
+   
+        <div className="relative max-w-7xl mx-auto px-5 md:px-10">
+          <div className="flex space-x-4 pt-10 items-center">
+            {homeChipsData.map(({ name, value, Icon }) => {
+              return (
+                <div
+                  key={name}
+                  onClick={() => {
+                    setPropertyFilter(value);
+                  }}
+                >
+                  <HomeChip
+                    bg={propertyTypeFilter == value ? "bg-green-500" : ""}
+                    textColor={
+                      propertyTypeFilter == value
+                        ? "text-white"
+                        : "text-[#888B97]"
+                    }
+                    Icon={Icon}
+                    text={name}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* buttons */}
+          <div className="md:block hidden">
+            <div className="absolute right-0 top-8 ">
+              <button
+                onClick={() => scrollLeft("house")}
+                className="p-2 m-2 rounded-full bg-primaryBlue/50 text-white active:bg-primaryBlue hover:bg-primaryBlue"
+              >
+                <FiChevronLeft />
+              </button>
+              <button
+                onClick={() => scrollRight("house")}
+                className="p-2 m-2 rounded-full bg-primaryBlue/50 text-white active:bg-primaryBlue hover:bgpri"
+              >
+                <FiChevronRight />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-5 md:px-10" >
+          {Filtred?.length ? (
+            <CardCarousel id="house" data={featuredData} Card={HouseCard} />
+          ) : (
+            <p className="text-lg py-4">
+              No Property Found with PropertyType {propertyTypeFilter}
+            </p>
+          )}
+        </div>
+      </section>
+
+
+      <section className="bg-cityBg py-16">
             <div className="max-w-7xl mx-auto px-5 md:px-10">
                 <HomeSectionTitle
                     text="Explore Real State in Popular Indian Cities"
@@ -300,6 +366,22 @@ const CityPage = () => {
                 </div>
             </div>
         </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         <section className="pt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
@@ -434,115 +516,117 @@ const CityPage = () => {
 
 
 
-        <section className="py-4">
-        <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">Why Wonderplots ?</p>
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <table className="border-collapse w-full ">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border border-gray-300 font-bold">Connect+</th>
-                <th className="py-2 px-4 border border-gray-300 font-bold">Reach more</th>
-                <th className="py-2 px-4 border border-gray-300 font-bold">Lead Transfers</th>
-                <th className="py-2 px-4 border border-gray-300 font-bold">Property Care</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td className="py-2 px-4 border border-gray-300">
-                  <ul className="list-disc list-inside decore">
-                    <li>Get assigned by owners for agents</li>
-                    <li>Connect with owners directly for your projects</li>
-                  </ul>
-                </td>
-                <td className="py-2 px-4 border border-gray-300">
-                  <ul className="list-disc list-inside">
-                    <li>Be visible to buyers for &quot;x&quot; times more</li>
-                    <li>Explore wide reach of properties in all categories</li>
-                  </ul>
-                </td>
-                <td className="py-2 px-4 border border-gray-300">
-                  <ul className="list-disc list-inside">
-                    <li>Agents can transfer leads to other agents</li>
-                    <li>Track the leads on your dashboard</li>
-                  </ul>
-                </td>
-                <td className="py-2 px-4 border border-gray-300">
-                  <ul className="list-disc list-inside">
-                    <li>Secure your property now</li>
-                    <li>Sell faster in the market</li>
-                  </ul>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+      <section className="py-4">
+  <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">
+    Why Wonderplots?
+  </p>
+  <div className="max-w-7xl mx-auto px-5 md:px-10">
+    <TableContainer component={Paper}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Connect+</TableCell>
+            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Reach more</TableCell>
+            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Lead Transfers</TableCell>
+            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Property Care</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          <TableRow>
+            <TableCell>
+              <ul className="list-disc">
+                <li>Get assigned by owners for agents</li>
+                <li>Connect with owners directly for your projects</li>
+              </ul>
+            </TableCell>
+            <TableCell>
+              <ul className="list-disc">
+                <li>Be visible to buyers for "x" times more</li>
+                <li>Explore wide reach of properties in all categories</li>
+              </ul>
+            </TableCell>
+            <TableCell style={{ paddingBottom: "35px" }}>
+              <ul className="list-disc">
+                <li>Agents can transfer leads to other agents</li>
+                <li>Track the leads on your dashboard</li>
+              </ul>
+            </TableCell>
+            <TableCell style={{ paddingBottom: "35px" }}>
+              <ul className="list-disc">
+                <li>Secure your property now</li>
+                <li>Sell faster in the market</li>
+              </ul>
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+  </div>
+</section>
 
 
 
 
-        <section className="py-4">
-      <div className="container mx-auto py-12">
-        <div className="text-center mb-4">
-          <p className="text-4xl font-bold font-manrope">Services from Wonderplots</p>
-          {/* <p className="text-2xl font-semibold">Why Us?</p> */}
-          {/* <div className="flex justify-center items-center">
+<section className="py-4">
+        <div className="container mx-auto py-12">
+          <div className="text-center mb-4">
+            <p className="text-4xl font-bold font-manrope">Services from Wonderplots</p>
+            {/* <p className="text-2xl font-semibold">Why Us?</p> */}
+            {/* <div className="flex justify-center items-center">
             <FaHome className="text-4xl text-blue-500" />
           </div> */}
+          </div>
+          <div className="flex flex-wrap justify-center">
+            {/* Card 1 */}
+            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+              <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+                <div className="text-4xl text-blue-500">
+                  {/* Icon here (You can use an icon library or an SVG) */}
+                  <FaHome />
+                </div>
+                <h3 className="text-xl font-semibold mt-4">
+                  Interior Designing
+                </h3>
+                <p className="text-gray-600 mt-2 text-center">
+                  Transform your space. Create beautiful, functional interiors.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2 */}
+            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+              <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+                <div className="text-4xl text-blue-500">
+                  {/* Icon here */}
+                  <FaHome />
+                </div>
+                <h3 className="text-xl font-semibold mt-4">
+                  Property Care
+                </h3>
+                <p className="text-gray-600 mt-2 text-center">
+                  Experience hassle-free property ownership with our essential management services - a must for every property owner.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+              <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
+                <div className="text-4xl text-blue-500">
+                  {/* Icon here */}
+                  <FaHome />
+                </div>
+                <h3 className="text-xl font-semibold mt-4">
+                  Shipping Container Homes
+                </h3>
+                <p className="text-gray-600 mt-2 text-center">
+                  Experience unique, versatile living with sustainable shipping container homes.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap justify-center">
-          {/* Card 1 */}
-          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
-            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
-              <div className="text-4xl text-blue-500">
-                {/* Icon here (You can use an icon library or an SVG) */}
-                <FaHome/>
-              </div>
-              <h3 className="text-xl font-semibold mt-4">
-                Interior Designing
-              </h3>
-              <p className="text-gray-600 mt-2 text-center">
-                Transform your space. Create beautiful, functional interiors.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
-            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
-              <div className="text-4xl text-blue-500">
-                {/* Icon here */}
-                <FaHome/>
-              </div>
-              <h3 className="text-xl font-semibold mt-4">
-                Property Care
-              </h3>
-              <p className="text-gray-600 mt-2 text-center">
-                Experience hassle-free property ownership with our essential management services - a must for every property owner.
-              </p>
-            </div>
-          </div>
-
-          {/* Card 3 */}
-          <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
-            <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
-              <div className="text-4xl text-blue-500">
-                {/* Icon here */}
-                <FaHome/>
-              </div>
-              <h3 className="text-xl font-semibold mt-4">
-                Shipping Container Homes
-              </h3>
-              <p className="text-gray-600 mt-2 text-center">
-                Experience unique, versatile living with sustainable shipping container homes.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
+      </section>
 
 
         {/* <h1>{loc?.[0].name}</h1> */}
@@ -572,7 +656,7 @@ const CityPage = () => {
                 </Carousel>
             </div>
         </section> */}
-        <OwnerCta/>
+        {/* <OwnerCta/> */}
         <Footer/>
 
     </>

@@ -10,6 +10,7 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { useCookies } from "react-cookie";
 import CircularSpinner from "src/componets/circularLoader";
+import { Footer, Navbar } from "src/componets";
 
 
 const subscriptionPacks = [
@@ -351,8 +352,8 @@ const PricingPage = () => {
     
       ) : (
         <div>
-
-          <h1 className="text-3xl font-semibold mb-6 text-center">Pricing and Subscription</h1>
+<Navbar/>
+          <h1 className="text-3xl font-semibold mb-6 text-center mt-6">Pricing and Subscription</h1>
           <div className="flex items-center justify-center">
             <div className="flex flex-wrap justify-center">
               {plans.map((pack, index) => (
@@ -391,6 +392,7 @@ const PricingPage = () => {
               ))}
             </div>
           </div>
+          <Footer/>
         </div>
       )}
 

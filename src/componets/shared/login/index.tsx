@@ -16,46 +16,7 @@ import Modal from "src/componets/shared/modal";
 
 
 
-// const TermsAndConditions = () => {
-//   const [agreed, setAgreed] = useState(false);
 
-//   const handleAgree = () => {
-//     setAgreed(true);
-//   };
-
-//   return (
-//     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
-//       <div className="bg-white p-8 rounded-lg shadow-md w-96">
-//         <h1 className="text-2xl font-bold mb-4">Terms and Conditions</h1>
-//         <div className="h-40 overflow-y-scroll mb-4">
-//           {/* Replace this with your actual terms and conditions content */}
-//           <p className="text-gray-600">
-//             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet posuere elit. Nulla quis tristique sapien. Integer sodales nisl eu felis ultrices, ac iaculis purus eleifend. Nulla facilisi. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Fusce vel orci sit amet augue vestibulum consectetur. Duis cursus auctor orci, in dictum dolor facilisis non. Vestibulum eu diam nec dui rhoncus fringilla. Vivamus nec sem eu mauris consequat malesuada.
-//             {/* Continue with more content */}
-//           </p>
-//         </div>
-//         <div className="flex items-center">
-//           <input
-//             type="checkbox"
-//             id="agreeCheckbox"
-//             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-//             checked={agreed}
-//             onChange={handleAgree}
-//           />
-//           <label htmlFor="agreeCheckbox" className="ml-2 text-gray-700">
-//             I agree to the Terms and Conditions
-//           </label>
-//         </div>
-//         <button
-//           className={`mt-4 py-2 px-4 rounded-md ${agreed ? 'bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer' : 'bg-gray-400 text-gray-600 cursor-not-allowed'}`}
-//           disabled={!agreed}
-//         >
-//           Continue
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
 
 export interface LoginProps {
   login: (
@@ -145,7 +106,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
                   type: "success",
                 });
                 router.push(redirectUrl);
-                // <TermsAndConditions/>
+      
 
               } else {
                 if (result == 401) {

@@ -183,9 +183,9 @@ const Buyers = () => {
 
         <div className="space-y-5">
           {status === FetchState.FETCHING ? (
-            <div style={{height:"100%"}} className="flex justify-center items-center h-40">
+            // <div style={{height:"100%"}} className="flex justify-center items-center h-40">
               <CircularSpinner />
-            </div>
+            // </div>
           ) : data?.result.length === 0 ? (
             <p className="text-xl text-black">No Buyers Yet</p>
           ) : (
