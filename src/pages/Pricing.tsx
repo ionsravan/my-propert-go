@@ -126,6 +126,7 @@ const subscriptionPacks = [
 
 const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [buttonHide, setButtonHide] = useState(false);
   const [cookies] = useCookies(["jwtToken"]);
 
 
@@ -204,6 +205,8 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
 
   const handleSubmit = async () => {
 
+    setButtonHide(true)
+
     let bodyFormData = new FormData();
     bodyFormData.append('planId', planId);
 
@@ -227,6 +230,7 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
       // router.push("/agent")
       toast("Your Subscription is Submitted")
       closeModal();
+      setButtonHide(false)
 
     } catch (error) {
       console.error("Error while adding property:", error);
@@ -243,7 +247,7 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
       <div>
         <div className="m-4 flex flex-col items-center">
           <label className="inline-block mb-2 text-gray-500">
-            Select Primary Image (jpg,png,svg,jpeg)
+            Select Payment Image (jpg,png,svg,jpeg)
           </label>
           <div className="flex items-center  w-full">
             <div className="w-full flex max-w-md ">
@@ -276,7 +280,7 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
           </div>
         </div>
       </div>
-      <button
+      {buttonHide === false ? <button
         style={{ borderRadius: "20px" }}
         onClick={handleSubmit}
         // style={{position:"absolute",bottom:"20px",left:"130px",padding:"10px 35px",borderRadius:"20px"}}
@@ -284,7 +288,7 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
 
       >
         Submit
-      </button>
+      </button> : <p>Loading...</p>}
     </div>
 
 
@@ -346,13 +350,13 @@ const PricingPage = () => {
 
     <div>
       {isLoading ? (
-        <div style={{width:"100%",height:"100vh", display:"flex",justifyContent:"center",alignItems:"center"}}>
-    <CircularSpinner />
+        <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <CircularSpinner />
         </div>
-    
+
       ) : (
         <div>
-<Navbar/>
+          <Navbar />
           <h1 className="text-3xl font-semibold mb-6 text-center mt-6">Pricing and Subscription</h1>
           <div className="flex items-center justify-center">
             <div className="flex flex-wrap justify-center">
@@ -392,7 +396,7 @@ const PricingPage = () => {
               ))}
             </div>
           </div>
-          <Footer/>
+          <Footer />
         </div>
       )}
 

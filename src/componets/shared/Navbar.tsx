@@ -63,7 +63,7 @@ const Nav = () => {
           style={{border:"2px solid black"}}
           className={`${router?.pathname == "/"
               ? "bg-white text-black"
-              : "bg-primaryBlue text-white"
+              : "bg-white text-black"
             } px-6 rounded-full py-2 font-manrope`}
         >
           Login

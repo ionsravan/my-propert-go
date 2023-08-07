@@ -676,20 +676,21 @@ const Details = () => {
               <div className="h-20 w-20 relative rounded-full">
                 <Image
                 style={{marginTop:"20px"}}
-                  src={data?.result?.agentId?.profilePhoto as string}
+                  // src={data?.result?.agentId?.profilePhoto as string}
+                  src="https://i.ibb.co/8MzgrNc/avatar.png"
                   fill
                   className="object-fill rounded-full"
                   alt="villa4"
                 />
               </div>
-              <div className="w-full text-center">
+              <div className="w-full text-center mt-2">
                 {data?.result.agentId ? (
                   <>
                     <div className="flex items-center justify-center">
-                      <p className="font-manrope text-lg font-medium pr-2">
+                      <p className="font-manrope text-lg font-medium pr-2 pl-3">
                         {data?.result.agentId.name}
                       </p>
-                      <HiCheckCircle className="text-primaryBlue text-xl" />
+                      <HiCheckCircle className="text-primaryBlue text-xl mb-2" />
                     </div>
                     <p className="text-xs text-locColor font-manrope flex justify-center items-center">
                       Agent
@@ -714,8 +715,8 @@ const Details = () => {
                 </button>
               ) : (
                 <Link href={"/login"}>
-                  <button className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
-                    login to Contact Agent
+                  <button style={{marginBottom:"30px"}} className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                    Login to Contact Agent
                   </button>
                 </Link>
               )}
