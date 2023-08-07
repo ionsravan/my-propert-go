@@ -412,16 +412,17 @@ const Details = () => {
 
         {/* Tags */}
         <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+          <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.location.name}</p>
+            {/* <p className="mt-1 mb-1">Delhi</p> */}
           </div>
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+              <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.BHKconfig} bhk</p>
           </div>
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+              <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.availableFor}</p>
           </div>
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+              <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.propertyType}</p>
           </div>
         </div>
@@ -458,6 +459,7 @@ const Details = () => {
           <div className="w-full">
             {cookies?.jwtToken ? (
               <button
+                style={{borderRadius:"20px"}}
                 className={`bg-${buttonColor ? "current" : "primaryBlue"
                   } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
               >
@@ -606,7 +608,7 @@ const Details = () => {
                 const IconTag = Icon?.icon;
                 console.log(IconTag, "Icon")
                 return (
-                  <div key={curElem} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-gray-50 shadow-sm">
+                  <div key={curElem} style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
                     {IconTag ? <IconTag /> : null}
                     <p className="mt-1 mb-1">{curElem}</p>
                   </div>
@@ -633,7 +635,7 @@ const Details = () => {
               {data?.result?.description}
             </p>
           </div>
-          <div className=" flex flex-col items-center justify-center space-y-4  sm:flex-row sm:space-x-4 sm:justify-start sm:space-y-0 ">
+          {/* <div className=" flex flex-col items-center justify-center space-y-4  sm:flex-row sm:space-x-4 sm:justify-start sm:space-y-0 ">
             <div className="border rounded-md space-y-2  h-28 shadow-sm  w-32 flex flex-col justify-center items-center">
               <p className="text-4xl font-manrope font-semibold text-primaryBlue">
                 {data?.result?.BHKconfig}
@@ -652,7 +654,7 @@ const Details = () => {
               </p>
               <p className="text-xl font-manrope font-light">GuestRoom</p>
             </div>
-          </div>
+          </div> */}
         </section>
         {/* maps */}
         <section className="md:flex space-y-5 md:space-y-0  md:space-x-8 justify-center items-center ">

@@ -207,26 +207,26 @@ const Header = () => {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <div className="flex items-center space-x-1">
+      {/* <div className="flex items-center space-x-1">
         <p className=" font-manrope text-white/70">PROPERTY</p>
         <div className="w-32 border-t border-white/60"></div>
-      </div>
-      <div className="max-w-4xl mb-4">
-        <h1 className="text-[#A3C2FF] text-2xl md:text-6xl font-bold font-manrope">
-          find the place to live your
+      </div> */}
+      <div className="max-w-4xl my-4">
+        <h1 className="text-white text-2xl md:text-6xl font-bold font-manrope">
+          Start your search.
         </h1>
         <h1 className="text-white font-manrope font-bold text-2xl md:text-6xl">
-          dreams eaisly here
+          Find your dream home.
         </h1>
       </div>
-      <div>
+      {/* <div>
         <p className="text-xs md:text-lg max-w-2xl mb-8 font-medium text-white/60 font-manrope">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Labore non
           voluptatem nihil nisi impedit. Iure numquam qui explicabo dicta?
           Maiores?
         </p>
-      </div>
-      <div className="flex space-x-4 mb-8 ">
+      </div> */}
+      <div  className="flex space-x-4 mb-8 mt-8">
         {homeChipsData.slice(0,3).map(({ Icon, name, value }) => {
           return (
             <div

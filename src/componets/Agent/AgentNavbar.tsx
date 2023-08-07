@@ -63,7 +63,7 @@ const AgentNavbar = () => {
   const router = useRouter();
   return (
     <div  className="w-full overflow-y-scroll font-manrope ">
-      <h1 onClick={() => router.push("/")} className="text-xl text-black font-bold pl-7 pb-9 cursor-pointer">My Property Go</h1>
+      <h1 onClick={() => router.push("/")} className="text-xl text-black font-bold pl-9 pb-9 cursor-pointer">Wonderplots</h1>
       <Link href={"/agent"}>
         <SideNavItem
           name="Dashboard"

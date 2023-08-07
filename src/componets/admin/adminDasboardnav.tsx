@@ -59,7 +59,7 @@ const AdminsideNav = () => {
     <>
     {/* <ScrollWrapper> */}
       
-      <h1 className="text-xl text-black font-bold pl-7 pb-9">My Property Go</h1>
+      <h1 className="text-xl text-black font-bold pl-9 pb-9">My Property Go</h1>
     <div className="w-full h-full overflow-auto font-manrope">
       <Link href={"/admin"}>
         <SideNavItem

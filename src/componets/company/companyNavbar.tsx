@@ -61,7 +61,7 @@ const SideNav = () => {
   const router = useRouter();
   return (
     <div className="w-full overflow-hidden  font-manrope">
-      <h1 className="text-xl text-black font-bold pl-7 pb-9">My Property Go</h1>
+      <h1 className="text-xl text-black font-bold pl-9 pb-9 ">Wonderplots</h1>
       <Link href={"/company"}>
         <SideNavItem
           name="Dashboard"
