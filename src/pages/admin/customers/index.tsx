@@ -12,7 +12,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil } from "react-icons/bs";
+import { BsEyeFill, BsPencil, BsPencilFill } from "react-icons/bs";
 import { MdDeleteForever } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
@@ -143,7 +143,7 @@ const Customers = () => {
     {
       field: "action",
       headerName: "ACTION",
-      flex: 0.1,
+      flex: 0.15,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
@@ -151,10 +151,18 @@ const Customers = () => {
         <Box>
           <Tooltip title="Edit">
             <IconButton
+              onClick={() => router.push(`/admin/customers/${row._id}`)}
+              color="primary"
+            >
+              <BsEyeFill />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Edit">
+            <IconButton
               onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
               color="primary"
             >
-              <BsPencil />
+              <BsPencilFill />
             </IconButton>
           </Tooltip>
           <Tooltip title="Delete">
