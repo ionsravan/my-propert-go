@@ -19,6 +19,10 @@ const Nav = () => {
       link: "/Pricing",
     },
     {
+      name: "Blogs",
+      link: "/blogs",
+    },
+    {
       name: "Trending Properties",
       link: "/",
     },
