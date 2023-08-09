@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useAxios } from "src/utills/axios";
 import { useRouter } from 'next/router';
 import { Footer, Navbar } from "src/componets";
+import CircularSpinner from "src/componets/circularLoader";
 
 // Dummy blog data
 const blogs = [
@@ -19,6 +20,7 @@ const BlogList = () => {
     const { slug } = router.query;
     const instance = useAxios();
     const [blogs, setBlogs] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     async function getAllBlogs() {
         try {
@@ -27,6 +29,7 @@ const BlogList = () => {
             const res = await instance.get(`/user/blog/getAllBlogs`);
             if (res.data) {
                 setBlogs(res?.data?.blogs);
+                setIsLoading(false)
                 // setPagination(res?.data?.pagination);
                 // setLoading(false);
             }
@@ -54,43 +57,56 @@ const BlogList = () => {
             ))}
         </div> */}
 
-<div>
-    <Navbar/>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center",margin:"40px 0" }} className="blogContainer">
-            <div className="container">
-                <h1 className='text-center my-8 text-2xl font-bold'>Blogs</h1>
 
-                <div style={{ width: "100%", display: "flex", justifyContent: "space-between", flexWrap: "wrap" }} className="mainCardContainer">
-                    {blogs.length > 0 ? blogs.map((curElem) => (
-                        <div key={curElem._id} style={{ width: "48%", padding: "10px 0" }} className="mainCard">
-                            <Link href={`/blogs/${curElem._id}`}>
-                                <div>
-                                    <div style={{ borderRadius: "10px", width: "100%", height: "300px", overflow: "hidden" }} className="imageContainer">
-                                        <img style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} src={curElem.blogImage[0] || "/bighouse.png"} alt="" />
-                                    </div>
-                                    <p style={{ margin: "15px 0", color: "blue" }}>{curElem.tittle}</p>
-                                    <p style={{ margin: "15px 0", fontSize: "20px", fontWeight: "bold" }}>{curElem.description}</p>
-                                    {/* <div style={{ display: "flex", alignItems: "center" }} className="autohorContainer">
+        <div>
+            {isLoading ? (
+                <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    <CircularSpinner />
+                </div>
+
+            ) : (
+
+                <div>
+                    <Navbar />
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", margin: "40px 0" }} className="blogContainer">
+                        <div className="container">
+                            <h1 className='text-center my-8 text-2xl font-bold'>Blogs</h1>
+
+                            <div style={{ width: "100%", display: "flex", justifyContent: "space-between", flexWrap: "wrap" }} className="mainCardContainer">
+                                {blogs.length > 0 ? blogs.map((curElem) => (
+                                    <div key={curElem._id} style={{ width: "48%", padding: "10px 0" }} className="mainCard">
+                                        <Link href={`/blogs/${curElem._id}`}>
+                                            <div>
+                                                <div style={{ borderRadius: "10px", width: "100%", height: "300px", overflow: "hidden" }} className="imageContainer">
+                                                    <img style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} src={curElem.blogImage[0] || "/bighouse.png"} alt="" />
+                                                </div>
+                                                <p style={{ margin: "15px 0", color: "blue" }}>{curElem.tittle}</p>
+                                                <p style={{ margin: "15px 0", fontSize: "20px", fontWeight: "bold" }}>{curElem.description}</p>
+                                                {/* <div style={{ display: "flex", alignItems: "center" }} className="autohorContainer">
                                         <div style={{ width: "22px", height: "22px", borderRadius: "50%" }} className="authorImageDiv">
                                             <img style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} src={curElem.authorImage} alt="" />
                                         </div>
                                         <span style={{ color: "grey", marginLeft: "15px", marginBottom: "5px", marginRight: "15px" }}>Mario Sanchez</span>
                                         <span style={{ color: "grey", marginBottom: "5px" }}>October 21, 2022</span>
                                     </div> */}
-                                </div>
-                            </Link>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                )) : <p>Loading...</p>}
+                            </div>
                         </div>
-                    )) : <p>Loading...</p>}
+                    </div>
+
+
+
+
+                    <Footer />
                 </div>
-            </div>
-        </div>
+            )}
 
-
-
-
-        <Footer />
         </div>
     </>
+
 
 };
 

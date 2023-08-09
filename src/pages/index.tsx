@@ -202,7 +202,7 @@ export default function Home() {
 
   return (
     <>
-      <div style={{backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")' }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
+      <div style={{backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")',margin:"40px 40px",borderRadius:"20px" }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
         <div className="absolute bottom-0 right-0">
           <div className="h-96 relative w-80">
             {/* <Image
@@ -286,7 +286,7 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="bg-cityBg py-16">
+      {/* <section className="bg-cityBg py-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           <HomeSectionTitle
             text="Explore Properties in Popular Indian Cities"
@@ -297,14 +297,10 @@ export default function Home() {
               <PopularCity key={location._id} img={location?.locationImages[0]} name={location.name} />
             ))}
 
-            {/* <PopularCity img={imgs["Rectangle 583(1)"]} />
-            <PopularCity img={imgs["Rectangle 583(2)"]} />
-            <PopularCity img={imgs["Rectangle 583(3)"]} />
-            <PopularCity img={imgs["Rectangle 583(4)"]} />
-            <PopularCity img={imgs["Rectangle 583(5)"]} /> */}
+          
           </div>
         </div>
-      </section>
+      </section> */}
       <section className="pt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">

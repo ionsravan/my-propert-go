@@ -189,6 +189,7 @@ const AddProperty = () => {
   };
 
   const handleDevelopmentClick = () => {
+    setAvailableFor("Development")
     setDevelopmentActive(true);
     setRentActive(false);
     setSaleActive(false);

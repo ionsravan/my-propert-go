@@ -4,13 +4,14 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
 import { toast } from "react-toastify";
-import { Plans, Tickets, response } from "src/@types";
+// import { Plans, Tickets, response } from "src/@types";
 import Modal from "src/componets/shared/modal";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { useCookies } from "react-cookie";
 import CircularSpinner from "src/componets/circularLoader";
 import { Footer, Navbar } from "src/componets";
+import CustomLoader from "src/componets/shared/Loader";
 
 
 const subscriptionPacks = [
@@ -349,12 +350,13 @@ const PricingPage = () => {
   return <>
 
     <div>
-      {isLoading ? (
+      {isLoading ? 
         <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <CircularSpinner />
-        </div>
+          {/* <CircularSpinner /> */}
+          <CustomLoader />
+        </div> : null}
 
-      ) : (
+
         <div>
           <Navbar />
           <h1 className="text-3xl font-semibold mb-6 text-center mt-6">Pricing and Subscription</h1>
@@ -398,7 +400,7 @@ const PricingPage = () => {
           </div>
           <Footer />
         </div>
-      )}
+ 
 
     </div>
 

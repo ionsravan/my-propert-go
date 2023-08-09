@@ -365,6 +365,53 @@ const PossesionFilter = () => {
     </div>
   );
 };
+const PropertyToggleFilter = () => {
+  const { toggle, setToggle } = useFilterContext();
+
+  return (
+    <div>
+      <h1 className="text-[16px] pb-5">Property Toggle</h1>
+      <div className="space-y-3">
+        <FilterCheckBox
+          setEnabled={setToggle}
+          enabled={toggle === "Property"}
+          name="Property"
+        />
+        <FilterCheckBox
+          setEnabled={setToggle}
+          enabled={toggle === "Project"}
+          name="Project"
+        />
+      </div>
+    </div>
+  );
+};
+const AvailablePropertyFilter = () => {
+  const { availableFor, setAvailableFor } = useFilterContext();
+
+  return (
+    <div>
+      <h1 className="text-[16px] pb-5">Available For</h1>
+      <div className="space-y-3">
+        <FilterCheckBox
+          setEnabled={setAvailableFor}
+          enabled={availableFor === "Rent"}
+          name="Rent"
+        />
+        <FilterCheckBox
+          setEnabled={setAvailableFor}
+          enabled={availableFor === "Sale"}
+          name="Sale"
+        />
+        <FilterCheckBox
+          setEnabled={setAvailableFor}
+          enabled={availableFor === "Development"}
+          name="Development Sites"
+        />
+      </div>
+    </div>
+  );
+};
 
 const BudgetFilter = () => {
   const { min, setMax, setMin, max } = useFilterContext();
@@ -519,6 +566,12 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
       <div  className="font-manrope top-2 overflow-hidden">
         <h1 className="text-TitleColor font-bold text-2xl py-2 ">Properties</h1>
         <div className="text-TitleColor">
+        <SidBarItemContainer isBottomBorder>
+            <AvailablePropertyFilter />
+          </SidBarItemContainer>
+        <SidBarItemContainer isBottomBorder>
+            <PropertyToggleFilter />
+          </SidBarItemContainer>
           {/* <SidBarItemContainer isBottomBorder>
             <PropertiesFilter
               enabled={verifiedPropety}
