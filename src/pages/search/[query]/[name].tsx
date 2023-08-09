@@ -216,12 +216,12 @@ const SearchAll = () => {
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div className="lg:ml-10 w-full overflow-hidden ">
+          <div  className="lg:ml-10 w-full overflow-hidden ">
             {PropertyResult?.length ? (
               <SearchResult data={PropertyResult} />
             ) : (
               <Card>
-                <div className="flex flex-col w-full justify-center items-center py-4 ">
+                <div style={{border:"2px solid red"}} className="flex flex-col w-full justify-center items-center py-4 ">
                   <img
                     className="w-[25%] h-[75%] "
                     src="/no-results.png"

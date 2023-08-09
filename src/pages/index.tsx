@@ -26,6 +26,8 @@ import Carousel from "react-multi-carousel";
 import Slider from "src/componets/Home/Slider";
 import { FaHome } from "react-icons/fa";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { useRouter } from "next/router";
+// import { Router } from "lucide-react";
 
 const images = [
   {
@@ -106,6 +108,7 @@ export const scrollRight = (id: string) => {
 
 
 export default function Home() {
+  const router = useRouter();
   const { data, error, status } = useFetch<ProperyResArr>(
     "/property/getAllProperties"
   );
@@ -196,9 +199,9 @@ export default function Home() {
   }, [Filtred]);
 
 
-  const handleCardClick = () => {
-    window.open('', '_blank');
-  };
+  // const handleCardClick = () => {
+  //   rout
+  // };
 
   return (
     <>
@@ -561,7 +564,7 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap justify-center">
             {/* Card 1 */}
-            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div onClick={() => router.push("/services/interiorDesigning")} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here (You can use an icon library or an SVG) */}
@@ -577,7 +580,7 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div  className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}
@@ -593,7 +596,7 @@ export default function Home() {
             </div>
 
             {/* Card 3 */}
-            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div  className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}
