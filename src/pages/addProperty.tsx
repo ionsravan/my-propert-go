@@ -169,7 +169,7 @@ const AddProperty = () => {
   const [area, setArea] = useState("");
   const [areaError, setAreaError] = useState("");
 
-  const [areaValue, setAreaValue] = useState("2345");
+  const [areaValue, setAreaValue] = useState("");
   const [areaValueError, setAreaValueError] = useState("");
 
   const [areaType, setAreaType] = useState("Sq.Yd");
@@ -240,6 +240,7 @@ const AddProperty = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const [toasted, setToasted] = useState(false);
 
 
   const handleSaleClick = () => {
@@ -485,7 +486,7 @@ const AddProperty = () => {
     "Beach View",
     "Not Available",
   ];
-  const areaUnitNames = ["SFT/Sq", "Yards", "Acres"];
+  const areaUnitNames = ["Select Area Unit","SFT/Sq", "Yards", "Acres"];
   const userTypeNames = ["Owner", "Agent", "Builder/Dealer"];
   const regulatoryNames = ["VMRDA", "VUDA", "Panchayat", "Grama Kantam", "Others"];
   const liftNames = ["Yes", "No"];
@@ -853,15 +854,24 @@ const AddProperty = () => {
       return;
     }
 
-    // if (areaValue.trim() === '') {
-    //   setAreaValueError('Please fill the area value');
+    if (areaValue.trim() === '') {
+      setAreaValueError('Please fill the area value');
 
-    //   setTimeout(() => {
-    //     setAreaValueError('');
-    //   }, 2000);
+      setTimeout(() => {
+        setAreaValueError('');
+      }, 2000);
 
-    //   return;
-    // }
+      return;
+    }
+    if (areaUnits.trim() === '') {
+      setAreaUnitsError('Please fill the area value');
+
+      setTimeout(() => {
+        setAreaUnitsError('');
+      }, 2000);
+
+      return;
+    }
 
     // if (areaType.trim() === '') {
     //   setAreaTypeError('Please fill the area type');
@@ -1197,9 +1207,18 @@ const AddProperty = () => {
     console.log("Selected option:", selectedOption);
   };
 
+
+  useEffect(() => {
+    if (cookies?.jwtToken === undefined) {
+      toast("Please login to post the property")
+      router.push("/login")
+    }
+  }, [])
+
+
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
       {isLoading ?
 
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
@@ -1644,7 +1663,7 @@ const AddProperty = () => {
 
                 </div>
 
-                {/*
+                
               <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                
                 <input
@@ -1657,7 +1676,7 @@ const AddProperty = () => {
                   onChange={(e) => setAreaValue(e.target.value)}
                 />
               </div>
-              {areaValueError && <p className="error">{areaValueError}</p>} */}
+              {areaValueError && <p className="error">{areaValueError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
@@ -1798,7 +1817,7 @@ const AddProperty = () => {
 
                 <div className="m-4">
                   <label className="inline-block mb-2 text-gray-500">
-                    Select Property Images (jpg,png,svg,jpeg)
+                    Select Property Images (for Multiple images please upload one after one)
                   </label>
                   <div className="flex items-center  w-full">
                     <div className="w-full flex max-w-md overflow-x-scroll">
@@ -2182,7 +2201,7 @@ const AddProperty = () => {
         : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
           <CircularSpinner />
         </div>}
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

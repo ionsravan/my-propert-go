@@ -346,6 +346,7 @@ const PricingPage = () => {
     if (cookies.jwtToken) {
       openModal(pack);
     } else {
+      toast("Please login in order to subscribe the plan")
       router.push("/login");
     }
   };
@@ -355,6 +356,14 @@ const PricingPage = () => {
     setSelectedPlan(null);
   };
 
+  // useEffect(() => {
+  //   if (cookies?.jwtToken === undefined) {
+  //     toast("Please login to post the property")
+  //     router.push("/login")
+  //   }
+  // }, [])
+
+
 
 
 
@@ -362,57 +371,57 @@ const PricingPage = () => {
   return <>
 
     <div>
-      {isLoading ? 
+      {isLoading ?
         <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>
           {/* <CircularSpinner /> */}
           <CustomLoader />
         </div> : null}
 
 
-        <div>
-          <Navbar />
-          <h1 className="text-3xl font-semibold mb-6 text-center mt-6">Pricing and Subscription</h1>
-          <div className="flex items-center justify-center">
-            <div className="flex flex-wrap justify-center">
-              {plans.map((pack, index) => (
-                <div style={{ width: "400px" }} key={pack.id} className="mb-10 mx-4">
-                  <div style={{ height: "100%", position: "relative", paddingBottom: "60px" }} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
-                    <h1 className="text-2xl text-center text-gray-800 font-semibold mb-4">{pack.name.toUpperCase()}</h1>
-                    <h2 className="text-3xl text-center text-primaryBlue font-bold">₹{pack.price}</h2>
+      <div>
+        <Navbar />
+        <h1 className="text-3xl font-semibold mb-6 text-center mt-6">Pricing and Subscription</h1>
+        <div className="flex items-center justify-center">
+          <div className="flex flex-wrap justify-center">
+            {plans.map((pack, index) => (
+              <div style={{ width: "400px" }} key={pack.id} className="mb-10 mx-4">
+                <div style={{ height: "100%", position: "relative", paddingBottom: "60px" }} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
+                  <h1 className="text-2xl text-center text-gray-800 font-semibold mb-4">{pack.name.toUpperCase()}</h1>
+                  <h2 className="text-3xl text-center text-primaryBlue font-bold">₹{pack.price}</h2>
 
-                    <div className="custom-separator my-4 mx-auto bg-primary h-px"></div>
+                  <div className="custom-separator my-4 mx-auto bg-primary h-px"></div>
 
-                    <ul className="my-5 text-sm text-left">
-                      {subscriptionPacks[index].features.map((feature, i) => (
-                        <li key={i} className={feature.available ? "mb-3" : "mb-3 text-gray-400 line-through"} style={{ display: 'flex', alignItems: 'center' }}>
-                          {feature.available ? <i className="fa fa-check mr-2 text-primary"></i> : <i className="fa fa-times mr-2"></i>}
-                          <span>{feature.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    <button
-                      style={{ position: "absolute", bottom: "20px", left: "130px", padding: "10px 35px", borderRadius: "20px" }}
-                      onClick={() => handleSubscribeClick(pack)} 
-                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                    >
-                      Subscribe
-                    </button>
-                    <Modal
-                      open={isModalOpen && selectedPlan === pack}
-                      closeDialog={closeModal}
-                      title="Buy Plan"
-                      size="sm"
-                    >
-                      <PricingPopup planId={selectedPlan ? selectedPlan._id : null} planName={selectedPlan ? selectedPlan.name : null} closeModal={closeModal} />
-                    </Modal>
-                  </div>
+                  <ul className="my-5 text-sm text-left">
+                    {subscriptionPacks[index].features.map((feature, i) => (
+                      <li key={i} className={feature.available ? "mb-3" : "mb-3 text-gray-400 line-through"} style={{ display: 'flex', alignItems: 'center' }}>
+                        {feature.available ? <i className="fa fa-check mr-2 text-primary"></i> : <i className="fa fa-times mr-2"></i>}
+                        <span>{feature.text}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    style={{ position: "absolute", bottom: "20px", left: "130px", padding: "10px 35px", borderRadius: "20px" }}
+                    onClick={() => handleSubscribeClick(pack)}
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  >
+                    Subscribe
+                  </button>
+                  <Modal
+                    open={isModalOpen && selectedPlan === pack}
+                    closeDialog={closeModal}
+                    title="Buy Plan"
+                    size="sm"
+                  >
+                    <PricingPopup planId={selectedPlan ? selectedPlan._id : null} planName={selectedPlan ? selectedPlan.name : null} closeModal={closeModal} />
+                  </Modal>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-          <Footer />
         </div>
- 
+        <Footer />
+      </div>
+
 
     </div>
 

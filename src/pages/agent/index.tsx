@@ -184,26 +184,15 @@ const AgentDashBoard = () => {
   }, []);
 
   const { setAgentId } = useAppContext();
+
+
+
   // useEffect(() => {
-  //   if (data?.result) {
-  //     const userId = data?.result?[0].agentId;
-  //     console.log(userId, "userId");
-  //     setAgentId(data?.result?._id);
-  //     setPropertiesData(data?.result)
-  //     // localStorage.setItem("userId", userId);
-  //     console.log(userId, "userId");
+  //   if (cookies?.jwtToken === undefined) {
+  //     router.push("/")
   //   }
-  // }, [data]);
-  // useEffect(() => {
-  //   if (data?.result && data.result.length > 0) {
-  //     const firstAgent = data.result[0];
-  //     const userId = firstAgent.agentId;
-  //     setAgentId(firstAgent._id);
-  //     setPropertiesData(data.result);
-  //     localStorage.setItem("userId", userId);
-  //     console.log(userId, "userId");
-  //   }
-  // }, [data]);
+  // }, [])
+  
 
 
   useEffect(() => {
@@ -276,6 +265,7 @@ const AgentDashBoard = () => {
         <Card name="Leads" Value={leads ? leads.result.length : 0} />
         <Card name="Tickets" Value={tickets ? tickets.ticket.length : 0} />
       </div>
+
       {/* <div className="mb-8">
         <h1 className="text-black text-lg">Leads</h1>
         <div className="flex space-x-[17px] mt-5">
@@ -284,7 +274,7 @@ const AgentDashBoard = () => {
           <Card name="Views" Value={"130k"} />
         </div>
       </div> */}
-      <PostingByDeveloper isLoading={isLoading} propertiesData={propertiesData} />
+      {/* <PostingByDeveloper isLoading={isLoading} propertiesData={propertiesData} /> */}
     </>
   );
 };
