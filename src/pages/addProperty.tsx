@@ -52,7 +52,70 @@ import { availableAmenities } from "src/@global/Data";
 import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
-import { Navbar } from "src/componets";
+import { Footer, Navbar } from "src/componets";
+
+
+
+
+
+function SearchDropdown({ options, onSelect }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const filteredOptions = options?.filter((option) =>
+    option.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setSelectedOption(null);
+  };
+
+  const handleOptionSelect = (optionName) => {
+    onSelect(optionName);
+    setSelectedOption(optionName);
+    setSearchQuery('');
+    setIsOpen(false);
+  };
+
+  const placeholder = selectedOption ? selectedOption : "Search locations";
+
+
+  return (
+    <div style={{ margin: "20px 0" }} className="relative">
+      <div 
+        className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+      >
+        <input
+          style={{ borderRadius: "18px" }}
+          type="text"
+          className="inputField"
+          placeholder={placeholder}
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onClick={() => setIsOpen(true)}
+        />
+
+
+      </div>
+
+      {isOpen && (
+        <div className="absolute left-0  bg-white border rounded-md  w-full z-20">
+          {filteredOptions.map((option) => (
+            <div
+              key={option._id}
+              className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+              onClick={() => handleOptionSelect(option.name)}
+            >
+              {option.name}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 const AddProperty = () => {
 
@@ -60,6 +123,10 @@ const AddProperty = () => {
     "/property/location/getAllLocation"
   );
 
+
+  useEffect(() => {
+    console.log("Data from API:", loc); // Log the data to the console
+  }, [loc]);
   const [cookies] = useCookies(["jwtToken"]);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -171,6 +238,9 @@ const AddProperty = () => {
   const [metaTittle, setMetaTittle] = useState("");
   const [metaDiscription, setMetaDiscription] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
 
   const handleSaleClick = () => {
     setSaleActive(true);
@@ -341,7 +411,7 @@ const AddProperty = () => {
   };
 
   const residentialNames = [
-    "Apartment",
+    "Flat",
     "Villa",
     "Plot",
     "Agriculture Land",
@@ -415,7 +485,7 @@ const AddProperty = () => {
     "Beach View",
     "Not Available",
   ];
-  const areaUnitNames = ["SFT/Sq", "Yards", "Acres", "etc"];
+  const areaUnitNames = ["SFT/Sq", "Yards", "Acres"];
   const userTypeNames = ["Owner", "Agent", "Builder/Dealer"];
   const regulatoryNames = ["VMRDA", "VUDA", "Panchayat", "Grama Kantam", "Others"];
   const liftNames = ["Yes", "No"];
@@ -749,8 +819,9 @@ const AddProperty = () => {
     }
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -831,8 +902,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "FLat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -854,8 +926,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -879,8 +952,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -903,8 +977,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -930,8 +1005,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -953,8 +1029,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -975,8 +1052,9 @@ const AddProperty = () => {
     }
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -1010,8 +1088,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -1034,8 +1113,9 @@ const AddProperty = () => {
 
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -1056,8 +1136,9 @@ const AddProperty = () => {
     }
 
     if (
-      (activeButton === "Apartment" ||
+      (activeButton === "Flat" ||
         activeButton === "Villa" ||
+        activeButton === "Penthouse" ||
         activeButton === "Studio Apartment" ||
         activeButton === "Individual House" ||
         activeButton === "Shop" ||
@@ -1109,11 +1190,18 @@ const AddProperty = () => {
     setIsAdmin(adminValue);
   }, []);
 
+
+
+  const handleLocationSelect = (selectedOption) => {
+    setLocality(selectedOption);
+    console.log("Selected option:", selectedOption);
+  };
+
   return (
     <>
-    <Navbar/>
+      <Navbar />
       {isLoading ?
-      
+
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
           {/* <p>Property Listing for</p> */}
           <div style={{ margin: "20px 0" }} className="property-listing-form">
@@ -1195,24 +1283,24 @@ const AddProperty = () => {
 
 
 
-             { isAdmin === true ? <> <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
+                  {isAdmin === true ? <> <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
 
-                <button
-                  style={{}}
-                  onClick={() => handleToggle("Property")}
-                  className={`button ${isPropertyActive ? "active" : ""}`}
-                >
-                  <MdApartment style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Property
-                </button>
+                    <button
+                      style={{}}
+                      onClick={() => handleToggle("Property")}
+                      className={`button ${isPropertyActive ? "active" : ""}`}
+                    >
+                      <MdApartment style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Property
+                    </button>
 
-                <button
-                  style={{ marginLeft: "20px" }}
-                  onClick={() => handleToggle("Project")}
-                  className={`button ${isProjectActive ? "active" : ""}`}
-                >
-                  <BsBuilding style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Project
-                </button> </> : null}
-                {/* {toggleError && <p className="error">{toggleError}</p>} */}
+                    <button
+                      style={{ marginLeft: "20px" }}
+                      onClick={() => handleToggle("Project")}
+                      className={`button ${isProjectActive ? "active" : ""}`}
+                    >
+                      <BsBuilding style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Project
+                    </button> </> : null}
+                  {/* {toggleError && <p className="error">{toggleError}</p>} */}
 
 
 
@@ -1387,8 +1475,8 @@ const AddProperty = () => {
                 {cityError && <p className="error">{cityError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}> */}
-                  {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
-                  {/* <input
+                {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
+                {/* <input
                   placeholder="Enter Location"
                   required
                   className="inputField"
@@ -1398,21 +1486,55 @@ const AddProperty = () => {
                   onChange={(e) => setLocality(e.target.value)}
                 /> */}
 
-                  <select
-                  style={{margin:"20px 0"}}
+                {/* <select
+                  style={{ margin: "20px 0" }}
                   className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
-                    // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
+                  // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
+                  value={locality}
+                  onChange={handleLocation}
+                >
+                  {loc?.result.map((location) => (
+                    <option style={{ border: "none", margin: "10px 0", padding: "10px 0" }} key={location._id} value={location.name}>
+                      {location.name}
+                    </option>
+                  ))}
+                </select> */}
+
+                {/* <div>
+                  <div style={{ margin: "20px 0" }} className={` group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                    <input
+                      type="text"
+                      className="w-full outline-none py-3"
+                      placeholder="Search locations"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <select
+                    style={{ margin: "20px 0" }}
+                    className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
                     value={locality}
                     onChange={handleLocation}
                   >
-                    {loc?.result.map((location) => (
-                      <option style={{ border: "none",margin:"10px 0",padding:"10px 0" }} key={location._id} value={location.name}>
-                        {location.name}
-                      </option>
-                    ))}
+                    {filteredLocations ? (
+                      filteredLocations.map((location) => (
+                        <option
+                          key={location._id}
+                          value={location.name}
+                          style={{ border: "none", margin: "10px 0", padding: "10px 0" }}
+                        >
+                          {location.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>Loading...</option>
+                    )}
                   </select>
+                </div> */}
 
-                {/* </div> */}
+                <div>
+                  <SearchDropdown options={loc?.result} onSelect={handleLocationSelect} />
+                </div>
                 {localityError && <p className="error">{localityError}</p>}
 
 
@@ -1467,7 +1589,7 @@ const AddProperty = () => {
               {bhkConfigError && <p className="error">{bhkConfigError}</p>} */}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Number of Bhk</label>
                   <div className="securityDepositDiv">
                     {bhkConfigsNames.map((name, index) => (
@@ -1556,7 +1678,7 @@ const AddProperty = () => {
                 <p style={{ marginBottom: "15px", marginTop: "15px" }}>Select Regulatory Authority:</p>
 
 
-                {regulatoryNames.map((name, index) => (
+                {/* {regulatoryNames.map((name, index) => (
                   <button
                     key={index}
                     style={{ marginRight: "20px" }}
@@ -1565,7 +1687,21 @@ const AddProperty = () => {
                   >
                     {name}
                   </button>
-                ))}
+                ))} */}
+
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label style={{marginTop:"5px"}}  htmlFor="price">Project Name</label> */}
+                  <input
+                    placeholder="e.g VMRDA, VUDA, Panchayat, Grama Kantam"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="name"
+                    value={regulatory}
+                    onChange={(e) => setRegulatory(e.target.value)}
+                  />
+
+                </div>
                 {regulatoryError && <p className="error">{regulatoryError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
@@ -1698,7 +1834,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Additional Rooms</label>
                   <div className="securityDepositDiv">
                     {additionalRoomNames.map((name, index) => (
@@ -1732,7 +1868,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Furnishing Status</label>
                   <div className="securityDepositDiv">
                     {furnishingNames.map((name, index) => (
@@ -1764,7 +1900,7 @@ const AddProperty = () => {
                 {ageError && <p className="error">{ageError}</p>}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Number of Bathroom</label>
                   <div className="securityDepositDiv">
                     {bathroomNames.map((name, index) => (
@@ -1783,7 +1919,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Number of Parking</label>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Number of Parking</label>
                   <div className="securityDepositDiv">
                     {parkingNames.map((name, index) => (
                       <button
@@ -1799,7 +1935,7 @@ const AddProperty = () => {
                 {parkingError && <p className="error">{parkingError}</p>}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Lift Facility</label>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Lift Facility</label>
                   <div className="securityDepositDiv">
                     {liftNames.map((name, index) => (
                       <button
@@ -1854,7 +1990,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
                   {/* <label htmlFor="floor">Floor No.</label> */}
                   <input
@@ -1870,7 +2006,7 @@ const AddProperty = () => {
                 {floorNumberError && <p className="error">{floorNumberError}</p>}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
                   {/* <label htmlFor="tower">Tower/Block</label> */}
                   <input
@@ -1885,7 +2021,7 @@ const AddProperty = () => {
                 </div>) : null}
                 {towerError && <p className="error">{towerError}</p>}
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                   {/* <label htmlFor="floorCount">Total Floor Count</label> */}
                   <input
                     required
@@ -1899,7 +2035,7 @@ const AddProperty = () => {
                 </div>) : null}
                 {floorCountError && <p className="error">{floorCountError}</p>}
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                   {/* <label htmlFor="UnitNumber">Unit NO</label> */}
                   <input
                     required
@@ -1992,7 +2128,7 @@ const AddProperty = () => {
                 ></textarea>
                 {descriptionError && <p className="error">{descriptionError}</p>}
 
-             { isAdmin === true ? <div style={{ margin: "20px 0" }}
+                {isAdmin === true ? <div style={{ margin: "20px 0" }}
                   className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
                 >
                   {/* <label style={{marginTop:"5px"}} htmlFor="city">City:</label> */}
@@ -2008,7 +2144,7 @@ const AddProperty = () => {
 
 
                 </div> : null}
-             { isAdmin === true ?    <textarea
+                {isAdmin === true ? <textarea
                   onChange={(e) => setMetaDiscription(e.target.value)}
                   placeholder="Meta Discription"
                   style={{ width: "100%", padding: "7px", marginTop: "10px" }}
@@ -2016,7 +2152,7 @@ const AddProperty = () => {
                   id=""
                   cols={30}
                   rows={5}
-                ></textarea>  : null}
+                ></textarea> : null}
 
                 <button
                   onClick={handlePostProperty}
@@ -2046,6 +2182,7 @@ const AddProperty = () => {
         : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
           <CircularSpinner />
         </div>}
+      <Footer />
     </>
   );
 };

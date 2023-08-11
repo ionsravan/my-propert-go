@@ -12,6 +12,7 @@ import { useCookies } from "react-cookie";
 import CircularSpinner from "src/componets/circularLoader";
 import { Footer, Navbar } from "src/componets";
 import CustomLoader from "src/componets/shared/Loader";
+import { useRouter } from "next/router";
 
 
 const subscriptionPacks = [
@@ -301,10 +302,12 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
 
 const PricingPage = () => {
   const instance = useAxios();
+  const router = useRouter();
   const [plans, setPlans] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [cookies] = useCookies(["jwtToken"]);
 
 
 
@@ -336,6 +339,15 @@ const PricingPage = () => {
   const openModal = (plan) => {
     setSelectedPlan(plan);
     setIsModalOpen(true);
+  };
+
+
+  const handleSubscribeClick = (pack) => {
+    if (cookies.jwtToken) {
+      openModal(pack);
+    } else {
+      router.push("/login");
+    }
   };
 
   const closeModal = () => {
@@ -380,7 +392,7 @@ const PricingPage = () => {
                     </ul>
                     <button
                       style={{ position: "absolute", bottom: "20px", left: "130px", padding: "10px 35px", borderRadius: "20px" }}
-                      onClick={() => openModal(pack)}
+                      onClick={() => handleSubscribeClick(pack)} 
                       className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     >
                       Subscribe

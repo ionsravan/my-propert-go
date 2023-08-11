@@ -221,7 +221,7 @@ const SearchAll = () => {
               <SearchResult data={PropertyResult} />
             ) : (
               <Card>
-                <div style={{border:"2px solid red"}} className="flex flex-col w-full justify-center items-center py-4 ">
+                <div className="flex flex-col w-full justify-center items-center py-4 ">
                   <img
                     className="w-[25%] h-[75%] "
                     src="/no-results.png"
