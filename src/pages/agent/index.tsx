@@ -187,11 +187,11 @@ const AgentDashBoard = () => {
 
 
 
-  // useEffect(() => {
-  //   if (cookies?.jwtToken === undefined) {
-  //     router.push("/")
-  //   }
-  // }, [])
+  useEffect(() => {
+    if (cookies.jwtToken === undefined) {
+      router.push(`/login`)
+    }
+  }, [])
   
 
 
@@ -202,7 +202,6 @@ const AgentDashBoard = () => {
       setAgentId(firstAgent._id);
       setPropertiesData(data.result);
       localStorage.setItem("userId", userId);
-      localStorage.setItem("isAdmin", false);
       console.log(userId, "userId");
       setIsLoading(false)
     } else {

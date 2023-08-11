@@ -1218,7 +1218,7 @@ const AddProperty = () => {
 
   return (
     <>
-      {/* <Navbar /> */}
+      <Navbar />
       {isLoading ?
 
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
@@ -2201,7 +2201,7 @@ const AddProperty = () => {
         : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
           <CircularSpinner />
         </div>}
-      {/* <Footer /> */}
+      <Footer />
     </>
   );
 };

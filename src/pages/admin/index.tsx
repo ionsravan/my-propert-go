@@ -13,6 +13,7 @@ import {
   AiOutlineMore,
 } from "react-icons/ai";
 import { Agent, response } from "src/@types";
+// import AdminsideNav from "../../componets/user/adminDasboardnav";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { Menu } from "@headlessui/react";
@@ -22,6 +23,8 @@ import imgs from "public.json";
 import { FetchState } from "src/lib/hooks/useFetch";
 import CustomLoader from "src/componets/shared/Loader";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
 
 const Card = ({
   name,
@@ -120,35 +123,29 @@ const ComapnyCard = ({
 };
 
 const DashBoard = () => {
-  // /admin/getCountOfAll
-  const [dashboardData, setDashboardData] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-
-  const instance = useAxios();
-
-  async function getAllLocations() {
-    try {
-      setLoading(true);
-
-      const res = await instance.get(`/admin/getCountOfAll`);
-      if (res.data) {
-        setDashboardData(res?.data);
-        setLoading(false);
-      }
-    } catch (e) {
-      setLoading(false);
-      console.log(e);
-    }
-  }
+  const router = useRouter();
+  const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
+  const { data, error, status } = useFetch<response<Agent[]>>(
+    "/admin/agent/getAllAgents"
+  );
+  const [agents, setAgents] = useState<Agent[]>([]);
 
   useEffect(() => {
-    getAllLocations();
-  }, []);
+    if (data?.result.length == 0) return;
+    if (data?.result) {
+      setAgents(data?.result);
+    }
+  }, [data?.result]);
+
+
+  useEffect(() => {
+    if (cookies.jwtToken === undefined) {
+      router.push(`/admin/login`)
+    }
+  }, [])
+
   return (
     <>
-
-      {loading ? <CustomLoader /> : null}
-
       <div className="flex justify-between w-full items-center">
         <div>
           <h1 className="text-[#707EAE] text-[10.94px]">Hello Admin</h1>
@@ -156,10 +153,9 @@ const DashBoard = () => {
         </div>
       </div>
       <div className="flex space-x-[17px] mt-6 mb-8">
-        <Card Icon={imgs.Profile} name="Total Users" Value={dashboardData?.userCount || 0} />
-        <Card Icon={imgs.data} name="Total Properties" Value={dashboardData?.propertyCount || 0} />
-        <Card Icon={imgs.data} name="Total Orders" Value={dashboardData?.ordersCount || 0} />
-        <Card Icon={imgs.data} name="Tickets" Value={dashboardData?.ticketCount || 0} />
+        <Card Icon={imgs.Profile} name="Total Students" Value={2598} />
+        <Card Icon={imgs.data} name="Brokers" Value={2598} />
+        <Card Icon={imgs.data} name="Companies" Value={2598} />
       </div>
       {/* <div className="bg-white rounded-sm mb-9 p-6  ">
         <div>
@@ -173,7 +169,7 @@ const DashBoard = () => {
         </div>
         <div></div>
       </div> */}
-      {/* <div>
+      <div>
         <h1 className="text-black font-bold text-lg mb-4">All Compenies</h1>
       </div>
       <div className="w-full overflow-scroll scrollbar-hide">
@@ -197,7 +193,7 @@ const DashBoard = () => {
               );
             })}
         </div>
-      </div> */}
+      </div>
     </>
   );
 };

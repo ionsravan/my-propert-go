@@ -20,11 +20,21 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
   const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const router = useRouter();
 
-  useEffect(() => {
-    if (cookies.jwtToken == undefined) {
-      router.push(`${router.pathname}/login`);
-    }
-  }, [cookies.jwtToken, router.pathname]);
+  
+
+  // useEffect(() => {
+  //   if (cookies.jwtToken == undefined) {
+  //     router.push(`/login`);
+  //   }
+  // }, [cookies.jwtToken, router.pathname]);
+
+  
+
+  // useEffect(() => {
+  //   if (cookies.jwtToken == undefined) {
+  //     router.push(`${router.pathname}/login`);
+  //   }
+  // }, [cookies.jwtToken, router.pathname]);
 
   const handleLogout = () => {
     removeCookie("jwtToken");
@@ -41,7 +51,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
 
         <div className="justify-between hidden bg-white min-h-screen h-full pt-10 pr-4 md:flex flex-col w-full max-w-[300px] sticky top-0 ">
           <Navbar />
-          <div style={{border:"2px solid red"}} className="p-3 py-6">
+          <div  className="p-3 py-6">
             <button
               onClick={handleLogout}
               className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
@@ -76,7 +86,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
           }    bg-white min-h-screen h-full pt-10 pr-4 flex flex-col w-full max-w-[300px] p `}
       >
         <Navbar />
-        <div style={{border:"2px solid black"}} className="p-3 py-6">
+        <div  className="p-3 py-6">
           <button
             onClick={handleLogout}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
