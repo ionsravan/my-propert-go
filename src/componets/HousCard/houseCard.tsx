@@ -5,8 +5,10 @@ import { BsFillDropletFill } from "react-icons/bs";
 import type { Propery } from "src/@types";
 import Link from "next/link";
 import { HiLocationMarker } from "react-icons/hi";
+import PropertyCost from "../costFormat/PropertyCost";
 
 const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,areaValue }: Propery) => {
+
   return (
     <Link href={`/details/${_id}`}>
       <div className=" relative  grow  rounded-2xl p-4 shadow-md border font-manrope bg-white  ">
@@ -35,7 +37,7 @@ const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,area
               <p className="flex items-center text-md "><HiLocationMarker style={{marginRight:"5px"}} />{location.name}</p>
             <p  className="flex items-center text-primaryBlue text-lg">
               <FaRupeeSign />
-              <span className="font-normal ">{cost}</span>
+              <span className="font-normal "><PropertyCost cost={cost} /></span>
             </p>
             </div>
        

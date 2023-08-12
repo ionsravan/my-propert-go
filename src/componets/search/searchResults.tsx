@@ -46,54 +46,9 @@ const HomeResult = ({
               <p className="text-title ">2BHK Apartment in Indira Nagar, Banglore</p>
               <p className="text-title ">Nearby : Kenedy High The Global Schoold</p>
               <p className="text-title text-3xl font-bold mt-4 "> ₹{cost}</p>
-              {/* <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
-                <p>4.5</p>
-                <AiFillStar />
-              </div> */}
+       
             </div>
           </div>
-          {/* <div className=" max-w-xl py-1 w-full flex justify-between">
-            <div className="">
-              <p className="flex text-TitleColor text-lg items-center">
-                <span className="flex items-center space-x-1 ">
-                  <FaRupeeSign />
-                  <span className=" text-sm md:text-lg font-bold">{cost}</span>
-                </span>
-                <span className="ml-1 text-xs">K</span>
-              </p>
-              <p className="text-black md:block hidden opacity-40 text-xs md:text-sm">
-                Onwards
-              </p>
-            </div>
-            <div className=" flex flex-col items-center border-r border-r-gray-400  px-8 border-l border-l-gray-400">
-              <div>
-                <p className="flex text-TitleColor  items-center">
-                  <span className="flex items-center space-x-1 ">
-                    <span className=" text-sm md:text-lg font-bold">
-                      {size}
-                    </span>
-                  </span>
-                  <span className="ml-1 text-xs">sq ft</span>
-                </p>
-                <p className="text-black opacity-40 md:block hidden text-xs  md:text-sm">
-                  ({size}) Super built-up Area
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center">
-              <p className="flex text-TitleColor text-lg items-center">
-                <span className="flex items-center space-x-1 ">
-                  <span className="text-sm md:text-lg font-bold">
-                    {BHKconfig}BHK
-                  </span>
-                </span>
-                <span className="ml-1 text-xs"></span>
-              </p>
-              <p className="text-black opacity-40 text-sm hidden md:block">
-                {BHKconfig} Baths
-              </p>
-            </div>
-          </div> */}
           <div className=" border-b border-[#EBECF0] max-w-2xl">
             <p className="text-lg leading-relaxed">
               {description.slice(0, 400)}...
@@ -114,7 +69,6 @@ const HomeResult = ({
                 </button>
               </div>
             </div>
-
           </div>
           <div className="my-8 flex justify-end">
             <button className="bg-primaryBlue px-7 text-white py-2 rounded-xl shadow-sm hover:opacity-95 active:scale-95 transition transform duration-200 ease-out">
@@ -127,15 +81,15 @@ const HomeResult = ({
     </Link>
 
 
-    
+{/*     
     <Link href={`/details/${_id}`}>
       <div
-      //  style={{border:"2px solid red"}}
+   
         className={`mb-5 w-full  rounded-lg flex flex-col md:flex-row cursor-pointer ${
           toggle === "Project" ? "bg-gray-50-" : "bg-gray-50 "
         } `}
       >
-        {/* image section */}
+      
         <div className="min-h-[340px] relative md:w-[300px] p-3">
           <Image
             src={propertyImages[0] || "/bighouse.png"}
@@ -144,7 +98,7 @@ const HomeResult = ({
             className="rounded-l-lg object-cover"
           />
         </div>
-        {/* main info part */}
+  
         <div className=" p-2 md:p-5 w-full">
           <div className="">
             <h1 className=" text-xl md:text-2xl font-bold text-TitleColor">
@@ -228,7 +182,9 @@ const HomeResult = ({
           </div>
         </div>
       </div>
-    </Link>
+    </Link> */}
+
+    
     </>
 };
 interface Props {

@@ -242,8 +242,8 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [toasted, setToasted] = useState(false);
-  const [propertyFeatures, setPropertyFeatures] = useState("");
-
+  // const [propertyFeatures, setPropertyFeatures] = useState("");
+  const [selectedPropertyFeatures, setSelectedPropertyFeatures] = useState<string[]>([]);
 
   const handleSaleClick = () => {
     setSaleActive(true);
@@ -541,8 +541,16 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
     setPossession(name);
   };
 
+  // const handlePropertyFeatures = (name: string) => {
+  //   setPropertyFeatures(name);
+  // };
+
   const handlePropertyFeatures = (name: string) => {
-    setPropertyFeatures(name);
+    if (selectedPropertyFeatures.includes(name)) {
+      setSelectedPropertyFeatures(selectedPropertyFeatures.filter(feature => feature !== name));
+    } else {
+      setSelectedPropertyFeatures([...selectedPropertyFeatures, name]);
+    }
   };
 
   const handleAgeClick = (name: string) => {
@@ -2280,7 +2288,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
                         key={index}
                         style={{ margin: "10px" }}
                         onClick={() => handlePropertyFeatures(name)}
-                        className={`button ${propertyFeatures === name ? "active" : ""}`}
+                        className={`button ${selectedPropertyFeatures.includes(name) ? "active" : ""}`}
                       >
                         {name}
                       </button>

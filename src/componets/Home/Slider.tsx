@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from "next/link";
 import { FaRupeeSign } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
+import PropertyCost from "../costFormat/PropertyCost";
 
 
 const Slider = ({ property }: { property: Propery }) => {
@@ -77,7 +78,7 @@ const Slider = ({ property }: { property: Propery }) => {
                 <p className="flex items-center text-md "><HiLocationMarker style={{ marginRight: "5px" }} />{location.name}</p>
                 <p className="flex items-center text-primaryBlue text-lg">
                   <FaRupeeSign />
-                  <span className="font-normal ">{cost}</span>
+                  <span className="font-normal "><PropertyCost cost={cost} /></span>
                 </p>
               </div>
 

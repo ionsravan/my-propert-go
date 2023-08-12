@@ -24,6 +24,7 @@ import { useFilterContext } from "src/pages/search/[query]/[name]";
 import CustomLoader from "../shared/Loader";
 import { Slider, Stack, TextField, Typography } from "@mui/material";
 import { debounce } from "src/@global/Queries";
+import { Search } from "../Home/header";
 
 const budgetArr: number[] = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 90];
 
@@ -564,6 +565,10 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   return (
     <>
       <div  className="font-manrope top-2 overflow-hidden">
+        <div className="mb-2">
+        <Search />
+        </div>
+      
         <h1 className="text-TitleColor font-bold text-2xl py-2 ">Properties</h1>
         <div className="text-TitleColor">
         <SidBarItemContainer isBottomBorder>

@@ -28,6 +28,7 @@ const opts = [
     items: [
       "About us",
       "Contact us",
+      "Blogs",
       "Terms and Conditions",
       "Privacy Policy",
       "Disclaimer",
@@ -69,6 +70,9 @@ const Footer = () => {
 
   const handleContact = () => {
     router.push("/contact")
+  }
+  const handleBlogs = () => {
+    router.push("/blogs")
   }
 
   const handleNewsletter = async () => {
@@ -149,6 +153,7 @@ const Footer = () => {
           {[
             "About us",
             "Contact us",
+            "Blogs",
             "Terms and Conditions",
             "Privacy Policy",
             "Disclaimer",
@@ -156,12 +161,20 @@ const Footer = () => {
             "Sitemap",
           ].map((item, index) => (
             <p
-              key={index}
-              className={`text-white/70 ${item === "Contact us" ? "cursor-pointer" : ""}`}
-              onClick={item === "Contact us" ? handleContact : undefined}
-            >
-              {item}
-            </p>
+            key={index}
+            className={`text-white/70 ${
+              item === "Contact us" || item === "Blogs" ? "cursor-pointer" : ""
+            }`}
+            onClick={
+              item === "Contact us"
+                ? handleContact
+                : item === "Blogs"
+                ? handleBlogs
+                : undefined
+            }
+          >
+            {item}
+          </p>
           ))}
         </div>
         <div className="space-y-5">

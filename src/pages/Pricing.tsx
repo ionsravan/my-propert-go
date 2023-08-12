@@ -404,7 +404,7 @@ const PricingPage = () => {
                     onClick={() => handleSubscribeClick(pack)}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
-                    Subscribe
+                    Buy Now
                   </button>
                   <Modal
                     open={isModalOpen && selectedPlan === pack}

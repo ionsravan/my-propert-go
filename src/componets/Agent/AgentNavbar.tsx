@@ -110,6 +110,15 @@ const AgentNavbar = () => {
           }
         />
       </Link>
+      <Link href={"/agent/favourite"}>
+        <SideNavItem
+          name="Favourites"
+          Icon={icons.postings}
+          isActive={
+            router.pathname == "/agent/favourite"
+          }
+        />
+      </Link>
       <Link href={"/agent/profile"}>
         <SideNavItem
           name="My Profile"

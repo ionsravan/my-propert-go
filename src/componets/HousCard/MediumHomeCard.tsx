@@ -5,6 +5,7 @@ import { GrStar } from "react-icons/gr";
 import { Propery } from "src/@types";
 import Link from "next/link";
 import { HiLocationMarker } from "react-icons/hi";
+import PropertyCost from "../costFormat/PropertyCost";
 
 const MediumHouseCard = ({
   propertyImages,
@@ -22,6 +23,7 @@ const MediumHouseCard = ({
 
 }: Propery) => {
   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
+
   return (
     <Link href={`/details/${_id}`}>
       <div className="min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
@@ -40,7 +42,7 @@ const MediumHouseCard = ({
               <p className="flex items-center text-md "><HiLocationMarker style={{marginRight:"5px"}} />{location.name}</p>
             <p  className="flex items-center text-primaryBlue text-lg">
               <FaRupeeSign />
-              <span className="font-normal ">{cost}</span>
+              <span className="font-normal "><PropertyCost cost={cost} /></span>
             </p>
             </div>
        
