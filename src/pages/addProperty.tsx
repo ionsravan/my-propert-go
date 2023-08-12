@@ -290,9 +290,9 @@ const AddProperty = () => {
 
   const [primaryFilesToUpload, setPrimaryFilesToUpload] = useState<any>([]);
 
-  useEffect(() => {
-    console.log(primaryFilesToUpload, "primaryImage")
-  }, [primaryFilesToUpload])
+  // useEffect(() => {
+  //   console.log(primaryFilesToUpload, "primaryImage")
+  // }, [primaryFilesToUpload])
 
   const handlePrimaryImageChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -1110,9 +1110,12 @@ const AddProperty = () => {
 
   return (
     <>
-    <Navbar/>
+      {isAdmin === true ? null :
+
+        <Navbar />
+      }
       {isLoading ?
-      
+
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
           {/* <p>Property Listing for</p> */}
           <div style={{ margin: "20px 0" }} className="property-listing-form">
@@ -1194,24 +1197,24 @@ const AddProperty = () => {
 
 
 
-             { isAdmin === true ? <> <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
+                  {isAdmin === true ? <> <p style={{ marginBottom: "15px", marginTop: "15px" }}>Please Select Type</p>
 
-                <button
-                  style={{}}
-                  onClick={() => handleToggle("Property")}
-                  className={`button ${isPropertyActive ? "active" : ""}`}
-                >
-                  <MdApartment style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Property
-                </button>
+                    <button
+                      style={{}}
+                      onClick={() => handleToggle("Property")}
+                      className={`button ${isPropertyActive ? "active" : ""}`}
+                    >
+                      <MdApartment style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Property
+                    </button>
 
-                <button
-                  style={{ marginLeft: "20px" }}
-                  onClick={() => handleToggle("Project")}
-                  className={`button ${isProjectActive ? "active" : ""}`}
-                >
-                  <BsBuilding style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Project
-                </button> </> : null}
-                {/* {toggleError && <p className="error">{toggleError}</p>} */}
+                    <button
+                      style={{ marginLeft: "20px" }}
+                      onClick={() => handleToggle("Project")}
+                      className={`button ${isProjectActive ? "active" : ""}`}
+                    >
+                      <BsBuilding style={{ marginRight: "5px", display: "inline-block", marginBottom: "5px" }} /> Project
+                    </button> </> : null}
+                  {/* {toggleError && <p className="error">{toggleError}</p>} */}
 
 
 
@@ -1386,8 +1389,8 @@ const AddProperty = () => {
                 {cityError && <p className="error">{cityError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}> */}
-                  {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
-                  {/* <input
+                {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
+                {/* <input
                   placeholder="Enter Location"
                   required
                   className="inputField"
@@ -1397,19 +1400,19 @@ const AddProperty = () => {
                   onChange={(e) => setLocality(e.target.value)}
                 /> */}
 
-                  <select
-                  style={{margin:"20px 0"}}
+                <select
+                  style={{ margin: "20px 0" }}
                   className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
-                    // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
-                    value={locality}
-                    onChange={handleLocation}
-                  >
-                    {loc?.result.map((location) => (
-                      <option style={{ border: "none",margin:"10px 0",padding:"10px 0" }} key={location._id} value={location.name}>
-                        {location.name}
-                      </option>
-                    ))}
-                  </select>
+                  // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
+                  value={locality}
+                  onChange={handleLocation}
+                >
+                  {loc?.result.map((location) => (
+                    <option style={{ border: "none", margin: "10px 0", padding: "10px 0" }} key={location._id} value={location.name}>
+                      {location.name}
+                    </option>
+                  ))}
+                </select>
 
                 {/* </div> */}
                 {localityError && <p className="error">{localityError}</p>}
@@ -1991,7 +1994,7 @@ const AddProperty = () => {
                 ></textarea>
                 {descriptionError && <p className="error">{descriptionError}</p>}
 
-             { isAdmin === true ? <div style={{ margin: "20px 0" }}
+                {isAdmin === true ? <div style={{ margin: "20px 0" }}
                   className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
                 >
                   {/* <label style={{marginTop:"5px"}} htmlFor="city">City:</label> */}
@@ -2007,7 +2010,7 @@ const AddProperty = () => {
 
 
                 </div> : null}
-             { isAdmin === true ?    <textarea
+                {isAdmin === true ? <textarea
                   onChange={(e) => setMetaDiscription(e.target.value)}
                   placeholder="Meta Discription"
                   style={{ width: "100%", padding: "7px", marginTop: "10px" }}
@@ -2015,7 +2018,7 @@ const AddProperty = () => {
                   id=""
                   cols={30}
                   rows={5}
-                ></textarea>  : null}
+                ></textarea> : null}
 
                 <button
                   onClick={handlePostProperty}

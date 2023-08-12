@@ -91,7 +91,7 @@ const Property = () => {
         `/property/getAllProperties?search=${name || ""}`
       );
       if (res.data) {
-        setUsers(res?.data?.result);
+        setUsers(res?.data?.data);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }

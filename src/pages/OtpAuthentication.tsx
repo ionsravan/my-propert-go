@@ -118,6 +118,8 @@ const OtpAuthentication = () => {
                 console.log(res.data, "redd")
                 setCookies("jwtToken", res.data.token);
                 setIsVerifyLoading(false)
+                localStorage.setItem("isAdmin", false);
+
                 router.push("/")
                 // setShowTerms(true);
                 toast.success("Otp fetch Successfully");

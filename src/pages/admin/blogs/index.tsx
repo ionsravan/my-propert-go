@@ -35,8 +35,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { addForm, iconClass } from "../customers/edit/[id]";
 import { RHFUpload } from "src/componets/shared/RHF/RHFUpload";
 import { GiMetalDisc } from "react-icons/gi";
-import Image from "src/componets/shared/Image";
+// import Image from "src/componets/shared/Image";
 import { CustomFile } from "src/componets/shared/upload";
+import Image from "next/image";
 
 interface NewBlogTypes {
   photos?: CustomFile | string | null;
@@ -231,9 +232,9 @@ const Blogs = () => {
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
-        <Box>
-          {row?.screenshot?.length > 0 ? (
-            <Image src={row?.blogImage[0]} alt="" />
+        <Box sx={{maxHeight:200}} >
+          {row?.blogImage?.length > 0 ? (
+            <Image  width={150} height={80} src={row?.blogImage[0]} alt="" />
           ) : null}
         </Box>
       ),

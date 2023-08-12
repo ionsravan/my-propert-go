@@ -21,7 +21,7 @@ const SideNavItem = ({ name, Icon, isActive }: SideNavItemProps) => {
   return (
     <div
       className={
-        "flex w-full space-x-4 py-4  items-center font-manrope   cursor-pointer pl-7 " +
+        "flex w-full space-x-4 py-2  items-center font-manrope   cursor-pointer pl-7 " +
         (isActive ? " border-primaryBlue border-r-2 " : " ")
       }
     >

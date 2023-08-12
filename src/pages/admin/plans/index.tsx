@@ -153,12 +153,15 @@ const Plans = () => {
       setDeleteLoading(true);
       let bodyData = data;
       let url =
-        modalName === "Add" ? "/admin/plan/addPlan" : "/admin/editPlanElement";
+        modalName === "Add" ? "/admin/plan/addPlan" : "/admin/editPlanModel";
+      let res
       if (modalName === "Update") {
         bodyData._id = deleteId;
+        res = await instance.put(url, data);
+      } else {
+        res = await instance.post(url, data);
       }
 
-      const res = await instance.post(url, data);
       if (res.data) {
         toast.success("Leads Added Successfully");
         setDeleteLoading(false);
@@ -254,7 +257,7 @@ const Plans = () => {
               <BsPencilFill />
             </IconButton>
           </Tooltip>
-          <Tooltip title="Delete">
+          {/* <Tooltip title="Delete">
             <IconButton
               onClick={() => {
                 // setDeleteId(row?._id);
@@ -264,7 +267,7 @@ const Plans = () => {
             >
               <MdDeleteForever />
             </IconButton>
-          </Tooltip>
+          </Tooltip> */}
         </Box>
       ),
     },
@@ -373,34 +376,34 @@ const Plans = () => {
           <Grid container spacing={4}>
             {fields?.length > 0
               ? fields.map((field, index) => (
-                  <Grid
-                    sx={{ mt: 2 }}
-                    key={field?.id}
-                    item
-                    xs={12}
-                    display="flex"
+                <Grid
+                  sx={{ mt: 2 }}
+                  key={field?.id}
+                  item
+                  xs={12}
+                  display="flex"
+                >
+                  <RHFTextField
+                    name={`tags.${index}`}
+                    InputProps={{
+                      startAdornment: <BsTags className={iconClass} />,
+                    }}
+                    sx={addForm}
+                    placeholder="Enter Tags"
+                  />
+                  <IconButton
+                    color="error"
+                    sx={{
+                      display: watch("tags")?.length > 1 ? "flex" : "none",
+                      width: "fit-content",
+                      borderRadius: "8px",
+                    }}
+                    onClick={() => remove(index)}
                   >
-                    <RHFTextField
-                      name={`tags.${index}`}
-                      InputProps={{
-                        startAdornment: <BsTags className={iconClass} />,
-                      }}
-                      sx={addForm}
-                      placeholder="Enter Tags"
-                    />
-                    <IconButton
-                      color="error"
-                      sx={{
-                        display: watch("tags")?.length > 1 ? "flex" : "none",
-                        width: "fit-content",
-                        borderRadius: "8px",
-                      }}
-                      onClick={() => remove(index)}
-                    >
-                      <CgClose />
-                    </IconButton>
-                  </Grid>
-                ))
+                    <CgClose />
+                  </IconButton>
+                </Grid>
+              ))
               : null}
 
             <Grid
@@ -437,9 +440,8 @@ const Plans = () => {
           <button
             type="submit"
             disabled={deleteLoading}
-            className={`${
-              deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-            } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+            className={`${deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
           >
             {deleteLoading ? (
               <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />

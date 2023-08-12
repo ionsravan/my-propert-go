@@ -34,19 +34,19 @@ import { RHFUpload } from "src/componets/shared/RHF/RHFUpload";
 import { CustomFile } from "src/componets/shared/upload";
 import Image from "next/image";
 
+// photos?: CustomFile | string | null;
 interface NewLocTypes {
-  photos?: CustomFile | string | null;
   name: string;
 }
 
+// photos: Yup.mixed().required("Photo is required"),
 const NewCompanyValidationSchema = Yup.object().shape({
-  photos: Yup.mixed().required("Photo is required"),
   name: Yup.string().required("Title is required"),
 });
 
+// photos: "",
 const defaultValues = {
   name: "",
-  photos: "",
 };
 
 // give main area a max widht
@@ -107,12 +107,12 @@ const Locations = () => {
   async function onSubmit(data: NewLocTypes) {
     try {
       setDeleteLoading(true);
-      var bodyFormData = new FormData();
-      if (data?.photos instanceof File) {
-        bodyFormData.append("photos", data.photos);
-      }
-      bodyFormData.append("name", data?.name);
-      let res = await instance.post("/admin/location/addNewLocation", bodyFormData);
+      // var bodyFormData = new FormData();
+      // if (data?.photos instanceof File) {
+      //   bodyFormData.append("photos", data.photos);
+      // }
+      // bodyFormData.append("name", data?.name);
+      let res = await instance.post("/admin/location/addNewLocation", data);
       if (res.data) {
         toast.success("Locations added Successfully");
         setDeleteLoading(false);
@@ -133,7 +133,7 @@ const Locations = () => {
 
   const all_customer_columns: GridColDef[] = [
     {
-      flex: 0.2,
+      flex: 0.7,
       field: "name",
       headerName: "Name",
       align: "left",
@@ -145,21 +145,21 @@ const Locations = () => {
         </Typography>
       ),
     },
-    {
-      field: "locationImages",
-      headerName: "Image",
-      flex: 0.25,
-      align: "left",
-      headerAlign: "left",
-      disableColumnMenu: true,
-      renderCell: ({ row }) => (
-        <Box>
-          {row?.screenshot?.length > 0 ? (
-            <Image width={200} height={100} src={row?.locationImages[0]} alt="" />
-          ) : null}
-        </Box>
-      ),
-    },
+    // {
+    //   field: "locationImages",
+    //   headerName: "Image",
+    //   flex: 0.4,
+    //   align: "left",
+    //   headerAlign: "left",
+    //   disableColumnMenu: true,
+    //   renderCell: ({ row }) => (
+    //     <Box>
+    //       {row?.locationImages?.length > 0 ? (
+    //         <Image width={200} height={100} src={row?.locationImages[0]} alt="" />
+    //       ) : null}
+    //     </Box>
+    //   ),
+    // },
     {
       field: "action",
       headerName: "ACTION",
@@ -190,23 +190,23 @@ const Locations = () => {
     },
   ];
 
-  const handleDrop = useCallback(
-    (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
+  // const handleDrop = useCallback(
+  //   (acceptedFiles: File[]) => {
+  //     const file = acceptedFiles[0];
 
-      const newFile = Object.assign(file, {
-        preview: URL.createObjectURL(file),
-      });
+  //     const newFile = Object.assign(file, {
+  //       preview: URL.createObjectURL(file),
+  //     });
 
-      if (file) {
-        setValue("photos", newFile, {
-          shouldValidate: true,
-          shouldDirty: true,
-        });
-      }
-    },
-    [setValue]
-  );
+  //     if (file) {
+  //       setValue("photos", newFile, {
+  //         shouldValidate: true,
+  //         shouldDirty: true,
+  //       });
+  //     }
+  //   },
+  //   [setValue]
+  // );
 
   async function deleteLocation() {
     try {
@@ -227,7 +227,6 @@ const Locations = () => {
     }
   }
 
-  console.log("watch", watch("photos"));
 
   return (
     <div className=" w-full bg-[#F6F6F6] ">
@@ -287,7 +286,7 @@ const Locations = () => {
         title={edit ? "Update Location" : "Add Location"}
         open={dialogOpen}
         closeDialog={closeDialog}
-        size="md"
+        size="sm"
       >
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <RHFTextField
@@ -298,35 +297,6 @@ const Locations = () => {
             sx={addForm}
             name="name"
           />
-
-          <Grid
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              mt: 2,
-            }}
-          >
-            {watch("photos") && (
-              <button
-                // size="small"
-                // variant="contained"
-                onClick={() => resetField("photos")}
-              // color="error"
-              // startIcon={<Iconify icon="gg:trash" width={18} />}
-              >
-                Remove Image
-              </button>
-            )}
-          </Grid>
-
-          <RHFUpload
-            name="photos"
-            maxSize={3000000}
-            onDrop={handleDrop}
-            disabled={isSubmitting}
-          />
-
           <button
             type="submit"
             disabled={deleteLoading}
