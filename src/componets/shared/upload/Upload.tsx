@@ -118,7 +118,6 @@ export default function Upload({
           <Iconify icon="eva:close-fill" width={18} />
         </IconButton>
       )}
-
       {hasFiles && (
         <>
           <Box sx={{ my: 3 }}>

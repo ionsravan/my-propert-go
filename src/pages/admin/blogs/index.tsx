@@ -60,29 +60,6 @@ const defaultValues = {
   photos: "",
 };
 
-export const Button = ({
-  name,
-  Icon,
-  Color,
-}: {
-  name: string;
-  Icon: React.ElementType;
-  Color: string;
-}) => {
-  return (
-    <div
-      className={
-        Color +
-        " bg-white font-bold w-full rounded-sm shadow-sm flex space-x-1 items-center justify-center px-4 p-1 max-w-max border border-[#DEDEDE]"
-      }
-    >
-      <div className="text-xs">{<Icon />}</div>
-      <div>
-        <p className=" text-[10px]">{name}</p>
-      </div>
-    </div>
-  );
-};
 
 const styleMt = {
   mt: 2,
@@ -305,8 +282,6 @@ const Blogs = () => {
       );
     }
   }
-
-  console.log("watch", watch("photos"));
 
   return (
     <div className=" w-full bg-[#F6F6F6] ">
