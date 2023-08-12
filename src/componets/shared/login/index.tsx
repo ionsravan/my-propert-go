@@ -101,6 +101,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
               console.log("Login Response:", result);
               if (typeof result == "string") {
                 setCookies("jwtToken", result);
+                localStorage.setItem("isAdmin", true);
                 toast("Logged in Successfully", {
                   position: "bottom-center",
                   type: "success",

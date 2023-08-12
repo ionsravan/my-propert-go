@@ -125,6 +125,9 @@ const HomeResult = ({
         </div>
       </div>
     </Link>
+
+
+    
     <Link href={`/details/${_id}`}>
       <div
       //  style={{border:"2px solid red"}}

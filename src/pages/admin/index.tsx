@@ -139,7 +139,7 @@ const DashBoard = () => {
 
 
   useEffect(() => {
-    if (cookies.jwtToken === undefined) {
+    if (cookies.jwtToken === undefined ) {
       router.push(`/admin/login`)
     }
   }, [])

@@ -84,7 +84,7 @@ function SearchDropdown({ options, onSelect }) {
 
   return (
     <div style={{ margin: "20px 0" }} className="relative">
-      <div 
+      <div
         className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
       >
         <input
@@ -117,16 +117,17 @@ function SearchDropdown({ options, onSelect }) {
   );
 }
 
-const AddProperty = () => {
+const AddProperty = ({ propertyData, navbarFooter, validation }) => {
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
   );
 
 
-  useEffect(() => {
-    console.log("Data from API:", loc); // Log the data to the console
-  }, [loc]);
+
+
+
+
   const [cookies] = useCookies(["jwtToken"]);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -241,6 +242,7 @@ const AddProperty = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [toasted, setToasted] = useState(false);
+  const [propertyFeatures, setPropertyFeatures] = useState("");
 
 
   const handleSaleClick = () => {
@@ -422,6 +424,32 @@ const AddProperty = () => {
     "Studio Apartment",
   ];
 
+  const propertyFeaturesNames = [
+    "Legal Verified",
+    "Verified Property",
+    "Budget",
+    "New Construction",
+    "Under Construction",
+    "Ready to Move",
+    "Booking Open",
+    "Price Drop Alert",
+    "Hot Deal",
+    "Premium Listing",
+    "Luxury Home",
+    "Executive Property",
+    "Great Rental Income",
+    "Cash Flow Positive",
+    "Individual Seller",
+    "Builder Floor",
+    "Resale",
+    "Corner Plot",
+    "Corner Facing",
+    "Vastu",
+    "Assigned by Owner",
+    "No Brokerage"
+  ];
+
+
 
   const residentialIcons = [
     MdApartment,
@@ -486,7 +514,7 @@ const AddProperty = () => {
     "Beach View",
     "Not Available",
   ];
-  const areaUnitNames = ["Select Area Unit","SFT/Sq", "Yards", "Acres"];
+  const areaUnitNames = ["Select Area Unit", "SFT/Sq", "Yards", "Acres"];
   const userTypeNames = ["Owner", "Agent", "Builder/Dealer"];
   const regulatoryNames = ["VMRDA", "VUDA", "Panchayat", "Grama Kantam", "Others"];
   const liftNames = ["Yes", "No"];
@@ -511,6 +539,10 @@ const AddProperty = () => {
 
   const handlePossessionClick = (name: string) => {
     setPossession(name);
+  };
+
+  const handlePropertyFeatures = (name: string) => {
+    setPropertyFeatures(name);
   };
 
   const handleAgeClick = (name: string) => {
@@ -646,7 +678,7 @@ const AddProperty = () => {
     bodyFormData.append('BHKconfig', String(parseInt(bhkConfig, 10)));
     bodyFormData.append('area', area);
     bodyFormData.append('areaValue', String(parseInt(areaValue, 10)));
-    bodyFormData.append('areaType', areaType);
+    bodyFormData.append('areaType', areaUnits);
     bodyFormData.append('floorNo', floorNumber);
     bodyFormData.append('towerVlock', tower);
     bodyFormData.append('floorCount', floorCount);
@@ -708,497 +740,493 @@ const AddProperty = () => {
     setActiveStep(step);
   };
 
+  useEffect(() => {
+    console.log(validation, "validd")
+    console.log(navbarFooter, "validd")
+  }, [validation])
+
+
 
   const handlePropertiesDetails = () => {
 
+    if (navbarFooter === false) {
+      handleNext();
+    } else {
 
-    if (userType.trim() === '') {
-      setUserTypeError('Please select who you are');
-
-      setTimeout(() => {
-        setUserTypeError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (regulatory.trim() === '') {
-      setRegulatoryError('Please select Regulatory Authority');
-
-      setTimeout(() => {
-        setRegulatoryError('');
-      }, 2000);
-
-      return;
-    }
-
-
-    // if (toggle.trim() === '') {
-    //   setToggleError('Please select either Property or Project');
-
-    //   setTimeout(() => {
-    //     setToggleError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-
-    if (availabeFor.trim() === '') {
-      setAvailableForError('Please Fill the Property Listing Form');
-
-      setTimeout(() => {
-        setAvailableForError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (buildingType.trim() === '') {
-      setBuildingTypeError('Please Fill the Building type');
-
-      setTimeout(() => {
-        setBuildingTypeError('');
-      }, 2000);
-
-      return;
-    }
-
-
-
-    if (developmentActive === false) {
-      if (propertyType.trim() === '') {
-        setPropertyTypeError('Please Fill the Property type');
+      if (userType.trim() === '') {
+        setUserTypeError('Please select who you are');
 
         setTimeout(() => {
-          setPropertyTypeError('');
+          setUserTypeError('');
         }, 2000);
 
         return;
       }
-    }
 
-
-    if (city.trim() === '') {
-      setCityError('Please fill the city');
-
-      setTimeout(() => {
-        setCityError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (projectName.trim() === '') {
-      setProjectNameError('Please fill the project name');
-
-      setTimeout(() => {
-        setProjectNameError('');
-      }, 2000);
-
-      return;
-    }
-
-
-    if (locality.trim() === '') {
-      setLocalityError('Please fill the locality');
-
-      setTimeout(() => {
-        setLocalityError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (price.trim() === '') {
-      setPriceError('Please fill the price');
-
-      setTimeout(() => {
-        setPriceError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (bhkConfig.trim() === '') {
-        setBhkConfigError('Please fill the BHK configuration');
+      if (regulatory.trim() === '') {
+        setRegulatoryError('Please select Regulatory Authority');
 
         setTimeout(() => {
-          setBhkConfigError('');
+          setRegulatoryError('');
         }, 2000);
 
         return;
       }
+
+
+      if (availabeFor.trim() === '') {
+        setAvailableForError('Please Fill the Property Listing Form');
+
+        setTimeout(() => {
+          setAvailableForError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (buildingType.trim() === '') {
+        setBuildingTypeError('Please Fill the Building type');
+
+        setTimeout(() => {
+          setBuildingTypeError('');
+        }, 2000);
+
+        return;
+      }
+
+
+
+      if (developmentActive === false) {
+        if (propertyType.trim() === '') {
+          setPropertyTypeError('Please Fill the Property type');
+
+          setTimeout(() => {
+            setPropertyTypeError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+      if (city.trim() === '') {
+        setCityError('Please fill the city');
+
+        setTimeout(() => {
+          setCityError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (projectName.trim() === '') {
+        setProjectNameError('Please fill the project name');
+
+        setTimeout(() => {
+          setProjectNameError('');
+        }, 2000);
+
+        return;
+      }
+
+
+      if (locality.trim() === '') {
+        setLocalityError('Please fill the locality');
+
+        setTimeout(() => {
+          setLocalityError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (price.trim() === '') {
+        setPriceError('Please fill the price');
+
+        setTimeout(() => {
+          setPriceError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (bhkConfig.trim() === '') {
+          setBhkConfigError('Please fill the BHK configuration');
+
+          setTimeout(() => {
+            setBhkConfigError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (area.trim() === '') {
+        setAreaError('Please fill the area');
+
+        setTimeout(() => {
+          setAreaError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (areaValue.trim() === '') {
+        setAreaValueError('Please fill the area value');
+
+        setTimeout(() => {
+          setAreaValueError('');
+        }, 2000);
+
+        return;
+      }
+      if (areaUnits.trim() === '') {
+        setAreaUnitsError('Please fill the area value');
+
+        setTimeout(() => {
+          setAreaUnitsError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (areaType.trim() === '') {
+        setAreaTypeError('Please fill the area type');
+
+        setTimeout(() => {
+          setAreaTypeError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (address.trim() === '') {
+        setAddressError('Please fill the address');
+
+        setTimeout(() => {
+          setAddressError('');
+        }, 2000);
+
+        return;
+      }
+
+      handleNext()
     }
-
-
-
-    if (area.trim() === '') {
-      setAreaError('Please fill the area');
-
-      setTimeout(() => {
-        setAreaError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (areaValue.trim() === '') {
-      setAreaValueError('Please fill the area value');
-
-      setTimeout(() => {
-        setAreaValueError('');
-      }, 2000);
-
-      return;
-    }
-    if (areaUnits.trim() === '') {
-      setAreaUnitsError('Please fill the area value');
-
-      setTimeout(() => {
-        setAreaUnitsError('');
-      }, 2000);
-
-      return;
-    }
-
-    // if (areaType.trim() === '') {
-    //   setAreaTypeError('Please fill the area type');
-
-    //   setTimeout(() => {
-    //     setAreaTypeError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-
-    // if (size.trim() === '') {
-    //   setSizeError('Please fill the size');
-
-    //   setTimeout(() => {
-    //     setSizeError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-    if (address.trim() === '') {
-      setAddressError('Please fill the address');
-
-      setTimeout(() => {
-        setAddressError('');
-      }, 2000);
-
-      return;
-    }
-
-    handleNext();
   };
 
 
 
   const handleAdditionalDetails = () => {
     console.log("clicked")
+    if (navbarFooter === false) {
+      handleNext();
+    } else {
+
+      if (
+        (activeButton === "FLat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (floorNumber.trim() === '') {
+          setFloorNumberError('Please fill the floor number');
+
+          setTimeout(() => {
+            setFloorNumberError('');
+          }, 2000);
+
+          return;
+        }
+      }
 
 
-    if (
-      (activeButton === "FLat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (floorNumber.trim() === '') {
-        setFloorNumberError('Please fill the floor number');
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (tower.trim() === '') {
+          setTowerError('Please fill the tower');
+
+          setTimeout(() => {
+            setTowerError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (floorCount.trim() === '') {
+          setFloorCountError('Please fill the floor count');
+
+          setTimeout(() => {
+            setFloorCountError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (unitNumber.trim() === '') {
+          setUnitNumberError('Please fill the unit number');
+
+          setTimeout(() => {
+            setUnitNumberError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (addtionalRoomButton.trim() === '') {
+          setAddtionalRoomButtonError('Please fill the additional room button');
+
+          setTimeout(() => {
+            setAddtionalRoomButtonError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (furnished.trim() === '') {
+          setFurnishedError('Please fill the furnished field');
+
+          setTimeout(() => {
+            setFurnishedError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (possession.trim() === '') {
+          setPossessionError('Please fill the possession');
+
+          setTimeout(() => {
+            setPossessionError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (age.trim() === '') {
+        setAgeError('Please fill the age');
 
         setTimeout(() => {
-          setFloorNumberError('');
+          setAgeError('');
         }, 2000);
 
         return;
       }
-    }
 
 
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (tower.trim() === '') {
-        setTowerError('Please fill the tower');
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (bathroom.trim() === '') {
+          setBathroomError('Please fill the bathroom');
+
+          setTimeout(() => {
+            setBathroomError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (parking.trim() === '') {
+          setParkingError('Please fill the parking');
+
+          setTimeout(() => {
+            setParkingError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (lift.trim() === '') {
+          setLiftError('Please select lift is available or not');
+
+          setTimeout(() => {
+            setLiftError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+
+      if (selectedViewFacing.trim() === '') {
+        setSelectedViewFacingError('Please fill the selected facing');
 
         setTimeout(() => {
-          setTowerError('');
+          setSelectedViewFacingError('');
         }, 2000);
 
         return;
       }
-    }
 
-
-
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (floorCount.trim() === '') {
-        setFloorCountError('Please fill the floor count');
+      if (selectedView.trim() === '') {
+        setSelectedViewError('Please fill the selected view ');
 
         setTimeout(() => {
-          setFloorCountError('');
+          setSelectedViewError('');
         }, 2000);
 
         return;
       }
+
+      handleNext();
     }
-
-
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (unitNumber.trim() === '') {
-        setUnitNumberError('Please fill the unit number');
-
-        setTimeout(() => {
-          setUnitNumberError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-
-
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (addtionalRoomButton.trim() === '') {
-        setAddtionalRoomButtonError('Please fill the additional room button');
-
-        setTimeout(() => {
-          setAddtionalRoomButtonError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (furnished.trim() === '') {
-        setFurnishedError('Please fill the furnished field');
-
-        setTimeout(() => {
-          setFurnishedError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (possession.trim() === '') {
-        setPossessionError('Please fill the possession');
-
-        setTimeout(() => {
-          setPossessionError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-    if (age.trim() === '') {
-      setAgeError('Please fill the age');
-
-      setTimeout(() => {
-        setAgeError('');
-      }, 2000);
-
-      return;
-    }
-
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (bathroom.trim() === '') {
-        setBathroomError('Please fill the bathroom');
-
-        setTimeout(() => {
-          setBathroomError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (parking.trim() === '') {
-        setParkingError('Please fill the parking');
-
-        setTimeout(() => {
-          setParkingError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-    if (
-      (activeButton === "Flat" ||
-        activeButton === "Villa" ||
-        activeButton === "Penthouse" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (lift.trim() === '') {
-        setLiftError('Please select lift is available or not');
-
-        setTimeout(() => {
-          setLiftError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-
-    if (selectedViewFacing.trim() === '') {
-      setSelectedViewFacingError('Please fill the selected facing');
-
-      setTimeout(() => {
-        setSelectedViewFacingError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (selectedView.trim() === '') {
-      setSelectedViewError('Please fill the selected view ');
-
-      setTimeout(() => {
-        setSelectedViewError('');
-      }, 2000);
-
-      return;
-    }
-
-    handleNext();
 
   }
 
   useEffect(() => {
     const adminValue = localStorage.getItem("isAdmin");
-    setIsAdmin(adminValue);
+    setIsAdmin(adminValue === "true");
+    console.log(adminValue, "admin");
   }, []);
+
 
 
 
@@ -1216,14 +1244,79 @@ const AddProperty = () => {
   }, [])
 
 
+
+
+
+  useEffect(() => {
+
+    if (propertyData) {
+
+      if (propertyData?.buildingType === "residential") {
+        console.log("activeeee")
+        setResidentialActive(true)
+        setPropertyType(propertyData?.propertyType)
+        setActiveButton(propertyData?.propertyType);
+      }
+      if (propertyData?.buildingType === "commercial") {
+        setCommercialActive(true)
+        setPropertyType(propertyData?.propertyType)
+        setActiveButton(propertyData?.propertyType);
+      }
+      if (propertyData?.buildingType === "develoment") {
+        setDevelopmentActive(true)
+        setPropertyType(propertyData?.propertyType)
+        setActiveButton(propertyData?.propertyType);
+      }
+
+      setProjectName(propertyData?.name);
+      setBuildingType(propertyData?.buildingType);
+      setPrice(propertyData?.cost);
+      setDescription(propertyData?.description);
+      setSize(propertyData?.size);
+      setAvailableFor(propertyData?.availableFor);
+      setToggle(propertyData?.toggle);
+      setBhkConfig(propertyData?.BHKconfig);
+      setBhkConfig(String(parseInt(propertyData?.BHKconfig, 10)));
+      setArea(propertyData?.area.name)
+      setAreaValue(propertyData?.areaValue)
+      setAreaType(propertyData?.areaType)
+      setFloorNumber(propertyData?.floorNo)
+      setFloorCount(propertyData?.floorCount)
+      setTower(propertyData?.towerVlock)
+      setUnitNumber(propertyData?.unitNo)
+      setAddtionalRoomButton(propertyData?.additionalRooms)
+      setCity(propertyData?.location.name)
+      setAddress(propertyData?.address)
+      setLocality(propertyData?.location.name)
+      setAmenities(JSON.parse(propertyData?.amenities))
+
+      setSecurityActiveButton(propertyData?.securityActiveButton)
+      setFurnished(propertyData?.furnishingStatus)
+      setPossession(propertyData?.possessionStatus)
+      setAge(propertyData?.ageOfProperty)
+      setBathroom(String(parseInt(propertyData?.numOfBathroom, 10)))
+      setParking(String(parseInt(propertyData?.numOfParking, 10)))
+      setSelectedView(propertyData?.view)
+      setSelectedViewFacing(propertyData?.view)
+      setPropertyType(propertyData?.propertyType)
+      setLift(propertyData?.liftFacility)
+      setUserType(propertyData?.userType)
+      setRegulatory(propertyData?.authority)
+      // setPrimaryFilesToUpload(propertyData?.photos)
+      setRegulatory(propertyData?.authority)
+
+    }
+  }, [propertyData]);
+
+
   return (
     <>
-      <Navbar />
+      {navbarFooter === false ? null : <Navbar />}
       {isLoading ?
 
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
           {/* <p>Property Listing for</p> */}
-          <div style={{ margin: "20px 0" }} className="property-listing-form">
+          <div className="property-listing-form">
             <div style={{ marginBottom: "20px", padding: "20px 0" }}>
               <div className="paginationContainer">
                 <button
@@ -1663,20 +1756,20 @@ const AddProperty = () => {
 
                 </div>
 
-                
-              <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-               
-                <input
-                  placeholder="Enter Area Value"
-                  required
-                  className="inputField"
-                  type="text"
-                  id="area"
-                  value={areaValue}
-                  onChange={(e) => setAreaValue(e.target.value)}
-                />
-              </div>
-              {areaValueError && <p className="error">{areaValueError}</p>}
+
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+
+                  <input
+                    placeholder="Enter Area Value"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="area"
+                    value={areaValue}
+                    onChange={(e) => setAreaValue(e.target.value)}
+                  />
+                </div>
+                {areaValueError && <p className="error">{areaValueError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
@@ -2142,6 +2235,7 @@ const AddProperty = () => {
                   style={{ width: "100%", padding: "7px", marginTop: "10px" }}
                   name=""
                   id=""
+                  value={description}
                   cols={30}
                   rows={5}
                 ></textarea>
@@ -2173,6 +2267,28 @@ const AddProperty = () => {
                   rows={5}
                 ></textarea> : null}
 
+
+
+
+
+
+                {isAdmin === true ? (
+                  <div className="securityDepositDiv">
+                    <label htmlFor="propertyFeatures">Tags</label>
+                    {propertyFeaturesNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handlePropertyFeatures(name)}
+                        className={`button ${propertyFeatures === name ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+
+
                 <button
                   onClick={handlePostProperty}
                   style={{
@@ -2201,7 +2317,8 @@ const AddProperty = () => {
         : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
           <CircularSpinner />
         </div>}
-      <Footer />
+      {navbarFooter === false ? null : <Footer />}
+
     </>
   );
 };

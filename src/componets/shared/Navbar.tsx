@@ -34,10 +34,7 @@ const Nav = () => {
       name: "Post Property",
       link: "/addProperty",
     },
-    // {
-    //   name: "Sign up",
-    //   link: "/signup",
-    // },
+ 
   ];
 
 

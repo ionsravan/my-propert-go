@@ -186,76 +186,6 @@ const Edit = () => {
 
 
 
-
-  // useEffect(() => {
-  //   if (!data?.result._id) {
-  //     console.log("hi");
-  //     return;
-  //   }
-
-  //   if (data?.result?.buildingType === "residential") {
-  //     console.log("activeeee")
-  //     setResidentialActive(true)
-  //     setPropertyType(data?.result?.propertyType)
-  //     setActiveButton(data?.result?.propertyType);
-  //   }
-  //   if (data?.result?.buildingType === "commercial") {
-  //     setCommercialActive(true)
-  //     setPropertyType(data?.result?.propertyType)
-  //     setActiveButton(data?.result?.propertyType);
-  //   }
-  //   if (data?.result?.buildingType === "develoment") {
-  //     setDevelopmentActive(true)
-  //     setPropertyType(data?.result?.propertyType)
-  //     setActiveButton(data?.result?.propertyType);
-  //   }
-
-  //   setProjectName(data?.result?.name);
-  //   setBuildingType(data?.result?.buildingType);
-  //   setPrice(data?.result?.cost);
-  //   setDescription(data?.result?.description);
-  //   setSize(data?.result?.size);
-  //   setAvailableFor(data?.result?.availableFor);
-  //   setToggle(data?.result?.toggle);
-  //   setBhkConfig(data?.result?.BHKconfig);
-  //   setBhkConfig(String(parseInt(data?.result?.BHKconfig, 10)));
-  //   setArea(data?.result?.area.name)
-  //   setAreaValue(data?.result?.areaValue)
-  //   setAreaType(data?.result?.areaType)
-  //   setFloorNumber(data?.result?.floorNo)
-  //   setFloorCount(data?.result?.floorCount)
-  //   setTower(data?.result?.towerVlock)
-  //   setUnitNumber(data?.result?.unitNo)
-  //   setAddtionalRoomButton(data?.result?.additionalRooms)
-  //   setCity(data?.result?.location.name)
-  //   setAddress(data?.result?.address)
-  //   setLocality(data?.result?.location.name)
-  //   setAmenities(JSON.parse(data?.result?.amenities))
-
-  //   setSecurityActiveButton(data?.result?.securityActiveButton)
-  //   setFurnished(data?.result?.furnishingStatus)
-  //   setPossession(data?.result?.possessionStatus)
-  //   setAge(data?.result?.ageOfProperty)
-  //   setBathroom(String(parseInt(data?.result?.numOfBathroom, 10)))
-  //   setParking(String(parseInt(data?.result?.numOfParking, 10)))
-  //   setSelectedView(data?.result?.view)
-  //   setPropertyType(data?.result?.propertyType)
-  //   setLift(data?.result?.liftFacility)
-  //   setUserType(data?.result?.userType)
-  //   setRegulatory(data?.result?.authority)
-  //   setPrimaryFilesToUpload(data?.result?.photos)
-  //   setRegulatory(data?.result?.authority)
-
-  // }, [data]);
-
-
-
-
-
-
-
-
-
   return (
     <>
       <div className="flex justify-between mb-8 ">
@@ -277,7 +207,7 @@ const Edit = () => {
         <p className="border-b py-3 border-[#0066FF]">Step 1: Genreral Info</p>
       </div>
 
-      <AddProperty/>
+      <AddProperty validation={false} navbarFooter={false} propertyData={data?.result} />
 
     </>
   );
