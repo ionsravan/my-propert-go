@@ -13,24 +13,34 @@ import { Buyer, response } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { FetchState, useFetch } from "src/lib/hooks/useFetch";
+import { useAxios } from "src/utills/axios";
 
 
 
 const myPropertyCare = () => {
-  // const { data, status } = useFetch<response<Buyer[]>>(
-  //   "/agent/property/buyers/getAllBuyers"
-  // );
-  const [userId, setUserId] = useState<string | null>(null);
-  const { data, status } = useFetch<response<Buyer[]>>(
-    `/user/getLeadsByUserId/${userId}`
-  );
-
-  // useEffect(() => {
-  //   const storedUserId = localStorage.getItem("userId");
-  //   setUserId(storedUserId);
-  // }, []);
+  const instance = useAxios();
 
 
+
+
+  useEffect(() => {
+  const myGetPropertyCare = async () => {
+    try {
+   
+      const res = await instance.get("/user/myCareServiceProperty");
+
+      if (res.data) {
+        console.log(res.data, "reeeeee");
+    
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    
+    }
+  }
+  myGetPropertyCare()
+  }, [])
+  
   return (
     <>
       <div className="mb-6">
