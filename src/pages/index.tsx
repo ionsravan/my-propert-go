@@ -26,6 +26,8 @@ import Carousel from "react-multi-carousel";
 import Slider from "src/componets/Home/Slider";
 import { FaHome } from "react-icons/fa";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
+import { useRouter } from "next/router";
+// import { Router } from "lucide-react";
 
 const images = [
   {
@@ -106,6 +108,7 @@ export const scrollRight = (id: string) => {
 
 
 export default function Home() {
+  const router = useRouter();
   const { data, error, status } = useFetch<ProperyResArr>(
     "/property/getAllProperties"
   );
@@ -196,13 +199,13 @@ export default function Home() {
   }, [Filtred]);
 
 
-  const handleCardClick = () => {
-    window.open('', '_blank');
-  };
+  // const handleCardClick = () => {
+  //   rout
+  // };
 
   return (
     <>
-      <div style={{backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")' }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
+      <div style={{backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")',margin:"40px 40px",borderRadius:"20px" }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
         <div className="absolute bottom-0 right-0">
           <div className="h-96 relative w-80">
             {/* <Image
@@ -286,7 +289,7 @@ export default function Home() {
           )}
         </div>
       </section>
-      <section className="bg-cityBg py-16">
+      {/* <section className="bg-cityBg py-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
           <HomeSectionTitle
             text="Explore Properties in Popular Indian Cities"
@@ -297,14 +300,10 @@ export default function Home() {
               <PopularCity key={location._id} img={location?.locationImages[0]} name={location.name} />
             ))}
 
-            {/* <PopularCity img={imgs["Rectangle 583(1)"]} />
-            <PopularCity img={imgs["Rectangle 583(2)"]} />
-            <PopularCity img={imgs["Rectangle 583(3)"]} />
-            <PopularCity img={imgs["Rectangle 583(4)"]} />
-            <PopularCity img={imgs["Rectangle 583(5)"]} /> */}
+          
           </div>
         </div>
-      </section>
+      </section> */}
       <section className="pt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
@@ -565,7 +564,7 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap justify-center">
             {/* Card 1 */}
-            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div onClick={() => router.push("/services/interiorDesigning")} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here (You can use an icon library or an SVG) */}
@@ -581,7 +580,7 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div  className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}
@@ -597,7 +596,7 @@ export default function Home() {
             </div>
 
             {/* Card 3 */}
-            <div onClick={handleCardClick} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div  className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}

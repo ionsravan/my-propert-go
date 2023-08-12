@@ -110,6 +110,15 @@ const AgentNavbar = () => {
           }
         />
       </Link>
+      <Link href={"/agent/favourite"}>
+        <SideNavItem
+          name="Favourites"
+          Icon={icons.postings}
+          isActive={
+            router.pathname == "/agent/favourite"
+          }
+        />
+      </Link>
       <Link href={"/agent/profile"}>
         <SideNavItem
           name="My Profile"
@@ -124,11 +133,11 @@ const AgentNavbar = () => {
           isActive={router.pathname == "/agent/notifications"}
         />
       </Link>
-      <Link href={"/agent/myPropertyCare"}>
+      <Link href={"/agent/propertyCare"}>
         <SideNavItem
           name="My Property Care"
           Icon={icons.profile}
-          isActive={router.pathname == "/agent/myPropertyCare"}
+          isActive={router.pathname == "/agent/propertyCare"}
         />
       </Link>
     </div>

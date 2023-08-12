@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
-import react from 'react'
+import react, { useEffect, useState } from 'react'
 import { BsArrowLeft } from 'react-icons/bs';
+import { useAxios } from "src/utills/axios";
+import { Footer, Navbar } from "src/componets";
 // Dummy function to fetch blog content based on the slug
 // const getBlogContent = async (slug) => {
 //     // Simulating an API call delay
@@ -13,21 +15,61 @@ import { BsArrowLeft } from 'react-icons/bs';
 //     };
 
 //     return blogContent;
-// };
+// };]\
 
 const BlogPage = () => {
-    const router = useRouter();
-    const { slug } = router.query;
+  const router = useRouter();
+  const id = router.query["slug"];
+  const { slug } = router.query;
+  const instance = useAxios();
+  const [blogs, setBlogs] = useState([]);
+  const [blog, setBlog] = useState([]);
 
-    // Fetch the blog content based on the slug
-    // const blogContent = getBlogContent(slug);
+  async function getAllBlogs() {
+    try {
+      //   setLoading(true);
 
-    // if (!blogContent) {
-    //     return <div>Loading...</div>; // Add a loading indicator if needed
-    // }
+      const res = await instance.get(`/user/blog/getAllBlogs`);
+      if (res.data) {
+        setBlogs(res?.data?.blogs);
+        // setPagination(res?.data?.pagination);
+        // setLoading(false);
+      }
+    } catch (e) {
+      //   setLoading(false);
+      console.log(e);
+    }
+  }
+
+  useEffect(() => {
+    getAllBlogs();
+  }, []);
+
+  useEffect(() => {
+    const filterBlogs = () => {
+      const filterBlog = blogs?.filter(blog => blog._id === id) ?? [];
+      setBlog(filterBlog);
 
 
-    const description = `Reinvention often comes in spurts, after a long period of silence. Just as modern architecture recently enjoyed a comeback, brand architecture, a field with well-established principles for decades, is back in the limelight.
+    };
+
+    filterBlogs();
+  }, [blogs]);
+
+  useEffect(() => {
+    console.log(blog, "blog")
+  }, [blog])
+
+
+  // Fetch the blog content based on the slug
+  // const blogContent = getBlogContent(slug);
+
+  // if (!blogContent) {
+  //     return <div>Loading...</div>; // Add a loading indicator if needed
+  // }
+
+
+  const description = `Reinvention often comes in spurts, after a long period of silence. Just as modern architecture recently enjoyed a comeback, brand architecture, a field with well-established principles for decades, is back in the limelight.
 
 Simply understood, brand architecture is the art and science of structuring the portfolio to meet your strategic goals, defining the brand number, scope, and relationships needed to compete. Just as Modern Architecture prioritized function, a Brand Architecture is only as good as it is well-suited for the purpose it strives to achieve. Given the disruption observed today across industries and segments, it’s no wonder that companies are considering structural rather than topical solutions to the challenges they face.
 
@@ -52,49 +94,62 @@ Much as strategy has become “real time” as the window for strategic planning
 Traditionally, companies considered a house of brands architecture as a risk management tool — a way not to put all your eggs in one basket. It turns out, in the age of platforms and digital disruption, a masterbrand-led architecture can help you build a bigger basket, to hold more eggs.`;
 
 
-const renderParagraphs = (description) => {
-    const paragraphs = description.split("\n\n");
-    const jsxElements = [];
-  
-    paragraphs.forEach((paragraph, index) => {
-      jsxElements.push(<p key={index}>{paragraph}</p>);
-  
-      if (index !== paragraphs.length - 1) {
-        jsxElements.push(<br key={`br-${index}`} />);
-      }
-    });
-  
-    return jsxElements;
-  };
+  // const renderParagraphs = (description) => {
+  //     const paragraphs = description.split("\n\n");
+  //     const jsxElements = [];
+
+  //     paragraphs.forEach((paragraph, index) => {
+  //       jsxElements.push(<p key={index}>{paragraph}</p>);
+
+  //       if (index !== paragraphs.length - 1) {
+  //         jsxElements.push(<br key={`br-${index}`} />);
+  //       }
+  //     });
+
+  //     return jsxElements;
+  //   };
 
 
 
 
-    return <>
+  return <>
 
-        <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center",flexDirection:"column" }} className="slugContainer">
-            <div style={{ width: "70%", display: "flex", alignItems: "center", flexDirection: "column" }} className="containers">
-                <p style={{ margin: "15px 0", color: "blue",marginTop:"30px" }}>TECHNOLOGY</p>
-                <p style={{ margin: "15px 0", fontSize: "35px", fontWeight: "bold",textAlign:"center",width:"80%",lineHeight:"40px" }}>Architectural Engineering Wonders of the modern era for your Inspiration</p>
-                <div style={{ display: "flex", alignItems: "center", margin:"0 0",marginBottom:"30px" }} className="autohorContainer">
-                    <div style={{ width: "45px", height: "45px", borderRadius: "50%",marginRight:"15px" }} className="authorImageDiv">
+    <div>
+      <div style={{marginBottom:"30px"}}>
+      <Navbar />
+      </div>
+
+
+      <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }} className="slugContainer">
+        <div style={{ width: "70%", display: "flex", alignItems: "center", flexDirection: "column" }} className="containers">
+          <div style={{margin:"0 0"}}>{blog[0]?.tags.map((curTag) => (
+
+            <span style={{ margin: "15px 0", color: "blue",marginLeft:"20px" }}>{curTag}</span>
+
+
+          ))}
+          </div>
+
+          <p style={{ margin: "15px 0", fontSize: "35px", fontWeight: "bold", textAlign: "center", width: "80%", lineHeight: "40px" }}>{blog[0]?.tittle}</p>
+          <div style={{ display: "flex", alignItems: "center", margin: "0 0", marginBottom: "30px" }} className="autohorContainer">
+            {/* <div style={{ width: "45px", height: "45px", borderRadius: "50%",marginRight:"15px" }} className="authorImageDiv">
                         <img style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }} src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80" alt="" />
-                    </div>
-                    <div style={{padding:"10px 0"}} className="authorInfoDiv">
+                    </div> */}
+            {/* <div style={{padding:"10px 0"}} className="authorInfoDiv">
                     <p style={{ color: "grey", marginRight: "15px" }}>Mario Sanchez</p>
                     <p style={{ color: "grey", marginBottom: "5px" }}>October 21, 2022  8min read</p>
-                    </div>
-                  
-                </div>
-                <div style={{ borderRadius: "10px",  width: "100%",height:"600px",marginTop:"15px" }} className="imageContainers">
-                    <img style={{ width: "100%",height:"100%", objectFit: "cover", borderRadius: "10px" }} src="https://images.unsplash.com/photo-1687579520892-5160c0df4b3a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="" />
-                </div>
-                <div  style={{width:"80%",margin:"15px 0"}}>{renderParagraphs(description)}</div>
-                <p style={{display:"flex",alignItems:"center",color:"blue",cursor:"pointer"}}><BsArrowLeft style={{color:"blue"}}/>View all posts</p>
+                    </div> */}
 
-            </div>
+          </div>
+          <div style={{ borderRadius: "10px", width: "100%", height: "600px", marginTop: "15px" }} className="imageContainers">
+            <img style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }} src={blog[0]?.blogImage} alt="" />
+          </div>
+          <div style={{ width: "80%", margin: "15px 0" }}>{blog[0]?.description}</div>
+          <p onClick={() => router.push("/blogs")} style={{ display: "flex", alignItems: "center", color: "blue", cursor: "pointer" }}><BsArrowLeft style={{ color: "blue" }} />View all posts</p>
 
-<div style={{display:"flex",width: "70%",padding:"30px",alignItems:"center",backgroundColor:"rgb(250,250,250)",borderRadius:"20px",marginTop:"30px"}} className="authorCard">
+        </div>
+
+        {/* <div style={{display:"flex",width: "70%",padding:"30px",alignItems:"center",backgroundColor:"rgb(250,250,250)",borderRadius:"20px",marginTop:"30px"}} className="authorCard">
 <div style={{ width: "150px", height: "100px", borderRadius: "50%",marginRight:"25px" }} className="authorImgDiv">
   <img
     style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%" }}
@@ -107,13 +162,15 @@ const renderParagraphs = (description) => {
         <p style={{marginBottom:"10px",color:"grey"}}>Mario is a Staff Engineer specialising in Frontend at Vercel, as well as being a co-founder of Acme and the content management system Sanity. Prior to this, he was a Senior Engineer at Apple.</p>
         <p style={{color:"blue"}}>View Profile</p>
     </div>
-</div>
+</div> */}
 
-<p style={{marginTop:"70px"}}>Copyright © 2023 Stablo. All rights reserved.</p>
+        <p style={{ marginTop: "70px" }}>Copyright © 2023 Stablo. All rights reserved.</p>
 
-        </div>
+      </div>
+      <Footer />
+    </div>
 
-    </>
+  </>
 };
 
 export default BlogPage;

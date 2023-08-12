@@ -52,13 +52,81 @@ import { availableAmenities } from "src/@global/Data";
 import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
-import { Navbar } from "src/componets";
+import { Footer, Navbar } from "src/componets";
 
-const AddProperty = () => {
+
+
+
+
+function SearchDropdown({ options, onSelect }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const filteredOptions = options?.filter((option) =>
+    option.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+    setSelectedOption(null);
+  };
+
+  const handleOptionSelect = (optionName) => {
+    onSelect(optionName);
+    setSelectedOption(optionName);
+    setSearchQuery('');
+    setIsOpen(false);
+  };
+
+  const placeholder = selectedOption ? selectedOption : "Search locations";
+
+
+  return (
+    <div style={{ margin: "20px 0" }} className="relative">
+      <div
+        className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+      >
+        <input
+          style={{ borderRadius: "18px" }}
+          type="text"
+          className="inputField"
+          placeholder={placeholder}
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onClick={() => setIsOpen(true)}
+        />
+
+
+      </div>
+
+      {isOpen && (
+        <div className="absolute left-0  bg-white border rounded-md  w-full z-20">
+          {filteredOptions.map((option) => (
+            <div
+              key={option._id}
+              className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+              onClick={() => handleOptionSelect(option.name)}
+            >
+              {option.name}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+const AddProperty = ({ propertyData, navbarFooter, validation }) => {
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
   );
+
+
+
+
+
 
   const [cookies] = useCookies(["jwtToken"]);
   const router = useRouter();
@@ -102,7 +170,7 @@ const AddProperty = () => {
   const [area, setArea] = useState("");
   const [areaError, setAreaError] = useState("");
 
-  const [areaValue, setAreaValue] = useState("2345");
+  const [areaValue, setAreaValue] = useState("");
   const [areaValueError, setAreaValueError] = useState("");
 
   const [areaType, setAreaType] = useState("Sq.Yd");
@@ -171,6 +239,11 @@ const AddProperty = () => {
   const [metaTittle, setMetaTittle] = useState("");
   const [metaDiscription, setMetaDiscription] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [toasted, setToasted] = useState(false);
+  // const [propertyFeatures, setPropertyFeatures] = useState("");
+  const [selectedPropertyFeatures, setSelectedPropertyFeatures] = useState<string[]>([]);
 
   const handleSaleClick = () => {
     setSaleActive(true);
@@ -189,6 +262,7 @@ const AddProperty = () => {
   };
 
   const handleDevelopmentClick = () => {
+    setAvailableFor("Development")
     setDevelopmentActive(true);
     setRentActive(false);
     setSaleActive(false);
@@ -340,7 +414,7 @@ const AddProperty = () => {
   };
 
   const residentialNames = [
-    "Apartment",
+    "Flat",
     "Villa",
     "Plot",
     "Agriculture Land",
@@ -349,6 +423,32 @@ const AddProperty = () => {
     "Individual House",
     "Studio Apartment",
   ];
+
+  const propertyFeaturesNames = [
+    "Legal Verified",
+    "Verified Property",
+    "Budget",
+    "New Construction",
+    "Under Construction",
+    "Ready to Move",
+    "Booking Open",
+    "Price Drop Alert",
+    "Hot Deal",
+    "Premium Listing",
+    "Luxury Home",
+    "Executive Property",
+    "Great Rental Income",
+    "Cash Flow Positive",
+    "Individual Seller",
+    "Builder Floor",
+    "Resale",
+    "Corner Plot",
+    "Corner Facing",
+    "Vastu",
+    "Assigned by Owner",
+    "No Brokerage"
+  ];
+
 
 
   const residentialIcons = [
@@ -414,7 +514,7 @@ const AddProperty = () => {
     "Beach View",
     "Not Available",
   ];
-  const areaUnitNames = ["SFT/Sq", "Yards", "Acres", "etc"];
+  const areaUnitNames = ["Select Area Unit", "SFT/Sq", "Yards", "Acres"];
   const userTypeNames = ["Owner", "Agent", "Builder/Dealer"];
   const regulatoryNames = ["VMRDA", "VUDA", "Panchayat", "Grama Kantam", "Others"];
   const liftNames = ["Yes", "No"];
@@ -439,6 +539,18 @@ const AddProperty = () => {
 
   const handlePossessionClick = (name: string) => {
     setPossession(name);
+  };
+
+  // const handlePropertyFeatures = (name: string) => {
+  //   setPropertyFeatures(name);
+  // };
+
+  const handlePropertyFeatures = (name: string) => {
+    if (selectedPropertyFeatures.includes(name)) {
+      setSelectedPropertyFeatures(selectedPropertyFeatures.filter(feature => feature !== name));
+    } else {
+      setSelectedPropertyFeatures([...selectedPropertyFeatures, name]);
+    }
   };
 
   const handleAgeClick = (name: string) => {
@@ -574,7 +686,7 @@ const AddProperty = () => {
     bodyFormData.append('BHKconfig', String(parseInt(bhkConfig, 10)));
     bodyFormData.append('area', area);
     bodyFormData.append('areaValue', String(parseInt(areaValue, 10)));
-    bodyFormData.append('areaType', areaType);
+    bodyFormData.append('areaType', areaUnits);
     bodyFormData.append('floorNo', floorNumber);
     bodyFormData.append('towerVlock', tower);
     bodyFormData.append('floorCount', floorCount);
@@ -636,489 +748,583 @@ const AddProperty = () => {
     setActiveStep(step);
   };
 
+  useEffect(() => {
+    console.log(validation, "validd")
+    console.log(navbarFooter, "validd")
+  }, [validation])
+
+
 
   const handlePropertiesDetails = () => {
 
+    if (navbarFooter === false) {
+      handleNext();
+    } else {
 
-    if (userType.trim() === '') {
-      setUserTypeError('Please select who you are');
-
-      setTimeout(() => {
-        setUserTypeError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (regulatory.trim() === '') {
-      setRegulatoryError('Please select Regulatory Authority');
-
-      setTimeout(() => {
-        setRegulatoryError('');
-      }, 2000);
-
-      return;
-    }
-
-
-    // if (toggle.trim() === '') {
-    //   setToggleError('Please select either Property or Project');
-
-    //   setTimeout(() => {
-    //     setToggleError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-
-    if (availabeFor.trim() === '') {
-      setAvailableForError('Please Fill the Property Listing Form');
-
-      setTimeout(() => {
-        setAvailableForError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (buildingType.trim() === '') {
-      setBuildingTypeError('Please Fill the Building type');
-
-      setTimeout(() => {
-        setBuildingTypeError('');
-      }, 2000);
-
-      return;
-    }
-
-
-
-    if (developmentActive === false) {
-      if (propertyType.trim() === '') {
-        setPropertyTypeError('Please Fill the Property type');
+      if (userType.trim() === '') {
+        setUserTypeError('Please select who you are');
 
         setTimeout(() => {
-          setPropertyTypeError('');
+          setUserTypeError('');
         }, 2000);
 
         return;
       }
-    }
 
-
-    if (city.trim() === '') {
-      setCityError('Please fill the city');
-
-      setTimeout(() => {
-        setCityError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (projectName.trim() === '') {
-      setProjectNameError('Please fill the project name');
-
-      setTimeout(() => {
-        setProjectNameError('');
-      }, 2000);
-
-      return;
-    }
-
-
-    if (locality.trim() === '') {
-      setLocalityError('Please fill the locality');
-
-      setTimeout(() => {
-        setLocalityError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (price.trim() === '') {
-      setPriceError('Please fill the price');
-
-      setTimeout(() => {
-        setPriceError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (bhkConfig.trim() === '') {
-        setBhkConfigError('Please fill the BHK configuration');
+      if (regulatory.trim() === '') {
+        setRegulatoryError('Please select Regulatory Authority');
 
         setTimeout(() => {
-          setBhkConfigError('');
+          setRegulatoryError('');
         }, 2000);
 
         return;
       }
+
+
+      if (availabeFor.trim() === '') {
+        setAvailableForError('Please Fill the Property Listing Form');
+
+        setTimeout(() => {
+          setAvailableForError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (buildingType.trim() === '') {
+        setBuildingTypeError('Please Fill the Building type');
+
+        setTimeout(() => {
+          setBuildingTypeError('');
+        }, 2000);
+
+        return;
+      }
+
+
+
+      if (developmentActive === false) {
+        if (propertyType.trim() === '') {
+          setPropertyTypeError('Please Fill the Property type');
+
+          setTimeout(() => {
+            setPropertyTypeError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+      if (city.trim() === '') {
+        setCityError('Please fill the city');
+
+        setTimeout(() => {
+          setCityError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (projectName.trim() === '') {
+        setProjectNameError('Please fill the project name');
+
+        setTimeout(() => {
+          setProjectNameError('');
+        }, 2000);
+
+        return;
+      }
+
+
+      if (locality.trim() === '') {
+        setLocalityError('Please fill the locality');
+
+        setTimeout(() => {
+          setLocalityError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (price.trim() === '') {
+        setPriceError('Please fill the price');
+
+        setTimeout(() => {
+          setPriceError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (bhkConfig.trim() === '') {
+          setBhkConfigError('Please fill the BHK configuration');
+
+          setTimeout(() => {
+            setBhkConfigError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (area.trim() === '') {
+        setAreaError('Please fill the area');
+
+        setTimeout(() => {
+          setAreaError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (areaValue.trim() === '') {
+        setAreaValueError('Please fill the area value');
+
+        setTimeout(() => {
+          setAreaValueError('');
+        }, 2000);
+
+        return;
+      }
+      if (areaUnits.trim() === '') {
+        setAreaUnitsError('Please fill the area value');
+
+        setTimeout(() => {
+          setAreaUnitsError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (areaType.trim() === '') {
+        setAreaTypeError('Please fill the area type');
+
+        setTimeout(() => {
+          setAreaTypeError('');
+        }, 2000);
+
+        return;
+      }
+
+      if (address.trim() === '') {
+        setAddressError('Please fill the address');
+
+        setTimeout(() => {
+          setAddressError('');
+        }, 2000);
+
+        return;
+      }
+
+      handleNext()
     }
-
-
-
-    if (area.trim() === '') {
-      setAreaError('Please fill the area');
-
-      setTimeout(() => {
-        setAreaError('');
-      }, 2000);
-
-      return;
-    }
-
-    // if (areaValue.trim() === '') {
-    //   setAreaValueError('Please fill the area value');
-
-    //   setTimeout(() => {
-    //     setAreaValueError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-
-    // if (areaType.trim() === '') {
-    //   setAreaTypeError('Please fill the area type');
-
-    //   setTimeout(() => {
-    //     setAreaTypeError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-
-    // if (size.trim() === '') {
-    //   setSizeError('Please fill the size');
-
-    //   setTimeout(() => {
-    //     setSizeError('');
-    //   }, 2000);
-
-    //   return;
-    // }
-    if (address.trim() === '') {
-      setAddressError('Please fill the address');
-
-      setTimeout(() => {
-        setAddressError('');
-      }, 2000);
-
-      return;
-    }
-
-    handleNext();
   };
 
 
 
   const handleAdditionalDetails = () => {
     console.log("clicked")
+    if (navbarFooter === false) {
+      handleNext();
+    } else {
+
+      if (
+        (activeButton === "FLat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (floorNumber.trim() === '') {
+          setFloorNumberError('Please fill the floor number');
+
+          setTimeout(() => {
+            setFloorNumberError('');
+          }, 2000);
+
+          return;
+        }
+      }
 
 
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (floorNumber.trim() === '') {
-        setFloorNumberError('Please fill the floor number');
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (tower.trim() === '') {
+          setTowerError('Please fill the tower');
+
+          setTimeout(() => {
+            setTowerError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (floorCount.trim() === '') {
+          setFloorCountError('Please fill the floor count');
+
+          setTimeout(() => {
+            setFloorCountError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (unitNumber.trim() === '') {
+          setUnitNumberError('Please fill the unit number');
+
+          setTimeout(() => {
+            setUnitNumberError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (addtionalRoomButton.trim() === '') {
+          setAddtionalRoomButtonError('Please fill the additional room button');
+
+          setTimeout(() => {
+            setAddtionalRoomButtonError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (furnished.trim() === '') {
+          setFurnishedError('Please fill the furnished field');
+
+          setTimeout(() => {
+            setFurnishedError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (possession.trim() === '') {
+          setPossessionError('Please fill the possession');
+
+          setTimeout(() => {
+            setPossessionError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (age.trim() === '') {
+        setAgeError('Please fill the age');
 
         setTimeout(() => {
-          setFloorNumberError('');
+          setAgeError('');
         }, 2000);
 
         return;
       }
-    }
 
 
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (tower.trim() === '') {
-        setTowerError('Please fill the tower');
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (bathroom.trim() === '') {
+          setBathroomError('Please fill the bathroom');
+
+          setTimeout(() => {
+            setBathroomError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (parking.trim() === '') {
+          setParkingError('Please fill the parking');
+
+          setTimeout(() => {
+            setParkingError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+      if (
+        (activeButton === "Flat" ||
+          activeButton === "Villa" ||
+          activeButton === "Penthouse" ||
+          activeButton === "Studio Apartment" ||
+          activeButton === "Individual House" ||
+          activeButton === "Shop" ||
+          activeButton === "Office Space" ||
+          activeButton === "Showroom" ||
+          activeButton === "Building") &&
+        developmentActive === false
+      ) {
+        if (lift.trim() === '') {
+          setLiftError('Please select lift is available or not');
+
+          setTimeout(() => {
+            setLiftError('');
+          }, 2000);
+
+          return;
+        }
+      }
+
+
+
+
+      if (selectedViewFacing.trim() === '') {
+        setSelectedViewFacingError('Please fill the selected facing');
 
         setTimeout(() => {
-          setTowerError('');
+          setSelectedViewFacingError('');
         }, 2000);
 
         return;
       }
-    }
 
-
-
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (floorCount.trim() === '') {
-        setFloorCountError('Please fill the floor count');
+      if (selectedView.trim() === '') {
+        setSelectedViewError('Please fill the selected view ');
 
         setTimeout(() => {
-          setFloorCountError('');
+          setSelectedViewError('');
         }, 2000);
 
         return;
       }
+
+      handleNext();
     }
-
-
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (unitNumber.trim() === '') {
-        setUnitNumberError('Please fill the unit number');
-
-        setTimeout(() => {
-          setUnitNumberError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-
-
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (addtionalRoomButton.trim() === '') {
-        setAddtionalRoomButtonError('Please fill the additional room button');
-
-        setTimeout(() => {
-          setAddtionalRoomButtonError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (furnished.trim() === '') {
-        setFurnishedError('Please fill the furnished field');
-
-        setTimeout(() => {
-          setFurnishedError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (possession.trim() === '') {
-        setPossessionError('Please fill the possession');
-
-        setTimeout(() => {
-          setPossessionError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-    if (age.trim() === '') {
-      setAgeError('Please fill the age');
-
-      setTimeout(() => {
-        setAgeError('');
-      }, 2000);
-
-      return;
-    }
-
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (bathroom.trim() === '') {
-        setBathroomError('Please fill the bathroom');
-
-        setTimeout(() => {
-          setBathroomError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (parking.trim() === '') {
-        setParkingError('Please fill the parking');
-
-        setTimeout(() => {
-          setParkingError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-    if (
-      (activeButton === "Apartment" ||
-        activeButton === "Villa" ||
-        activeButton === "Studio Apartment" ||
-        activeButton === "Individual House" ||
-        activeButton === "Shop" ||
-        activeButton === "Office Space" ||
-        activeButton === "Showroom" ||
-        activeButton === "Building") &&
-      developmentActive === false
-    ) {
-      if (lift.trim() === '') {
-        setLiftError('Please select lift is available or not');
-
-        setTimeout(() => {
-          setLiftError('');
-        }, 2000);
-
-        return;
-      }
-    }
-
-
-
-
-    if (selectedViewFacing.trim() === '') {
-      setSelectedViewFacingError('Please fill the selected facing');
-
-      setTimeout(() => {
-        setSelectedViewFacingError('');
-      }, 2000);
-
-      return;
-    }
-
-    if (selectedView.trim() === '') {
-      setSelectedViewError('Please fill the selected view ');
-
-      setTimeout(() => {
-        setSelectedViewError('');
-      }, 2000);
-
-      return;
-    }
-
-    handleNext();
 
   }
 
   useEffect(() => {
     const adminValue = localStorage.getItem("isAdmin");
-    setIsAdmin(adminValue);
+    setIsAdmin(adminValue === "true");
+    console.log(adminValue, "admin");
   }, []);
+
+
+
+
+  const handleLocationSelect = (selectedOption) => {
+    setLocality(selectedOption);
+    console.log("Selected option:", selectedOption);
+  };
+
+
+  useEffect(() => {
+    if (cookies?.jwtToken === undefined) {
+      toast("Please login to post the property")
+      router.push("/login")
+    }
+  }, [])
+
+
+
+
+
+  useEffect(() => {
+
+    if (propertyData) {
+
+      if (propertyData?.buildingType === "residential") {
+        console.log("activeeee")
+        setResidentialActive(true)
+        setPropertyType(propertyData?.propertyType)
+        setActiveButton(propertyData?.propertyType);
+      }
+      if (propertyData?.buildingType === "commercial") {
+        setCommercialActive(true)
+        setPropertyType(propertyData?.propertyType)
+        setActiveButton(propertyData?.propertyType);
+      }
+      if (propertyData?.buildingType === "develoment") {
+        setDevelopmentActive(true)
+        setPropertyType(propertyData?.propertyType)
+        setActiveButton(propertyData?.propertyType);
+      }
+
+      setProjectName(propertyData?.name);
+      setBuildingType(propertyData?.buildingType);
+      setPrice(propertyData?.cost);
+      setDescription(propertyData?.description);
+      setSize(propertyData?.size);
+      setAvailableFor(propertyData?.availableFor);
+      setToggle(propertyData?.toggle);
+      setBhkConfig(propertyData?.BHKconfig);
+      setBhkConfig(String(parseInt(propertyData?.BHKconfig, 10)));
+      setArea(propertyData?.area.name)
+      setAreaValue(propertyData?.areaValue)
+      setAreaType(propertyData?.areaType)
+      setFloorNumber(propertyData?.floorNo)
+      setFloorCount(propertyData?.floorCount)
+      setTower(propertyData?.towerVlock)
+      setUnitNumber(propertyData?.unitNo)
+      setAddtionalRoomButton(propertyData?.additionalRooms)
+      setCity(propertyData?.location.name)
+      setAddress(propertyData?.address)
+      setLocality(propertyData?.location.name)
+      setAmenities(JSON.parse(propertyData?.amenities))
+
+      setSecurityActiveButton(propertyData?.securityActiveButton)
+      setFurnished(propertyData?.furnishingStatus)
+      setPossession(propertyData?.possessionStatus)
+      setAge(propertyData?.ageOfProperty)
+      setBathroom(String(parseInt(propertyData?.numOfBathroom, 10)))
+      setParking(String(parseInt(propertyData?.numOfParking, 10)))
+      setSelectedView(propertyData?.view)
+      setSelectedViewFacing(propertyData?.view)
+      setPropertyType(propertyData?.propertyType)
+      setLift(propertyData?.liftFacility)
+      setUserType(propertyData?.userType)
+      setRegulatory(propertyData?.authority)
+      // setPrimaryFilesToUpload(propertyData?.photos)
+      setRegulatory(propertyData?.authority)
+
+    }
+  }, [propertyData]);
+
 
   return (
     <>
-      {isAdmin === true ? null :
-
-        <Navbar />
-      }
+      {navbarFooter === false ? null : <Navbar />}
       {isLoading ?
 
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
           {/* <p>Property Listing for</p> */}
-          <div style={{ margin: "20px 0" }} className="property-listing-form">
+          <div className="property-listing-form">
             <div style={{ marginBottom: "20px", padding: "20px 0" }}>
               <div className="paginationContainer">
                 <button
@@ -1400,7 +1606,7 @@ const AddProperty = () => {
                   onChange={(e) => setLocality(e.target.value)}
                 /> */}
 
-                <select
+                {/* <select
                   style={{ margin: "20px 0" }}
                   className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
                   // style={{ width: "80%", margin: "0 0", height: "50px", paddingLeft: "10px", borderRadius: "15px", border: "none" }}
@@ -1412,9 +1618,43 @@ const AddProperty = () => {
                       {location.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
 
-                {/* </div> */}
+                {/* <div>
+                  <div style={{ margin: "20px 0" }} className={` group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                    <input
+                      type="text"
+                      className="w-full outline-none py-3"
+                      placeholder="Search locations"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                  <select
+                    style={{ margin: "20px 0" }}
+                    className={` py-3 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+                    value={locality}
+                    onChange={handleLocation}
+                  >
+                    {filteredLocations ? (
+                      filteredLocations.map((location) => (
+                        <option
+                          key={location._id}
+                          value={location.name}
+                          style={{ border: "none", margin: "10px 0", padding: "10px 0" }}
+                        >
+                          {location.name}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>Loading...</option>
+                    )}
+                  </select>
+                </div> */}
+
+                <div>
+                  <SearchDropdown options={loc?.result} onSelect={handleLocationSelect} />
+                </div>
                 {localityError && <p className="error">{localityError}</p>}
 
 
@@ -1469,7 +1709,7 @@ const AddProperty = () => {
               {bhkConfigError && <p className="error">{bhkConfigError}</p>} */}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Number of Bhk</label>
                   <div className="securityDepositDiv">
                     {bhkConfigsNames.map((name, index) => (
@@ -1524,20 +1764,20 @@ const AddProperty = () => {
 
                 </div>
 
-                {/*
-              <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
-               
-                <input
-                  placeholder="Enter Area Value"
-                  required
-                  className="inputField"
-                  type="text"
-                  id="area"
-                  value={areaValue}
-                  onChange={(e) => setAreaValue(e.target.value)}
-                />
-              </div>
-              {areaValueError && <p className="error">{areaValueError}</p>} */}
+
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+
+                  <input
+                    placeholder="Enter Area Value"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="area"
+                    value={areaValue}
+                    onChange={(e) => setAreaValue(e.target.value)}
+                  />
+                </div>
+                {areaValueError && <p className="error">{areaValueError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
@@ -1558,7 +1798,7 @@ const AddProperty = () => {
                 <p style={{ marginBottom: "15px", marginTop: "15px" }}>Select Regulatory Authority:</p>
 
 
-                {regulatoryNames.map((name, index) => (
+                {/* {regulatoryNames.map((name, index) => (
                   <button
                     key={index}
                     style={{ marginRight: "20px" }}
@@ -1567,7 +1807,21 @@ const AddProperty = () => {
                   >
                     {name}
                   </button>
-                ))}
+                ))} */}
+
+                <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                  {/* <label style={{marginTop:"5px"}}  htmlFor="price">Project Name</label> */}
+                  <input
+                    placeholder="e.g VMRDA, VUDA, Panchayat, Grama Kantam"
+                    required
+                    className="inputField"
+                    type="text"
+                    id="name"
+                    value={regulatory}
+                    onChange={(e) => setRegulatory(e.target.value)}
+                  />
+
+                </div>
                 {regulatoryError && <p className="error">{regulatoryError}</p>}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
@@ -1664,7 +1918,7 @@ const AddProperty = () => {
 
                 <div className="m-4">
                   <label className="inline-block mb-2 text-gray-500">
-                    Select Property Images (jpg,png,svg,jpeg)
+                    Select Property Images (for Multiple images please upload one after one)
                   </label>
                   <div className="flex items-center  w-full">
                     <div className="w-full flex max-w-md overflow-x-scroll">
@@ -1700,7 +1954,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Additional Rooms</label>
                   <div className="securityDepositDiv">
                     {additionalRoomNames.map((name, index) => (
@@ -1734,7 +1988,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Furnishing Status</label>
                   <div className="securityDepositDiv">
                     {furnishingNames.map((name, index) => (
@@ -1766,7 +2020,7 @@ const AddProperty = () => {
                 {ageError && <p className="error">{ageError}</p>}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>
                   <label htmlFor="price">Number of Bathroom</label>
                   <div className="securityDepositDiv">
                     {bathroomNames.map((name, index) => (
@@ -1785,7 +2039,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Number of Parking</label>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Number of Parking</label>
                   <div className="securityDepositDiv">
                     {parkingNames.map((name, index) => (
                       <button
@@ -1801,7 +2055,7 @@ const AddProperty = () => {
                 {parkingError && <p className="error">{parkingError}</p>}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Lift Facility</label>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <>           <label htmlFor="price">Lift Facility</label>
                   <div className="securityDepositDiv">
                     {liftNames.map((name, index) => (
                       <button
@@ -1856,7 +2110,7 @@ const AddProperty = () => {
 
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
                   {/* <label htmlFor="floor">Floor No.</label> */}
                   <input
@@ -1872,7 +2126,7 @@ const AddProperty = () => {
                 {floorNumberError && <p className="error">{floorNumberError}</p>}
 
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
                   {/* <label htmlFor="tower">Tower/Block</label> */}
                   <input
@@ -1887,7 +2141,7 @@ const AddProperty = () => {
                 </div>) : null}
                 {towerError && <p className="error">{towerError}</p>}
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? (<div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                   {/* <label htmlFor="floorCount">Total Floor Count</label> */}
                   <input
                     required
@@ -1901,7 +2155,7 @@ const AddProperty = () => {
                 </div>) : null}
                 {floorCountError && <p className="error">{floorCountError}</p>}
 
-                {["Apartment", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
+                {["Flat", "Penthouse", "Villa", "Studio Apartment", "Individual House", "Shop", "Office Space", "Showroom", "Building"].includes(activeButton) && !developmentActive ? <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
                   {/* <label htmlFor="UnitNumber">Unit NO</label> */}
                   <input
                     required
@@ -1989,6 +2243,7 @@ const AddProperty = () => {
                   style={{ width: "100%", padding: "7px", marginTop: "10px" }}
                   name=""
                   id=""
+                  value={description}
                   cols={30}
                   rows={5}
                 ></textarea>
@@ -2020,6 +2275,28 @@ const AddProperty = () => {
                   rows={5}
                 ></textarea> : null}
 
+
+
+
+
+
+                {isAdmin === true ? (
+                  <div className="securityDepositDiv">
+                    <label htmlFor="propertyFeatures">Tags</label>
+                    {propertyFeaturesNames.map((name, index) => (
+                      <button
+                        key={index}
+                        style={{ margin: "10px" }}
+                        onClick={() => handlePropertyFeatures(name)}
+                        className={`button ${selectedPropertyFeatures.includes(name) ? "active" : ""}`}
+                      >
+                        {name}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+
+
                 <button
                   onClick={handlePostProperty}
                   style={{
@@ -2048,6 +2325,8 @@ const AddProperty = () => {
         : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
           <CircularSpinner />
         </div>}
+      {navbarFooter === false ? null : <Footer />}
+
     </>
   );
 };

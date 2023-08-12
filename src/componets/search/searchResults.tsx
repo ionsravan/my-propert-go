@@ -20,15 +20,15 @@ const HomeResult = ({
   toggle,
   _id,
 }: Propery) => {
-  return (
+  return <>
     <Link href={`/details/${_id}`}>
       <div
-        className={`mb-5 w-full  rounded-lg flex flex-col md:flex-row cursor-pointer ${
-          toggle === "Project" ? "bg-yellow" : "bg-white"
-        } `}
+        style={{ height: "500px" }}
+        className={`mb-5 w-full   rounded-lg flex flex-col md:flex-row cursor-pointer ${toggle === "Project" ? "bg-gray-50-" : "bg-gray-50 "
+          } `}
       >
         {/* image section */}
-        <div className="min-h-[340px] relative md:w-[300px] p-3">
+        <div className="min-h-[340px] relative md:w-[400px] p-3">
           <Image
             src={propertyImages[0] || "/bighouse.png"}
             fill
@@ -37,6 +37,68 @@ const HomeResult = ({
           />
         </div>
         {/* main info part */}
+        <div className=" p-2 md:p-5 w-full">
+          <div className="">
+            <h1 className=" text-xl md:text-2xl font-bold text-TitleColor">
+              {name}
+            </h1>
+            <div className="flex flex-col  mb-4 text-sm mt-1">
+              <p className="text-title ">2BHK Apartment in Indira Nagar, Banglore</p>
+              <p className="text-title ">Nearby : Kenedy High The Global Schoold</p>
+              <p className="text-title text-3xl font-bold mt-4 "> ₹{cost}</p>
+       
+            </div>
+          </div>
+          <div className=" border-b border-[#EBECF0] max-w-2xl">
+            <p className="text-lg leading-relaxed">
+              {description.slice(0, 400)}...
+              <span className="text-primaryBlue ml-9">learn more</span>
+            </p>
+          </div>
+          <div className="w-full mt-8 items-center md:flex justify-center ">
+            <div>
+              <div className="flex space-x-4 text-sm  ">
+                <button className="bg-green-400 bg-opacity-50 px-4 p-2 text-xs md:text-sm rounded-lg">
+                  NO BROKERAGE
+                </button>
+                <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
+                  READY MOVE
+                </button>
+                <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
+                  NEW BOOKING
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="my-8 flex justify-end">
+            <button className="bg-primaryBlue px-7 text-white py-2 rounded-xl shadow-sm hover:opacity-95 active:scale-95 transition transform duration-200 ease-out">
+              Contact Builder
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </Link>
+
+
+{/*     
+    <Link href={`/details/${_id}`}>
+      <div
+   
+        className={`mb-5 w-full  rounded-lg flex flex-col md:flex-row cursor-pointer ${
+          toggle === "Project" ? "bg-gray-50-" : "bg-gray-50 "
+        } `}
+      >
+      
+        <div className="min-h-[340px] relative md:w-[300px] p-3">
+          <Image
+            src={propertyImages[0] || "/bighouse.png"}
+            fill
+            alt="home"
+            className="rounded-l-lg object-cover"
+          />
+        </div>
+  
         <div className=" p-2 md:p-5 w-full">
           <div className="">
             <h1 className=" text-xl md:text-2xl font-bold text-TitleColor">
@@ -120,8 +182,10 @@ const HomeResult = ({
           </div>
         </div>
       </div>
-    </Link>
-  );
+    </Link> */}
+
+    
+    </>
 };
 interface Props {
   data: Propery[] | undefined | null;

@@ -20,6 +20,7 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import Modal from "src/componets/shared/modal";
 import CircularSpinner from "src/componets/circularLoader";
+import { useRouter } from "next/router";
 
 
 // let userId: string = "649ac09732b08547ed03b09a"
@@ -113,6 +114,8 @@ setMessage("")
 
 
 
+
+
   const tittleNames = ["Assign Agent","Billing", "Plan Change", "Others"]
   return <>
 
@@ -169,6 +172,7 @@ setMessage("")
         </button>
       </div>
     </form>
+  
 
   </>
 };
@@ -199,7 +203,8 @@ const TicketCard = ({ tittle, userEmail, userName, message, ticketStatus }) => {
   );
 };
 const Ticket = () => {
-
+  const router = useRouter();
+  const [cookies] = useCookies(["jwtToken"]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -230,7 +235,26 @@ const Ticket = () => {
     }
   }, [data])
 
+  // const deleteCookie = (name) => {
+  //   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  // };
 
+  // const handleLogout = () => {
+  //   setTimeout(() => {
+  //     // removeCookie("jwtToken");
+  //     deleteCookie('jwtToken');
+  //     localStorage.removeItem('userId');
+  //     router.push("/")
+
+  //     toast("Logout Succesfully", {
+  //       position: "bottom-center",
+  //       type: "success",
+  //     });
+     
+     
+  //   }, 1000);
+
+  // }
   return (
     <>
       {/* <h1>Ticket Page</h1> */}
@@ -267,6 +291,9 @@ const Ticket = () => {
         </div>
         )}
       </div>
+      {/* <div>
+        <button onClick={handleLogout} className="text-white font-medium  bg-[#0066FF] rounded-full px-5 py-1  transition transform active:scale-95 duration-200">Logout</button>
+        </div> */}
     </>
   );
 };

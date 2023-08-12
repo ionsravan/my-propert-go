@@ -36,7 +36,7 @@ import Link from "next/link";
 import ImageSlider, { MyModal } from "src/componets/Sliders/ImageSlider";
 import CardCarousel from "src/componets/Sliders/cardCaursel";
 import { scrollLeft, scrollRight } from "..";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineCloseCircle, AiOutlineShareAlt } from "react-icons/ai";
 import { Transition, Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { AnyMxRecord } from "dns";
@@ -47,6 +47,7 @@ import axios from "axios";
 import CustomLoader from "src/componets/shared/Loader";
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
+import PropertyCost from "src/componets/costFormat/PropertyCost";
 // import { GiLift } from "react-icons/gi";
 const reviewData = [
   {
@@ -245,6 +246,7 @@ const SpecificationItem = ({ Icon, text, tagName }) => {
 
 const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const instance = useAxios();
   const router = useRouter();
   const id = router.query["name"];
   const [cookies, setCookes] = useCookies(["jwtToken"]);
@@ -335,11 +337,47 @@ const Details = () => {
     setButtonColor(true);
   };
 
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
+
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      toast.success('URL copied to clipboard');
+    }).catch((error) => {
+      toast.error('Failed to copy URL');
+    });
+  };
+
+  const handleFavourite = async () => {
+    try {
+      if (cookies.jwtToken) {
+        const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
+  
+        if (propertyId) {
+          const requestData = { data: propertyId };
+  
+          const res = await instance.post("/user/addInFavourite", requestData);
+  
+          if (res.data) {
+            toast.success("Property added in Favourite");
+          }
+        }
+      } else {
+        toast("Please login in order to save");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+  
+  
+
   return (
     <div className=" bg-white">
       <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
         {/* head section */}
         <div className="space-y-8 md:space-y-4 w-full">
+          <div className="flex items-center justify-between ">
           <small className="font-manrope">
             home / Appartment /{" "}
             <span className="text-primaryBlue pl-1">
@@ -347,13 +385,19 @@ const Details = () => {
               
             </span>
           </small>
+          <div style={{borderRadius:"20px", color:"white",}} className="px-3 py-1 border bg-blue-500 shadow-sm">
+            <p className="mt-1 mb-1">Property ID :{data?.result.agentId.leads[0].propertyId}</p>
+            {/* <p className="mt-1 mb-1">Delhi</p> */}
+          </div>
+          </div>
+      
           {/* header section */}
           <div className=" md:flex justify-between items-start space-y-4">
             {/* title */}
             <div className="space-y-2 ">
               <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
                 {/* {data?.result.name} */}
-                {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk Flat for ${data?.result?.availableFor} in ${data?.result?.address}, ${data?.result?.location.name}  `}
+                {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk Flat for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `}
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
                 <div className="flex items-center justify-center space-x-4">
@@ -393,12 +437,15 @@ const Details = () => {
                 <div className="flex items-center w-full md:w-auto">
                   <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
                   <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
-                    {data?.result.cost}
+                    <PropertyCost cost={data?.result.cost} />
                   </p>
                 </div>
-                <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
+                <div onClick={handleFavourite} className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
                   <FaRegBookmark className="text-red-400" />
-                  <p className="mt-1">save</p>
+                  <p   className="mt-1">Save</p>
+                </div>
+                <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
+                 <AiOutlineShareAlt  onClick={handleShareClick} style={{fontSize:"25px"}}/>
                 </div>
               </div>
               <p className="text-lg font-medium mt-4 ">Area:{data?.result.size} Sq.Yd</p>

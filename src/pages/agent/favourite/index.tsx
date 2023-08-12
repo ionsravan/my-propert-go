@@ -17,27 +17,23 @@ import { useAxios } from "src/utills/axios";
 
 
 
-const MyPlans = () => {
-  // const { data, status } = useFetch<response<Buyer[]>>(
-  //   "/agent/property/buyers/getAllBuyers"
-  // );
-  // const [userId, setUserId] = useState<string | null>(null);
+const Favourites = () => {
+
 
   const instance = useAxios();
   const router = useRouter();
-  // const { data, status } = useFetch<response<MyPlans[]>>(
-  //   `user/getPlansByUserId/`
-  // );
-  const [myPlan, setMyPlan] = useState({})
+ 
+  const [favourites, setFavourites] = useState({})
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await instance.get("/user/getPlansByUserId");
+        const res = await instance.get("/user/getAllFavProperties");
         if (res?.data) {
           // setIsLoading(false)
-          setMyPlan(res.data.myPlan)
+          console.log(favourites,"fav")
+        //   setFavourites(res.data)
           // console.log(res.data.myPlan,"sssss")
 
         }
@@ -48,21 +44,12 @@ const MyPlans = () => {
     fetchData();
   }, [])
 
-  // useEffect(() => {
-  //   const storedUserId = localStorage.getItem("userId");
-  //   setUserId(storedUserId);
-  // }, []);
-
-// useEffect(() => {
-//   console.log(data,"dattttt")
-// }, [data])
-
 
 
   return <>
       <div className="mb-6">
-          <h1 className="text-[22px] font-bold text-black mb-5">My Plans</h1>
-
+          <h1 className="text-[22px] font-bold text-black mb-5">Favourite Properties</h1>
+{/* 
           {myPlan !== undefined &&
             <div
             className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full sm:w-1/2"
@@ -79,13 +66,13 @@ const MyPlans = () => {
               <p className="text-lg font-bold mb-2 text-blue-600">Price: {myPlan.price}</p>
             </div>
           </div>
-          }
+          } */}
 
       </div>
     </>
 
 };
-MyPlans.getLayout = function getLayout(page: ReactElement) {
+Favourites.getLayout = function getLayout(page: ReactElement) {
   return (
     <DashBoardLayout Navbar={AgentNavbar}>
       {page}
@@ -94,4 +81,4 @@ MyPlans.getLayout = function getLayout(page: ReactElement) {
   );
 };
 
-export default MyPlans;
+export default Favourites;

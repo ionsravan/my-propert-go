@@ -12,6 +12,9 @@ import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 import { Button } from "src/pages/admin/customers";
 import { PostingByDeveloper } from "..";
 import CircularSpinner from "src/componets/circularLoader";
+import PropertyCost from "src/componets/costFormat/PropertyCost";
+import { useAxios } from "src/utills/axios";
+import { toast } from "react-toastify";
 
 const Card = ({ name, Value }: { name: string; Value: number | string }) => {
   return (
@@ -33,6 +36,26 @@ export const PostingCard = ({
   cost,
   propertyImages,
 }: Propery) => {
+  const instance = useAxios();
+  const [isPending, setIsPending] = useState(false);
+
+
+  const handlePropertyCare = async (id) => {
+    try {
+    
+      
+      const requestData = { propertyId: id };
+      const res = await instance.post("/user/requestCareService", requestData);
+
+      if (res.data) {
+        console.log(res.data, "reeeeee");
+        setIsPending(true); 
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setIsPending(false); 
+    }
+  };
   return (
     <div className="mb-5 bg-white rounded-lg md:flex cursor-pointer">
       {/* image section */}
@@ -59,21 +82,32 @@ export const PostingCard = ({
               </div>
             </div>
           </div>
-          <Link href={`/agent/mypostings/edit/${_id}`}>
-            <div className="text-primaryBlue flex items-center space-x-1 self-start text-xs font-medium">
-              <p>Edit</p>
-              <TbEdit />
-            </div>
-          </Link>
+          <div className="flex  space-x-4">
+            <Link href={`/agent/mypostings/edit/${_id}`}>
+              <div className="text-primaryBlue flex items-center space-x-1 self-start text-xs font-medium">
+                <p>Edit</p>
+                <TbEdit />
+              </div>
+            </Link>
+            <button
+              onClick={() => handlePropertyCare(_id)}
+              style={{ height: "30px", padding: "5px 15px" }}
+              className={`text-white flex bg-[#0066FF] rounded-full space-x-2 items-center transition transform active:scale-95 duration-200 ${isPending ? 'opacity-70 pointer-events-none' : ''
+                }`}
+            >
+              {isPending ? 'Pending' : 'Property Care'}
+            </button>
+          </div>
+
         </div>
         <div className=" max-w-xl py-1 w-full flex">
           <div className="">
             <p className="flex text-TitleColor text-lg items-center">
               <span className="flex items-center space-x-1 ">
                 <FaRupeeSign />
-                <span className="text-lg font-bold">{cost}</span>
+                <span className="text-lg font-bold"><PropertyCost cost={cost} /></span>
               </span>
-              <span className="ml-1 text-xs">k</span>
+              {/* <span className="ml-1 text-xs">k</span> */}
             </p>
             <p className="text-black opacity-40 text-sm hidden md:block">
               Onwards
@@ -219,7 +253,7 @@ const MyPosting = () => {
       </div> */}
       <div>
         {isLoading ? (
-          <CircularSpinner /> 
+          <CircularSpinner />
         ) : (
           <div className="w-full space-y-5 scrollbar-hide mb-8">
             {filtredResult?.length > 0 ? (

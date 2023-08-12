@@ -68,6 +68,8 @@ const OtpAuthentication = () => {
     const [registerLoading, setRegisterLoading] = useState(true);
     const [registerVerify, setRegisterVerify] = useState(true);
     const [showTerms, setShowTerms] = useState(false);
+    const [termsChecked, setTermsChecked] = useState(false);
+    const [registerTermsChecked, setRegisterTermsChecked] = useState(false);
 
     const handleLoginClick = () => {
         setShowLogin(true);
@@ -95,9 +97,17 @@ const OtpAuthentication = () => {
                 setIsLoading(false)
                 //   setLoading(false);
             }
-        } catch (e) {
-            // setLoading(false);
-            console.log(e);
+        } catch (error) {
+            if (error.response && error.response.status === 400) {
+                toast("Mobile number is not registered. Please register first.")
+                setShowLogin(false)
+                //    setShowLoginVerify(true)
+                setIsLoading(true)
+                //   router.push("/signup");
+
+            }
+
+            console.log(error);
         }
 
 
@@ -119,7 +129,6 @@ const OtpAuthentication = () => {
                 setCookies("jwtToken", res.data.token);
                 setIsVerifyLoading(false)
                 localStorage.setItem("isAdmin", false);
-
                 router.push("/")
                 // setShowTerms(true);
                 toast.success("Otp fetch Successfully");
@@ -165,6 +174,7 @@ const OtpAuthentication = () => {
             if (error.response && error.response.status === 400) {
                 const errorMessage = error.response.data.message || "User Already Registered, Try Login ";
                 toast.error(errorMessage);
+                setRegisterLoading(true)
             } else {
                 toast.error("An error occurred. Please try again later.");
             }
@@ -189,6 +199,7 @@ const OtpAuthentication = () => {
             if (res.data) {
                 setCookies("jwtToken", res.data.token);
                 setRegisterVerify(false)
+                localStorage.setItem("isAdmin", false);
                 router.push("/")
                 toast.success("Otp fetch Successfully");
 
@@ -225,7 +236,7 @@ const OtpAuthentication = () => {
 
 
                 <form onSubmit={handleLoginSubmit}>
-                    <div className="mb-8 px-14 mt-8">
+                    <div className="mb-3 px-14 mt-8">
                         <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="otp">
                             Enter your mobile number to get started.
                         </label>
@@ -244,8 +255,22 @@ const OtpAuthentication = () => {
                             />
                         </div>
                     </div>
+
+                    <div className="px-14">
+                        <label className="flex align-middle text-gray-400 text-sm font-bold mb-2 ">
+                            <input
+                                type="checkbox"
+                                className="mr-2 leading-tight"
+                                checked={termsChecked}
+                                onChange={() => setTermsChecked(!termsChecked)}
+                            />
+                            I agree to the terms and conditions
+                        </label>
+                    </div>
+
                     <div className=" px-14 flex items-center justify-center">
                         <button
+                            disabled={!termsChecked}
                             className=" w-full  bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-lg focus:outline-none focus:shadow-outline"
                             type="submit"
                         >
@@ -378,8 +403,22 @@ const OtpAuthentication = () => {
                                 />
                             </div>
                         </div>
+
+                        <div className="px-14">
+                        <label className="flex align-middle text-gray-400 text-sm font-bold mb-2 ">
+                            <input
+                                type="checkbox"
+                                className="mr-2 leading-tight"
+                                checked={registerTermsChecked}
+                                onChange={() => setRegisterTermsChecked(!registerTermsChecked)}
+                            />
+                            I agree to the terms and conditions
+                        </label>
+                    </div>
+
                         <div className="flex items-center justify-center">
                             <button
+                                disabled={!registerTermsChecked}
                                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                                 type="submit"
                             >

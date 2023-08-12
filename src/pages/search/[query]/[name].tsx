@@ -42,6 +42,8 @@ interface FilterContextInterface {
   setFurnishing: Dispatch<SetStateAction<string>>;
   possession: string;
   setPossession: Dispatch<SetStateAction<string>>;
+  toggle: string;
+  setToggle: Dispatch<SetStateAction<string>>;
 }
 interface IContextProps {
   children: ReactNode;
@@ -65,6 +67,7 @@ export const FilterContextProvder = ({ children }: IContextProps) => {
   const [max, setMax] = useState(20000);
   const [furnishing, setFurnishing] = useState("");
   const [possession, setPossession] = useState("");
+  const [toggle, setToggle] = useState("");
 
   const shared = {
     area,
@@ -87,6 +90,8 @@ export const FilterContextProvder = ({ children }: IContextProps) => {
     setFurnishing,
     possession,
     setPossession,
+    toggle,
+    setToggle,
   };
   return (
     <FilterContext.Provider value={shared}>{children}</FilterContext.Provider>
@@ -138,6 +143,7 @@ const SearchAll = () => {
     min,
     furnishing,
     possession,
+    toggle
   } = useFilterContext();
 
   useEffect(() => {
@@ -154,6 +160,7 @@ const SearchAll = () => {
         furnishingStatus: furnishing || undefined,
         amenities: selected?.length ? selected : undefined,
         location: name,
+        toggle: toggle || undefined,
       });
     }
   }, [
@@ -168,6 +175,7 @@ const SearchAll = () => {
     min,
     furnishing,
     possession,
+    toggle
   ]);
 
   console.log("min", min, max)
@@ -190,15 +198,15 @@ const SearchAll = () => {
           </div>
         </div>
         {/* main part */}
-        <div className="flex w-full overflow-hidden ">
-          <div className="hidden lg:block  border   h-max  bg-white w-full shrink  max-w-[290px]  rounded-lg p-4">
+        <div  className="flex w-full overflow-hidden ">
+          <div  className="hidden lg:block  border   h-max  bg-white w-full shrink  max-w-[290px]  rounded-lg p-4">
             <SearchSideOptions
               data={PropertyResult}
               setData={setPropertyResult}
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div
+          <div 
             className={`absolute z-40 top-0 left-0 transition-all duration-150 ease-in-out  ${open ? "-translate-x-0" : "-translate-x-full"
               }  border  h-screen overflow-scroll   bg-white w-full shrink  max-w-[290px]  rounded-lg p-4`}
           >
@@ -208,7 +216,7 @@ const SearchAll = () => {
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div className="lg:ml-10 w-full overflow-hidden ">
+          <div  className="lg:ml-10 w-full overflow-hidden ">
             {PropertyResult?.length ? (
               <SearchResult data={PropertyResult} />
             ) : (

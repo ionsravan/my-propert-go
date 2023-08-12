@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from "next/link";
 import { FaRupeeSign } from "react-icons/fa";
 import { HiLocationMarker } from "react-icons/hi";
+import PropertyCost from "../costFormat/PropertyCost";
 
 
 const Slider = ({ property }: { property: Propery }) => {
@@ -37,7 +38,7 @@ const Slider = ({ property }: { property: Propery }) => {
                 className="w-5 h-5"
               >
                 <path
-                  style={{border:"2px solid red"}} 
+                
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
@@ -77,7 +78,7 @@ const Slider = ({ property }: { property: Propery }) => {
                 <p className="flex items-center text-md "><HiLocationMarker style={{ marginRight: "5px" }} />{location.name}</p>
                 <p className="flex items-center text-primaryBlue text-lg">
                   <FaRupeeSign />
-                  <span className="font-normal ">{cost}</span>
+                  <span className="font-normal "><PropertyCost cost={cost} /></span>
                 </p>
               </div>
 
