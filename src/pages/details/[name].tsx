@@ -353,7 +353,7 @@ const Details = () => {
         const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
   
         if (propertyId) {
-          const requestData = { data: propertyId };
+          const requestData = { propertyId: propertyId };
   
           const res = await instance.post("/user/addInFavourite", requestData);
   
@@ -385,7 +385,7 @@ const Details = () => {
               
             </span>
           </small>
-          <div style={{borderRadius:"20px", color:"white",}} className="px-3 py-1 border bg-blue-500 shadow-sm">
+          <div style={{borderRadius:"20px", color:"white",marginLeft:"10px"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">Property ID :{data?.result.agentId.leads[0].propertyId}</p>
             {/* <p className="mt-1 mb-1">Delhi</p> */}
           </div>
@@ -544,7 +544,8 @@ const Details = () => {
             <p className="text-xl ">Specifications</p>
 
             <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-              <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "start" }} className="specificationCotainer">
+            <div className="flex w-full justify-between items-start flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+
                 <div className="leftSideContainer">
 
                   <SpecificationItem Icon={FaHome} tagName={"Property Type"} text={data?.result.propertyType} />
@@ -832,9 +833,9 @@ const Details = () => {
           >
             {/* <p style={{textAlign:"center",fontSize:"30px",fontWeight:"bold"}}>WE'VE FOUND SIMILAR PROPERTIES FOR YOU</p> */}
             <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-              <div className="w-full flex items-center justify-between">
+              <div className="w-full flex items-center justify-between flex-col md:flex-row">
                 <HomeSectionTitle text="WE'VE FOUND SIMILAR PROPERTIES FOR YOU" />
-                <div className="hidden md:flex space-x-4 ">
+                <div className="flex space-x-4 mt-2 md:mt-0 ">
                   <button
                     onClick={() => scrollLeft("feat")}
                     className="p-2 m-2 rounded-full bg-white"

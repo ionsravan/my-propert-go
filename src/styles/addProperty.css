@@ -78,6 +78,7 @@
     border-radius: 20px;
     font-weight: 500;
     border: 1px solid #2C5FC3;
+    margin:10px 0;
 }
 
 .button.active {

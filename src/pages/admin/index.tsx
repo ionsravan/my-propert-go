@@ -13,6 +13,7 @@ import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import { BiBuilding, BiSupport, BiUser } from "react-icons/bi";
+import { toast } from "react-toastify";
 
 const Card = ({
   name,
@@ -71,10 +72,19 @@ const DashBoard = () => {
 
 
 
+  
+  useEffect(() => {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+    
+    if (!isAdmin) {
+      router.push('/admin/login');
+      toast.error("Please Login as a Admin");
+    }
+  }, []);
+  
   if (loading) {
     return <CustomLoader />
   }
-
 
   return (
     <>

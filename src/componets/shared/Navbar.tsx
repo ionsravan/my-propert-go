@@ -133,7 +133,7 @@ const Navbar = () => {
       </header>
       {open ? (
         <div className="absolute top-20 z-50 bg-white w-full p-5 ">
-          <Nav />
+          <Nav  />
         </div>
       ) : null}
     </>

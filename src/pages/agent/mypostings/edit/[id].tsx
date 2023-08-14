@@ -107,7 +107,7 @@ export const PostingCard = ({
               </div>
             </div>
           </div>
-          <div className="text-red-400 flex items-center space-x-1 self-start text-xs font-medium">
+          {/* <div className="text-red-400 flex items-center space-x-1 self-start text-xs font-medium">
             <p
               onClick={async () => {
                 try {
@@ -129,7 +129,7 @@ export const PostingCard = ({
             >
               Delete
             </p>
-          </div>
+          </div> */}
         </div>
         <div className=" max-w-xl py-1 w-full flex">
           <div className="">
@@ -207,7 +207,7 @@ const Edit = () => {
         <p className="border-b py-3 border-[#0066FF]">Step 1: Genreral Info</p>
       </div>
 
-      <AddProperty validation={false} navbarFooter={false} propertyData={data?.result} />
+      <AddProperty navbarFooter={false} propertyData={data?.result} />
 
     </>
   );

@@ -235,7 +235,7 @@ const OtpAuthentication = () => {
             {isLoading ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
 
 
-                <form onSubmit={handleLoginSubmit}>
+                <form  onSubmit={handleLoginSubmit}>
                     <div className="mb-3 px-14 mt-8">
                         <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="otp">
                             Enter your mobile number to get started.
@@ -271,7 +271,7 @@ const OtpAuthentication = () => {
                     <div className=" px-14 flex items-center justify-center">
                         <button
                             disabled={!termsChecked}
-                            className=" w-full  bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+                            className=" w-full  bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
                             type="submit"
                         >
                             Get Otp
@@ -419,13 +419,13 @@ const OtpAuthentication = () => {
                         <div className="flex items-center justify-center">
                             <button
                                 disabled={!registerTermsChecked}
-                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
                                 type="submit"
                             >
                                 Register
                             </button>
                             <button
-                                className="mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                                className="mx-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
                                 onClick={handleLoginClick}
                             >
                                 Back to Login

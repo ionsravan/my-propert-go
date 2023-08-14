@@ -16,6 +16,7 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
+import { RxAvatar } from "react-icons/rx";
 
 interface Props {
   Icon: React.ElementType;
@@ -23,7 +24,7 @@ interface Props {
   value: string | number | undefined;
 }
 
-export const ProfileItem = ({ Icon, name, value }: Props) => {
+const ProfileItem = ({ Icon, name, value }: Props) => {
   return (
     <div className="flex space-x-3 items-center">
       <div>{Icon && <Icon className="text-primaryBlue" />}</div>
@@ -69,16 +70,17 @@ const Profile = () => {
     document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   };
 
-  const handleLogout = () => {
+const handleLogout = () => {
     setTimeout(() => {
       // removeCookie("jwtToken");
       deleteCookie('jwtToken');
       localStorage.removeItem('userId');
+
       toast("Logout Succesfully", {
         position: "bottom-center",
         type: "success",
       });
-
+     
       router.push("/")
     }, 1000);
 
@@ -91,7 +93,7 @@ const Profile = () => {
           <h1 className="text-2xl font-bold text-black">My Profile</h1>
           <button onClick={handleLogout} className="text-white font-medium  bg-[#0066FF] rounded-full px-5 py-1  transition transform active:scale-95 duration-200">Logout</button>
         </div>
-        <div className="h-20 w-20 relative rounded-full">
+        {/* <div className="h-20 w-20 relative rounded-full">
           <>
             {data?.result?.profilePhoto || file ? (
               <Image
@@ -115,9 +117,9 @@ const Profile = () => {
                       fill="currentColor"
                     >
                       <path
-                        fillRule="evenodd"
+                        fill-rule="evenodd"
                         d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                        clipRule="evenodd"
+                        clip-rule="evenodd"
                       />
                     </svg>
                     <p className="text-[9px] tracking-wider text-gray-400 group-hover:text-gray-600">
@@ -138,8 +140,8 @@ const Profile = () => {
               </>
             )}
           </>
-        </div>
-        {file && (
+        </div> */}
+        {/* {file && (
           <div className="flex space-x-4 my-7">
             <button
               onClick={() => {
@@ -156,32 +158,39 @@ const Profile = () => {
               {loading ? "saving... " : "save profile"}
             </button>
           </div>
-        )}
+        )} */}
         <div className="my-5 space-y-5">
           <h2 className="text-xl text-TitleColor font-bold ">
-            {data?.result.name}
+            {/* {data?.result.name} */}
+            User
           </h2>
           {/* <button className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200   ">
             Edit Profile
           </button> */}
         </div>
         <div className="text-[#4A4A4A] space-y-5 mt-10">
-          <ProfileItem
+          {/* <ProfileItem
             name="EXEPERENCE"
             value={`${4} years`}
             Icon={AiOutlineInfo}
+          /> */}
+                 <ProfileItem
+            name="Name"
+            value={`${data?.result?.mobileNumber} `}
+            Icon={RxAvatar}
           />
           <ProfileItem
             name="MOBILE NUMBER"
             value={`${data?.result?.mobileNumber} `}
             Icon={AiOutlinePhone}
           />
+   
           <ProfileItem
             name="EMAIL"
-            value={data?.result?.email}
+            value={data?.result?.emails}
             Icon={AiOutlineMail}
           />
-          <ProfileItem
+          {/* <ProfileItem
             name="PROPERTY COUNT"
             value={data?.result?.properties.length}
             Icon={AiOutlineHome}
@@ -190,7 +199,7 @@ const Profile = () => {
             name="OPRATING AREA"
             value={`Gie   GEo `}
             Icon={FaLocationArrow}
-          />
+          /> */}
         </div>
       </div>
     </>

@@ -46,7 +46,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
   return (
     <div className="grow  ">
       <Navbar />
-      <div className="py-14 px-12">
+      <div className="py-14 px-5">
         <div className="space-y-5 text-sm text-gray-500 max-w-[400px]">
           <h1 className="text-3xl lg:text-4xl font-extrabold font-manrope text-black">
             {"Welcome Back !"}
@@ -126,7 +126,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
             {loading ? "loading..." : "Login"}
           </button>
 
-        </div>) : (<div className="space-y-6 max-w-xl py-10 mx-11">
+        </div>) : (<div className="">
           <OtpAuthentication />
         </div>)}
 

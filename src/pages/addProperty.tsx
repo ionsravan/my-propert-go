@@ -53,6 +53,7 @@ import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
 import { Footer, Navbar } from "src/componets";
+import { sassTrue } from "sass";
 
 
 
@@ -117,7 +118,9 @@ function SearchDropdown({ options, onSelect }) {
   );
 }
 
-const AddProperty = ({ propertyData, navbarFooter, validation }) => {
+const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
+
+  console.log(navbarFooter,addPropertyAdmin,"props" )
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
@@ -307,7 +310,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
   const [filesToupload, setFilesToUpload] = useState<any>([]);
 
   useEffect(() => {
-    console.log(filesToupload[0], "mainImage")
+    console.log(filesToupload, "mainImage")
   }, [filesToupload])
 
 
@@ -336,6 +339,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
   };
 
   const renderPhotos = (source: any) => {
+
     return source.map((photo: any, index: any) => {
       return (
         <div
@@ -364,9 +368,9 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
 
   const [primaryFilesToUpload, setPrimaryFilesToUpload] = useState<any>([]);
 
-  // useEffect(() => {
-  //   console.log(primaryFilesToUpload, "primaryImage")
-  // }, [primaryFilesToUpload])
+  useEffect(() => {
+    console.log(primaryFilesToUpload, "primaryImage")
+  }, [primaryFilesToUpload])
 
   const handlePrimaryImageChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -646,6 +650,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
     setIsLoading(false)
 
 
+
     if (amenities.length === 0) {
       setAmenitiesError('Please select at least one amenity');
 
@@ -712,8 +717,19 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
 
 
     try {
+      let url;
+
+      if (navbarFooter === false && isAdmin === false) {
+        url = "https://my-property-go-backend.onrender.com/api/agent/property/editPropertyDetails";
+      } else if (isAdmin === true && addPropertyAdmin === true) {
+        url = "https://my-property-go-backend.onrender.com/api/admin/property/addPropertyByAdmin";
+      } else if (isAdmin === true) {
+        url = "https://my-property-go-backend.onrender.com/api/admin/property/editPropertyByAdmin";
+      } else {
+        url = "https://my-property-go-backend.onrender.com/api/agent/property/addProperty";
+      }
       const response = await axios.post(
-        "https://my-property-go-backend.onrender.com/api/agent/property/addProperty",
+        url,
         bodyFormData,
         {
           headers: {
@@ -722,12 +738,14 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
           },
         }
       );
-      setIsLoading(false)
+      setIsLoading(true)
       router.push("/agent")
       toast("Property Added Succesfully")
 
     } catch (error) {
       console.error("Error while adding property:", error);
+      toast.error(error?.response.data.message)
+      setIsLoading(true)
     }
 
   };
@@ -748,10 +766,10 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
     setActiveStep(step);
   };
 
-  useEffect(() => {
-    console.log(validation, "validd")
-    console.log(navbarFooter, "validd")
-  }, [validation])
+  // useEffect(() => {
+  //   console.log(validation, "validd")
+  //   console.log(navbarFooter, "validd")
+  // }, [validation])
 
 
 
@@ -1258,6 +1276,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
   useEffect(() => {
 
     if (propertyData) {
+      // console.log(propertyData?.photos,"photttt")
 
       if (propertyData?.buildingType === "residential") {
         console.log("activeeee")
@@ -1310,7 +1329,8 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
       setLift(propertyData?.liftFacility)
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)
-      // setPrimaryFilesToUpload(propertyData?.photos)
+      // setPrimaryFilesToUpload([propertyData?.primaryImage])
+      // setFilesToUpload(propertyData?.propertyImages || [])
       setRegulatory(propertyData?.authority)
 
     }
@@ -1325,7 +1345,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
         <div style={{ backgroundColor: "white" }} className=" mx-auto w-full lg:w-[900px] max-w-3xl  ">
           {/* <p>Property Listing for</p> */}
           <div className="property-listing-form">
-            <div style={{ marginBottom: "20px", padding: "20px 0" }}>
+            <div className="paginationContainerWrapper hidden md:block" style={{ marginBottom: "20px", padding: "20px 0" }}>
               <div className="paginationContainer">
                 <button
                   className={`paginationButton ${activeStep === 1 ? "active" : ""
@@ -1428,7 +1448,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
                     Property Listing Form:
                   </p>
 
-                  <div style={{ display: "flex" }} className="propertyListingDiv">
+                  <div style={{ display: "flex",flexWrap:"wrap" }} className="propertyListingDiv">
                     <button
                       style={{
                         display: "flex",
@@ -1474,7 +1494,7 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
                       Building Type
                     </p>
 
-                    <div style={{ display: "flex" }} className="buildingType">
+                    <div style={{ display: "flex",flexWrap:"wrap" }} className="buildingType">
                       <button
                         style={{
                           display: "flex",
