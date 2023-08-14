@@ -106,8 +106,10 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
                   position: "bottom-center",
                   type: "success",
                 });
+                localStorage.setItem("isAdmin", true);
+
                 router.push(redirectUrl);
-      
+
 
               } else {
                 if (result == 401) {
@@ -124,7 +126,7 @@ export const LoginTemplate = ({ login, redirectUrl, url }: LoginProps) => {
             {loading ? "loading..." : "Login"}
           </button>
 
-        </div> ) : (<div className="space-y-6 max-w-xl py-10 mx-11">
+        </div>) : (<div className="space-y-6 max-w-xl py-10 mx-11">
           <OtpAuthentication />
         </div>)}
 

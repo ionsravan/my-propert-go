@@ -37,8 +37,11 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
   // }, [cookies.jwtToken, router.pathname]);
 
   const handleLogout = () => {
+    const adminValue = localStorage.getItem("isAdmin");
+
     removeCookie("jwtToken");
-    router.push("/login")
+    let url = adminValue ? "/admin/login" : "login"
+    router.push(url)
     toast.success("Logout Succesfully", {
       position: "bottom-center",
       type: "success",

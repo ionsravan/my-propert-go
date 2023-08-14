@@ -91,7 +91,7 @@ const Property = () => {
         `/property/getAllProperties?search=${name || ""}`
       );
       if (res.data) {
-        setUsers(res?.data?.result);
+        setUsers(res?.data?.data);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }
@@ -251,7 +251,7 @@ const Property = () => {
         <Box>
           <Tooltip title="Edit">
             <IconButton
-              onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
+              onClick={() => router.push(`/admin/property/edit/${row._id}`)}
               color="primary"
             >
               <BsPencil />
@@ -301,11 +301,10 @@ const Property = () => {
                   setSelected(u);
                 }}
                 key={u}
-                className={` p-2 ${
-                  selected == u
-                    ? "text-primaryBlue  border-b border-primaryBlue"
-                    : "text-[#616161]"
-                }`}
+                className={` p-2 ${selected == u
+                  ? "text-primaryBlue  border-b border-primaryBlue"
+                  : "text-[#616161]"
+                  }`}
               >
                 {u}
               </button>
@@ -313,7 +312,7 @@ const Property = () => {
           })}
         </div>
 
-        <div className="flex space-x-[12px]">
+        {/* <div className="flex space-x-[12px]">
           <div className="flex items-center bg-white p-2 space-x-3">
             <AiOutlineSearch className="text-xl" />
             <input
@@ -328,7 +327,7 @@ const Property = () => {
               className="outline-none"
             />
           </div>
-        </div>
+        </div> */}
       </div>
       {/* dashboard caerd */}
 

@@ -364,9 +364,9 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
 
   const [primaryFilesToUpload, setPrimaryFilesToUpload] = useState<any>([]);
 
-  useEffect(() => {
-    console.log(primaryFilesToUpload, "primaryImage")
-  }, [primaryFilesToUpload])
+  // useEffect(() => {
+  //   console.log(primaryFilesToUpload, "primaryImage")
+  // }, [primaryFilesToUpload])
 
   const handlePrimaryImageChange = (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
