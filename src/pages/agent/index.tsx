@@ -164,10 +164,12 @@ export const addProperty = async (
 
 const AgentDashBoard = () => {
   const { data, error } = useFetch<response<Agent>>("/user/property");
+  const instance = useAxios();
   const [propertiesData, setPropertiesData] = useState<Agent[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
+  const [myPlan, setMyPlan] = useState({})
 
   const [userId, setUserId] = useState<string | null>(null);
   const { data: leads } = useFetch<response<Buyer[]>>(
@@ -203,6 +205,26 @@ useEffect(() => {
   }
 }, []);
 
+
+
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await instance.get("/user/getPlansByUserId");
+      if (res?.data) {
+        // setIsLoading(false)
+        setMyPlan(res.data.myPlan)
+        // console.log(res.data.myPlan,"sssss")
+
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  fetchData();
+}, [])
 
 
   useEffect(() => {
@@ -274,6 +296,28 @@ useEffect(() => {
         <Card name="Leads" Value={leads ? leads.result.length : 0} />
         <Card name="Tickets" Value={tickets ? tickets.ticket.length : 0} />
       </div>
+      <h2 className="text-TitleColor font-bold text-[26px]">
+            {/* Hello {data?.result?.name} */}
+            The current plan is
+          </h2>
+      {myPlan !== undefined &&
+            <div
+            className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full sm:w-1/2"
+            // ^-- Use full width on small screens, half width on larger screens
+          >
+            <div className="mb-6">
+              <div className="flex flex-col sm:flex-row justify-between">
+                <p className="text-xl font-bold mb-2">Name: {myPlan.userName}</p>
+                <p className="text-lg font-bold text-blue-600">Plan Name: {myPlan.planName}</p>
+              </div>
+
+              <p className="text-lg font-bold mb-2">Email: {myPlan.userEmail}</p>
+              <p className="text-lg font-bold mb-2">Lead Count: {myPlan.leadCount}</p>
+              <p className="text-lg font-bold mb-2 text-blue-600">Price: {myPlan.price}</p>
+            </div>
+          </div>
+          }
+
 
       {/* <div className="mb-8">
         <h1 className="text-black text-lg">Leads</h1>

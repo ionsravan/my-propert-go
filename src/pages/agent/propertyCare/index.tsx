@@ -19,8 +19,7 @@ import { useAxios } from "src/utills/axios";
 
 const myPropertyCare = () => {
   const instance = useAxios();
-
-
+  const [propertyCare, setPropertyCare] = useState([])
 
 
   useEffect(() => {
@@ -30,7 +29,8 @@ const myPropertyCare = () => {
       const res = await instance.get("/user/myCareServiceProperty");
 
       if (res.data) {
-        console.log(res.data, "reeeeee");
+        console.log(res.data.data, "reeeeee");
+        setPropertyCare(res.data.data)
     
       }
     } catch (error) {
@@ -41,14 +41,33 @@ const myPropertyCare = () => {
   myGetPropertyCare()
   }, [])
   
+  
   return (
     <>
       <div className="mb-6">
           <h1 className="text-[22px] font-bold text-black mb-5">My Property Care</h1>
 
-      <div className="space-y-5">
-        
-      </div>
+          {propertyCare !== undefined &&
+            <div
+            className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full sm:w-1/2"
+            // ^-- Use full width on small screens, half width on larger screens
+          >
+      {propertyCare.map((currentProperty) => {
+        return (
+          <div className="mb-6">
+          <div className="flex flex-col sm:flex-row justify-between">
+            <p className="text-xl font-bold mb-2">Name: {currentProperty.name}</p>
+            {/* <p className="text-lg font-bold text-blue-600">Plan Name: {currentProperty.planName}</p> */}
+          </div>
+
+          <p className="text-lg font-bold mb-2">Images:</p>
+          {/* <p className="text-lg font-bold mb-2">Lead Count: {currentProperty.leadCount}</p>
+          <p className="text-lg font-bold mb-2 text-blue-600">Price: {currentProperty.price}</p> */}
+        </div>
+        )
+      })}
+          </div>
+          }
       </div>
     </>
   );
