@@ -13,6 +13,7 @@ import AdminsideNav from 'src/componets/admin/adminDasboardnav';
 import CustomLoader from 'src/componets/shared/Loader';
 import { PostingCard } from 'src/pages/agent/mypostings';
 import { ProfileItem } from 'src/pages/agent/profile';
+
 import { useAxios } from 'src/utills/axios';
 
 const CustomerDetail = () => {
