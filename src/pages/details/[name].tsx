@@ -353,7 +353,7 @@ const Details = () => {
         const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
   
         if (propertyId) {
-          const requestData = { data: propertyId };
+          const requestData = { propertyId: propertyId };
   
           const res = await instance.post("/user/addInFavourite", requestData);
   

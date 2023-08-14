@@ -117,7 +117,7 @@ function SearchDropdown({ options, onSelect }) {
   );
 }
 
-const AddProperty = ({ propertyData, navbarFooter, validation }) => {
+const AddProperty = ({ propertyData, navbarFooter}) => {
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
@@ -748,10 +748,10 @@ const AddProperty = ({ propertyData, navbarFooter, validation }) => {
     setActiveStep(step);
   };
 
-  useEffect(() => {
-    console.log(validation, "validd")
-    console.log(navbarFooter, "validd")
-  }, [validation])
+  // useEffect(() => {
+  //   console.log(validation, "validd")
+  //   console.log(navbarFooter, "validd")
+  // }, [validation])
 
 
 

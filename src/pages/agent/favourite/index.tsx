@@ -14,6 +14,8 @@ import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
+import { PostingCard } from "../mypostings/edit/[id]";
+import CircularSpinner from "src/componets/circularLoader";
 
 
 
@@ -22,6 +24,7 @@ const Favourites = () => {
 
   const instance = useAxios();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
  
   const [favourites, setFavourites] = useState({})
 
@@ -31,9 +34,9 @@ const Favourites = () => {
       try {
         const res = await instance.get("/user/getAllFavProperties");
         if (res?.data) {
-          // setIsLoading(false)
-          console.log(favourites,"fav")
-        //   setFavourites(res.data)
+          // console.log(res?.data,"fav")
+          setFavourites(res.data.favourites)
+          setIsLoading(false)
           // console.log(res.data.myPlan,"sssss")
 
         }
@@ -49,6 +52,21 @@ const Favourites = () => {
   return <>
       <div className="mb-6">
           <h1 className="text-[22px] font-bold text-black mb-5">Favourite Properties</h1>
+          <div>
+        {isLoading ? (
+          <CircularSpinner />
+        ) : (
+          <div className="w-full space-y-5 scrollbar-hide mb-8">
+            {favourites?.length > 0 ? (
+              favourites.map((curElem) => {
+                return <PostingCard key={curElem._id} {...curElem} />;
+              })
+            ) : (
+              <p> No Data Available</p>
+            )}
+          </div>
+        )}
+      </div>
 {/* 
           {myPlan !== undefined &&
             <div
