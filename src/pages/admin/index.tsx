@@ -140,9 +140,20 @@ const DashBoard = () => {
 
   useEffect(() => {
     if (cookies.jwtToken === undefined ) {
+      toast("Please Login as a Admin");
       router.push(`/admin/login`)
     }
   }, [])
+
+  useEffect(() => {
+    const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+    if (!isAdmin) {
+      router.push('/admin/login');
+      toast("Please Login as a Admin");
+    }
+  }, []);
+  
 
   return (
     <>

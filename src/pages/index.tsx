@@ -205,7 +205,7 @@ export default function Home() {
 
   return (
     <>
-      <div style={{backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")',margin:"40px 40px",borderRadius:"20px" }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
+      <div style={{ backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")', margin: "40px 40px", borderRadius: "20px" }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
         <div className="absolute bottom-0 right-0">
           <div className="h-96 relative w-80">
             {/* <Image
@@ -232,9 +232,9 @@ export default function Home() {
       </section> */}
       <section className="pb-16 px-5 md:px-10  bg-[#F4F4F4] pt-12 w-full">
         <div className="max-w-7xl mx-auto px-5 md:px-10">
-        <HomeSectionTitle  text="Featured House" />
+          <HomeSectionTitle text="Featured House" />
         </div>
-   
+
         <div className="relative max-w-7xl mx-auto px-5 md:px-10">
           <div className="flex space-x-4 pt-10 items-center">
             {homeChipsData.map(({ name, value, Icon }) => {
@@ -304,11 +304,14 @@ export default function Home() {
           </div>
         </div>
       </section> */}
+
+
       <section className="pt-16">
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-5 md:px-10">
+          <div className="w-full flex items-center justify-between flex-col md:flex-row">
             <HomeSectionTitle text="Trending / Newly listed" />
-            <div className="hidden md:flex space-x-4 ">
+            {/* Buttons container */}
+            <div className="flex space-x-4 mt-2 md:mt-0">
               <button
                 onClick={() => scrollLeft("feat")}
                 className="p-2 m-2 rounded-full bg-white"
@@ -324,26 +327,20 @@ export default function Home() {
             </div>
           </div>
           {data && (
-            <div
-              id="feat"
-              className="flex overflow-hidden space-x-6"
-            >
-              <CardCarousel
-                id="feat"
-                data={Filtred}
-                Card={MediumHouseCard}
-              />
+            <div id="feat" className="flex overflow-hidden space-x-6">
+              <CardCarousel id="feat" data={Filtred} Card={MediumHouseCard} />
             </div>
           )}
         </div>
       </section>
 
 
+
       <section className="py-4">
-        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-          <div className="w-full flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-5 md:px-10">
+          <div className="w-full flex items-center justify-between flex-col md:flex-row">
             <HomeSectionTitle text="Budget Properties for you" />
-            <div className="hidden md:flex space-x-4 ">
+            <div className="flex space-x-4 mt-2 md:mt-0">
               <button
                 onClick={() => scrollLeft("cost")}
                 className="p-2 m-2 rounded-full bg-white"
@@ -503,52 +500,52 @@ export default function Home() {
 
 
       <section className="py-4">
-  <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">
-    Why Wonderplots?
-  </p>
-  <div className="max-w-7xl mx-auto px-5 md:px-10">
-    <TableContainer component={Paper}>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Connect+</TableCell>
-            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Reach more</TableCell>
-            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Lead Transfers</TableCell>
-            <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Property Care</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          <TableRow>
-            <TableCell>
-              <ul className="list-disc">
-                <li>Get assigned by owners for agents</li>
-                <li>Connect with owners directly for your projects</li>
-              </ul>
-            </TableCell>
-            <TableCell>
-              <ul className="list-disc">
-                <li>Be visible to buyers for "x" times more</li>
-                <li>Explore wide reach of properties in all categories</li>
-              </ul>
-            </TableCell>
-            <TableCell style={{ paddingBottom: "35px" }}>
-              <ul className="list-disc">
-                <li>Agents can transfer leads to other agents</li>
-                <li>Track the leads on your dashboard</li>
-              </ul>
-            </TableCell>
-            <TableCell style={{ paddingBottom: "35px" }}>
-              <ul className="list-disc">
-                <li>Secure your property now</li>
-                <li>Sell faster in the market</li>
-              </ul>
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      </Table>
-    </TableContainer>
-  </div>
-</section>
+        <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">
+          Why Wonderplots?
+        </p>
+        <div className="max-w-7xl mx-auto px-5 md:px-10">
+          <TableContainer component={Paper}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Connect+</TableCell>
+                  <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Reach more</TableCell>
+                  <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Lead Transfers</TableCell>
+                  <TableCell className="font-bold w-1/4 max-w-64 overflow-hidden">Property Care</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow>
+                  <TableCell>
+                    <ul className="list-disc">
+                      <li>Get assigned by owners for agents</li>
+                      <li>Connect with owners directly for your projects</li>
+                    </ul>
+                  </TableCell>
+                  <TableCell>
+                    <ul className="list-disc">
+                      <li>Be visible to buyers for "x" times more</li>
+                      <li>Explore wide reach of properties in all categories</li>
+                    </ul>
+                  </TableCell>
+                  <TableCell style={{ paddingBottom: "35px" }}>
+                    <ul className="list-disc">
+                      <li>Agents can transfer leads to other agents</li>
+                      <li>Track the leads on your dashboard</li>
+                    </ul>
+                  </TableCell>
+                  <TableCell style={{ paddingBottom: "35px" }}>
+                    <ul className="list-disc">
+                      <li>Secure your property now</li>
+                      <li>Sell faster in the market</li>
+                    </ul>
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+      </section>
 
 
 
@@ -580,7 +577,7 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div  className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}
@@ -596,7 +593,7 @@ export default function Home() {
             </div>
 
             {/* Card 3 */}
-            <div  className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}

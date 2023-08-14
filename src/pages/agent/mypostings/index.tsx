@@ -42,18 +42,18 @@ export const PostingCard = ({
 
   const handlePropertyCare = async (id) => {
     try {
-    
-      
+
+
       const requestData = { propertyId: id };
       const res = await instance.post("/user/requestCareService", requestData);
 
       if (res.data) {
         console.log(res.data, "reeeeee");
-        setIsPending(true); 
+        setIsPending(true);
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      setIsPending(false); 
+      setIsPending(false);
     }
   };
   return (
@@ -76,10 +76,10 @@ export const PostingCard = ({
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">
               <p className="text-title ">{address}</p>
-              <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
+              {/* <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
                 <p>4.5</p>
                 <AiFillStar />
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="flex  space-x-4">
@@ -91,9 +91,9 @@ export const PostingCard = ({
             </Link>
             <button
               onClick={() => handlePropertyCare(_id)}
-              style={{ height: "30px", padding: "5px 15px" }}
-              className={`text-white flex bg-[#0066FF] rounded-full space-x-2 items-center transition transform active:scale-95 duration-200 ${isPending ? 'opacity-70 pointer-events-none' : ''
-                }`}
+              className={`text-white flex bg-[#0066FF] rounded-full space-x-2 items-center transition transform active:scale-95 duration-200
+    ${isPending ? 'opacity-70 pointer-events-none' : ''}
+    h-[50px] md:h-[40px] px-[30px] md:px-[20px]`}
             >
               {isPending ? 'Pending' : 'Property Care'}
             </button>

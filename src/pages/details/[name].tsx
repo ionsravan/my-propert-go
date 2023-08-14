@@ -544,7 +544,8 @@ const Details = () => {
             <p className="text-xl ">Specifications</p>
 
             <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-              <div style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "start" }} className="specificationCotainer">
+            <div className="flex w-full justify-between items-start flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+
                 <div className="leftSideContainer">
 
                   <SpecificationItem Icon={FaHome} tagName={"Property Type"} text={data?.result.propertyType} />
@@ -832,9 +833,9 @@ const Details = () => {
           >
             {/* <p style={{textAlign:"center",fontSize:"30px",fontWeight:"bold"}}>WE'VE FOUND SIMILAR PROPERTIES FOR YOU</p> */}
             <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-              <div className="w-full flex items-center justify-between">
+              <div className="w-full flex items-center justify-between flex-col md:flex-row">
                 <HomeSectionTitle text="WE'VE FOUND SIMILAR PROPERTIES FOR YOU" />
-                <div className="hidden md:flex space-x-4 ">
+                <div className="flex space-x-4 mt-2 md:mt-0 ">
                   <button
                     onClick={() => scrollLeft("feat")}
                     className="p-2 m-2 rounded-full bg-white"

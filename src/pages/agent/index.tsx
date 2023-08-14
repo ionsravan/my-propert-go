@@ -192,7 +192,17 @@ const AgentDashBoard = () => {
       router.push(`/login`)
     }
   }, [])
-  
+
+
+useEffect(() => {
+  const isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+  if (isAdmin) {
+    router.push('/login');
+    toast("Please Login as a User")
+  }
+}, []);
+
 
 
   useEffect(() => {
