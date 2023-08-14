@@ -118,7 +118,9 @@ function SearchDropdown({ options, onSelect }) {
   );
 }
 
-const AddProperty = ({ propertyData, navbarFooter}) => {
+const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
+
+  console.log(navbarFooter,addPropertyAdmin,"props" )
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
@@ -406,7 +408,7 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
           </button>
           <img
             className=" h-full object-cover"
-            src={ !navbarFooter ? photo : URL.createObjectURL(photo)}
+            src={URL.createObjectURL(photo)}
             alt=""
             key={photo}
           />
@@ -717,8 +719,10 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
     try {
       let url;
 
-      if (navbarFooter === false) {
+      if (navbarFooter === false && isAdmin === false) {
         url = "https://my-property-go-backend.onrender.com/api/agent/property/editPropertyDetails";
+      } else if (isAdmin === true && addPropertyAdmin === true) {
+        url = "https://my-property-go-backend.onrender.com/api/admin/property/addPropertyByAdmin";
       } else if (isAdmin === true) {
         url = "https://my-property-go-backend.onrender.com/api/admin/property/editPropertyByAdmin";
       } else {
@@ -1325,7 +1329,7 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
       setLift(propertyData?.liftFacility)
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)
-      setPrimaryFilesToUpload([propertyData?.primaryImage])
+      // setPrimaryFilesToUpload([propertyData?.primaryImage])
       // setFilesToUpload(propertyData?.propertyImages || [])
       setRegulatory(propertyData?.authority)
 

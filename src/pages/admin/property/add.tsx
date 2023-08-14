@@ -4,7 +4,8 @@ import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import AddProperty from "src/pages/addProperty";
 
 const AddProperties = () => {
-  return <AddProperty navbarFooter={false} />;
+  console.log("Props in AddProperties:", false, true);
+  return <AddProperty navbarFooter={false} addPropertyAdmin={true} />;
 };
 
 AddProperties.getLayout = function getLayout(page: ReactElement) {
