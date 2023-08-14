@@ -337,6 +337,7 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
   };
 
   const renderPhotos = (source: any) => {
+
     return source.map((photo: any, index: any) => {
       return (
         <div
@@ -405,7 +406,7 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
           </button>
           <img
             className=" h-full object-cover"
-            src={URL.createObjectURL(photo)}
+            src={ !navbarFooter ? photo : URL.createObjectURL(photo)}
             alt=""
             key={photo}
           />
@@ -1324,8 +1325,8 @@ const AddProperty = ({ propertyData, navbarFooter}) => {
       setLift(propertyData?.liftFacility)
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)
-      setPrimaryFilesToUpload(propertyData?.primaryImage)
-      setFilesToUpload(propertyData?.propertyImages || [])
+      setPrimaryFilesToUpload([propertyData?.primaryImage])
+      // setFilesToUpload(propertyData?.propertyImages || [])
       setRegulatory(propertyData?.authority)
 
     }
