@@ -173,7 +173,7 @@ const CareServiceManagement = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) =>
                 row?.propertyId?.propertyImages ? (
-                    <Image alt="" width={200} height={90} style={{ objectFit: "contain", height: '90px' }} src={row?.propertyId?.propertyImages[0]} />
+                    <Image alt="" width={160} height={90} style={{ objectFit: "contain", height: '90px' }} src={row?.propertyId?.propertyImages[0]} />
                 ) : null,
         },
         {
@@ -216,20 +216,21 @@ const CareServiceManagement = () => {
             ),
         },
         {
-            flex: 0.15,
+            flex: 0.2,
+            maxWidth:100,
             field: "userEmail",
             headerName: "User Email",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
             renderCell: ({ row }) => (
-                <Typography variant="body1" fontWeight={500}>
+                <Typography  variant="body1" fontWeight={500}>
                     {row?.userId?.email}
                 </Typography>
             ),
         },
         {
-            flex: 0.2,
+            flex: 0.15,
             field: "action",
             headerName: "Status",
             align: "left",
@@ -248,9 +249,9 @@ const CareServiceManagement = () => {
             ),
         },
         {
+            flex: 0.05,
             field: "upload",
             headerName: "Upload",
-            flex: 0.1,
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
@@ -312,7 +313,7 @@ const CareServiceManagement = () => {
             if (data?.photos instanceof File) {
                 bodyFormData.append("photos", data.photos);
             }
-            bodyFormData.append("id", deleteId);
+            bodyFormData.append("propertyId", deleteId);
             let res = await instance.put("/admin/property/editPropertyByAdmin", bodyFormData);
 
             if (res.data) {
