@@ -6,11 +6,15 @@ import type { Propery } from "src/@types";
 import Link from "next/link";
 import { HiLocationMarker } from "react-icons/hi";
 import PropertyCost from "../costFormat/PropertyCost";
+import generateSlug from "../slug/generateSlug";
 
-const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,areaValue }: Propery) => {
+const HouseCard = ({ name, propertyImages, cost, agentId, _id, location, size, areaValue, BHKconfig, availableFor, toggle, propertyType }: Propery) => {
+
+  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
 
   return (
-    <Link href={`/details/${_id}`}>
+    // <Link href={`/details/${_id}`}>
+    <Link href={`/details/${slug}`}>
       <div className=" relative  grow  rounded-2xl p-4 shadow-md border font-manrope bg-white  ">
         <div className="relative h-64 w-[300px]">
           <Image
@@ -32,17 +36,17 @@ const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,area
 
         <div className="space-y-1 px-3 mt-2 ">
           <h1 className="text-2xl font-semibold text-TitleColor">{name}</h1>
-          <div  className="flex justify-between items-end ">
-            <div  className="flex flex-col">
-              <p className="flex items-center text-md "><HiLocationMarker style={{marginRight:"5px"}} />{location.name}</p>
-            <p  className="flex items-center text-primaryBlue text-lg">
-              <FaRupeeSign />
-              <span className="font-normal "><PropertyCost cost={cost} /></span>
-            </p>
+          <div className="flex justify-between items-end ">
+            <div className="flex flex-col">
+              <p className="flex items-center text-md "><HiLocationMarker style={{ marginRight: "5px" }} />{location.name}</p>
+              <p className="flex items-center text-primaryBlue text-lg">
+                <FaRupeeSign />
+                <span className="font-normal "><PropertyCost cost={cost} /></span>
+              </p>
             </div>
-       
-            <div   className="flex flex-col mb-2">
-              <p  className="flex items-center justify-center   space-x-2 text-right">
+
+            <div className="flex flex-col mb-2">
+              <p className="flex items-center justify-center   space-x-2 text-right">
                 {/* <GrStar className="text-yellow-500 text-xl" /> */}
                 <span className="text-md font-medium mb-1">₹{areaValue}/Sq.Yd</span>
               </p>
@@ -50,7 +54,7 @@ const HouseCard = ({ name, propertyImages, cost, agentId, _id,location,size,area
             </div>
           </div>
         </div>
-        
+
         {/* <div className="flex space-x-2 items-center mt-0">
           <div className="relative h-10 w-10 rounded-full ">
             <Image

@@ -48,15 +48,6 @@ const MyPlans = () => {
     fetchData();
   }, [])
 
-  // useEffect(() => {
-  //   const storedUserId = localStorage.getItem("userId");
-  //   setUserId(storedUserId);
-  // }, []);
-
-// useEffect(() => {
-//   console.log(data,"dattttt")
-// }, [data])
-
 
 
   return <>

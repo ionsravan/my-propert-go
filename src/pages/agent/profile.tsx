@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import {
   AiOutlineHome,
   AiOutlineInfo,
@@ -36,14 +36,17 @@ export const ProfileItem = ({ Icon, name, value }: Props) => {
   );
 };
 
+
+
 const Profile = () => {
+  const instance = useAxios();
   const router = useRouter();
   const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const { data } = useFetch<response<Agent>>("/agent/property");
   const [file, setFile] = useState<any>(null);
-  const instance = useAxios();
   const [loading, setLoading] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
+  const [userDetails, setUserDetails] = useState({});
 
   const handleSubmit = async () => {
     const data = new FormData();
@@ -86,6 +89,23 @@ const handleLogout = () => {
 
   }
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await instance.get("/user/getUserDetails");
+        if (res?.data) {
+          // setIsLoading(false)
+          setUserDetails(res.data.data)
+          console.log(res.data.data,"sssss")
+  
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, [])
   return (
     <>
       <div>
@@ -93,7 +113,7 @@ const handleLogout = () => {
           <h1 className="text-2xl font-bold text-black">My Profile</h1>
           <button onClick={handleLogout} className="text-white font-medium  bg-[#0066FF] rounded-full px-5 py-1  transition transform active:scale-95 duration-200">Logout</button>
         </div>
-        <div className="h-20 w-20 relative rounded-full">
+        {/* <div className="h-20 w-20 relative rounded-full">
           <>
             {data?.result?.profilePhoto || file ? (
               <Image
@@ -140,8 +160,8 @@ const handleLogout = () => {
               </>
             )}
           </>
-        </div>
-        {file && (
+        </div> */}
+        {/* {file && (
           <div className="flex space-x-4 my-7">
             <button
               onClick={() => {
@@ -158,39 +178,39 @@ const handleLogout = () => {
               {loading ? "saving... " : "save profile"}
             </button>
           </div>
-        )}
+        )} */}
         <div className="my-5 space-y-5">
-          <h2 className="text-xl text-TitleColor font-bold ">
+          {/* <h2 className="text-xl text-TitleColor font-bold ">
             {data?.result.name}
             User
-          </h2>
-          <button className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200   ">
+          </h2> */}
+          {/* <button className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200   ">
             Edit Profile
-          </button>
+          </button> */}
         </div>
         <div className="text-[#4A4A4A] space-y-5 mt-10">
-          <ProfileItem
+          {/* <ProfileItem
             name="EXEPERENCE"
             value={`${4} years`}
             Icon={AiOutlineInfo}
-          />
+          /> */}
                  <ProfileItem
             name="Name"
-            value={`${data?.result?.mobileNumber} `}
+            value={`${userDetails.name} `}
             Icon={RxAvatar}
           />
           <ProfileItem
             name="MOBILE NUMBER"
-            value={`${data?.result?.mobileNumber} `}
+            value={`${userDetails.mobileNumber} `}
             Icon={AiOutlinePhone}
           />
    
           <ProfileItem
             name="EMAIL"
-            value={data?.result?.email}
+            value={userDetails.email}
             Icon={AiOutlineMail}
           />
-          <ProfileItem
+          {/* <ProfileItem
             name="PROPERTY COUNT"
             value={data?.result?.properties.length}
             Icon={AiOutlineHome}
@@ -199,7 +219,7 @@ const handleLogout = () => {
             name="OPRATING AREA"
             value={`Gie   GEo `}
             Icon={FaLocationArrow}
-          />
+          /> */}
         </div>
       </div>
     </>

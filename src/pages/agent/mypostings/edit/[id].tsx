@@ -63,6 +63,7 @@ import styles from "../styles/addProperty.module.css";
 import { useCookies } from "react-cookie";
 import { availableAmenities } from "src/@global/Data";
 import AddProperty from "src/pages/addProperty";
+import generateSlug from "src/componets/slug/generateSlug";
 
 export const PostingCard = ({
   name,
@@ -78,9 +79,13 @@ export const PostingCard = ({
   area,
   propertyImages,
   purchaseRequests,
+  propertyType,
+  toggle
 }: Propery) => {
   const instance = useAxios();
   const router = useRouter();
+
+  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
   return (
     <div className="mb-5 bg-white rounded-lg md:flex cursor-pointer">
       {/* image section */}
@@ -96,7 +101,7 @@ export const PostingCard = ({
       <div className="p-5 px-6 w-full">
         <div className="flex w-full justify-between">
           <div>
-            <Link href={`/details/${_id}`}>
+            <Link href={`/details/${slug}`}>
               <h1 className="text-xl font-bold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">

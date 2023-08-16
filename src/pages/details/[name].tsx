@@ -48,6 +48,7 @@ import CustomLoader from "src/componets/shared/Loader";
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
 import PropertyCost from "src/componets/costFormat/PropertyCost";
+import slugify from 'slugify';
 // import { GiLift } from "react-icons/gi";
 const reviewData = [
   {
@@ -236,25 +237,86 @@ const SpecificationItem = ({ Icon, text, tagName }) => {
 };
 
 
-// const propertyImages = [
-//   'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-//   // 'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-//   // 'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-//   // 'https://images.unsplash.com/photo-1682685797527-63b4e495938f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-//   // Add more image URLs here as needed
-// ];
+// const { slug } = router.query;
+// // const slug = router.query["name"];
+
+
+// export function getIDFromSlug(slug) {
+//   const id = slug.substring(0, slug.indexOf('-'));
+//   return id;
+// }
+
+export function getIDFromSlug(slug) {
+  if (!slug || typeof slug !== 'string' || !slug.includes('-')) {
+    return null; // Handle invalid slug format
+  }
+
+  const id = slug.substring(0, slug.indexOf('-'));
+  return id;
+}
+
 
 const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
   const instance = useAxios();
   const router = useRouter();
-  const id = router.query["name"];
+  const slug = router.query["name"];
+
+  // const id = router.query["name"];
   const [cookies, setCookes] = useCookies(["jwtToken"]);
+  // const [data, setData] = useState([])
+
+
+const id = getIDFromSlug(slug);
+
+  // const _id = slug ? extractIdFromSlug(slug) : null;
+
+
+//   async function getPropertyDetailsById() {
+//     try {
+//         const res = await instance.get(
+//             `/property/getPropertyById/${_id}`
+//         );
+//         if (res.data) {
+//           setData(res.data)
+//         }
+//     } catch (e) {
+//         console.log(e);
+//     }
+// }
+
+// useEffect(() => {
+
+//   const { data, error, status } = useFetch<ProperyRes>(
+//     `property/getPropertyById/${_id}`
+//   );
+// }, [_id]);
+
+
+// Function to extract id from the slug
+// function extractIdFromSlug(slug) {
+//   console.log(slug,"Slug:")
+//   const parts = slug.split('-');
+//   const id = parts[parts.length - 1];
+//   console.log("Extracted id:", id); // Print the extracted id
+//   return id;
+// }
+
+
   const { data, error, status } = useFetch<ProperyRes>(
     `property/getPropertyById/${id}`
   );
+
+  // const { data, error, status } = useFetch<ProperyRes>(
+  //   `property/getPropertyById/64c4bc373519d76ccc3e5ae8`
+  // );
+
+  // const { data, error, status } = _id ? useFetch<ProperyRes>(`property/getPropertyById/${_id}`) : {};
+
+
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  console.log(data);
+  // console.log(data);
 
   const [buttonColor, setButtonColor] = useState(false);
 
@@ -266,6 +328,13 @@ const Details = () => {
   const { data: newData } = useFetch<ProperyResArr>(
     "property/getAllProperties"
   );
+
+
+
+
+ 
+
+
 
   useEffect(() => {
     if (newData?.data) {
@@ -325,7 +394,7 @@ const Details = () => {
     }
   };
 
-  if (data?.result.address) {
+  if (data?.result?.address) {
     fetchCoordinates(data.result.address);
   }
 
@@ -397,7 +466,7 @@ const Details = () => {
             <div className="space-y-2 ">
               <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
                 {/* {data?.result.name} */}
-                {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk Flat for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `}
+                {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `}
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
                 <div className="flex items-center justify-center space-x-4">
@@ -656,7 +725,7 @@ const Details = () => {
                 const IconTag = Icon?.icon;
                 console.log(IconTag, "Icon")
                 return (
-                  <div key={curElem} style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
+                  <div key={curElem} style={{borderRadius:"20px", color:"white"}} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-blue-500 shadow-sm">
                     {IconTag ? <IconTag /> : null}
                     <p className="mt-1 mb-1">{curElem}</p>
                   </div>

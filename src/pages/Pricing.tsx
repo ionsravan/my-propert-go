@@ -327,6 +327,26 @@ const PricingPage = () => {
     fetchData();
   }, [])
 
+// const _id = 64a26829654a9526a04c7919;
+
+  async function getPropertyDetailsById() {
+    try {
+        const res = await instance.get(
+            `/property/getPropertyById/64a26829654a9526a04c7919`
+        );
+        if (res.data) {
+          // setData(res.data.result)
+          console.log(res.data.result,"iiiiiiiiiii")
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+useEffect(() => {
+      getPropertyDetailsById();
+  
+}, []);
 
 
 
