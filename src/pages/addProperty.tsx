@@ -118,9 +118,15 @@ function SearchDropdown({ options, onSelect }) {
   );
 }
 
-const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
+const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
-  console.log(navbarFooter,addPropertyAdmin,"props" )
+  console.log(navbarFooter, addPropertyAdmin, "props")
+
+  if(propertyData){
+    console.log(propertyData?.agentId?.leads[0]?.propertyId,"property")
+  }
+
+  // console.log(propertyData?.leads.propertyId,"property")
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"
@@ -130,7 +136,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
 
 
 
-
+  const instance = useAxios();
   const [cookies] = useCookies(["jwtToken"]);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
@@ -147,7 +153,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
   const [propertyTypeError, setPropertyTypeError] = useState("");
   const [availabeFor, setAvailableFor] = useState("sale");
   const [availabeForError, setAvailableForError] = useState("");
-  const [toggle, setToggle] = useState("");
+  const [toggle, setToggle] = useState("Property");
   const [toggleError, setToggleError] = useState("");
   const [isPropertyActive, setPropertyActive] = useState(true);
   const [isProjectActive, setProjectActive] = useState(false);
@@ -245,8 +251,12 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [toasted, setToasted] = useState(false);
+  const [propertyId, setPropertyId] = useState("");
+  const [uploadedPrimaryImage, setUploadedPrimaryImage] = useState("");
+  const [uploadedPropertyImages, setUploadedPropertyImages] = useState([]);
   // const [propertyFeatures, setPropertyFeatures] = useState("");
   const [selectedPropertyFeatures, setSelectedPropertyFeatures] = useState<string[]>([]);
+
 
   const handleSaleClick = () => {
     setSaleActive(true);
@@ -549,6 +559,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
   //   setPropertyFeatures(name);
   // };
 
+
+  
   const handlePropertyFeatures = (name: string) => {
     if (selectedPropertyFeatures.includes(name)) {
       setSelectedPropertyFeatures(selectedPropertyFeatures.filter(feature => feature !== name));
@@ -556,6 +568,11 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
       setSelectedPropertyFeatures([...selectedPropertyFeatures, name]);
     }
   };
+
+  
+  useEffect(() => {
+    console.log(selectedPropertyFeatures,"tagsss")
+     }, [selectedPropertyFeatures])
 
   const handleAgeClick = (name: string) => {
     setAge(name);
@@ -614,6 +631,11 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
     }
   };
 
+  useEffect(() => {
+   console.log(amenities,"amen")
+  }, [amenities])
+  
+
   const handleToggle = (type: string) => {
     if (type === "Property") {
       setPropertyActive(true);
@@ -626,28 +648,10 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
     }
   };
 
-  // dfhjdhjhsjhkshfjs
-  // dfjsfhs
-  //   const availableAmenities = [
-  //     "Drinking Water",
-  //     "Car Parking",
-  //     "Lift",
-  //     "Power Backup",
-  //     "Intercom",
-  //     "CCTV Surveillance",
-  //     "Play Area",
-  //     "Vastu Complaint",
-  //     "Solar Water Heaer",
-  //     "Water Softner Plant",
-  //     "Munciple Water Connection",
-  //     "Under Ground Drainage",
-  //     "Compound wall",
-  //     "Roads",
-  //     "Park",
-  //   ];
+
 
   const handlePostProperty = async () => {
-    setIsLoading(false)
+    
 
 
 
@@ -671,6 +675,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
       return;
     }
 
+    setIsLoading(false)
+
     // const fileNames = (Array.from(filesToupload) as File[]).map((file) => file.name);
     var bodyFormData = new FormData();
 
@@ -680,6 +686,11 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
     for (let i of primaryFilesToUpload) {
       bodyFormData.append('primaryImage', i);
     }
+
+    for (let a of amenities) {
+      bodyFormData.append('amenities', a);
+    }
+
 
     bodyFormData.append('name', projectName);
     bodyFormData.append('buildingType', buildingType);
@@ -700,7 +711,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
     bodyFormData.append('city', city);
     bodyFormData.append('address', address);
     bodyFormData.append('location', locality);
-    bodyFormData.append('amenities', JSON.stringify(amenities));
+    // bodyFormData.append('toggle', toggle);
+
     bodyFormData.append('securityActiveButton', securityActiveButton);
     bodyFormData.append('furnishingStatus', furnished);
     bodyFormData.append('possessionStatus', possession);
@@ -714,38 +726,56 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
     bodyFormData.append('authority', regulatory);
 
 
+    
+    if(isAdmin){
+      // const serializedPropertyTags = selectedPropertyFeatures.join(','); // Serialize the array
+      // bodyFormData.append('propertyTags', serializedPropertyTags);
+      // bodyFormData.append('propertyTags', selectedPropertyFeatures )
+      // bodyFormData.append('toggle', toggle )
+      for (const tag of selectedPropertyFeatures) {
+        bodyFormData.append('propertyTags', tag);
+      }
+      bodyFormData.append('propertyId', propertyId)
+    }
+
 
 
     try {
       let url;
+      let successToastMessage;
+      let redirectRoute;
 
       if (navbarFooter === false && isAdmin === false) {
-        url = "https://my-property-go-backend.onrender.com/api/agent/property/editPropertyDetails";
+        url = "/agent/property/editProperty";
+        successToastMessage = "Property Updated Successfully";
+        redirectRoute = "/agent";
       } else if (isAdmin === true && addPropertyAdmin === true) {
-        url = "https://my-property-go-backend.onrender.com/api/admin/property/addPropertyByAdmin";
+        url = "/admin/property/addPropertyByAdmin";
+        successToastMessage = "Property Added by Admin Successfully";
+        redirectRoute = "/admin"; 
       } else if (isAdmin === true) {
-        url = "https://my-property-go-backend.onrender.com/api/admin/property/editPropertyByAdmin";
+        url = "/admin/property/editPropertyByAdmin";
+        successToastMessage = "Property Edited by Admin Successfully";
+        redirectRoute = "/admin"; 
       } else {
-        url = "https://my-property-go-backend.onrender.com/api/agent/property/addProperty";
+        url = "/agent/property/addProperty";
+        successToastMessage = "Property Added Successfully";
+        redirectRoute = "/agent"; 
       }
-      const response = await axios.post(
-        url,
-        bodyFormData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            "authorization": `Bearer ${cookies.jwtToken}`,
-          },
-        }
-      );
-      setIsLoading(true)
-      router.push("/agent")
-      toast("Property Added Succesfully")
+
+      const res = await instance.post(url, bodyFormData);
+   
+      if (res.data) {
+        setIsLoading(true)
+        router.push(redirectRoute);
+        toast(successToastMessage);
+      }
 
     } catch (error) {
+      setIsLoading(true)
       console.error("Error while adding property:", error);
       toast.error(error?.response.data.message)
-      setIsLoading(true)
+    
     }
 
   };
@@ -1315,7 +1345,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
       setCity(propertyData?.location.name)
       setAddress(propertyData?.address)
       setLocality(propertyData?.location.name)
-      setAmenities(JSON.parse(propertyData?.amenities))
+      // setAmenities(JSON.parse(propertyData?.amenities))
+      setAmenities(propertyData?.amenities)
 
       setSecurityActiveButton(propertyData?.securityActiveButton)
       setFurnished(propertyData?.furnishingStatus)
@@ -1329,9 +1360,12 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
       setLift(propertyData?.liftFacility)
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)
+      setUploadedPrimaryImage(propertyData?.primaryImage)
+      setUploadedPropertyImages(propertyData?.propertyImages)
       // setPrimaryFilesToUpload([propertyData?.primaryImage])
       // setFilesToUpload(propertyData?.propertyImages || [])
       setRegulatory(propertyData?.authority)
+      setPropertyId(propertyData?._id)
 
     }
   }, [propertyData]);
@@ -1448,7 +1482,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
                     Property Listing Form:
                   </p>
 
-                  <div style={{ display: "flex",flexWrap:"wrap" }} className="propertyListingDiv">
+                  <div style={{ display: "flex", flexWrap: "wrap" }} className="propertyListingDiv">
                     <button
                       style={{
                         display: "flex",
@@ -1494,7 +1528,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
                       Building Type
                     </p>
 
-                    <div style={{ display: "flex",flexWrap:"wrap" }} className="buildingType">
+                    <div style={{ display: "flex", flexWrap: "wrap" }} className="buildingType">
                       <button
                         style={{
                           display: "flex",
@@ -1895,6 +1929,42 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
                   {" "}
                   Additional Details
                 </p>
+
+
+
+                {navbarFooter === false ? <div className="m-4">
+                  <label className="inline-block mb-2 text-gray-500">
+                    Uploaded Primary Image
+                  </label>
+                  <div className=" w-full h-40">
+                    <div className="w-[200px] h-40">
+                      <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={uploadedPrimaryImage} alt="" />
+                    </div>
+
+
+
+
+                  </div>
+                </div> : null}
+
+                {navbarFooter === false ? <div className="m-4">
+                  <label className="inline-block mb-2 text-gray-500">
+                    Uploaded Property Images
+                  </label>
+                  <div className=" w-full h-40">
+                    <div className="w-[200px] h-40 flex space-x-2">
+                      {uploadedPropertyImages.map((curElem) => (
+                        <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
+
+                      ))}
+
+                    </div>
+
+
+
+
+                  </div>
+                </div> : null}
 
 
 
@@ -2314,7 +2384,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
                       </button>
                     ))}
                   </div>
-                ) : null}
+                 ) : null} 
 
 
                 <button

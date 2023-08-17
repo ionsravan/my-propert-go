@@ -455,7 +455,7 @@ const id = getIDFromSlug(slug);
             </span>
           </small>
           <div style={{borderRadius:"20px", color:"white",marginLeft:"10px"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
-            <p className="mt-1 mb-1">Property ID :{data?.result.agentId.leads[0].propertyId}</p>
+            <p className="mt-1 mb-1">Property ID :{data?.result._id}</p>
             {/* <p className="mt-1 mb-1">Delhi</p> */}
           </div>
           </div>
@@ -717,7 +717,7 @@ const id = getIDFromSlug(slug);
             <p className="text-xl ">Top Facilities</p>
 
             <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-              {data?.result.amenities ? JSON.parse(data.result.amenities).map((curElem: string) => {
+              {data?.result.amenities ? data.result.amenities.map((curElem: string) => {
                 let Icon = availableAmenities?.find((ele: any) => {
                   let name = ele?.name;
                   return name === curElem;
