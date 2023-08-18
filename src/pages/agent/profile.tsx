@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import {
   AiOutlineHome,
   AiOutlineInfo,
@@ -36,14 +36,17 @@ export const ProfileItem = ({ Icon, name, value }: Props) => {
   );
 };
 
+
+
 const Profile = () => {
+  const instance = useAxios();
   const router = useRouter();
   const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const { data } = useFetch<response<Agent>>("/agent/property");
   const [file, setFile] = useState<any>(null);
-  const instance = useAxios();
   const [loading, setLoading] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
+  const [userDetails, setUserDetails] = useState({});
 
   const handleSubmit = async () => {
     const data = new FormData();
@@ -86,6 +89,23 @@ const handleLogout = () => {
 
   }
 
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await instance.get("/user/getUserDetails");
+        if (res?.data) {
+          // setIsLoading(false)
+          setUserDetails(res.data.data)
+          console.log(res.data.data,"sssss")
+  
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    fetchData();
+  }, [])
   return (
     <>
       <div>
@@ -160,10 +180,10 @@ const handleLogout = () => {
           </div>
         )} */}
         <div className="my-5 space-y-5">
-          <h2 className="text-xl text-TitleColor font-bold ">
-            {/* {data?.result.name} */}
+          {/* <h2 className="text-xl text-TitleColor font-bold ">
+            {data?.result.name}
             User
-          </h2>
+          </h2> */}
           {/* <button className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200   ">
             Edit Profile
           </button> */}
@@ -176,18 +196,18 @@ const handleLogout = () => {
           /> */}
                  <ProfileItem
             name="Name"
-            value={`${data?.result?.mobileNumber} `}
+            value={`${userDetails.name} `}
             Icon={RxAvatar}
           />
           <ProfileItem
             name="MOBILE NUMBER"
-            value={`${data?.result?.mobileNumber} `}
+            value={`${userDetails.mobileNumber} `}
             Icon={AiOutlinePhone}
           />
    
           <ProfileItem
             name="EMAIL"
-            value={data?.result?.emails}
+            value={userDetails.email}
             Icon={AiOutlineMail}
           />
           {/* <ProfileItem

@@ -6,6 +6,7 @@ import { Propery } from "src/@types";
 import Link from "next/link";
 import { HiLocationMarker } from "react-icons/hi";
 import PropertyCost from "../costFormat/PropertyCost";
+import generateSlug from "../slug/generateSlug";
 
 const MediumHouseCard = ({
   propertyImages,
@@ -19,17 +20,24 @@ const MediumHouseCard = ({
   areaValue,
   size,
   location,
-  availableFor
+  availableFor,
+  toggle,
+  propertyType
 
 }: Propery) => {
   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
 
+
+  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+  
+
   return (
-    <Link href={`/details/${_id}`}>
+    // <Link href={`/details/${_id}`}>
+    <Link href={`/details/${slug}`}>
       <div className="min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
         <div className="relative h-64 mb-2">
           <Image
-            src={imageSource}
+            src={imageSource} 
             fill
             alt="home"
             className="object-fill rounded-lg"

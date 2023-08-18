@@ -329,7 +329,6 @@ const PricingPage = () => {
 
 
 
-
   // const handleSubscribe = (id) => {
   //   console.log(id, "iddd")
   // }

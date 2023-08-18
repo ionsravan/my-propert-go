@@ -40,7 +40,7 @@ export function Search() {
         );
 
   return (
-    <div  className="w-full max-w-xl">
+    <div className="w-full max-w-xl">
       <Combobox value={selected} onChange={setSelected}>
         <div className="relative mt-1 rounded-full  ">
           <div className="flex items-center  relative w-full cursor-default overflow-hidden rounded-full bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">

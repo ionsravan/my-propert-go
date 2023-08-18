@@ -15,6 +15,7 @@ import CircularSpinner from "src/componets/circularLoader";
 import PropertyCost from "src/componets/costFormat/PropertyCost";
 import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
+import generateSlug from "src/componets/slug/generateSlug";
 
 const Card = ({ name, Value }: { name: string; Value: number | string }) => {
   return (
@@ -35,10 +36,16 @@ export const PostingCard = ({
   address,
   cost,
   propertyImages,
+  toggle,
+  propertyType,
+  availableFor,
+  location
 }: Propery) => {
   const instance = useAxios();
   const [isPending, setIsPending] = useState(false);
   const adminValue = localStorage.getItem("isAdmin");
+
+  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
 
 
   const handlePropertyCare = async (id: any) => {
@@ -70,7 +77,7 @@ export const PostingCard = ({
       <div className="p-5 px-6 w-full">
         <div className="flex w-full justify-between">
           <div>
-            <Link href={`/details/${_id}`}>
+            <Link href={`/details/${slug}`}>
               <h1 className="text-xl font-bold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">

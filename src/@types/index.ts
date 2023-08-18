@@ -57,6 +57,7 @@ export type Propery = {
   propertyType: string;
   toggle: string;
   amenities: string[];
+  propertyTags: string[];
   createdAt: string;
   featured: boolean;
   buildingType:string;

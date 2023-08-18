@@ -64,7 +64,7 @@ export const FilterContextProvder = ({ children }: IContextProps) => {
   const [propertyType, setPropertyType] = useState("");
   const [size, setSize] = useState("");
   const [min, setMin] = useState(0);
-  const [max, setMax] = useState(20000);
+  const [max, setMax] = useState(200000000000000000);
   const [furnishing, setFurnishing] = useState("");
   const [possession, setPossession] = useState("");
   const [toggle, setToggle] = useState("");
