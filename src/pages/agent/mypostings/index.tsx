@@ -38,12 +38,11 @@ export const PostingCard = ({
 }: Propery) => {
   const instance = useAxios();
   const [isPending, setIsPending] = useState(false);
+  const adminValue = localStorage.getItem("isAdmin");
 
 
-  const handlePropertyCare = async (id) => {
+  const handlePropertyCare = async (id: any) => {
     try {
-
-
       const requestData = { propertyId: id };
       const res = await instance.post("/user/requestCareService", requestData);
 
@@ -83,7 +82,7 @@ export const PostingCard = ({
             </div>
           </div>
           <div className="flex  space-x-4">
-            <Link href={`/agent/mypostings/edit/${_id}`}>
+            <Link href={adminValue == 'true' ? `/admin/property/edit/${_id}` : `/agent/mypostings/edit/${_id}`}>
               <div className="text-primaryBlue flex items-center space-x-1 self-start text-xs font-medium">
                 <p>Edit</p>
                 <TbEdit />

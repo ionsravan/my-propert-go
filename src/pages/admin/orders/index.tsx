@@ -93,7 +93,7 @@ const Orders = () => {
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [deleteId, setDeleteId] = useState<string>("");
+  const [deleteId, setDeleteId] = useState<any>({});
   const [edit, setEdit] = useState<boolean>(false);
   const [pageState, setPageState] = useState({
     page: 1,
@@ -133,7 +133,7 @@ const Orders = () => {
     handleSubmit: handleSubmitPaid,
     setValue: setValuePaid,
     reset: resetPaid,
-    formState: {},
+    formState: { },
   } = methodsPaid;
 
   async function getAllOrders() {
@@ -159,8 +159,10 @@ const Orders = () => {
     try {
       setDeleteLoading(true);
       let body = {
-        userId: deleteId,
+        userId: deleteId?._id,
         count: data.lead,
+        planId: deleteId?.planId,
+
       };
       const res = await instance.post("/admin/leads/increaseLeadCount", body);
       if (res.data) {
@@ -181,7 +183,7 @@ const Orders = () => {
       setDeleteLoading(true);
 
       let bodyData = { ...data };
-      bodyData.id = deleteId;
+      bodyData.id = deleteId?.userId;
       const res = await instance.put("/admin/editPlanElement", bodyData);
       if (res.data) {
         toast.success("Leads Added Successfully");
@@ -280,7 +282,7 @@ const Orders = () => {
         <Box display="flex" alignItems="center" gap={2}>
           <button
             onClick={() => {
-              setDeleteId(row?.userId);
+              setDeleteId(row);
               setDeleteOpen(true);
               setEdit(false);
             }}
@@ -291,7 +293,7 @@ const Orders = () => {
           <Tooltip title="Edit">
             <IconButton
               onClick={() => {
-                setDeleteId(row?._id);
+                setDeleteId(row);
                 setDeleteOpen(true);
                 setEdit(true);
                 setValuePaid("paid", row?.paid);
@@ -372,9 +374,8 @@ const Orders = () => {
             <button
               type="submit"
               disabled={deleteLoading}
-              className={`${
-                deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+              className={`${deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+                } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
             >
               {deleteLoading ? (
                 <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />
@@ -397,9 +398,8 @@ const Orders = () => {
             <button
               type="submit"
               disabled={deleteLoading}
-              className={`${
-                deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+              className={`${deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+                } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
             >
               {deleteLoading ? (
                 <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />

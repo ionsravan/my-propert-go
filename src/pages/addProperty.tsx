@@ -53,10 +53,6 @@ import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
 import { Footer, Navbar } from "src/componets";
-import { sassTrue } from "sass";
-
-
-
 
 
 function SearchDropdown({ options, onSelect }) {
@@ -120,7 +116,7 @@ function SearchDropdown({ options, onSelect }) {
 
 const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin}) => {
 
-  console.log(navbarFooter,addPropertyAdmin,"props" )
+
 
   const { data: loc } = useFetch<response<location[]>>(
     "/property/location/getAllLocation"

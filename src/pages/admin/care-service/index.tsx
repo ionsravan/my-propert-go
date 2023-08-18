@@ -165,7 +165,7 @@ const CareServiceManagement = () => {
 
     const all_customer_columns: GridColDef[] = [
         {
-            flex: 0.12,
+            flex: 0.1,
             field: "primaryImage",
             headerName: "Image",
             align: "left",
@@ -173,11 +173,11 @@ const CareServiceManagement = () => {
             disableColumnMenu: true,
             renderCell: ({ row }) =>
                 row?.propertyId?.propertyImages ? (
-                    <Image alt="" width={160} height={90} style={{ objectFit: "contain", height: '90px' }} src={row?.propertyId?.propertyImages[0]} />
+                    <Image alt="" width={130} height={90} style={{ objectFit: "contain", height: '90px' }} src={row?.propertyId?.propertyImages[0]} />
                 ) : null,
         },
         {
-            flex: 0.18,
+            flex: 0.15,
             field: "name",
             headerName: "Peoperty Name",
             align: "left",
@@ -189,7 +189,7 @@ const CareServiceManagement = () => {
                 </Typography>
             ),
         }, {
-            flex: 0.1,
+            flex: 0.2,
             field: "location",
             headerName: "Location",
             align: "left",
@@ -217,16 +217,20 @@ const CareServiceManagement = () => {
         },
         {
             flex: 0.2,
-            maxWidth:100,
+            // maxWidth:100,
             field: "userEmail",
             headerName: "User Email",
             align: "left",
             headerAlign: "left",
             disableColumnMenu: true,
             renderCell: ({ row }) => (
-                <Typography  variant="body1" fontWeight={500}>
-                    {row?.userId?.email}
-                </Typography>
+                <Tooltip title={row?.userId?.email}>
+                    <Typography
+                        sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
+                        variant="body1" fontWeight={500}>
+                        {row?.userId?.email}
+                    </Typography>
+                </Tooltip>
             ),
         },
         {
@@ -314,12 +318,13 @@ const CareServiceManagement = () => {
                 bodyFormData.append("photos", data.photos);
             }
             bodyFormData.append("propertyId", deleteId);
-            let res = await instance.put("/admin/property/editPropertyByAdmin", bodyFormData);
+            let res = await instance.post("/admin/property/editPropertyByAdmin", bodyFormData);
 
             if (res.data) {
                 toast.success("Image Uploaded Successfully");
                 setDeleteLoading(false);
                 setDialogOpen(false);
+                getAllTickets()
             }
         } catch (e) {
             setDeleteLoading(false);

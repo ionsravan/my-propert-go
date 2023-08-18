@@ -24,7 +24,7 @@ interface Props {
   value: string | number | undefined;
 }
 
-const ProfileItem = ({ Icon, name, value }: Props) => {
+export const ProfileItem = ({ Icon, name, value }: Props) => {
   return (
     <div className="flex space-x-3 items-center">
       <div>{Icon && <Icon className="text-primaryBlue" />}</div>

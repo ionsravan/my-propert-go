@@ -278,7 +278,7 @@ const Property = () => {
       <div className="flex justify-between items-center">
         <div className="mb-5">
           <h1 className="text-[#707EAE] text-[10.4px]">Hello Admin</h1>
-          <h2 className="text-TitleColor font-bold text-3xl">Customers</h2>
+          <h2 className="text-TitleColor font-bold text-3xl">Properties</h2>
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
