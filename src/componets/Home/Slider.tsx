@@ -8,13 +8,13 @@ import PropertyCost, { formatCost } from "../costFormat/PropertyCost";
 import generateSlug from "../slug/generateSlug";
 const Slider = ({ property }: { property: Propery }) => {
   const { propertyImages, name, location, cost, address, _id, areaValue, size, toggle, BHKconfig, propertyType, availableFor, } = property;
-  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+  // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
   return (
     <div >
       <div className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
         <div className="resfeaturedProjectsCard__imageBox imgHover">
-          {/* <Link href={`/details/${_id}`}> */}
-          <Link href={`/details/${slug}`}>
+          <Link href={`/details/${_id}`}>
+          {/* <Link href={`/details/${slug}`}> */}
             <Image className="lazyLoadImg"
               src={propertyImages && propertyImages.length > 0 ? propertyImages[0] : "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"}
               alt="Lumbini Elysee"
@@ -49,7 +49,8 @@ const Slider = ({ property }: { property: Propery }) => {
         </div>
         <div className="resfeaturedProjectsCard__contentBox pageComponent"></div>
         <div className="resfeaturedProjectsCard__contentText pageComponent">
-          <Link href={`/details/${slug}`}>
+          {/* <Link href={`/details/${slug}`}> */}
+          <Link href={`/details/${_id}`}>
             <div className="list_header_bold spacer8 f16 text-[1.5rem] ">{name}</div>
           </Link>
           <div className="flex justify-between ">
