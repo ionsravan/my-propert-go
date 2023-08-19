@@ -53,10 +53,6 @@ import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
 import { Footer, Navbar } from "src/componets";
-import { sassTrue } from "sass";
-
-
-
 
 
 function SearchDropdown({ options, onSelect }) {

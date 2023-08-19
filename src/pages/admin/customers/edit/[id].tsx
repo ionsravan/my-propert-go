@@ -98,7 +98,7 @@ const EditCustomer = () => {
       console.log(e);
     }
   }
-  console.log("router)", router.query);
+
 
   useEffect(() => {
     if (id) {
@@ -106,20 +106,6 @@ const EditCustomer = () => {
     }
   }, [id]);
 
-  // async function onSubmit(data: CustomerValuesProps) {
-  //   try {
-  //     setLoading(true);
-  //     const res = await instance.put("/admin/user/editUserById/" + id, data);
-  //     if (res.data) {
-  //       toast.success("Customer updated Successfully");
-  //       setLoading(false);
-  //       router.push("/user/customers");
-  //     }
-  //   } catch (e) {
-  //     setLoading(false);
-  //     console.log(e);
-  //   }
-  // }
 
   const onSubmit = async (data: CustomerValuesProps) => { 
     try {
