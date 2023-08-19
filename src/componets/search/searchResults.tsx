@@ -26,6 +26,7 @@ const HomeResult = ({
   propertyType,
   propertyTags,
   status,
+  agentId
 }: Propery) => {
 
   const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
@@ -34,7 +35,7 @@ const HomeResult = ({
     {(toggle === "Project" && status === "active") ? (
       <Link href={`/details/${slug}`}>
         <div
-          style={{ height: "500px" }}
+          style={{ height: "500px", position: "relative" }}
           className={`mb-5 w-full   rounded-lg flex flex-col md:flex-row cursor-pointer bg-gray-50 `}
         >
 
@@ -65,10 +66,16 @@ const HomeResult = ({
                 <span className="text-primaryBlue ml-9">learn more</span>
               </p>
             </div>
+            {agentId ? (
+              <div className="absolute left-2 top-2">
+                <p className="bg-primaryBlue text-white px-3 py-2 rounded-3xl">{agentId.plan.planId.tags[0]}</p>
+              </div>
+            ) : null}
+
             <div className="w-full mt-8 items-center md:flex justify-center ">
               <div>
 
-             
+
                 <div className="flex space-x-4 text-sm">
                   {(propertyTags && propertyTags.length > 0) ? (
                     (propertyTags).map((tag, index) => (
@@ -109,7 +116,7 @@ const HomeResult = ({
     ) : (toggle === "Property" && status === "active") ? (
       <Link href={`/details/${slug}`}>
         <div
-
+          style={{ position: "relative" }}
           className={`mb-5 w-full  rounded-lg flex flex-col md:flex-row cursor-pointer bg-gray-50
            `}
         >
@@ -185,6 +192,12 @@ const HomeResult = ({
                 <span className="text-primaryBlue ml-9">learn more</span>
               </p>
             </div>
+            {agentId ? (
+              <div className="absolute left-2 top-2">
+                <p className="bg-primaryBlue text-white px-3 py-2 rounded-3xl">{agentId.plan.planId.tags[0]}</p>
+              </div>
+            ) : null}
+
             <div className="w-full items-center md:flex justify-between mt-4">
               <div>
                 <div className="flex space-x-4 text-sm">
@@ -244,7 +257,7 @@ const HomeResult = ({
       //     <div className=" p-2 md:p-5 w-full">
       //       <div className="">
       //         <h1 className=" text-xl md:text-2xl font-bold text-TitleColor">
-            
+
       //           {`${BHKconfig}Bhk ${propertyType} for ${availableFor}  `}
       //         </h1>
       //         <div className="flex space-x-4 mb-4 text-sm mt-1">
@@ -341,8 +354,8 @@ const HomeResult = ({
       //     </div>
       //   </div>
       // </Link>
-    
-    null )}
+
+      null)}
 
 
 

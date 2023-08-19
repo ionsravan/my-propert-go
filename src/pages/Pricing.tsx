@@ -109,18 +109,18 @@ const subscriptionPacks = [
     price: "Get Quote",
     duration: "month",
     features: [
-      { available: true, text: "Properties: Unlimited" },
-      { available: true, text: "Lead Count: Guaranteed leads" },
-      { available: true, text: "Reach: A stunning video to showcase your property" },
+      { available: true, text: "Sell your property faster and easier than ever." },
+      { available: true, text: "Guaranteed and ongoing leads" },
+      { available: true, text: "A stunning video to showcase your property" },
       // { available: true, text: "Leads Validity: A personal assistant and cold calling, A custom digital marketing campaign, A project listing option" },
-      { available: false, text: "Tags Applied: -" },
-      { available: true, text: "Video Shoot: Call Wonderplots now and get the ultimate deal!" },
-      { available: false, text: "Priority Placement: -" },
-      { available: false, text: "Appear in Trending Properties: -" },
-      { available: false, text: "Search Areas Appear: -" },
-      { available: false, text: "Notify Builders about Development property: -" },
-      { available: false, text: "Assigned by Owner/Agent: -" },
-      { available: false, text: "Social Promotion: -" },
+      { available: true, text: "A personal assistant and cold calling" },
+      { available: true, text: "A custom digital marketing campaign" },
+      { available: true, text: "A Project listing option" },
+      { available: true, text: "Call Wonderplots now and get the ultimate deal!" },
+      // { available: false, text: "Search Areas Appear: -" },
+      // { available: false, text: "Notify Builders about Development property: -" },
+      // { available: false, text: "Assigned by Owner/Agent: -" },
+      // { available: false, text: "Social Promotion: -" },
     ],
   },
 ];
@@ -412,7 +412,7 @@ const PricingPage = () => {
                     }}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
-                     {pack?.name === 'starter' ? 'Explore' : pack?.name === 'ultimate' ? 'Explore Now' : 'Buy Now'}
+                    {pack?.name === 'starter' ? 'Explore' : pack?.name === 'ultimate' ? 'Explore Now' : 'Buy Now'}
                   </button>
                   <Modal
                     open={isModalOpen && selectedPlan === pack}
@@ -427,6 +427,21 @@ const PricingPage = () => {
             ))}
           </div>
         </div>
+
+        <div className="w-full flex items-center justify-center mb-2">
+          <div className="w-[75%] flex flex-col items-center justify-center text-center">
+            <p className="text-lg md:text-xl mb-4">
+              Your land is precious. But is it safe and legal? Do you have the right to sell it?
+              Find out with our value-added services. We offer Legal Verification and Encumbrance
+              Certificate for landowners. We check your land's history, ownership, and status, and give
+              you a certificate that proves your land is clear and ready to sell. Our services are fast,
+              reliable, and affordable. Contact us today to secure your land and your future. We are the best in the business!
+            </p>
+            <p className="text-sm md:text-base mb-4">Contact Wonderplots for more details and to get a quotation.</p>
+          </div>
+        </div>
+
+
         <Footer />
       </div>
 

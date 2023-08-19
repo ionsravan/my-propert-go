@@ -99,7 +99,7 @@ const Navbar = () => {
             router?.pathname == "/"
               ? "bg-white text-black  "
               : "bg-white"
-          } items-center px-6 py-5 ${
+          } items-center px-6 py-2 ${
             router?.pathname == "/"
               ? "overflow-hidden " 
               : "shadow-md overflow-hidden "
@@ -122,12 +122,12 @@ const Navbar = () => {
           <img style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
         </div> */}
 
-<div style={{ width: "45px", height: "45px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
+<div style={{ width: "150px", height: "50px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
   <Image
    style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} 
-    src="/logoW2.png" // Replace with your logo file path in the public folder
+    src="/logoW1.png" // Replace with your logo file path in the public folder
     alt="Logo"
-    width={45}
+    width={150}
     height={45}
 
     // layout="fill" 
