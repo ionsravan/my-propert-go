@@ -1,24 +1,16 @@
-import Image from "next/image";
-import { AiFillHome } from "react-icons/ai";
-import imgs from "public.json";
+
 import {
-  CatagoryCard,
   Header,
   HomeSectionTitle,
   HouseCard,
-  // MediumHomeCard,
-  PopularCity,
   Process,
-  Stats,
-  TestiMonials,
 } from "src/componets";
 import { HomeChip, homeChipsData } from "src/componets/Home/header";
 import MediumHouseCard from "src/componets/HousCard/MediumHomeCard";
-import Tour from "src/componets/Home/Tour";
 import { useFetch } from "src/lib/hooks/useFetch";
-import { Propery, ProperyRes, ProperyResArr, response } from "src/@types";
+import { Propery, ProperyResArr, response } from "src/@types";
 import Layout from "src/Layout/main";
-import { ReactElement, useEffect, useRef } from "react";
+import { ReactElement, useEffect } from "react";
 import { useState } from "react";
 import CardCarousel from "src/componets/Sliders/cardCaursel";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -27,67 +19,38 @@ import Slider from "src/componets/Home/Slider";
 import { FaHome } from "react-icons/fa";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useRouter } from "next/router";
-// import { Router } from "lucide-react";
 
-const images = [
-  {
-    images: "https://images.unsplash.com/photo-1549989476-69a92fa57c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550133730-695473e544be?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550167164-1b67c2be3973?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550338861-b7cfeaf8ffd8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550223640-23097fc71cb2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550353175-a3611868086b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550330039-a54e15ed9d33?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1549737328-8b9f3252b927?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1549833284-6a7df91c1f65?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1549985908-597a09ef0a7c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-  {
-    images: "https://images.unsplash.com/photo-1550064824-8f993041ffd3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
-  },
-];
 const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+  largeDesktop: {
+    breakpoint: { max: 3000, min: 1400 },
     items: 3,
-    paritialVisibilityGutter: 60,
+    paritialVisibilityGutter: 40,
   },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    paritialVisibilityGutter: 50,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
+  desktop: {
+    breakpoint: { max: 1400, min: 1024 },
+    items: 3,
     paritialVisibilityGutter: 30,
   },
-  default: {
-    breakpoint: { max: 3000, min: 0 },
+  tablet: {
+    breakpoint: { max: 1024, min: 672 },
     items: 2,
-    paritialVisibilityGutter: 80,
+    paritialVisibilityGutter: 15,
   },
+  mobile: {
+    breakpoint: { max: 672, min: 420 },
+    items: 1,
+    paritialVisibilityGutter: 10,
+  },
+  smallMobile: {
+    breakpoint: { max: 420, min: 0 },
+    items: 1,
+    paritialVisibilityGutter: 0,
+  },
+  // default: {
+  //   breakpoint: { max: 3000, min: 0 },
+  //   items: 2,
+  //   paritialVisibilityGutter: 80,
+  // },
 };
 
 export const scrollLeft = (id: string) => {
@@ -308,8 +271,8 @@ export default function Home() {
 
       <section className="pt-16">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
-          {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-          <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+        {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Trending / Newly listed" />
             {/* Buttons container */}
@@ -341,9 +304,9 @@ export default function Home() {
       <section className="py-4">
         {/* <div className="max-w-7xl mx-auto px-5 md:px-10">
           <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
-          <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+        <div className="max-w-7xl mx-auto px-5 md:px-10 ">
           <div className="w-full flex items-center justify-between">
-         
+
             <HomeSectionTitle text="Budget Properties for you" />
             <div className="flex space-x-4 mt-2 md:mt-0">
               <button
@@ -446,12 +409,12 @@ export default function Home() {
       {/*  </div>*/}
       {/*</section>*/}
 
-      <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4]v py-4 ">
+      <section className="pb-16 px-2 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4]v py-4 ">
         <HomeSectionTitle text="Projects" />
-        <div className="relative space-x-4 pt-10   ">
+        <div className="relative pt-10   ">
           <Carousel
             ssr
-            partialVisbile
+            // partialVisbile
             itemClass="image-item"
             responsive={responsive}
             autoPlay={true}
