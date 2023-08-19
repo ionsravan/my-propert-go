@@ -5,6 +5,7 @@ import { useCookies } from "react-cookie";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { FaUserAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
+import Image from 'next/image';
 
 const Nav = () => {
   const router = useRouter();
@@ -50,7 +51,7 @@ const Nav = () => {
 
   }
   return (
-    <nav className="flex-grow md:space-x-6 flex flex-col md:flex-row md:justify-end md:items-center space-y-3 md:space-y-0">
+    <nav className="flex-grow md:space-x-6 flex flex-col md:flex-row md:justify-end md:items-center space-y-1 md:space-y-0">
       {NavItems.map(({ link, name }, index) => {
         return (
           <Link className="font-manrope font-medium " href={link} key={index}>
@@ -115,9 +116,25 @@ const Navbar = () => {
           </h1>
           <img style={{width:"100%",objectFit:"cover" }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
         </div> */}
-        <div style={{ width: "200px", height: "30px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
+
+
+        {/* <div style={{ width: "200px", height: "30px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
           <img style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
-        </div>
+        </div> */}
+
+<div style={{ width: "45px", height: "45px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
+  <Image
+   style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} 
+    src="/logoW2.png" // Replace with your logo file path in the public folder
+    alt="Logo"
+    width={45}
+    height={45}
+
+    // layout="fill" 
+    // objectFit="cover"
+    // priority 
+  />
+</div>
 
         <div className="md:block hidden   ">
           <Nav />

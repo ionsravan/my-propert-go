@@ -593,6 +593,23 @@ const id = getIDFromSlug(slug);
               </Link>
             )}
           </div>
+
+          <div className="flex space-x-4 text-sm">
+                  {(data?.result.propertyTags && data.result.propertyTags.length > 0) ? (
+                    (data?.result.propertyTags).map((tag, index) => (
+                      <button
+                        key={index}
+                        className={`${index === 0 ? "bg-green-400 bg-opacity-50" : "bg-[#EBECF0]"
+                          } px-4 p-2 ${index === 0 ? "text-xs" : "md:text-sm"} rounded-lg`}
+                      >
+                        {tag}
+                      </button>
+                    ))
+                  ) : (
+                    null
+                  )}
+                </div>
+                
           {data?.result?.propertyImages && (
             <MyModal isOpen={isOpen} setIsOpen={setIsOpen}>
               <ImageSlider

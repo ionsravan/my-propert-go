@@ -84,37 +84,69 @@ function SearchDropdown({ options, onSelect }) {
 
 
   return (
+    // <div style={{ margin: "20px 0" }} className="relative">
+    //   <div
+    //     className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
+    //   >
+    //     <input
+    //       style={{ borderRadius: "18px" }}
+    //       type="text"
+    //       className="inputField"
+    //       placeholder={placeholder}
+    //       value={searchQuery}
+    //       onChange={handleSearchChange}
+    //       onClick={() => setIsOpen(true)}
+    //     />
+
+
+    //   </div>
+
+    //   {isOpen && (
+    //     <div className="absolute left-0  bg-white border rounded-md  w-full z-20">
+    //       {filteredOptions.map((option) => (
+    //         <div
+    //           key={option._id}
+    //           className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+    //           onClick={() => handleOptionSelect(option.name)}
+    //         >
+    //           {option.name}
+    //         </div>
+    //       ))}
+    //     </div>
+    //   )}
+    // </div>
     <div style={{ margin: "20px 0" }} className="relative">
-      <div
-        className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
-      >
-        <input
-          style={{ borderRadius: "18px" }}
-          type="text"
-          className="inputField"
-          placeholder={placeholder}
-          value={searchQuery}
-          onChange={handleSearchChange}
-          onClick={() => setIsOpen(true)}
-        />
+  <div
+    className={`relative z-10 ${
+      isOpen ? "border-blue-500" : ""
+    } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
+  >
+    <input
+      style={{ borderRadius: "18px" }}
+      type="text"
+      className="inputField"
+      placeholder={placeholder}
+      value={searchQuery}
+      onChange={handleSearchChange}
+      onClick={() => setIsOpen(true)}
+    />
+  </div>
 
-
-      </div>
-
-      {isOpen && (
-        <div className="absolute left-0  bg-white border rounded-md  w-full z-20">
-          {filteredOptions.map((option) => (
-            <div
-              key={option._id}
-              className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-              onClick={() => handleOptionSelect(option.name)}
-            >
-              {option.name}
-            </div>
-          ))}
+  {isOpen && (
+    <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
+      {filteredOptions.map((option) => (
+        <div
+          key={option._id}
+          className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+          onClick={() => handleOptionSelect(option.name)}
+        >
+          {option.name}
         </div>
-      )}
+      ))}
     </div>
+  )}
+</div>
+
   );
 }
 
@@ -1908,7 +1940,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 {addressError && <p className="error">{addressError}</p>}
 
                 <button
-                  className="next-button"
+                  className="next-button rounded-xl"
                   onClick={handlePropertiesDetails}
                 >
                   Save and Continue
@@ -2260,7 +2292,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 {unitNumberError && <p className="error">{unitNumberError}</p>}
 
                 <button style={{ marginTop: "7px" }}
-                  className="next-button"
+                  className="next-button rounded-xl"
                   onClick={handleAdditionalDetails}
                 >
                   Save and Continue

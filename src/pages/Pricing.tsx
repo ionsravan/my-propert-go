@@ -400,10 +400,19 @@ const PricingPage = () => {
                   </ul>
                   <button
                     style={{ position: "absolute", bottom: "20px", left: "130px", padding: "10px 35px", borderRadius: "20px" }}
-                    onClick={() => handleSubscribeClick(pack)}
+                    // onClick={() => handleSubscribeClick(pack)}
+                    onClick={() => {
+                      if (pack.name === 'starter') {
+                        router.push('/login');
+                      } else if (pack.name === 'ultimate') {
+                        router.push('/contact');
+                      } else {
+                        handleSubscribeClick(pack)
+                      }
+                    }}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
-                    Buy Now
+                     {pack?.name === 'starter' ? 'Explore' : pack?.name === 'ultimate' ? 'Explore Now' : 'Buy Now'}
                   </button>
                   <Modal
                     open={isModalOpen && selectedPlan === pack}

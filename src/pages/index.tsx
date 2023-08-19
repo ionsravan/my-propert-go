@@ -307,11 +307,13 @@ export default function Home() {
 
 
       <section className="pt-16">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
-          <div className="w-full flex items-center justify-between flex-col md:flex-row">
+        {/* <div className="max-w-7xl mx-auto px-5 md:px-10"> */}
+          {/* <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+          <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
             <HomeSectionTitle text="Trending / Newly listed" />
             {/* Buttons container */}
-            <div className="flex space-x-4 mt-2 md:mt-0">
+            <div className="flex space-x-4  md:mt-0">
               <button
                 onClick={() => scrollLeft("feat")}
                 className="p-2 m-2 rounded-full bg-white"
@@ -327,7 +329,7 @@ export default function Home() {
             </div>
           </div>
           {data && (
-            <div id="feat" className="flex overflow-hidden space-x-6">
+            <div id="feat" className="flex overflow-x-scroll space-x-6 overflow-y-hidden scrollbar-hide">
               <CardCarousel id="feat" data={Filtred} Card={MediumHouseCard} />
             </div>
           )}
@@ -337,8 +339,11 @@ export default function Home() {
 
 
       <section className="py-4">
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
-          <div className="w-full flex items-center justify-between flex-col md:flex-row">
+        {/* <div className="max-w-7xl mx-auto px-5 md:px-10">
+          <div className="w-full flex items-center justify-between flex-col md:flex-row"> */}
+          <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+          <div className="w-full flex items-center justify-between">
+         
             <HomeSectionTitle text="Budget Properties for you" />
             <div className="flex space-x-4 mt-2 md:mt-0">
               <button
@@ -358,7 +363,7 @@ export default function Home() {
           {data && (
             <div
               id="cost"
-              className="flex overflow-hidden space-x-6"
+              className="flex overflow-x-scroll space-x-6 overflow-y-hidden scrollbar-hide"
             >
               <CardCarousel
                 id="cost"
@@ -394,7 +399,7 @@ export default function Home() {
           {data && (
             <div
               id="featured"
-              className="flex overflow-hidden space-x-6"
+              className="flex overflow-x-scroll space-x-6 overflow-y-hidden scrollbar-hide"
             >
               <CardCarousel
                 id="featured"
@@ -443,7 +448,7 @@ export default function Home() {
 
       <section className="pb-16 px-5 md:px-10 max-w-7xl mx-auto bg-[#F4F4F4]v py-4 ">
         <HomeSectionTitle text="Projects" />
-        <div className="relative space-x-4 pt-10 ">
+        <div className="relative space-x-4 pt-10   ">
           <Carousel
             ssr
             partialVisbile
