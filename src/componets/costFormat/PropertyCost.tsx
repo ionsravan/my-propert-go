@@ -1,6 +1,6 @@
 import React from 'react';
 
-function formatCost(cost: number): string {
+export function formatCost(cost: number): string {
 
   if (cost === undefined) {
     return ''; 
