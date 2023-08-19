@@ -232,12 +232,12 @@ const OtpAuthentication = () => {
             {/* <h1 className="text-2xl font-bold mb-6">Login</h1> */}
 
 
-            {isLoading ? <div className=" w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
+            {isLoading ? <div  className=" w-full bg-white shadow-md rounded px-20 pt-8 pb-12 mb-4 ">
 
 
                 <form  onSubmit={handleLoginSubmit}>
-                    <div className="mb-3 px-14 mt-8">
-                        <label className="block text-gray-400 text-sm font-bold mb-2" htmlFor="otp">
+                    <div  className="mb-3  mt-8 ">
+                        <label className="block text-gray-400 md:text-lg  font-bold mb-2" htmlFor="otp">
                             Enter your mobile number to get started.
                         </label>
                         <div style={{ height: "50px", margin: "0 0" }}
@@ -256,8 +256,8 @@ const OtpAuthentication = () => {
                         </div>
                     </div>
 
-                    <div className="px-14">
-                        <label className="flex align-middle text-gray-400 text-sm font-bold mb-2 ">
+                    <div className="">
+                        <label className="flex align-middle text-gray-400 md:text-lg font-bold mb-2 ">
                             <input
                                 type="checkbox"
                                 className="mr-2 leading-tight"
@@ -268,7 +268,7 @@ const OtpAuthentication = () => {
                         </label>
                     </div>
 
-                    <div className=" px-14 flex items-center justify-center">
+                    <div className="  flex items-center justify-center">
                         <button
                             disabled={!termsChecked}
                             className=" w-full  bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-2xl focus:outline-none focus:shadow-outline"
@@ -278,7 +278,7 @@ const OtpAuthentication = () => {
                         </button>
                     </div>
                     <div className='px-14 flex justify-center mt-6'>
-                        <p>If not registered click <span onClick={handleRegisterClick} style={{ color: "blue", fontSize: "20px", fontWeight: "bold", marginLeft: "7px" }}>Sign Up</span></p>
+                        <p className='md:text-md '>If not registered click <span onClick={handleRegisterClick} style={{ color: "blue", fontSize: "20px", fontWeight: "bold", marginLeft: "7px" }}>Sign Up</span></p>
                     </div>
                 </form>      </div> : <div className=" w-full bg-white  rounded px-8 pt-6 pb-8 mb-4 ">
                 <CircularSpinner />

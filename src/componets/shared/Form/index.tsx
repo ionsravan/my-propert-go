@@ -50,7 +50,7 @@ const FormLoginSignup = () => {
   return (
     <>
       <SignupLoginFormContainer>
-        <LoginSignupCTA />
+        {/* <LoginSignupCTA /> */}
         {/* <SingnupTemplate signupContrearller={signupController} /> */}
       </SignupLoginFormContainer>
     </>

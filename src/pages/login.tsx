@@ -7,7 +7,7 @@ const Login = () => {
   return (
     <>
       <SignupLoginFormContainer>
-        <LoginSignupCTA />
+        {/* <LoginSignupCTA /> */}
         <LoginTemplate
           url="/user/login"
           login={loginController}
