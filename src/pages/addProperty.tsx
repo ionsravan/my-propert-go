@@ -53,6 +53,10 @@ import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
 import { Footer, Navbar } from "src/componets";
+import { sassTrue } from "sass";
+
+
+
 
 
 function SearchDropdown({ options, onSelect }) {
@@ -112,36 +116,35 @@ function SearchDropdown({ options, onSelect }) {
     //   )}
     // </div>
     <div style={{ margin: "20px 0" }} className="relative">
-  <div
-    className={`relative z-10 ${
-      isOpen ? "border-blue-500" : ""
-    } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
-  >
-    <input
-      style={{ borderRadius: "18px" }}
-      type="text"
-      className="inputField"
-      placeholder={placeholder}
-      value={searchQuery}
-      onChange={handleSearchChange}
-      onClick={() => setIsOpen(true)}
-    />
-  </div>
+      <div
+        className={`relative z-10 ${isOpen ? "border-blue-500" : ""
+          } transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd `}
+      >
+        <input
+          style={{ borderRadius: "18px" }}
+          type="text"
+          className="inputField"
+          placeholder={placeholder}
+          value={searchQuery}
+          onChange={handleSearchChange}
+          onClick={() => setIsOpen(true)}
+        />
+      </div>
 
-  {isOpen && (
-    <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
-      {filteredOptions.map((option) => (
-        <div
-          key={option._id}
-          className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-          onClick={() => handleOptionSelect(option.name)}
-        >
-          {option.name}
+      {isOpen && (
+        <div className="absolute left-0 bg-white border rounded-md w-full z-20 max-h-60 overflow-y-auto">
+          {filteredOptions.map((option) => (
+            <div
+              key={option._id}
+              className="px-4 py-2 cursor-pointer hover:bg-blue-100"
+              onClick={() => handleOptionSelect(option.name)}
+            >
+              {option.name}
+            </div>
+          ))}
         </div>
-      ))}
+      )}
     </div>
-  )}
-</div>
 
   );
 }
@@ -150,8 +153,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
   console.log(navbarFooter, addPropertyAdmin, "props")
 
-  if(propertyData){
-    console.log(propertyData?.agentId?.leads[0]?.propertyId,"property")
+  if (propertyData) {
+    console.log(propertyData?.agentId?.leads[0]?.propertyId, "property")
   }
 
   // console.log(propertyData?.leads.propertyId,"property")
@@ -281,10 +284,61 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [toasted, setToasted] = useState(false);
   const [propertyId, setPropertyId] = useState("");
   const [uploadedPrimaryImage, setUploadedPrimaryImage] = useState("");
+  // const [uploadedPropertyImages, setUploadedPropertyImages] = useState([]);
   const [uploadedPropertyImages, setUploadedPropertyImages] = useState([]);
   // const [propertyFeatures, setPropertyFeatures] = useState("");
   const [selectedPropertyFeatures, setSelectedPropertyFeatures] = useState<string[]>([]);
 
+
+  // const handleImageRemove = (index) => {
+  //   const updatedImages = [...uploadedPropertyImages];
+  //   updatedImages.splice(index, 1);
+  //   setUploadedPropertyImages(updatedImages);
+  // };
+
+  const handleImageRemove = async (propertyId, index, url) => {
+
+    const removeImages = async () => {
+      try {
+        const propertyImage = {
+          propertyId:propertyId,
+          imageUrl:url
+        }
+        const res = await instance.post("/admin/deletePropertyImage",propertyImage);
+        if (res?.data) {
+          toast("Image Remove Successfully")
+
+          console.log(res.data.data,"dataimage")
+
+        }
+        const updatedImages = uploadedPropertyImages.map((property) => {
+          if (property.id === propertyId) {
+            const updatedPropertyImages = property.images[0].filter((_, i) => i !== index);
+            return { ...property, images: [updatedPropertyImages] };
+          }
+          return property;
+        });
+        setUploadedPropertyImages(updatedImages);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    removeImages();
+    // const updatedImages = uploadedPropertyImages.map((item) => {
+    //   if (item.id === propertyId) {
+    //     const newImages = [...item.images];
+    //     newImages.splice(index, 1);
+    //     return { ...item, images: newImages };
+    //   }
+    //   return item;
+    // });
+    // setUploadedPropertyImages(updatedImages);
+  };
+
+
+  if (uploadedPropertyImages) {
+    console.log(uploadedPropertyImages, "uuuuuuuuu")
+  }
 
   const handleSaleClick = () => {
     setSaleActive(true);
@@ -588,7 +642,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   // };
 
 
-  
+
   const handlePropertyFeatures = (name: string) => {
     if (selectedPropertyFeatures.includes(name)) {
       setSelectedPropertyFeatures(selectedPropertyFeatures.filter(feature => feature !== name));
@@ -597,10 +651,10 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     }
   };
 
-  
+
   useEffect(() => {
-    console.log(selectedPropertyFeatures,"tagsss")
-     }, [selectedPropertyFeatures])
+    console.log(selectedPropertyFeatures, "tagsss")
+  }, [selectedPropertyFeatures])
 
   const handleAgeClick = (name: string) => {
     setAge(name);
@@ -660,9 +714,9 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   };
 
   useEffect(() => {
-   console.log(amenities,"amen")
+    console.log(amenities, "amen")
   }, [amenities])
-  
+
 
   const handleToggle = (type: string) => {
     if (type === "Property") {
@@ -679,7 +733,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
 
   const handlePostProperty = async () => {
-    
+
 
 
 
@@ -754,19 +808,17 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     bodyFormData.append('authority', regulatory);
 
 
-    
-    if(isAdmin){
-      // const serializedPropertyTags = selectedPropertyFeatures.join(','); // Serialize the array
-      // bodyFormData.append('propertyTags', serializedPropertyTags);
-      // bodyFormData.append('propertyTags', selectedPropertyFeatures )
-      // bodyFormData.append('toggle', toggle )
+
+    if (isAdmin) {
       for (const tag of selectedPropertyFeatures) {
         bodyFormData.append('propertyTags', tag);
       }
       bodyFormData.append('propertyId', propertyId)
     }
 
-
+    if (navbarFooter === false && isAdmin === false) {
+      bodyFormData.append('propertyId', propertyId)
+    }
 
     try {
       let url;
@@ -778,21 +830,21 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
         successToastMessage = "Property Updated Successfully";
         redirectRoute = "/agent";
       } else if (isAdmin === true && addPropertyAdmin === true) {
-        url = "/admin/property/addPropertyByAdmin";
+        url = "/admin/property/addProperty";
         successToastMessage = "Property Added by Admin Successfully";
-        redirectRoute = "/admin"; 
+        redirectRoute = "/admin";
       } else if (isAdmin === true) {
         url = "/admin/property/editPropertyByAdmin";
         successToastMessage = "Property Edited by Admin Successfully";
-        redirectRoute = "/admin"; 
+        redirectRoute = "/admin";
       } else {
         url = "/agent/property/addProperty";
         successToastMessage = "Property Added Successfully";
-        redirectRoute = "/agent"; 
+        redirectRoute = "/agent";
       }
 
       const res = await instance.post(url, bodyFormData);
-   
+
       if (res.data) {
         setIsLoading(true)
         router.push(redirectRoute);
@@ -803,7 +855,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       setIsLoading(true)
       console.error("Error while adding property:", error);
       toast.error(error?.response.data.message)
-    
+
     }
 
   };
@@ -1389,7 +1441,17 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)
       setUploadedPrimaryImage(propertyData?.primaryImage)
-      setUploadedPropertyImages(propertyData?.propertyImages)
+      // setUploadedPropertyImages(propertyData?.propertyImages)
+
+      if (propertyData) {
+        const initialImages =
+          [{
+            id: propertyData?._id,
+            images: [propertyData?.propertyImages]
+          }]
+
+        setUploadedPropertyImages(initialImages);
+      }
       // setPrimaryFilesToUpload([propertyData?.primaryImage])
       // setFilesToUpload(propertyData?.propertyImages || [])
       setRegulatory(propertyData?.authority)
@@ -1975,24 +2037,39 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   </div>
                 </div> : null}
 
-                {navbarFooter === false ? <div className="m-4">
-                  <label className="inline-block mb-2 text-gray-500">
-                    Uploaded Property Images
-                  </label>
-                  <div className=" w-full h-40">
-                    <div className="w-[200px] h-40 flex space-x-2">
-                      {uploadedPropertyImages.map((curElem) => (
-                        <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
-
-                      ))}
-
-                    </div>
-
-
-
-
+                {navbarFooter === false ? (
+                  <div className="m-4">
+                    {uploadedPropertyImages.map((property) => (
+                      <div key={property.id}>
+                        <label className="inline-block mb-2 text-gray-500">
+                          Uploaded Property Images
+                        </label>
+                        <div className="w-full h-40">
+                          <div className="w-full h-40 flex space-x-2 overflow-x-hidden scrollbar-hide">
+                            {property.images[0] ? (
+                              property.images[0].map((curElem, index) => (
+                                <div  key={index} className="relative w-[150px] ">
+                                  <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
+                                  <button
+                                    onClick={() => handleImageRemove(property.id, index, curElem)}
+                                    className="absolute top-1 left-1 bg-red-500 text-white px-2 py-1 rounded-full"
+                                  >
+                                    X
+                                  </button>
+                                </div>
+                              ))
+                            ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div> : null}
+                ) : null}
+
+
+
+
+
 
 
 
@@ -2288,7 +2365,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 {unitNumberError && <p className="error">{unitNumberError}</p>}
 
                 <button style={{ marginTop: "7px" }}
-                  className="next-button rounded-xl"
+                  className="next-button"
                   onClick={handleAdditionalDetails}
                 >
                   Save and Continue
@@ -2412,7 +2489,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                       </button>
                     ))}
                   </div>
-                 ) : null} 
+                ) : null}
 
 
                 <button

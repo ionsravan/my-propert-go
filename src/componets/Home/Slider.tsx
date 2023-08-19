@@ -17,8 +17,8 @@ const Slider = ({ property }: { property: Propery }) => {
     <div >
       <div className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
         <div className="resfeaturedProjectsCard__imageBox imgHover">
-        {/* <Link href={`/details/${_id}`}> */}
-        <Link href={`/details/${slug}`}>
+        <Link href={`/details/${_id}`}>
+        {/* <Link href={`/details/${slug}`}> */}
           <Image className="lazyLoadImg"
             src={propertyImages && propertyImages.length > 0 ? propertyImages[0] : "https://images.unsplash.com/photo-1549396535-c11d5c55b9df?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60"}
             alt="Lumbini Elysee"
@@ -75,7 +75,8 @@ const Slider = ({ property }: { property: Propery }) => {
           <div className="list_header_semiBold f16">₹ {cost}Cr </div> */}
 
           <div className="space-y-1 px-3 mt-2 ">
-          <Link href={`/details/${slug}`}>
+          {/* <Link href={`/details/${slug}`}> */}
+          <Link href={`/details/${_id}`}>
             <h1 className="text-2xl font-semibold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex justify-between items-end ">

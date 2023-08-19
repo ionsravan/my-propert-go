@@ -10,11 +10,11 @@ import generateSlug from "../slug/generateSlug";
 
 const HouseCard = ({ name, propertyImages, cost, agentId, _id, location, size, areaValue, BHKconfig, availableFor, toggle, propertyType }: Propery) => {
 
-  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+  // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
 
   return (
-    // <Link href={`/details/${_id}`}>
-    <Link href={`/details/${slug}`}>
+    <Link href={`/details/${_id}`}>
+   {/* <Link href={`/details/${slug}`}> */}
       <div className=" relative  grow  rounded-2xl p-4 shadow-md border font-manrope bg-white  ">
         <div className="relative h-64 w-[300px]">
           <Image

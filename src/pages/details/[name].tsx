@@ -260,14 +260,14 @@ const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
   const instance = useAxios();
   const router = useRouter();
-  const slug = router.query["name"];
+  // const slug = router.query["name"];
 
-  // const id = router.query["name"];
+  const id = router.query["name"];
   const [cookies, setCookes] = useCookies(["jwtToken"]);
   // const [data, setData] = useState([])
 
 
-const id = getIDFromSlug(slug);
+// const id = getIDFromSlug(slug);
 
   // const _id = slug ? extractIdFromSlug(slug) : null;
 
@@ -609,7 +609,7 @@ const id = getIDFromSlug(slug);
                     null
                   )}
                 </div>
-                
+
           {data?.result?.propertyImages && (
             <MyModal isOpen={isOpen} setIsOpen={setIsOpen}>
               <ImageSlider

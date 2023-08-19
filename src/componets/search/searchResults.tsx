@@ -198,7 +198,7 @@ const HomeResult = ({
               </div>
             ) : null}
 
-            <div className="w-full items-center md:flex justify-between mt-4">
+            <div className="w-full items-center md:flex justify-between mt-4 space-x-4">
               <div>
                 <div className="flex space-x-4 text-sm">
                   {(propertyTags && propertyTags.length > 0) ? (

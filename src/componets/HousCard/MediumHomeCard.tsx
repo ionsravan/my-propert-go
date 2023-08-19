@@ -28,12 +28,12 @@ const MediumHouseCard = ({
   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
 
 
-  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+  // const slug = generateSlug(toggle, name:undefined, BHKconfig, propertyType, availableFor, location.name, _id);
   
 
   return (
-    // <Link href={`/details/${_id}`}>
-    <Link href={`/details/${slug}`}>
+    <Link href={`/details/${_id}`}>
+     {/* <Link href={`/details/${slug}`}> */}
       <div className="min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
         <div className="relative h-64 mb-2">
           <Image
@@ -46,8 +46,8 @@ const MediumHouseCard = ({
         <div className="space-y-1 px-3 ">
           <h1 className="text-2xl font-semibold text-TitleColor">{`${BHKconfig}Bhk Flat for ${availableFor} in...   `}</h1>
           <div  className="flex justify-between items-end ">
-            <div  className="flex flex-col">
-              <p className="flex items-center text-md "><HiLocationMarker style={{marginRight:"5px"}} />{location.name}</p>
+            <div className="flex flex-col">
+              <p className="flex items-center text-md "><HiLocationMarker style={{marginRight:"5px"}} />{location?.name}</p>
             <p  className="flex items-center text-primaryBlue text-lg">
               <FaRupeeSign />
               <span className="font-normal "><PropertyCost cost={cost} /></span>
