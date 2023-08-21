@@ -937,7 +937,7 @@ const Details = () => {
                 </div>
               </div>
               {similarData && (
-                <div id="feat" className="flex overflow-hidden w-full">
+                <div id="feat" className="flex overflow-y-scroll scrollbar-hide w-full">
                   <CardCarousel
                     id="feat"
                     data={similarData}

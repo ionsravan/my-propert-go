@@ -4,7 +4,7 @@ import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from '../contact';
 
-const PropertyCare = () => {
+const EarnWithUs = () => {
 
 
   return <>
@@ -141,7 +141,6 @@ const PropertyCare = () => {
         </section>
       </div>
 
-      
 
       <h1 style={{fontSize:"30px",marginTop:"30px"}}  className='text-center  '>Book A FREE Design Session</h1>
       <h1 style={{fontSize:"30px"}}  className='text-center  '>Meet a designer</h1>
@@ -162,7 +161,7 @@ const PropertyCare = () => {
 
   </>
 };
-export default PropertyCare;
+export default EarnWithUs;
 
 
 

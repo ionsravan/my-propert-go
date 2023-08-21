@@ -74,6 +74,9 @@ const Footer = () => {
   const handleBlogs = () => {
     router.push("/blogs")
   }
+  const handlePrivacy = () => {
+    router.push("/privacyPolicy")
+  }
 
   const handleNewsletter = async () => {
 
@@ -100,7 +103,7 @@ const Footer = () => {
     } catch (error) {
       console.error("Error while adding property:", error);
     }
- 
+
 
   }
   const handleNewsChange = (e) => {
@@ -117,12 +120,31 @@ const Footer = () => {
           apartments to help people find their dream home */}
             Check our Social
           </p>
+          {/* <div className="flex text-2xl space-x-4 items-center">
+            <GrFacebookOption onClick={()} className="text-primaryBlue" />
+            <GrTwitter onClick={()} className="text-primaryBlue" />
+            <GrInstagram onClick={()} className="text-primaryBlue" />
+            <GrYoutube onClick={()} className="text-primaryBlue" />
+          </div> */}
           <div className="flex text-2xl space-x-4 items-center">
-            <GrFacebookOption className="text-primaryBlue" />
-            <GrTwitter className="text-primaryBlue" />
-            <GrInstagram className="text-primaryBlue" />
-            <GrYoutube className="text-primaryBlue" />
+            <GrFacebookOption
+              onClick={() => window.open("https://www.facebook.com/WonderPlots", "_blank")}
+              className="text-primaryBlue cursor-pointer"
+            />
+            <GrTwitter
+              onClick={() => window.open("https://twitter.com/WonderPlotsReal", "_blank")}
+              className="text-primaryBlue cursor-pointer"
+            />
+            <GrInstagram
+              onClick={() => window.open("https://www.instagram.com/wonderplots/", "_blank")}
+              className="text-primaryBlue cursor-pointer"
+            />
+            <GrYoutube
+              onClick={() => window.open("https://www.youtube.com/@WonderPlots", "_blank")}
+              className="text-primaryBlue cursor-pointer"
+            />
           </div>
+
         </div>
         {/* {opts?.map((item, index) => {
         return <Seciont key={index} items={item?.items} title={item.title} />;
@@ -140,8 +162,16 @@ const Footer = () => {
           ].map((item, index) => (
             <p
               key={index}
-              className={`text-white/70 ${item === "Contact us" ? "cursor-pointer" : ""}`}
-              onClick={item === "Contact us" ? handleContact : undefined}
+              className={`text-white/70 cursor-pointer`}
+              onClick={() =>
+                item === "Interior Designing"
+                  ? router.push("/services/interiorDesigning")
+                  : item === "Earn with Us"
+                    ? router.push("/services/earnWithUs")
+                    : item === "Property Care"
+                      ? router.push("/services/propertyCare")
+                      : null
+              }
             >
               {item}
             </p>
@@ -161,20 +191,22 @@ const Footer = () => {
             "Sitemap",
           ].map((item, index) => (
             <p
-            key={index}
-            className={`text-white/70 ${
-              item === "Contact us" || item === "Blogs" ? "cursor-pointer" : ""
-            }`}
-            onClick={
-              item === "Contact us"
-                ? handleContact
+              key={index}
+              className={`text-white/70 cursor-pointer `}
+              onClick={() => item === "Contact us"
+                ? router.push("/contact")
                 : item === "Blogs"
-                ? handleBlogs
-                : undefined
-            }
-          >
-            {item}
-          </p>
+                  ? router.push("/blogs")
+                  : item === "Terms and Conditions"
+                    ? router.push("/termsAndCondition")
+                    : item === "Privacy Policy"
+                      ? router.push("/privacyPolicy")
+                      : null
+
+              }
+            >
+              {item}
+            </p>
           ))}
         </div>
         <div className="space-y-5">
@@ -209,17 +241,17 @@ const Footer = () => {
               {/* <input style={{ padding: "5px 5px", marginBottom: "10px" }}   value={newsEmail}  onChange={handleNewsChange} placeholder="Enter your Email" type="text" /> */}
               {/* <TextField hx={addForm} placeholder="Enter Email"/> */}
               <Input
-                  // Icon={AiOutlineUser}
-                  placeholder="Enter Email"
-                  value={newsEmail}
-                  // value={name}
-                  setValue={setNewsEmail}
-                  
-                />
+                // Icon={AiOutlineUser}
+                placeholder="Enter Email"
+                value={newsEmail}
+                // value={name}
+                setValue={setNewsEmail}
+
+              />
               {/* <button style={{ display: "block", padding: "5px 10px", color: "blue", backgroundColor: "white", borderRadius: "5px" }}>Submit</button> */}
               <button
-              style={{borderRadius:"20px"}}
-              onClick={handleNewsletter}
+                style={{ borderRadius: "20px" }}
+                onClick={handleNewsletter}
                 // style={{position:"absolute",bottom:"20px",left:"130px",padding:"10px 35px",borderRadius:"20px"}}
                 className="mt-3 block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
 

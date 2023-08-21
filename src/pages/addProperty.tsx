@@ -49,6 +49,7 @@ import { cx } from "../utills/all";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
 import { availableAmenities } from "src/@global/Data";
+import { adminAvailableAmenities } from "src/@global/Data";
 import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
@@ -301,14 +302,14 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     const removeImages = async () => {
       try {
         const propertyImage = {
-          propertyId:propertyId,
-          imageUrl:url
+          propertyId: propertyId,
+          imageUrl: url
         }
-        const res = await instance.post("/admin/deletePropertyImage",propertyImage);
+        const res = await instance.post("/admin/deletePropertyImage", propertyImage);
         if (res?.data) {
           toast("Image Remove Successfully")
 
-          console.log(res.data.data,"dataimage")
+          console.log(res.data.data, "dataimage")
 
         }
         const updatedImages = uploadedPropertyImages.map((property) => {
@@ -2022,20 +2023,22 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
 
 
-                {navbarFooter === false ? <div className="m-4">
-                  <label className="inline-block mb-2 text-gray-500">
-                    Uploaded Primary Image
-                  </label>
-                  <div className=" w-full h-40">
-                    <div className="w-[200px] h-40">
-                      <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={uploadedPrimaryImage} alt="" />
+                {navbarFooter === false && uploadedPrimaryImage !== "" ? (
+                  <div className="m-4">
+                    <label className="inline-block mb-2 text-gray-500">
+                      Uploaded Primary Image
+                    </label>
+                    <div className="w-full h-40">
+                      <div className="w-[200px] h-40">
+                        <img
+                          style={{ width: "100%", objectFit: "cover", height: "100%" }}
+                          src={uploadedPrimaryImage}
+                          alt=""
+                        />
+                      </div>
                     </div>
-
-
-
-
                   </div>
-                </div> : null}
+                ) : null}
 
                 {navbarFooter === false ? (
                   <div className="m-4">
@@ -2048,7 +2051,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                           <div className="w-full h-40 flex space-x-2 overflow-x-hidden scrollbar-hide">
                             {property.images[0] ? (
                               property.images[0].map((curElem, index) => (
-                                <div  key={index} className="relative w-[150px] ">
+                                <div key={index} className="relative w-[150px] ">
                                   <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
                                   <button
                                     onClick={() => handleImageRemove(property.id, index, curElem)}
@@ -2389,7 +2392,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   {" "}
                   Amenities
                 </p>
-                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {isAdmin === false ? <div style={{ display: "flex", flexWrap: "wrap" }}>
                   {availableAmenities.map((amenity, index) => (
                     <div
                       key={index}
@@ -2422,7 +2425,40 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                       </label>
                     </div>
                   ))}
-                </div>
+                </div> : <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {adminAvailableAmenities.map((amenity, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        margin: "5px",
+                        display: "flex",
+                        padding: "5px",
+                        alignItems: "center",
+                      }}
+                      className="amenitiesDiv"
+                    >
+                      <input
+                        // key={index}
+                        required
+                        style={{
+                          marginRight: "5px",
+                          width: "17px",
+                          height: "17px",
+                        }}
+                        type="checkbox"
+                        checked={amenities.includes(amenity.name)}
+                        onChange={() => handleAmenityToggle(amenity.name)}
+                      />
+                      <label
+                        style={{ margin: "0" }}
+                        // key={index}
+                        className="amenity-checkbox"
+                      >
+                        {amenity.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>}
                 {amenitiesError && <p className="error">{amenitiesError}</p>}
 
                 <h2 style={{ fontWeight: "bold", marginBottom: "10px" }}>

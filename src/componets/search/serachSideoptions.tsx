@@ -244,6 +244,7 @@ const LocationsFilter = ({ areas }: { areas: area[] }) => {
 
 const BhkFilter = () => {
   const { BHKconfig, setBHKconfig } = useFilterContext();
+  // console.log(BHKconfig,"BHK")
   return (
     <div>
       <h1 className="text-[16px] pb-5">BHK</h1>
@@ -254,36 +255,21 @@ const BhkFilter = () => {
           name="1 BHK"
           values="1"
         />
-        {/* <FilterCheckBox
-          setEnabled={setBHKconfig}
-          enabled={BHKconfig === "1.5"}
-          name="1.5 BHK"
-          values="1.5"
-        /> */}
+   
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "2"}
           name="2 BHK"
           values="2"
         />
-        {/* <FilterCheckBox
-          setEnabled={setBHKconfig}
-          enabled={BHKconfig === "3.5"}
-          name="2.5 BHK"
-          values="2.5"
-        /> */}
+   
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "3"}
           name="3 BHK"
           values="3"
         />
-        {/* <FilterCheckBox
-          setEnabled={setBHKconfig}
-          enabled={BHKconfig === "3.5"}
-          name="3.5 BHK"
-          values="3.5"
-        /> */}
+    
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "4"}
@@ -368,6 +354,7 @@ const PossesionFilter = () => {
 };
 const PropertyToggleFilter = () => {
   const { toggle, setToggle } = useFilterContext();
+  console.log(toggle,"BHK")
 
   return (
     <div>

@@ -188,7 +188,7 @@ const SearchAll = () => {
         {/* top part */}
         <div className="p-4 md:pb-10 flex items-center justify-between">
           <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
-            {resCount} Results in {name}, showing active ones
+            {/* {resCount} Results in {name}, showing active ones */}
           </h1>
           <div
             className="lg:hidden block p-3 cursor-pointer"

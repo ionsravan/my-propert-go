@@ -226,7 +226,7 @@ const Header = () => {
           Maiores?
         </p>
       </div> */}
-      <div  className="flex space-x-4 mb-8 mt-8">
+      <div  className="flex md:space-x-4 mb-8 mt-8 md:flex-row md:items-end flex-col space-y-3">
         {homeChipsData.slice(0,3).map(({ Icon, name, value }) => {
           return (
             <div
