@@ -129,10 +129,6 @@ const Navbar = () => {
     alt="Logo"
     width={150}
     height={45}
-
-    // layout="fill" 
-    // objectFit="cover"
-    // priority 
   />
 </div>
 

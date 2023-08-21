@@ -29,11 +29,12 @@ const HomeResult = ({
   agentId
 }: Propery) => {
 
-  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+  // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
   return <>
 
     {(toggle === "Project" && status === "active") ? (
-      <Link href={`/details/${slug}`}>
+      // <Link href={`/details/${slug}`}>
+      <Link href={`/details/${_id}`}>
         <div
           style={{ height: "500px", position: "relative" }}
           className={`mb-5 w-full   rounded-lg flex flex-col md:flex-row cursor-pointer bg-gray-50 `}
@@ -114,7 +115,8 @@ const HomeResult = ({
         </div>
       </Link>
     ) : (toggle === "Property" && status === "active") ? (
-      <Link href={`/details/${slug}`}>
+      // <Link href={`/details/${slug}`}>
+      <Link href={`/details/${_id}`}>
         <div
           style={{ position: "relative" }}
           className={`mb-5 w-full  rounded-lg flex flex-col md:flex-row cursor-pointer bg-gray-50

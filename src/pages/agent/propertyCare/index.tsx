@@ -49,7 +49,7 @@ const myPropertyCare = () => {
 
         {propertyCare !== undefined &&
           <div
-          style={{border:"2px soid red"}}
+            style={{ border: "2px soid red" }}
             className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full h-full "
           // ^-- Use full width on small screens, half width on larger screens
           >
@@ -59,11 +59,8 @@ const myPropertyCare = () => {
                   <div className="flex flex-col sm:flex-row justify-between">
                     <p className="text-xl font-bold mb-2">Name: {currentProperty.name}</p>
                   </div>
-
                   <p className="text-lg font-bold mb-2">Images:</p>
                   <div className="w-full flex space-x-2 flex-col items-center justify-center overflow-y-hidden scrollbar-hide ">
-
-
                     {currentProperty.propertyImages.map((curElem, index) => {
                       return (
                         <>
@@ -71,15 +68,10 @@ const myPropertyCare = () => {
                             <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
 
                           </div>
-
-
-
                         </>
                       )
                     })}
                   </div>
-                  {/* <p className="text-lg font-bold mb-2">Lead Count: {currentProperty.leadCount}</p>
-          <p className="text-lg font-bold mb-2 text-blue-600">Price: {currentProperty.price}</p> */}
                 </div>
               )
             })}

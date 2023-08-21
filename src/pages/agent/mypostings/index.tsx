@@ -77,7 +77,8 @@ export const PostingCard = ({
       <div className="p-5 px-6 w-full">
         <div className="flex w-full justify-between">
           <div>
-            <Link href={`/details/${slug}`}>
+            {/* <Link href={`/details/${slug}`}> */}
+            <Link href={`/details/${_id}`}>
               <h1 className="text-xl font-bold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">
