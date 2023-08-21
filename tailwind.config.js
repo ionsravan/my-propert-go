@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        manrope: ["Manrope"],
+        manrope: ["Roboto Slab", "Open Sans"],
       },
       colors: {
         primaryBlue: "#0078DB",
