@@ -486,7 +486,10 @@ const TypeFilter = ({
     { label: "villa", value: "Villa" },
     { label: "flat", value: "Flat" },
     { label: "pg", value: "PG" },
-    { label: "plot", value: "Plot" },
+    { label: "agriculture land", value: "Agriculture Land" },
+    { label: "penthouse", value: "Penthouse" },
+    { label: "individual house", value: "Individual House" },
+    { label: "stutio apartment", value: "Stutio Apartment" },
     // { label: "building type", value: "building type" },
   ],
 }: {
@@ -611,9 +614,9 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
             <PossesionFilter />
           </SidBarItemContainer>
           {/* amenties */}
-          <SidBarItemContainer isBottomBorder>
+          {/* <SidBarItemContainer isBottomBorder>
             <div>{ams && <Amenties data={ams?.result} />}</div>
-          </SidBarItemContainer>
+          </SidBarItemContainer> */}
           <SidBarItemContainer isBottomBorder>
             <FurnishingFilter />
           </SidBarItemContainer>

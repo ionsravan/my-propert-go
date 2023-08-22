@@ -60,14 +60,24 @@ import { sassTrue } from "sass";
 
 
 
-function SearchDropdown({ options, onSelect }) {
+function SearchDropdown({ options, onSelect, propertyData }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
+
+
+  useEffect(() => {
+    if (propertyData) {
+      setSearchQuery(propertyData?.location.name);
+      setSelectedOption(null);
+    }
+  }, [propertyData]);
+  
+
   const filteredOptions = options?.filter((option) =>
-    option.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  option.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -85,37 +95,7 @@ function SearchDropdown({ options, onSelect }) {
 
 
   return (
-    // <div style={{ margin: "20px 0" }} className="relative">
-    //   <div
-    //     className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
-    //   >
-    //     <input
-    //       style={{ borderRadius: "18px" }}
-    //       type="text"
-    //       className="inputField"
-    //       placeholder={placeholder}
-    //       value={searchQuery}
-    //       onChange={handleSearchChange}
-    //       onClick={() => setIsOpen(true)}
-    //     />
 
-
-    //   </div>
-
-    //   {isOpen && (
-    //     <div className="absolute left-0  bg-white border rounded-md  w-full z-20">
-    //       {filteredOptions.map((option) => (
-    //         <div
-    //           key={option._id}
-    //           className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-    //           onClick={() => handleOptionSelect(option.name)}
-    //         >
-    //           {option.name}
-    //         </div>
-    //       ))}
-    //     </div>
-    //   )}
-    // </div>
     <div style={{ margin: "20px 0" }} className="relative">
       <div
         className={`relative z-10 ${isOpen ? "border-blue-500" : ""
@@ -281,7 +261,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [metaTittle, setMetaTittle] = useState("");
   const [metaDiscription, setMetaDiscription] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [selectedOption, setSelectedOption] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [toasted, setToasted] = useState(false);
   const [propertyId, setPropertyId] = useState("");
@@ -1422,7 +1403,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       // setBhkConfig(String(parseInt(propertyData?.BHKconfig, 10)));
       // setArea(propertyData?.area.name)
       setAreaValue(propertyData?.areaValue)
-      setAreaType(propertyData?.areaType)
+      setAreaUnits(propertyData?.areaType)
       setFloorNumber(propertyData?.floorNo)
       setFloorCount(propertyData?.floorCount)
       setTower(propertyData?.towerBlock)
@@ -1430,7 +1411,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       setAddtionalRoomButton(propertyData?.additionalRooms)
       // setCity(propertyData?.location.name)
       setAddress(propertyData?.address)
-      setLocality(propertyData?.location?.name)
+      // setSelectedOption(null);
+      // setSearchQuery(propertyData?.location?.name)
       // setAmenities(JSON.parse(propertyData?.amenities))
       setAmenities(propertyData?.amenities)
 
@@ -1805,7 +1787,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 </div> */}
 
                 <div>
-                  <SearchDropdown options={loc?.result} onSelect={handleLocationSelect} />
+                  <SearchDropdown propertyData={propertyData} options={loc?.result} onSelect={handleLocationSelect} />
                 </div>
                 {localityError && <p className="error">{localityError}</p>}
 
@@ -1833,7 +1815,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                     placeholder=" Enter Price"
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
@@ -1886,7 +1868,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                       placeholder="Enter Area"
                       required
                       className="inputField"
-                      type="text"
+                      type="number"
                       id="area"
                       value={size}
                       onChange={(e) => setSize(e.target.value)}
@@ -1923,7 +1905,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                     placeholder="Enter Cost per sq.ft/yd/acres value"
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="area"
                     value={areaValue}
                     onChange={(e) => setAreaValue(e.target.value)}
@@ -2321,7 +2303,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="floor"
                     placeholder="Floor No."
                     value={floorNumber}
@@ -2337,7 +2319,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="tower"
                     placeholder="Tower/Block"
                     value={tower}
@@ -2351,7 +2333,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="floorCount"
                     placeholder="Total Floor Count"
                     value={floorCount}
@@ -2365,7 +2347,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="unitNumber"
                     placeholder="Unit No"
                     value={unitNumber}

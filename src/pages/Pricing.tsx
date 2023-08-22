@@ -13,6 +13,7 @@ import CircularSpinner from "src/componets/circularLoader";
 import { Footer, Navbar } from "src/componets";
 import CustomLoader from "src/componets/shared/Loader";
 import { useRouter } from "next/router";
+import Image from 'next/image';
 
 
 const subscriptionPacks = [
@@ -280,6 +281,18 @@ const PricingPopup: React.FC = ({ planId, closeModal, planName }) => {
               />
             </label>
           </div>
+        </div>
+      </div>
+      <div className="flex flex-col items-center justify-center">
+        <div>
+          <Image
+            src="/qr.jpg"
+            alt="Qr code"
+            width={500}
+            height={400} />
+        </div>
+        <div>
+          <p>Upi id : 9494574368@ybl</p>
         </div>
       </div>
       {buttonHide === false ? <button

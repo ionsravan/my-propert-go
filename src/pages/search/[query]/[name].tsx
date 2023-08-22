@@ -132,6 +132,13 @@ const SearchAll = () => {
     }
   }
 
+  useEffect(() => {
+
+    console.log(PropertyResult,"resultP")
+
+  }, [PropertyResult])
+  
+
   const {
     // area,
     selected,

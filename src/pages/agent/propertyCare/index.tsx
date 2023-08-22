@@ -49,32 +49,35 @@ const myPropertyCare = () => {
 
         {propertyCare !== undefined &&
           <div
-           
+
             className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full h-full "
-   
+
           >
-            {propertyCare.map((currentProperty) => {
+      
+            {propertyCare.map((currentProperty, propertyIndex) => {
               return (
-                <div   className="my-3">
+                <div key={propertyIndex} className="my-3">
                   <div className="flex flex-col sm:flex-row justify-between">
-                    <p className="text-xl font-bold mb-2">Name: {currentProperty.name}</p>
+                    <p className="text-2xl font-bold mb-2">Name: {currentProperty.name}</p>
                   </div>
                   <p className="text-lg font-bold mb-2">Images:</p>
-                  <div  className=" p-2 w-full flex space-x-2 items-start justify-start overflow-scroll scrollbar-hide ">
+                  <div className="p-2 w-full flex space-x-2 items-start justify-start overflow-x-scroll scrollbar-hide">
                     {currentProperty.propertyImages.map((curElem, index) => {
                       return (
-                        <>
-                          <div  key={index} className=" w-[400px]  ">
-                            <img style={{ width: "100%", objectFit: "cover", height: "100%",borderRadius:"15px" }} src={curElem} alt="" />
-
-                          </div>
-                        </>
-                      )
+                        <div key={index} className="w-[500px] flex-shrink-0">
+                          <img
+                            style={{ width: "100%", objectFit: "cover", height: "100%", borderRadius: "15px" }}
+                            src={curElem}
+                            alt=""
+                          />
+                        </div>
+                      );
                     })}
                   </div>
                 </div>
-              )
+              );
             })}
+
           </div>
         }
       </div>

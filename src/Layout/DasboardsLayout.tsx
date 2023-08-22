@@ -22,30 +22,25 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
 
   
 
-  // useEffect(() => {
-  //   if (cookies.jwtToken == undefined) {
-  //     router.push(`/login`);
-  //   }
-  // }, [cookies.jwtToken, router.pathname]);
-
-  
-
-  // useEffect(() => {
-  //   if (cookies.jwtToken == undefined) {
-  //     router.push(`${router.pathname}/login`);
-  //   }
-  // }, [cookies.jwtToken, router.pathname]);
+  const deleteCookie = (name) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
 
   const handleLogout = () => {
-    const adminValue = localStorage.getItem("isAdmin");
+    setTimeout(() => {
+      // removeCookie("jwtToken");
+      deleteCookie('jwtToken');
+      localStorage.removeItem('userId');
+      router.push("/")
 
-    removeCookie("jwtToken");
-    let url = adminValue ? "/admin/login" : "login"
-    router.push(url)
-    toast.success("Logout Succesfully", {
-      position: "bottom-center",
-      type: "success",
-    });
+      toast("Logout Succesfully", {
+        position: "bottom-center",
+        type: "success",
+      });
+     
+     
+    }, 1000);
+
   }
 
   return (
@@ -91,6 +86,7 @@ const DashBoardLayout = ({ children, Navbar }: Props) => {
         <Navbar />
         <div  className="p-3 py-6">
           <button
+          // style={{border:"2px solid red"}}
             onClick={handleLogout}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
