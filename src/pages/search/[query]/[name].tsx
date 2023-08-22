@@ -216,7 +216,7 @@ const SearchAll = () => {
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div  className="lg:ml-10 w-full overflow-hidden ">
+          <div style={{marginBottom:"50px"}}  className="lg:ml-10 w-full overflow-hidden ">
             {PropertyResult?.length ? (
               <SearchResult data={PropertyResult} />
             ) : (

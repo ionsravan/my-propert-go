@@ -213,7 +213,7 @@ const Footer = () => {
           <h1 className="font-semibold text-white">Contact Us</h1>
           <div>
             <p className="text-xs text-white/75 max-w-xs leading-normal">
-              Toll Free - 08712287222
+              Contact - 08712287222
             </p>
             {/* <p className="text-xs text-white/75 max-w-xs leading-normal">
             Monday - Saturday (9:00AM to 11:00PM IST)

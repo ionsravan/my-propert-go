@@ -49,23 +49,23 @@ const myPropertyCare = () => {
 
         {propertyCare !== undefined &&
           <div
-            style={{ border: "2px soid red" }}
+           
             className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full h-full "
-          // ^-- Use full width on small screens, half width on larger screens
+   
           >
             {propertyCare.map((currentProperty) => {
               return (
-                <div className="mb-6">
+                <div   className="my-3">
                   <div className="flex flex-col sm:flex-row justify-between">
                     <p className="text-xl font-bold mb-2">Name: {currentProperty.name}</p>
                   </div>
                   <p className="text-lg font-bold mb-2">Images:</p>
-                  <div className="w-full flex space-x-2 flex-col items-center justify-center overflow-y-hidden scrollbar-hide ">
+                  <div  className=" p-2 w-full flex space-x-2 items-start justify-start overflow-scroll scrollbar-hide ">
                     {currentProperty.propertyImages.map((curElem, index) => {
                       return (
                         <>
-                          <div key={index} className=" w-[400px] ">
-                            <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
+                          <div  key={index} className=" w-[400px]  ">
+                            <img style={{ width: "100%", objectFit: "cover", height: "100%",borderRadius:"15px" }} src={curElem} alt="" />
 
                           </div>
                         </>
