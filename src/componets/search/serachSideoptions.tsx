@@ -282,17 +282,17 @@ const BhkFilter = () => {
           name="5 BHK"
           values="5"
         />
-        <FilterCheckBox
+        {/* <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "6"}
           name="6 BHK"
           values="6"
-        />
+        /> */}
         <FilterCheckBox
           setEnabled={setBHKconfig}
-          enabled={BHKconfig === "6+"}
-          name="6+ BHK"
-          values="6+"
+          enabled={BHKconfig === "5+"}
+          name="5+ BHK"
+          values="5+"
         />
       </div>
     </div>
@@ -383,18 +383,18 @@ const AvailablePropertyFilter = () => {
       <div className="space-y-3">
         <FilterCheckBox
           setEnabled={setAvailableFor}
-          enabled={availableFor === "Rent"}
-          name="Rent"
+          enabled={availableFor === "rent"}
+          name="rent"
         />
         <FilterCheckBox
           setEnabled={setAvailableFor}
-          enabled={availableFor === "Sale"}
-          name="Sale"
+          enabled={availableFor === "sale"}
+          name="sale"
         />
         <FilterCheckBox
           setEnabled={setAvailableFor}
-          enabled={availableFor === "Development"}
-          name="Development Sites"
+          enabled={availableFor === "development"}
+          name="development"
         />
       </div>
     </div>
@@ -405,17 +405,17 @@ const BudgetFilter = () => {
   const { min, setMax, setMin, max } = useFilterContext();
 
   const minmin = 0;
-  const maxmax = 1000;
+  const maxmax = 200000000;
 
-  const [value, setValue] = useState<number[]>([0, 100]);
+  const [value, setValue] = useState<number[]>([0, 200000000]);
 
   const minDebounced = debounce((val) => {
     setMin(val);
-  }, 2000);
+  }, 20000);
 
   const maxDebounced = debounce((val) => {
     setMax(val);
-  }, 2000);
+  }, 20000);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     if (Array.isArray(newValue)) {
@@ -471,9 +471,9 @@ const BudgetFilter = () => {
           />
         </Stack>
         <div className="flex text-[#42526E] space-x-2 items-center pl-2 ">
-          <label htmlFor="" className="text-sm">
+          {/* <label htmlFor="" className="text-sm">
             in Lacs
-          </label>
+          </label> */}
         </div>
       </div>
     </div>
@@ -483,10 +483,11 @@ const BudgetFilter = () => {
 const TypeFilter = ({
   areas = [
     { label: "all", value: "" },
-    { label: "villa", value: "villa" },
-    { label: "appartment", value: "appartment" },
-    { label: "pg", value: "pg" },
-    { label: "building type", value: "building type" },
+    { label: "villa", value: "Villa" },
+    { label: "flat", value: "Flat" },
+    { label: "pg", value: "PG" },
+    { label: "plot", value: "Plot" },
+    // { label: "building type", value: "building type" },
   ],
 }: {
   areas?: any;

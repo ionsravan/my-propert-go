@@ -26,15 +26,16 @@ const HomeResult = ({
   propertyType,
   propertyTags,
   status,
-  agentId
+  agentId,
+  slug
 }: Propery) => {
 
   // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
   return <>
 
-    {(toggle === "Project" && status === "active") ? (
+    {(toggle === "Project") ? (
       // <Link href={`/details/${slug}`}>
-      <Link href={`/details/${_id}`}>
+      <Link href={`/details/${slug}`}>
         <div
           style={{ height: "500px", position: "relative" }}
           className={`mb-5 w-full   rounded-lg flex flex-col md:flex-row cursor-pointer bg-gray-50 `}
@@ -114,9 +115,9 @@ const HomeResult = ({
           </div>
         </div>
       </Link>
-    ) : (toggle === "Property" && status === "active") ? (
-      // <Link href={`/details/${slug}`}>
-      <Link href={`/details/${_id}`}>
+    ) : (toggle === "Property") ? (
+      <Link href={`/details/${slug}`}>
+       {/* <Link href={`/details/${_id}`}> */}
         <div
           style={{ position: "relative" }}
           className={`mb-5 w-full  rounded-lg flex flex-col md:flex-row cursor-pointer bg-gray-50
@@ -196,7 +197,7 @@ const HomeResult = ({
             </div>
             {agentId ? (
               <div className="absolute left-2 top-2">
-                <p className="bg-primaryBlue text-white px-3 py-2 rounded-3xl">{agentId.plan.planId.tags[0]}</p>
+                <p className="bg-primaryBlue text-white px-3 py-2 rounded-3xl">{agentId?.plan?.planId?.tags[0]}</p>
               </div>
             ) : null}
 
@@ -262,7 +263,7 @@ const SearchResult = ({ data }: Props) => {
   useEffect(() => {
     if (filteredSeach) {
       console.log(filteredSeach,"Filter")
-      // setResCount(filteredSeach?.length);
+      setResCount(filteredSeach?.length);
     }
   }, [filteredSeach]);
 

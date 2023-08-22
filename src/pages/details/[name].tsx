@@ -260,14 +260,17 @@ const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
   const instance = useAxios();
   const router = useRouter();
-  // const slug = router.query["name"];
+  const slug = router.query["name"];
 
-  const id = router.query["name"];
+  // const id = router.query["name"];
   const [cookies, setCookes] = useCookies(["jwtToken"]);
   // const [data, setData] = useState([])
 
 
-// const id = getIDFromSlug(slug);
+
+
+
+const id = getIDFromSlug(slug);
 
   // const _id = slug ? extractIdFromSlug(slug) : null;
 
@@ -478,7 +481,7 @@ const Details = () => {
                     {/* <GrStar className="text-2xl text-yellow-300" /> */}
                     {/* <span className="text-sm md:text-2xl">4.6</span> */}
                   </p>
-                  <p className="text-xs md:text-xl">₹{data?.result.areaValue}/Sq.Yd</p>
+                  <p className="text-xs md:text-xl">₹{data?.result.areaValue}/{data?.result.areaType}</p>
 
                 </div>
 
@@ -517,7 +520,7 @@ const Details = () => {
                  <AiOutlineShareAlt  onClick={handleShareClick} style={{fontSize:"25px"}}/>
                 </div>
               </div>
-              <p className="text-lg font-medium mt-4 ">Area:{data?.result.size} Sq.Yd</p>
+              <p className="text-lg font-medium mt-4 ">Area:{data?.result.size} {data?.result.areaType}</p>
             </div>
 
           </div>
