@@ -134,10 +134,10 @@ const SearchAll = () => {
 
   useEffect(() => {
 
-    console.log(PropertyResult,"resultP")
+    console.log(PropertyResult, "resultP")
 
   }, [PropertyResult])
-  
+
 
   const {
     // area,
@@ -194,8 +194,13 @@ const SearchAll = () => {
       <div className="lg:p-10 md:p-8 mx-auto font-manrope overflow-hidden">
         {/* top part */}
         <div className="p-4 md:pb-10 flex items-center justify-between">
-          <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
+          {/* <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
             {resCount} Results in {name}
+          </h1> */}
+          <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
+            {PropertyResult?.length === 0
+              ? `0 Results in ${name}`
+              : `${resCount} Results in ${name}`}
           </h1>
           <div
             className="lg:hidden block p-3 cursor-pointer"
@@ -205,15 +210,15 @@ const SearchAll = () => {
           </div>
         </div>
         {/* main part */}
-        <div  className="flex w-full overflow-hidden ">
-          <div  className="hidden lg:block  border   h-max  bg-white w-full shrink  max-w-[290px]  rounded-lg p-4">
+        <div className="flex w-full overflow-hidden ">
+          <div className="hidden lg:block  border   h-max  bg-white w-full shrink  max-w-[290px]  rounded-lg p-4">
             <SearchSideOptions
               data={PropertyResult}
               setData={setPropertyResult}
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div 
+          <div
             className={`absolute z-40 top-0 left-0 transition-all duration-150 ease-in-out  ${open ? "-translate-x-0" : "-translate-x-full"
               }  border  h-screen overflow-scroll   bg-white w-full shrink  max-w-[290px]  rounded-lg p-4`}
           >
@@ -223,7 +228,7 @@ const SearchAll = () => {
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div style={{marginBottom:"50px"}}  className="lg:ml-10 w-full overflow-hidden ">
+          <div style={{ marginBottom: "50px" }} className="lg:ml-10 w-full overflow-hidden ">
             {PropertyResult?.length ? (
               <SearchResult data={PropertyResult} />
             ) : (

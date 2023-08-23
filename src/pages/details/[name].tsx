@@ -478,8 +478,7 @@ const id = getIDFromSlug(slug);
                 </div>
                 <div className=" space-x-2">
                   <p className="flex items-center space-x-2">
-                    {/* <GrStar className="text-2xl text-yellow-300" /> */}
-                    {/* <span className="text-sm md:text-2xl">4.6</span> */}
+        
                   </p>
                   <p className="text-xs md:text-xl">₹{data?.result.areaValue}/{data?.result.areaType}</p>
 
@@ -664,38 +663,17 @@ const id = getIDFromSlug(slug);
             </div>
           </div>
 
-          {/* <div style={{padding:"0 100px"}}>
-            <div style={{ border: "1px solid grey", }} className="flex p-4 space-x-6 ">
-              <div style={{width:"60%"}} className=" h-80 bg-gray-200">
-                {propertyImages.length > 0 && (
-                  <img src={propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
-                )}
-              </div>
-              <div className="flex-1 h-80 flex flex-col justify-between  ">
-                {propertyImages.slice(1, 3).map((image, index) => (
-                  <div style={{ height: "47%" }} className="w-full " key={index}>
-                    <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
-                  </div>
-                ))}
-                {propertyImages.length <= 2 && (
-                  <div className="h-1/2 w-full flex justify-center items-center text-gray-600">
-                    No more images
-                  </div>
-                )}
-              </div>
-            </div>
-          </div> */}
 
 
           {data?.result?.toggle === "Project" ? <div style={{
             padding: "15px",
             boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
             paddingBottom: "20px",
-            borderRadius: "8px",
+            borderRadius: "8px",                                           
 
           }}>
             <p style={{ fontSize: "20px" }}>Project Images</p>
-            <div style={{ padding: "0 150px",marginBottom:"20px" }} className="flex p-4 space-x-6">
+            <div style={{ padding: "0 150px",marginBottom:"20px" }} className="flex p-4 md:space-x-4 md:flex-row flex-col  ">
               <div style={{ width: "60%" }} className="h-80 bg-gray-200">
                 {data?.result.propertyImages?.length > 0 && (
                   <img src={data.result.propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
@@ -720,8 +698,6 @@ const id = getIDFromSlug(slug);
               </div>
             </div>
           </div> : null}
-
-
 
 
 
@@ -753,6 +729,7 @@ const id = getIDFromSlug(slug);
               }) : null}
             </div>
           </div>
+
 
 
 
