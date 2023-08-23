@@ -264,6 +264,8 @@ const Locations = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+              pageSizeOptions={[50,100,200]}
+
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalLocations || 0}

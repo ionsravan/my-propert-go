@@ -123,6 +123,8 @@ const ContactsManagement = () => {
                             }}
                             loading={loading}
                             getRowHeight={() => "auto"}
+              pageSizeOptions={[50,100,200]}
+
                             // pagination
                             // pageSize={pageState.pageSize || 10}
                             // rowCount={pagination?.totalUsers || 0}

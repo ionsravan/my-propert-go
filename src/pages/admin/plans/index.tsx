@@ -311,6 +311,8 @@ const Plans = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+              pageSizeOptions={[50,100,200]}
+
               // pagination={true}
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalUsers || 0}

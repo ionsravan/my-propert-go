@@ -66,7 +66,7 @@ const Customers = () => {
   );
   const [paginationModel, setPaginationModel] = useState({
     page: 0,
-    pageSize: 10,
+    pageSize: 50,
   });
   const [name, setName] = useState<string>("");
   const [selected, setSelected] = useState("All");
@@ -77,7 +77,7 @@ const Customers = () => {
     try {
       setLoading(true);
       const res = await instance.get(
-        `/admin/user/getAllUsers?page=${paginationModel?.page+1||1}&&limit=${paginationModel?.pageSize||10}&&${pr}`
+        `/admin/user/getAllUsers?page=${paginationModel?.page+1||1}&&limit=${paginationModel?.pageSize||50}&&${pr}`
       );
       if (res.data) {
         setUsers(res?.data?.data);
@@ -255,7 +255,7 @@ const Customers = () => {
 
               pagination
               paginationModel={paginationModel}
-              pageSizeOptions={[10,25,50]}
+              pageSizeOptions={[50,100,200]}
               rowCount={pagination?.totalUsers}
               paginationMode="server"
               onPaginationModelChange={setPaginationModel}

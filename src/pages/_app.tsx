@@ -8,7 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "react-multi-carousel/lib/styles.css";
 import "../styles/addProperty.css";
-import CustomLoader from "src/componets/shared/Loader";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'
 
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import '../styles/globals.css';

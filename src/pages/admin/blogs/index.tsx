@@ -24,7 +24,7 @@ import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
-  import { useAxios } from "src/utills/axios";
+import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
 import Modal from "src/componets/shared/modal";
 import FormProvider from "src/componets/shared/RHF/FormProvider";
@@ -38,6 +38,10 @@ import { GiMetalDisc } from "react-icons/gi";
 // import Image from "src/componets/shared/Image";
 import { CustomFile } from "src/componets/shared/upload";
 import Image from "next/image";
+import TextEditor, { convertToRawEditorState } from "src/componets/shared/TextEditor";
+
+import draftToHtml from 'draftjs-to-html'
+import { convertToRaw } from 'draft-js'
 
 interface NewBlogTypes {
   photos?: CustomFile | string | null;
@@ -67,6 +71,8 @@ const styleMt = {
 // give main area a max widht
 const Blogs = () => {
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
+  const [editorValue, setEditorValue] = useState('')
+
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
@@ -160,6 +166,8 @@ const Blogs = () => {
       title: data?.tittle || "",
       photos: data?.blogImage[0] || "",
     });
+    setEditorValue(convertToRawEditorState(data?.description))
+
 
     setDeleteId(data?._id);
     setDialogOpen(true);
@@ -192,6 +200,12 @@ const Blogs = () => {
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography dangerouslySetInnerHTML={{ __html: row?.description }}
+        >
+
+        </Typography>
+      ),
     },
     {
       field: "metaDescription",
@@ -209,9 +223,9 @@ const Blogs = () => {
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
-        <Box sx={{maxHeight:200}} >
+        <Box sx={{ maxHeight: 200 }} >
           {row?.blogImage?.length > 0 ? (
-            <Image  width={150} height={80} src={row?.blogImage[0]} alt="" />
+            <Image width={150} height={80} src={row?.blogImage[0]} alt="" />
           ) : null}
         </Box>
       ),
@@ -283,6 +297,13 @@ const Blogs = () => {
     }
   }
 
+  const handleTemplateChange = (data: any) => {
+    setEditorValue(data)
+    let htmVal = draftToHtml(convertToRaw(data.getCurrentContent()))
+    setValue('description', htmVal)
+  }
+
+
   return (
     <div className=" w-full bg-[#F6F6F6] ">
       <div className="flex justify-between items-center">
@@ -317,6 +338,8 @@ const Blogs = () => {
               components={{
                 LoadingOverlay: LinearProgress,
               }}
+              pageSizeOptions={[50,100,200]}
+
               loading={loading}
               getRowHeight={() => "auto"}
               // pagination
@@ -360,7 +383,15 @@ const Blogs = () => {
             sx={{ ...addForm, ...styleMt }}
             name="metaDescription"
           />
-          <RHFTextField
+
+          <TextEditor
+            value={editorValue}
+            handleChange={handleTemplateChange}
+
+
+          />
+
+          {/* <RHFTextField
             placeholder="Description"
             InputProps={{
               startAdornment: <MdDescription className={iconClass} />,
@@ -374,7 +405,7 @@ const Blogs = () => {
             name="description"
             multiline
             minRows={2}
-          />
+          /> */}
 
           <Grid
             sx={{
@@ -389,8 +420,8 @@ const Blogs = () => {
                 // size="small"
                 // variant="contained"
                 onClick={() => resetField("photos")}
-                // color="error"
-                // startIcon={<Iconify icon="gg:trash" width={18} />}
+              // color="error"
+              // startIcon={<Iconify icon="gg:trash" width={18} />}
               >
                 Remove Image
               </button>
@@ -407,9 +438,8 @@ const Blogs = () => {
           <button
             type="submit"
             disabled={deleteLoading}
-            className={`${
-              deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-            } flex justify-center w-[100%] p-4 rounded-xl text-white text-center  transform transition active:scale-95 duration-200 ease-out mt-4`}
+            className={`${deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-[100%] p-4 rounded-xl text-white text-center  transform transition active:scale-95 duration-200 ease-out mt-4`}
           >
             {deleteLoading ? (
               <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />

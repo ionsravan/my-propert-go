@@ -36,6 +36,7 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
 import Image from "src/componets/shared/Image";
+import { formatCost } from "src/componets/costFormat/PropertyCost";
 
 export const Button = ({
   name,
@@ -61,7 +62,7 @@ export const Button = ({
   );
 };
 
-const userTypes = ["All", "Projects"];
+const userTypes = ["All", "Project"];
 
 // give main area a max widht
 const Property = () => {
@@ -88,7 +89,7 @@ const Property = () => {
     try {
       setLoading(true);
       const res = await instance.get(
-        `/property/getAllProperties?search=${name || ""}`
+        `/property/getAllProperties?search=${name || ""}&toggle=${selected}`
       );
       if (res.data) {
         setUsers(res?.data?.data);
@@ -198,12 +199,21 @@ const Property = () => {
       disableColumnMenu: true,
     },
     {
-      field: "address",
-      headerName: "Address",
+      field: "location",
+      headerName: "Location",
       flex: 0.13,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Tooltip title={row?.location?.name}>
+          <Typography
+            sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
+            variant="body1" fontWeight={500}>
+            {row?.location?.name}
+          </Typography>
+        </Tooltip>
+      ),
     },
     {
       field: "size",
@@ -220,6 +230,9 @@ const Property = () => {
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography>{formatCost(row?.cost)}</Typography>
+      ),
     },
     {
       flex: 0.15,
@@ -345,17 +358,17 @@ const Property = () => {
               loading={loading}
               getRowHeight={() => "auto"}
               pagination
-              rowsPerPageOptions={[5, 10, 25]}
-              rowCount={pagination?.totalUsers || 0}
-              page={pageState.page - 1}
-              pageSize={pageState.pageSize}
-              paginationMode="server"
-              onPageChange={(newPage: number) => {
-                setPageState((old) => ({ ...old, page: newPage + 1 }));
-              }}
-              onPageSizeChange={(newPageSize: number) =>
-                setPageState((old) => ({ ...old, pageSize: newPageSize }))
-              }
+              pageSizeOptions={[50,100,200]}
+              // rowCount={pagination?.totalUsers || 0}
+              // page={pageState.page - 1}
+              // pageSize={pageState.pageSize}
+              // paginationMode="server"
+              // onPageChange={(newPage: number) => {
+              //   setPageState((old) => ({ ...old, page: newPage + 1 }));
+              // }}
+              // onPageSizeChange={(newPageSize: number) =>
+              //   setPageState((old) => ({ ...old, pageSize: newPageSize }))
+              // }
               sx={tableStyles}
             />
           </Card>

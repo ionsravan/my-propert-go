@@ -196,9 +196,22 @@ const Leads = () => {
       disableColumnMenu: true,
     },
     {
+      flex: 0.1,
+      field: "location",
+      headerName: "Location",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography >
+          {row?.propertyId?.location?.name}
+        </Typography>
+      ),
+    },
+    {
       field: "agentName",
       headerName: "Agent",
-      flex: 0.2,
+      flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
@@ -250,6 +263,7 @@ const Leads = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+              pageSizeOptions={[50,100,200]}
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalUsers || 0}
@@ -306,9 +320,8 @@ const Leads = () => {
           <button
             type="submit"
             disabled={deleteLoading}
-            className={`${
-              deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-            } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+            className={`${deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
           >
             {deleteLoading ? (
               <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />
