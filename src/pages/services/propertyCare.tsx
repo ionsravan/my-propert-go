@@ -2,10 +2,9 @@ import Image from 'next/image';
 import React from 'react';
 import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
-import ContactForm from 'src/pages/contact';
+import ContactForm from '../contact';
 
-
-const InteriorDesigns = () => {
+const PropertyCare = () => {
 
 
   return <>
@@ -142,20 +141,8 @@ const InteriorDesigns = () => {
         </section>
       </div>
 
-      {/* <div className="max-w-7xl mx-auto mt-4">
-        <section className="flex flex-col items-center">
-          <div className="md:text-center mb-10 md:mb-0">
-            <h2 className="text-2xl font-bold">Book A FREE Design Session</h2>
-          </div>
+      
 
-          <div className="md:w-1/2 px-4">
-            <div className="bg-white p-6 shadow-md rounded-lg">
-              <h2 className="text-xl font-bold mb-4">Meet a designer</h2>
-             
-            </div>
-          </div>
-        </section>
-      </div> */}
       <h1 style={{fontSize:"30px",marginTop:"30px"}}  className='text-center  '>Book A FREE Design Session</h1>
       <h1 style={{fontSize:"30px"}}  className='text-center  '>Meet a designer</h1>
       {/* <h2>Meet a designer</h2> */}
@@ -163,10 +150,6 @@ const InteriorDesigns = () => {
       <div style={{marginTop:"-90px"}}>
       <ContactForm navFooter = {true}/>
       </div>
-     
-
-    {/* <contact/> */}
-   
 
     </div>
 
@@ -179,7 +162,7 @@ const InteriorDesigns = () => {
 
   </>
 };
-export default InteriorDesigns;
+export default PropertyCare;
 
 
 

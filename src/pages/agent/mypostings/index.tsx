@@ -39,13 +39,14 @@ export const PostingCard = ({
   toggle,
   propertyType,
   availableFor,
-  location
+  location,
+  slug
 }: Propery) => {
   const instance = useAxios();
   const [isPending, setIsPending] = useState(false);
   const adminValue = localStorage.getItem("isAdmin");
 
-  const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+  // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
 
 
   const handlePropertyCare = async (id: any) => {
@@ -78,6 +79,7 @@ export const PostingCard = ({
         <div className="flex w-full justify-between">
           <div>
             <Link href={`/details/${slug}`}>
+            {/* <Link href={`/details/${_id}`}> */}
               <h1 className="text-xl font-bold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">

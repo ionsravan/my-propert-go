@@ -49,6 +49,7 @@ import { cx } from "../utills/all";
 import Image from "next/image";
 import { useCookies } from "react-cookie";
 import { availableAmenities } from "src/@global/Data";
+import { adminAvailableAmenities } from "src/@global/Data";
 import { useRouter } from "next/router";
 import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
@@ -59,14 +60,24 @@ import { sassTrue } from "sass";
 
 
 
-function SearchDropdown({ options, onSelect }) {
+function SearchDropdown({ options, onSelect, propertyData }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
 
+
+
+  useEffect(() => {
+    if (propertyData) {
+      setSearchQuery(propertyData?.location.name);
+      setSelectedOption(null);
+    }
+  }, [propertyData]);
+  
+
   const filteredOptions = options?.filter((option) =>
-    option.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  option.name.toLowerCase().includes(searchQuery.toLowerCase())
+);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -84,37 +95,7 @@ function SearchDropdown({ options, onSelect }) {
 
 
   return (
-    // <div style={{ margin: "20px 0" }} className="relative">
-    //   <div
-    //     className={` relative z-10 ${isOpen ? 'border-blue-500' : ''} transition-all duration-300 group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
-    //   >
-    //     <input
-    //       style={{ borderRadius: "18px" }}
-    //       type="text"
-    //       className="inputField"
-    //       placeholder={placeholder}
-    //       value={searchQuery}
-    //       onChange={handleSearchChange}
-    //       onClick={() => setIsOpen(true)}
-    //     />
 
-
-    //   </div>
-
-    //   {isOpen && (
-    //     <div className="absolute left-0  bg-white border rounded-md  w-full z-20">
-    //       {filteredOptions.map((option) => (
-    //         <div
-    //           key={option._id}
-    //           className="px-4 py-2 cursor-pointer hover:bg-blue-100"
-    //           onClick={() => handleOptionSelect(option.name)}
-    //         >
-    //           {option.name}
-    //         </div>
-    //       ))}
-    //     </div>
-    //   )}
-    // </div>
     <div style={{ margin: "20px 0" }} className="relative">
       <div
         className={`relative z-10 ${isOpen ? "border-blue-500" : ""
@@ -189,8 +170,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [isPropertyActive, setPropertyActive] = useState(true);
   const [isProjectActive, setProjectActive] = useState(false);
 
-  const [city, setCity] = useState("");
-  const [cityError, setCityError] = useState("");
+  // const [city, setCity] = useState("");
+  // const [cityError, setCityError] = useState("");
 
   const [address, setAddress] = useState("");
   const [addressError, setAddressError] = useState("");
@@ -207,8 +188,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [bhkConfig, setBhkConfig] = useState("");
   const [bhkConfigError, setBhkConfigError] = useState("");
 
-  const [area, setArea] = useState("");
-  const [areaError, setAreaError] = useState("");
+  // const [area, setArea] = useState("");
+  // const [areaError, setAreaError] = useState("");
 
   const [areaValue, setAreaValue] = useState("");
   const [areaValueError, setAreaValueError] = useState("");
@@ -216,7 +197,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [areaType, setAreaType] = useState("Sq.Yd");
   const [areaTypeError, setAreaTypeError] = useState("");
 
-  const [size, setSize] = useState("4354");
+  const [size, setSize] = useState("");
   const [sizeError, setSizeError] = useState("");
 
   const [floorNumber, setFloorNumber] = useState("");
@@ -239,6 +220,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [amenitiesError, setAmenitiesError] = useState("");
 
   const [activeButton, setActiveButton] = useState("");
+
   const [securityActiveButton, setSecurityActiveButton] = useState("");
 
   const [addtionalRoomButton, setAddtionalRoomButton] = useState("");
@@ -279,7 +261,8 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   const [metaTittle, setMetaTittle] = useState("");
   const [metaDiscription, setMetaDiscription] = useState("");
   const [isAdmin, setIsAdmin] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [selectedOption, setSelectedOption] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [toasted, setToasted] = useState(false);
   const [propertyId, setPropertyId] = useState("");
@@ -301,14 +284,14 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     const removeImages = async () => {
       try {
         const propertyImage = {
-          propertyId:propertyId,
-          imageUrl:url
+          propertyId: propertyId,
+          imageUrl: url
         }
-        const res = await instance.post("/admin/deletePropertyImage",propertyImage);
+        const res = await instance.post("/admin/deletePropertyImage", propertyImage);
         if (res?.data) {
           toast("Image Remove Successfully")
 
-          console.log(res.data.data,"dataimage")
+          console.log(res.data.data, "dataimage")
 
         }
         const updatedImages = uploadedPropertyImages.map((property) => {
@@ -700,10 +683,10 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     setAreaUnits(selectedAreaOption);
   };
 
-  const handleLocation = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedLocation = event.target.value;
-    setLocality(selectedLocation);
-  };
+  // const handleLocation = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const selectedLocation = event.target.value;
+  //   setLocality(selectedLocation);
+  // };
 
   const handleAmenityToggle = (amenity: string) => {
     if (amenities.includes(amenity)) {
@@ -781,26 +764,30 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     bodyFormData.append('size', String(parseInt(size, 10)));
     bodyFormData.append('availableFor', availabeFor);
     bodyFormData.append('toggle', toggle);
-    bodyFormData.append('BHKconfig', String(parseInt(bhkConfig, 10)));
-    bodyFormData.append('area', area);
+    // bodyFormData.append('BHKconfig', String(parseInt(bhkConfig, 10)));
+    bodyFormData.append('BHKconfig', bhkConfig);
+    // bodyFormData.append('area', area);
     bodyFormData.append('areaValue', String(parseInt(areaValue, 10)));
     bodyFormData.append('areaType', areaUnits);
     bodyFormData.append('floorNo', floorNumber);
-    bodyFormData.append('towerVlock', tower);
+    bodyFormData.append('towerBlock', tower);
     bodyFormData.append('floorCount', floorCount);
     bodyFormData.append('unitNo', unitNumber);
     bodyFormData.append('additionalRooms', addtionalRoomButton);
-    bodyFormData.append('city', city);
+    // bodyFormData.append('city', city);
     bodyFormData.append('address', address);
     bodyFormData.append('location', locality);
     // bodyFormData.append('toggle', toggle);
 
-    bodyFormData.append('securityActiveButton', securityActiveButton);
+    // bodyFormData.append('securityActiveButton', securityActiveButton);
     bodyFormData.append('furnishingStatus', furnished);
     bodyFormData.append('possessionStatus', possession);
     bodyFormData.append('ageOfProperty', age);
+    // bodyFormData.append('ageOfProperty', String(parseInt(age, 10)));
     bodyFormData.append('numOfBathroom', bathroom);
+    // bodyFormData.append('numOfBathroom', String(parseInt(bathroom, 10)));
     bodyFormData.append('numOfParking', parking);
+    // bodyFormData.append('numOfParking', String(parseInt(parking, 10)));
     bodyFormData.append('view', selectedViewFacing);
     bodyFormData.append('propertyType', propertyType);
     bodyFormData.append('liftFacility', lift);
@@ -823,31 +810,31 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     try {
       let url;
       let successToastMessage;
-      let redirectRoute;
+      // let redirectRoute;
 
       if (navbarFooter === false && isAdmin === false) {
         url = "/agent/property/editProperty";
         successToastMessage = "Property Updated Successfully";
-        redirectRoute = "/agent";
+        // redirectRoute = "/agent";
       } else if (isAdmin === true && addPropertyAdmin === true) {
         url = "/admin/property/addProperty";
         successToastMessage = "Property Added by Admin Successfully";
-        redirectRoute = "/admin";
+        // redirectRoute = "/admin";
       } else if (isAdmin === true) {
         url = "/admin/property/editPropertyByAdmin";
         successToastMessage = "Property Edited by Admin Successfully";
-        redirectRoute = "/admin";
+        // redirectRoute = "/admin";
       } else {
         url = "/agent/property/addProperty";
         successToastMessage = "Property Added Successfully";
-        redirectRoute = "/agent";
+        // redirectRoute = "/agent";
       }
 
       const res = await instance.post(url, bodyFormData);
 
       if (res.data) {
         setIsLoading(true)
-        router.push(redirectRoute);
+        // router.push(redirectRoute);
         toast(successToastMessage);
       }
 
@@ -945,15 +932,15 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       }
 
 
-      if (city.trim() === '') {
-        setCityError('Please fill the city');
+      // if (city.trim() === '') {
+      //   setCityError('Please fill the city');
 
-        setTimeout(() => {
-          setCityError('');
-        }, 2000);
+      //   setTimeout(() => {
+      //     setCityError('');
+      //   }, 2000);
 
-        return;
-      }
+      //   return;
+      // }
 
       if (projectName.trim() === '') {
         setProjectNameError('Please fill the project name');
@@ -1011,11 +998,11 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
 
 
-      if (area.trim() === '') {
-        setAreaError('Please fill the area');
+      if (size.trim() === '') {
+        setSizeError('Please fill the area');
 
         setTimeout(() => {
-          setAreaError('');
+          setSizeError('');
         }, 2000);
 
         return;
@@ -1413,27 +1400,30 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       setAvailableFor(propertyData?.availableFor);
       setToggle(propertyData?.toggle);
       setBhkConfig(propertyData?.BHKconfig);
-      setBhkConfig(String(parseInt(propertyData?.BHKconfig, 10)));
-      setArea(propertyData?.area.name)
+      // setBhkConfig(String(parseInt(propertyData?.BHKconfig, 10)));
+      // setArea(propertyData?.area.name)
       setAreaValue(propertyData?.areaValue)
-      setAreaType(propertyData?.areaType)
+      setAreaUnits(propertyData?.areaType)
       setFloorNumber(propertyData?.floorNo)
       setFloorCount(propertyData?.floorCount)
-      setTower(propertyData?.towerVlock)
+      setTower(propertyData?.towerBlock)
       setUnitNumber(propertyData?.unitNo)
       setAddtionalRoomButton(propertyData?.additionalRooms)
-      setCity(propertyData?.location.name)
+      // setCity(propertyData?.location.name)
       setAddress(propertyData?.address)
-      setLocality(propertyData?.location.name)
+      // setSelectedOption(null);
+      // setSearchQuery(propertyData?.location?.name)
       // setAmenities(JSON.parse(propertyData?.amenities))
       setAmenities(propertyData?.amenities)
 
-      setSecurityActiveButton(propertyData?.securityActiveButton)
+      // setSecurityActiveButton(propertyData?.securityActiveButton)
       setFurnished(propertyData?.furnishingStatus)
       setPossession(propertyData?.possessionStatus)
       setAge(propertyData?.ageOfProperty)
-      setBathroom(String(parseInt(propertyData?.numOfBathroom, 10)))
-      setParking(String(parseInt(propertyData?.numOfParking, 10)))
+      // setBathroom(String(parseInt(propertyData?.numOfBathroom, 10)))
+      setBathroom(propertyData?.numOfBathroom)
+      // setParking(String(parseInt(propertyData?.numOfParking, 10)))
+      setParking(propertyData?.numOfParking)
       setSelectedView(propertyData?.view)
       setSelectedViewFacing(propertyData?.view)
       setPropertyType(propertyData?.propertyType)
@@ -1720,10 +1710,10 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 {propertyTypeError && <p className="error">{propertyTypeError}</p>}
 
 
-                <div style={{ margin: "20px 0" }}
+                {/* <div style={{ margin: "20px 0" }}
                   className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}
                 >
-                  {/* <label style={{marginTop:"5px"}} htmlFor="city">City:</label> */}
+                
                   <input
                     placeholder="Enter City"
                     required
@@ -1736,7 +1726,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
 
                 </div>
-                {cityError && <p className="error">{cityError}</p>}
+                {cityError && <p className="error">{cityError}</p>} */}
 
                 {/* <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}> */}
                 {/* <label style={{marginTop:"5px"}}  htmlFor="price">Location</label> */}
@@ -1797,7 +1787,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 </div> */}
 
                 <div>
-                  <SearchDropdown options={loc?.result} onSelect={handleLocationSelect} />
+                  <SearchDropdown propertyData={propertyData} options={loc?.result} onSelect={handleLocationSelect} />
                 </div>
                 {localityError && <p className="error">{localityError}</p>}
 
@@ -1825,7 +1815,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                     placeholder=" Enter Price"
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
@@ -1878,14 +1868,14 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                       placeholder="Enter Area"
                       required
                       className="inputField"
-                      type="text"
+                      type="number"
                       id="area"
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
+                      value={size}
+                      onChange={(e) => setSize(e.target.value)}
                     />
                   </div>
 
-                  {areaError && <p className="error">{areaError}</p>}
+                  {sizeError && <p className="error">{sizeError}</p>}
 
                   <div style={{ width: "50%", marginLeft: "30px" }}>
 
@@ -1904,7 +1894,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
                   </div>
 
-                  {areaError && <p className="error">{areaError}</p>}
+                  {/* {areaError && <p className="error">{areaError}</p>} */}
 
                 </div>
 
@@ -1912,10 +1902,10 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                 <div style={{ margin: "20px 0" }} className={`group bg-white focus-within:border-blue-500 border w-full space-x-4 flex justify-center items-center px-4 jj bd  `}>
 
                   <input
-                    placeholder="Enter Area Value"
+                    placeholder="Enter Cost per sq.ft/yd/acres value"
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="area"
                     value={areaValue}
                     onChange={(e) => setAreaValue(e.target.value)}
@@ -2022,20 +2012,22 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
 
 
 
-                {navbarFooter === false ? <div className="m-4">
-                  <label className="inline-block mb-2 text-gray-500">
-                    Uploaded Primary Image
-                  </label>
-                  <div className=" w-full h-40">
-                    <div className="w-[200px] h-40">
-                      <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={uploadedPrimaryImage} alt="" />
+                {navbarFooter === false && uploadedPrimaryImage !== "" ? (
+                  <div className="m-4">
+                    <label className="inline-block mb-2 text-gray-500">
+                      Uploaded Primary Image
+                    </label>
+                    <div className="w-full h-40">
+                      <div className="w-[200px] h-40">
+                        <img
+                          style={{ width: "100%", objectFit: "cover", height: "100%" }}
+                          src={uploadedPrimaryImage}
+                          alt=""
+                        />
+                      </div>
                     </div>
-
-
-
-
                   </div>
-                </div> : null}
+                ) : null}
 
                 {navbarFooter === false ? (
                   <div className="m-4">
@@ -2048,7 +2040,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                           <div className="w-full h-40 flex space-x-2 overflow-x-hidden scrollbar-hide">
                             {property.images[0] ? (
                               property.images[0].map((curElem, index) => (
-                                <div  key={index} className="relative w-[150px] ">
+                                <div key={index} className="relative w-[150px] ">
                                   <img style={{ width: "100%", objectFit: "cover", height: "100%" }} src={curElem} alt="" />
                                   <button
                                     onClick={() => handleImageRemove(property.id, index, curElem)}
@@ -2311,7 +2303,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="floor"
                     placeholder="Floor No."
                     value={floorNumber}
@@ -2327,7 +2319,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="tower"
                     placeholder="Tower/Block"
                     value={tower}
@@ -2341,7 +2333,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="floorCount"
                     placeholder="Total Floor Count"
                     value={floorCount}
@@ -2355,7 +2347,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   <input
                     required
                     className="inputField"
-                    type="text"
+                    type="number"
                     id="unitNumber"
                     placeholder="Unit No"
                     value={unitNumber}
@@ -2389,7 +2381,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                   {" "}
                   Amenities
                 </p>
-                <div style={{ display: "flex", flexWrap: "wrap" }}>
+                {isAdmin === false ? <div style={{ display: "flex", flexWrap: "wrap" }}>
                   {availableAmenities.map((amenity, index) => (
                     <div
                       key={index}
@@ -2422,7 +2414,40 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
                       </label>
                     </div>
                   ))}
-                </div>
+                </div> : <div style={{ display: "flex", flexWrap: "wrap" }}>
+                  {adminAvailableAmenities.map((amenity, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        margin: "5px",
+                        display: "flex",
+                        padding: "5px",
+                        alignItems: "center",
+                      }}
+                      className="amenitiesDiv"
+                    >
+                      <input
+                        // key={index}
+                        required
+                        style={{
+                          marginRight: "5px",
+                          width: "17px",
+                          height: "17px",
+                        }}
+                        type="checkbox"
+                        checked={amenities.includes(amenity.name)}
+                        onChange={() => handleAmenityToggle(amenity.name)}
+                      />
+                      <label
+                        style={{ margin: "0" }}
+                        // key={index}
+                        className="amenity-checkbox"
+                      >
+                        {amenity.name}
+                      </label>
+                    </div>
+                  ))}
+                </div>}
                 {amenitiesError && <p className="error">{amenitiesError}</p>}
 
                 <h2 style={{ fontWeight: "bold", marginBottom: "10px" }}>

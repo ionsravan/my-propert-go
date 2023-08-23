@@ -57,7 +57,7 @@ export const useFilterContext = () => {
 
 export const FilterContextProvder = ({ children }: IContextProps) => {
   const [selected, setSelected] = useState<string[]>([]);
-  const [area, setArea] = useState<string[]>([]);
+  // const [area, setArea] = useState<string[]>([]);
 
   const [BHKconfig, setBHKconfig] = useState("");
   const [availableFor, setAvailableFor] = useState("");
@@ -70,8 +70,8 @@ export const FilterContextProvder = ({ children }: IContextProps) => {
   const [toggle, setToggle] = useState("");
 
   const shared = {
-    area,
-    setArea,
+    // area,
+    // setArea,
     selected,
     setSelected,
     BHKconfig,
@@ -132,8 +132,15 @@ const SearchAll = () => {
     }
   }
 
+  useEffect(() => {
+
+    console.log(PropertyResult,"resultP")
+
+  }, [PropertyResult])
+  
+
   const {
-    area,
+    // area,
     selected,
     BHKconfig,
     availableFor,
@@ -156,7 +163,7 @@ const SearchAll = () => {
         propertyType: propertyType || undefined,
         BHKconfig: BHKconfig || undefined,
         size: size || undefined,
-        area: area || undefined,
+        // area: area || undefined,
         furnishingStatus: furnishing || undefined,
         amenities: selected?.length ? selected : undefined,
         location: name,
@@ -165,7 +172,7 @@ const SearchAll = () => {
     }
   }, [
     name,
-    area,
+    // area,
     selected,
     BHKconfig,
     availableFor,
@@ -216,7 +223,7 @@ const SearchAll = () => {
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div  className="lg:ml-10 w-full overflow-hidden ">
+          <div style={{marginBottom:"50px"}}  className="lg:ml-10 w-full overflow-hidden ">
             {PropertyResult?.length ? (
               <SearchResult data={PropertyResult} />
             ) : (

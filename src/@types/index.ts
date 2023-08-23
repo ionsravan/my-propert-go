@@ -67,6 +67,7 @@ export type Propery = {
   floorCount:number;
   unitNo:number;
   status:string;
+  slug:string;
   // additionalRooms:string[];
   // furnishingStatus:string[];
   // possessionStatus:string[];

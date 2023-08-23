@@ -22,7 +22,9 @@ const MediumHouseCard = ({
   location,
   availableFor,
   toggle,
-  propertyType
+  propertyType,
+  slug
+  
 
 }: Propery) => {
   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
@@ -30,9 +32,13 @@ const MediumHouseCard = ({
 
   // const slug = generateSlug(toggle, name:undefined, BHKconfig, propertyType, availableFor, location.name, _id);
   
+// if(slug){
+//   console.log(slug,"slug")
+// }
 
   return (
-    <Link href={`/details/${_id}`}>
+    // <Link href={`/details/${_id}`}>
+    <Link href={`/details/${slug}`}>
       <div className="min-w-[280px] md:min-w-[280px] relative max-w-sm grow  rounded-lg font-manrope">
         <div className="relative h-64 mb-2">
           <Image
