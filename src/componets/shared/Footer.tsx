@@ -155,10 +155,8 @@ const Footer = () => {
           <h1 className="font-semibold text-white">Services</h1>
           {[
             "Interior Designing",
-            "Earn with Us",
-            "Shipping Container Homes",
-            "Property Care",
-            "Investors",
+            "Earn with Us",    
+            "Property Care",       
           ].map((item, index) => (
             <p
               key={index}

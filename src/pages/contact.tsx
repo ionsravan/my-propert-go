@@ -66,7 +66,7 @@ const ContactForm = ({navFooter}) => {
     };
 
     
-  const servicesNames = ["Interior Designing","Property Care", "Shipping Container Homes", "Others"]
+  const servicesNames = ["Interior Designing","Property Care", "Earn With Us", "Others"]
 
 
     const handleService = (event: React.ChangeEvent<HTMLSelectElement>) => {

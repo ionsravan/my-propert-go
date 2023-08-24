@@ -73,11 +73,11 @@ function SearchDropdown({ options, onSelect, propertyData }) {
       setSelectedOption(null);
     }
   }, [propertyData]);
-  
+
 
   const filteredOptions = options?.filter((option) =>
-  option.name.toLowerCase().includes(searchQuery.toLowerCase())
-);
+    option.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -369,11 +369,22 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   };
 
 
+  // useEffect(() => {
+  //   if (residentialActive) {
+  //     setBuildingType("residential");
+  //   } else {
+  //     setBuildingType("commercial");
+  //   }
+  // }, [commercialActive, residentialActive]);
+
+
   useEffect(() => {
     if (residentialActive) {
       setBuildingType("residential");
-    } else {
+    } else if(commercialActive) {
       setBuildingType("commercial");
+    } else{
+      setBuildingType("")
     }
   }, [commercialActive, residentialActive]);
 
@@ -908,15 +919,24 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
         return;
       }
 
-      if (buildingType.trim() === '') {
-        setBuildingTypeError('Please Fill the Building type');
 
-        setTimeout(() => {
-          setBuildingTypeError('');
-        }, 2000);
+      // Development
 
-        return;
+      if(availabeFor === "Development"){
+
+      } else{
+        if (buildingType.trim() === '') {
+          setBuildingTypeError('Please Fill the Building type');
+  
+          setTimeout(() => {
+            setBuildingTypeError('');
+          }, 2000);
+  
+          return;
+        }
       }
+
+    
 
 
 
@@ -1379,18 +1399,31 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       if (propertyData?.buildingType === "residential") {
         console.log("activeeee")
         setResidentialActive(true)
-        setPropertyType(propertyData?.propertyType)
+        setCommercialActive(false);
+        setDevelopmentActive(false);
         setActiveButton(propertyData?.propertyType);
+        setPropertyType(propertyData?.propertyType)
+       
       }
       if (propertyData?.buildingType === "commercial") {
-        setCommercialActive(true)
-        setPropertyType(propertyData?.propertyType)
+        // setCommercialActive(true)
+        setResidentialActive(false);
+        setCommercialActive(true);
+        setDevelopmentActive(false);
         setActiveButton(propertyData?.propertyType);
+        setPropertyType(propertyData?.propertyType)
+
       }
-      if (propertyData?.buildingType === "develoment") {
-        setDevelopmentActive(true)
-        setPropertyType(propertyData?.propertyType)
-        setActiveButton(propertyData?.propertyType);
+      if (propertyData?.availableFor === "Development") {
+        // setDevelopmentActive(true)
+        setResidentialActive(false);
+        setCommercialActive(false);
+        setDevelopmentActive(true);
+        setRentActive(false);
+        setSaleActive(false);
+        // setActiveButton(propertyData?.propertyType);
+        // setPropertyType(propertyData?.propertyType)
+
       }
 
       setProjectName(propertyData?.name);
@@ -1427,7 +1460,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       setParking(propertyData?.numOfParking)
       setSelectedView(propertyData?.facing)
       setSelectedViewFacing(propertyData?.view)
-      setPropertyType(propertyData?.propertyType)
+      // setPropertyType(propertyData?.propertyType)
       setLift(propertyData?.liftFacility)
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)

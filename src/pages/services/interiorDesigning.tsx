@@ -1,8 +1,50 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from 'src/pages/contact';
+
+
+const VideoLoop = () => {
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.addEventListener('ended', () => {
+        video.currentTime = 0; // Reset video to the beginning
+        video.play();
+      });
+
+      // Initial play
+      video.play();
+    }
+  }, []);
+
+  return (
+    <div className='flex items-center justify-center'>
+      <video ref={videoRef} width="1080" height="1920" loop muted autoPlay>
+        <source src="/InteriorVideo.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  );
+};
+
+
+const Card = ({ title, description }) => {
+  return (
+    <div className="bg-gradient-to-b from-white to-yellow-300 opacity-100 shadow-lg rounded-2xl p-6 flex flex-col justify-between w-96 h-72 items-center ">
+      <div className=" flex flex-col justify-center items-center pt-7">
+        <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+        <p className="text-gray-600 text-justify">{description}</p>
+      </div>
+    </div>
+  );
+};
+
+
+
 
 
 const InteriorDesigns = () => {
@@ -11,170 +53,259 @@ const InteriorDesigns = () => {
   return <>
     <Navbar />
 
-    <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <section className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/2 p-4">
-            {/* Left Section with Random Text and Title */}
-            <h1 style={{fontSize:"30px"}} className="text-2xl font-bold mb-4">What We Do</h1>
-            <p >
-              Even the all-powerful Pointing has no control about the
-              blind texts it is an almost unorthographic.
-            </p>
-            <p className="text-sm text-gray-600 leading-relaxed text-justify">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, quas. Quam sunt, quidem ratione rem officia quis enim necessitatibus. Numquam, fugit. Aut fuga optio nesciunt aspernatur delectus suscipit deleniti cupiditate consectetur veniam quidem? Accusantium molestiae, nesciunt nostrum repellat maxime atque ipsa quaerat dolorem aspernatur libero aliquam nisi voluptas cum officia, omnis odio soluta dolore harum vitae voluptatum corporis nulla earum. Debitis, blanditiis nobis! Totam molestiae animi neque deleniti quisquam at assumenda vel illum adipisci, quia sit facere commodi recusandae? Perspiciatis officia architecto quo! Ipsam, ullam expedita! Magnam, dolorum repellat ut atque assumenda dolore aspernatur sapiente perspiciatis incidunt molestiae obcaecati amet ipsam quisquam doloremque cum, architecto doloribus. Corporis ut unde hic, similique temporibus error odio. Temporibus, explicabo sapiente itaque recusandae maxime sunt tenetur nihil! Beatae nesciunt atque obcaecati. Consequuntur voluptate neque illo perferendis officiis ipsa beatae reprehenderit obcaecati accusamus harum vitae officia voluptatum ratione, voluptas suscipit animi. Odio cum voluptatum neque eligendi. Incidunt eveniet magnam autem animi voluptatem? Quam, molestias! Doloremque natus cupiditate dicta accusamus illum nesciunt eveniet earum! Quasi nobis unde accusantium accusamus nemo eaque dolorum qui repudiandae iusto quae provident mollitia, vero itaque quaerat odio voluptas quo ratione id culpa aliquid odit placeat libero facilis in! Quod placeat rerum in similique ipsa, odio facere voluptate maxime architecto repudiandae voluptates officia quidem vel, quasi, a provident cupiditate facilis iste beatae blanditiis. Illo mollitia aliquam est magnam, quidem pariatur ea sequi esse cupiditate, soluta atque autem? Voluptates laudantium nesciunt porro ipsa dolor iusto facilis culpa debitis minima atque dolorum, saepe minus soluta delectus nulla sapiente ipsum quasi architecto. Dolorum quod quam molestias suscipit enim harum, explicabo ea reiciendis dignissimos consequatur vitae. Magni aperiam autem, recusandae tempora, quam maxime officiis distinctio nostrum expedita sapiente reiciendis nisi cupiditate unde porro aut inventore. Quasi, aliquid architecto. Necessitatibus a consequuntur nihil repellendus. Dolore, ut maxime.
-            </p>
-          </div>
-          <div className="w-full md:w-1/2 p-4">
-            {/* Right Section with Random Images */}
-            <div className=" h-[720px] bg-gray-300 mb-4 md:mb-0 md:mr-4">
-              <img
-                src="https://images.unsplash.com/photo-1691719743913-f79de90d0d6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=386&q=80"
-                alt="Sample Image"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-        </section>
+    <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
+      <header>
+        <VideoLoop />
+      </header>
+
+
+      <div style={{marginTop:"80px"}} className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-28 justify-center items-center ">
+        <Card
+          title="What We Do"
+          description="We design stunning interiors that reflect your style and needs. Our talented team brings your vision to life with innovative design solutions."
+        />
+        <Card
+          title="What We Are"
+          description="We're passionate about creating spaces that enhance your life. Our expertise in color, lighting, and space planning ensures your interior space reflects your unique style and personality. Let us bring your design dreams to life!"
+        />
       </div>
 
-      <div className="max-w-7xl mx-auto">
-        <section className="flex flex-col md:flex-row">
-    
-          <div className="w-full md:w-1/2 p-4">
-            {/* Right Section with Random Images */}
-            <div className=" bg-gray-300 mb-4 md:mb-0 md:mr-4 h-[690px]">
-              <img
-                src="https://images.unsplash.com/photo-1691719743913-f79de90d0d6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=386&q=80"
-                alt="Sample Image"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 p-4">
-            {/* Left Section with Random Text and Title */}
-            <h1 className="text-2xl font-bold mb-4">Starts the automated process.</h1>
-            <p  >
-              The automated process starts as soon as your clothes
-              go into the machine.
-            </p>
-            <p className="text-sm text-gray-600 leading-relaxed text-justify">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolor, quas. Quam sunt, quidem ratione rem officia quis enim necessitatibus. Numquam, fugit. Aut fuga optio nesciunt aspernatur delectus suscipit deleniti cupiditate consectetur veniam quidem? Accusantium molestiae, nesciunt nostrum repellat maxime atque ipsa quaerat dolorem aspernatur libero aliquam nisi voluptas cum officia, omnis odio soluta dolore harum vitae voluptatum corporis nulla earum. Debitis, blanditiis nobis! Totam molestiae animi neque deleniti quisquam at assumenda vel illum adipisci, quia sit facere commodi recusandae? Perspiciatis officia architecto quo! Ipsam, ullam expedita! Magnam, dolorum repellat ut atque assumenda dolore aspernatur sapiente perspiciatis incidunt molestiae obcaecati amet ipsam quisquam doloremque cum, architecto doloribus. Corporis ut unde hic, similique temporibus error odio. Temporibus, explicabo sapiente itaque recusandae maxime sunt tenetur nihil! Beatae nesciunt atque obcaecati. Consequuntur voluptate neque illo perferendis officiis ipsa beatae reprehenderit obcaecati accusamus harum vitae officia voluptatum ratione, voluptas suscipit animi. Odio cum voluptatum neque eligendi. Incidunt eveniet magnam autem animi voluptatem? Quam, molestias! Doloremque natus cupiditate dicta accusamus illum nesciunt eveniet earum! Quasi nobis unde accusantium accusamus nemo eaque dolorum qui repudiandae iusto quae provident mollitia, vero itaque quaerat odio voluptas quo ratione id culpa aliquid odit placeat libero facilis in! Quod placeat rerum in similique ipsa, odio facere voluptate maxime architecto repudiandae voluptates officia quidem vel, quasi, a provident cupiditate facilis iste beatae blanditiis. Illo mollitia aliquam est magnam, quidem pariatur ea sequi esse cupiditate, soluta atque autem? Voluptates laudantium nesciunt porro ipsa dolor iusto facilis culpa debitis minima atque dolorum, saepe minus soluta delectus nulla sapiente ipsum quasi architecto. Dolorum quod quam molestias suscipit enim harum, explicabo ea reiciendis dignissimos consequatur vitae. Magni aperiam autem, recusandae tempora, quam maxime officiis distinctio nostrum expedita sapiente reiciendis nisi cupiditate unde porro aut inventore. Quasi, aliquid architecto. Necessitatibus a consequuntur nihil repellendus. Dolore, ut maxime.
-            </p>
-          </div>
-        </section>
-      </div>
-      <div className="max-w-7xl mx-auto">
-        <section className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/2 p-4">
-            {/* Left Section with Random Text and Title */}
-            <h1 className="text-2xl font-bold mb-4">Working Process</h1>
-            <p  >
-              Even the all-powerful Pointing has no control about the
-              blind texts it is an almost unorthographic.
-            </p>
-            <p className="text-sm text-gray-600 leading-relaxed text-justify">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis aut iure quae expedita dignissimos sit nostrum dolorum atque mollitia quibusdam excepturi magni quidem, eius officiis corrupti perferendis voluptas illo obcaecati ducimus ipsa rem, dolor repellendus laudantium enim. Minima temporibus similique illum non corporis nemo et vitae delectus quasi. Nihil, ullam iure quam excepturi beatae necessitatibus fuga quisquam sit! Enim vero doloribus, quas temporibus nisi iste aspernatur consequatur! Cupiditate distinctio velit, natus sed similique hic provident dolor repellendus minima illum ipsam culpa, eos, vero voluptas quod blanditiis unde soluta! Facere laudantium ipsum reiciendis ea nihil fugiat distinctio repellat, maxime officiis voluptates? </p>
-          </div>
-          <div className="w-full md:w-1/2 p-4">
-            {/* Right Section with Random Images */}
-            <div className=" bg-gray-300 mb-4 md:mb-0 md:mr-4 h-[300px]">
-              <img
-                src="https://images.unsplash.com/photo-1691719743913-f79de90d0d6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=386&q=80"
-                alt="Sample Image"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-        </section>
-      </div>
-      <div className="max-w-7xl mx-auto">
-        <section className="flex flex-col md:flex-row">
-     
-          <div className="w-full md:w-1/2 p-4">
-            {/* Right Section with Random Images */}
-            <div className=" bg-gray-300 mb-4 md:mb-0 md:mr-4 h-[380px]">
-              <img
-                src="https://images.unsplash.com/photo-1691719743913-f79de90d0d6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=386&q=80"
-                alt="Sample Image"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-          <div className="w-full md:w-1/2 p-4">
-            {/* Left Section with Random Text and Title */}
-            <h1 className="text-2xl font-bold mb-4">End-to-End Interior Solutions</h1>
-            <p className=" leading-relaxed text-justify"  >
-              We bring you carefully-curated interior design ideas, to
-              give your home a brand new look. Explore exclusive interior
-              designs and trends that are every bit inspirational as they
-              are practical. Our team of interior designers have put
-              together ideas across kitchen, bedroom, living room and
-              more, to help you pick a design that will best suit your
-              home interior requirements.
-            </p>
-            <p className="text-sm text-gray-600 leading-relaxed text-justify">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis aut iure quae expedita dignissimos sit nostrum dolorum atque mollitia quibusdam excepturi magni quidem, eius officiis corrupti perferendis voluptas illo obcaecati ducimus ipsa rem, dolor repellendus laudantium enim. Minima temporibus similique illum non corporis nemo et vitae delectus quasi. Nihil, ullam iure quam excepturi beatae necessitatibus fuga quisquam sit! Enim vero doloribus, quas temporibus nisi iste aspernatur consequatur! Cupiditate distinctio velit, natus sed similique hic provident dolor repellendus minima illum ipsam culpa, eos, vero voluptas quod blanditiis unde soluta! Facere laudantium ipsum reiciendis ea nihil fugiat distinctio repellat, maxime officiis voluptates? </p>
-          </div>
-        </section>
-      </div>
-      <div className="max-w-7xl mx-auto">
-        <section className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/2 p-4">
-            {/* Left Section with Random Text and Title */}
-            <h1 className="text-2xl font-bold mb-4">Our collaborate partners</h1>
-            <p className=" leading-relaxed text-justify"  >
-              Winning collaborations that produce winning designs.
-            </p>
-            <p className="text-sm text-gray-600 leading-relaxed text-justify">
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis aut iure quae expedita dignissimos sit nostrum dolorum atque mollitia quibusdam excepturi magni quidem, eius officiis corrupti perferendis voluptas illo obcaecati ducimus ipsa rem, dolor repellendus laudantium enim. Minima temporibus similique illum non corporis nemo et vitae delectus quasi. Nihil, ullam iure quam excepturi beatae necessitatibus fuga quisquam sit! Enim vero doloribus, quas temporibus nisi iste aspernatur consequatur! Cupiditate distinctio velit, natus sed similique hic provident dolor repellendus minima illum ipsam culpa, eos, vero voluptas quod blanditiis unde soluta! Facere laudantium ipsum reiciendis ea nihil fugiat distinctio repellat, maxime officiis voluptates? </p>
-          </div>
-          <div className="w-full md:w-1/2 p-4">
-            {/* Right Section with Random Images */}
-            <div className=" bg-gray-300 mb-4 md:mb-0 md:mr-4 h-[280px]">
-              <img
-                src="https://images.unsplash.com/photo-1691719743913-f79de90d0d6b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=386&q=80"
-                alt="Sample Image"
-                className="h-full w-full object-cover"
-              />
-            </div>
-          </div>
-        </section>
+
+      <div style={{margin:"80px 0",fontWeight:"bold"}} className='flex items-center justify-center'>
+        <p className='text-3xl'>Market We Serve</p>
       </div>
 
-      {/* <div className="max-w-7xl mx-auto mt-4">
-        <section className="flex flex-col items-center">
-          <div className="md:text-center mb-10 md:mb-0">
-            <h2 className="text-2xl font-bold">Book A FREE Design Session</h2>
-          </div>
 
-          <div className="md:w-1/2 px-4">
-            <div className="bg-white p-6 shadow-md rounded-lg">
-              <h2 className="text-xl font-bold mb-4">Meet a designer</h2>
-             
-            </div>
+
+      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' style={{ margin: "50px 0" }} >
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"15px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/exteriorDesignn.jpg"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
           </div>
-        </section>
-      </div> */}
-      <h1 style={{fontSize:"30px",marginTop:"30px"}}  className='text-center  '>Book A FREE Design Session</h1>
+          <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none bg-primaryBlue flex flex-col rounded-xl ">
+            <p style={{fontSize:"20px", fontWeight:"bold"}}>Exteriors</p>
+            <p className='text-justify'>Our exterior design expertise
+              creates stunning curb appeal that sets the tone for your home's unique style.</p>
+          </div>
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"15px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/interiorDesign.jpg"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none bg-primaryBlue flex flex-col rounded-xl ">
+            <p style={{fontSize:"20px", fontWeight:"bold"}}>Interiors </p>
+            <p className='text-justify'>Our interior design
+              services bring your
+              vision to life with
+              functional, stylish
+              spaces that reflect
+              your personal taste.</p>
+          </div>
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"15px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/gatedCommuninties.jpg"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none  rounded-xl  bg-primaryBlue flex flex-col ">
+            <p style={{fontSize:"20px", fontWeight:"bold"}}>Gated Communities </p>
+            <p className='text-justify'>We design minding
+              privacy, security,
+              and a sense
+              of exclusivity that
+              complements your
+              beautifully designed home.</p>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div style={{fontWeight:"bold"}} className='flex items-center justify-center'>
+        <p className='text-3xl'>Working Process</p>
+      </div>
+
+
+      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' style={{ margin: "50px 0" }} >
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/connectUs.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Connect us online</p>
+  
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/threeD.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Get your 3d designs</p>
+  
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/affordable.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Affordable pricing</p>
+   
+        </div>
+      </div>
+
+
+      
+      <div style={{fontWeight:"bold"}} className='flex items-center justify-center'>
+        <p className='text-3xl'>End-to-end interior solutions</p>
+      </div>
+
+
+
+      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' >
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/balcony.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Balcony And Garden Outdoor Seating</p>
+  
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/ceiling.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>False Ceiling</p>
+  
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/rack.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'> Shoe Rack</p>
+   
+        </div>
+      </div>
+
+
+      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' >
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/kitchen.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Modular Kitchen and Wardrobe</p>
+  
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/tv.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>TV Stand</p>
+  
+        </div>
+        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/sofas.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Customized sofa and Beds</p>
+   
+        </div>
+      </div>
+      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-start items-center' >
+      <div style={{ width: "302px",marginLeft:"140px", }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/book.png"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+          <p className='text-center my-2 font-bold'>Book Shelf and Study Units</p>
+   
+        </div>
+
+        </div>
+
+
+    <h1 style={{fontSize:"30px",marginTop:""}}  className='text-center  '>Book A FREE Design Session</h1>
       <h1 style={{fontSize:"30px"}}  className='text-center  '>Meet a designer</h1>
-      {/* <h2>Meet a designer</h2> */}
+
 
       <div style={{marginTop:"-90px"}}>
       <ContactForm navFooter = {true}/>
       </div>
      
 
-    {/* <contact/> */}
-   
-
-    </div>
 
 
 
 
 
 
+
+
+
+
+
+
+
+
+    </main>
     <Footer />
 
   </>
