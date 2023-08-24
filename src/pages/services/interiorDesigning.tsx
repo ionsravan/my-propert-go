@@ -55,6 +55,8 @@ const InteriorDesigns = () => {
 
     <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
       <header>
+ 
+      <h1 style={{ fontSize: "30px" }} className="text-2xl text-center font-bold mb-10">Interior Designing</h1>
         <VideoLoop />
       </header>
 
@@ -278,6 +280,28 @@ const InteriorDesigns = () => {
           <p className='text-center my-2 font-bold'>Book Shelf and Study Units</p>
    
         </div>
+
+        </div>
+
+        <div>
+
+        <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' >
+      <div style={{ width: "502px"}} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+      <p className='text-center my-2 font-bold text-gray-500'>in collaboration with</p>
+          <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
+            <Image className="lazyLoadImg"
+              src="/signInLogo.jpg"
+              alt="Lumbini Elysee"
+              width={800}
+              height={600}
+            />
+          </div>
+    
+   
+        </div>
+
+        </div>
+
 
         </div>
 

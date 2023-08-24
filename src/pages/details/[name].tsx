@@ -706,25 +706,25 @@ const Details = () => {
 
           }}>
             <p style={{ fontSize: "20px" }}>Project Images</p>
-            <div style={{ padding: "0 150px", marginBottom: "20px" }} className="flex p-4 md:space-x-4 md:flex-row flex-col  ">
-              <div style={{ width: "60%" }} className="h-80 bg-gray-200">
+            <div style={{ padding: "0 150px", marginBottom: "20px" }} className="flex p-4 md:space-x-4 md:flex-row md:items-stretch md:justify-start items-center justify-center flex-col  ">
+              <div className=" md:w-[500px] w-56 h-36 md:mb-0 mb-4  md:h-80 bg-gray-200">
                 {data?.result.propertyImages?.length > 0 && (
                   <img src={data.result.propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
                 )}
               </div>
               <div className="flex-1 h-80 flex flex-col justify-between">
                 {data?.result.propertyImages?.slice(1, 3).map((image, index) => (
-                  <div style={{ height: "47%" }} className="w-full" key={index}>
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4" key={index}>
                     <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
                   </div>
                 ))}
                 {data?.result.propertyImages?.length <= 2 && (
-                  <div style={{ height: "47%" }} className="w-full flex justify-center items-center text-gray-600 border border-gray-600">
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4 flex justify-center items-center text-gray-600 border border-gray-600">
                     No more images
                   </div>
                 )}
                 {data?.result.propertyImages?.length === 1 && (
-                  <div style={{ height: "47%" }} className="w-full flex justify-center items-center text-gray-600 border border-gray-600">
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4 flex justify-center items-center text-gray-600 border border-gray-600">
                     No more images
                   </div>
                 )}
