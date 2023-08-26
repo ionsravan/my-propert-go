@@ -24,6 +24,7 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
+import { ErrorDispaly } from "../property";
 
 // give main area a max widht
 const ContactsManagement = () => {
@@ -50,7 +51,7 @@ const ContactsManagement = () => {
             }
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
     }
 
@@ -62,6 +63,8 @@ const ContactsManagement = () => {
     const all_customer_columns: GridColDef[] = [
         {
             flex: 0.2,
+      minWidth: 120,
+
             field: "name",
             headerName: "Name",
             align: "left",
@@ -75,6 +78,8 @@ const ContactsManagement = () => {
         },
         {
             flex: 0.4,
+      minWidth: 150,
+
             field: "message",
             headerName: "Message",
             align: "left",
@@ -83,6 +88,8 @@ const ContactsManagement = () => {
         },
         {
             flex: 0.2,
+      minWidth: 120,
+
             field: "email",
             headerName: "Email",
             align: "left",
@@ -91,6 +98,8 @@ const ContactsManagement = () => {
         },
         {
             flex: 0.2,
+      minWidth: 120,
+
             field: "service",
             headerName: "Service",
             align: "left",
@@ -123,7 +132,7 @@ const ContactsManagement = () => {
                             }}
                             loading={loading}
                             getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
 
                             // pagination
                             // pageSize={pageState.pageSize || 10}

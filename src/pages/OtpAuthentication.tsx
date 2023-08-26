@@ -4,6 +4,7 @@ import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
 import { useCookies } from "react-cookie";
 import CircularSpinner from 'src/componets/circularLoader';
+import { ErrorDispaly } from './admin/property';
 
 
 const TermsAndConditions = () => {
@@ -138,7 +139,7 @@ const OtpAuthentication = () => {
             }
         } catch (e) {
             // setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
 
 
@@ -207,7 +208,7 @@ const OtpAuthentication = () => {
             }
         } catch (e) {
             // setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
         setRegisterFormData({
             name: '',

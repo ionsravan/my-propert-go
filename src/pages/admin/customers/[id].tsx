@@ -15,6 +15,7 @@ import { PostingCard } from 'src/pages/agent/mypostings';
 import { ProfileItem } from 'src/pages/agent/profile';
 
 import { useAxios } from 'src/utills/axios';
+import { ErrorDispaly } from '../property';
 
 const CustomerDetail = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -40,7 +41,7 @@ const CustomerDetail = () => {
             }
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
     }
     const handleChange = (event: SyntheticEvent, value: string) => {

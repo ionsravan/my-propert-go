@@ -16,6 +16,7 @@ import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { PostingCard } from "../mypostings/edit/[id]";
 import CircularSpinner from "src/componets/circularLoader";
+import { ErrorDispaly } from "src/pages/admin/property";
 
 
 
@@ -41,7 +42,7 @@ const Favourites = () => {
 
         }
       } catch (e) {
-        console.log(e);
+        ErrorDispaly(e);
       }
     };
     fetchData();

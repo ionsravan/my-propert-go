@@ -16,6 +16,7 @@ import { useAxios } from "src/utills/axios";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { CustomerValuesProps } from "src/@types";
+import { ErrorDispaly } from "src/pages/admin/property";
 
 const NewCompanyValidationSchema = Yup.object().shape({
   name: Yup.string().required("Customer name is required"),
@@ -75,7 +76,7 @@ const AddEditCustomer = ({ type }: { type: string }) => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 

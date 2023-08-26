@@ -13,6 +13,7 @@ import { Buyer, response } from "src/@types";
 import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { FetchState, useFetch } from "src/lib/hooks/useFetch";
+import { ErrorDispaly } from "src/pages/admin/property";
 import { useAxios } from "src/utills/axios";
 
 
@@ -42,7 +43,7 @@ const MyPlans = () => {
 
         }
       } catch (e) {
-        console.log(e);
+        ErrorDispaly(e);
       }
     };
     fetchData();

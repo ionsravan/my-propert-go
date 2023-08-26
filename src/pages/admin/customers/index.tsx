@@ -26,6 +26,7 @@ import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
 import CustomPagination from "src/componets/customPagination";
+import { ErrorDispaly } from "../property";
 
 export const Button = ({
   name,
@@ -86,7 +87,7 @@ const Customers = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -106,13 +107,15 @@ const Customers = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.25,
+      minWidth: 150,
+
       field: "name",
       headerName: "USER NAME",
       align: "left",
@@ -125,6 +128,8 @@ const Customers = () => {
       ),
     },
     {
+      minWidth: 150,
+
       flex: 0.25,
       field: "email",
       headerName: "EMAIl",
@@ -133,6 +138,8 @@ const Customers = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "mobileNumber",
       headerName: "MOBILE",
       flex: 0.2,
@@ -141,6 +148,8 @@ const Customers = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.15,
@@ -255,7 +264,7 @@ const Customers = () => {
 
               pagination
               paginationModel={paginationModel}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
               rowCount={pagination?.totalUsers}
               paginationMode="server"
               onPaginationModelChange={setPaginationModel}

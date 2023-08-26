@@ -19,6 +19,7 @@ import CustomLoader from "src/componets/shared/Loader";
 import { useAppContext } from "src/Context/AppContext";
 import Layout from "src/Layout/main";
 import { useFetch } from "src/lib/hooks/useFetch";
+import { ErrorDispaly } from "src/pages/admin/property";
 import { useAxios } from "src/utills/axios";
 
 interface FilterContextInterface {
@@ -128,15 +129,15 @@ const SearchAll = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    console.log(PropertyResult,"resultP")
+  //   console.log(PropertyResult,"resultP")
 
-  }, [PropertyResult])
+  // }, [PropertyResult])
   
 
   const {

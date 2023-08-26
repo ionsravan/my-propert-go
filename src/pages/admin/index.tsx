@@ -14,6 +14,7 @@ import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import { BiBuilding, BiSupport, BiUser } from "react-icons/bi";
 import { toast } from "react-toastify";
+import { ErrorDispaly } from "./property";
 
 const Card = ({
   name,
@@ -62,7 +63,7 @@ const DashBoard = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 

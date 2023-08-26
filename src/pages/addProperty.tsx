@@ -55,6 +55,7 @@ import CircularSpinner from "src/componets/circularLoader";
 import { Layout } from "lucide-react";
 import { Footer, Navbar } from "src/componets";
 import { sassTrue } from "sass";
+import { ErrorDispaly } from "./admin/property";
 
 
 
@@ -303,7 +304,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
         });
         setUploadedPropertyImages(updatedImages);
       } catch (e) {
-        console.log(e);
+        ErrorDispaly(e);
       }
     };
     removeImages();

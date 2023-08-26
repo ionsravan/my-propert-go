@@ -44,6 +44,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { addForm, iconClass } from "../customers/edit/[id]";
 import { SiGoogleads } from "react-icons/si";
 import { RHFSelect } from "src/componets/shared/RHF/RHFSelect";
+import { ErrorDispaly } from "../property";
 
 const NewCompanyValidationSchema = Yup.object().shape({
   newAgentId: Yup.string().required("Current agent is required"),
@@ -123,7 +124,7 @@ const Leads = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -138,7 +139,7 @@ const Leads = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -161,13 +162,15 @@ const Leads = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.2,
+      minWidth: 120,
+
       field: "userName",
       headerName: "Name",
       align: "left",
@@ -181,6 +184,8 @@ const Leads = () => {
     },
     {
       flex: 0.25,
+      minWidth: 150,
+
       field: "userEmail",
       headerName: "Email",
       align: "left",
@@ -188,6 +193,8 @@ const Leads = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "propertyName",
       headerName: "Property Name",
       flex: 0.2,
@@ -196,6 +203,8 @@ const Leads = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       flex: 0.1,
       field: "location",
       headerName: "Location",
@@ -209,6 +218,8 @@ const Leads = () => {
       ),
     },
     {
+      minWidth: 120,
+
       field: "agentName",
       headerName: "Agent",
       flex: 0.1,
@@ -217,6 +228,8 @@ const Leads = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.15,
@@ -263,7 +276,7 @@ const Leads = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalUsers || 0}

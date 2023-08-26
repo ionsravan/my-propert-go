@@ -23,6 +23,7 @@ import {
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import { useAxios } from "src/utills/axios";
+import { ErrorDispaly } from "../property";
 
 export const tableStyles = {
   "& .MuiDataGrid-cellContent": {
@@ -101,7 +102,7 @@ const TIcketsManagement = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -129,6 +130,8 @@ const TIcketsManagement = () => {
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.1,
+      minWidth: 120,
+
       field: "tittle",
       headerName: "Ticket Detail",
       align: "left",
@@ -141,6 +144,8 @@ const TIcketsManagement = () => {
       ),
     },
     {
+      minWidth: 160,
+
       flex: 0.4,
       field: "message",
       headerName: "Message",
@@ -150,6 +155,8 @@ const TIcketsManagement = () => {
     },
     {
       flex: 0.1,
+      minWidth: 120,
+
       field: "userName",
       headerName: "User Name",
       align: "left",
@@ -157,6 +164,8 @@ const TIcketsManagement = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       flex: 0.2,
       field: "userEmail",
       headerName: "User Email",
@@ -165,6 +174,8 @@ const TIcketsManagement = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       flex: 0.2,
       field: "action",
       headerName: "Status",
@@ -196,7 +207,7 @@ const TIcketsManagement = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -224,7 +235,7 @@ const TIcketsManagement = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
 
               // pagination
               // pageSize={pageState.pageSize || 10}

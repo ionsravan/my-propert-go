@@ -33,6 +33,7 @@ import { RHFUpload } from "src/componets/shared/RHF/RHFUpload";
 // import Image from "src/componets/shared/Image";
 import { CustomFile } from "src/componets/shared/upload";
 import Image from "next/image";
+import { ErrorDispaly } from "../property";
 
 // photos?: CustomFile | string | null;
 interface NewLocTypes {
@@ -96,7 +97,7 @@ const Locations = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -121,7 +122,7 @@ const Locations = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -133,6 +134,8 @@ const Locations = () => {
 
   const all_customer_columns: GridColDef[] = [
     {
+      minWidth: 120,
+
       flex: 0.7,
       field: "name",
       headerName: "Name",
@@ -161,6 +164,8 @@ const Locations = () => {
     //   ),
     // },
     {
+      minWidth: 120,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.1,
@@ -264,7 +269,7 @@ const Locations = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
 
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}

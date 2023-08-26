@@ -49,6 +49,7 @@ import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
 import PropertyCost from "src/componets/costFormat/PropertyCost";
 import slugify from 'slugify';
+import { ErrorDispaly } from "../admin/property";
 // import { GiLift } from "react-icons/gi";
 const reviewData = [
   {
@@ -175,7 +176,7 @@ function MyMsg({
                           }
                         } catch (e) {
                           setLoading(false);
-                          console.log(e);
+                          ErrorDispaly(e);
                         }
                       }}
                     >

@@ -50,6 +50,7 @@ import { addForm, iconClass } from "../customers/edit/[id]";
 import { SiGoogleads } from "react-icons/si";
 import { BiMoney } from "react-icons/bi";
 import { CgAdd, CgClose } from "react-icons/cg";
+import { ErrorDispaly } from "../property";
 
 const NewCompanyValidationSchema = Yup.object().shape({
   numOfLeads: Yup.string().required("Lead count is required"),
@@ -140,7 +141,7 @@ const Plans = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -171,7 +172,7 @@ const Plans = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
   function openEdit(data: any) {
@@ -193,6 +194,8 @@ const Plans = () => {
   const all_plans_columns: GridColDef[] = [
     {
       flex: 0.2,
+      minWidth: 120,
+
       field: "name",
       headerName: "Name",
       align: "left",
@@ -205,6 +208,8 @@ const Plans = () => {
       ),
     },
     {
+      minWidth: 120,
+
       flex: 0.25,
       field: "text",
       headerName: "Description",
@@ -213,6 +218,8 @@ const Plans = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "price",
       headerName: "Price",
       flex: 0.15,
@@ -221,6 +228,8 @@ const Plans = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "numOfLeads",
       headerName: "LEADS",
       flex: 0.1,
@@ -229,6 +238,8 @@ const Plans = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       field: "tags",
       headerName: "Tags",
       flex: 0.2,
@@ -244,6 +255,8 @@ const Plans = () => {
       ),
     },
     {
+      minWidth: 120,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.1,
@@ -311,7 +324,7 @@ const Plans = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
 
               // pagination={true}
               // rowsPerPageOptions={[5, 10, 25]}

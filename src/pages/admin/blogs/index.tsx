@@ -42,6 +42,7 @@ import TextEditor, { convertToRawEditorState } from "src/componets/shared/TextEd
 
 import draftToHtml from 'draftjs-to-html'
 import { convertToRaw } from 'draft-js'
+import { ErrorDispaly } from "../property";
 
 interface NewBlogTypes {
   photos?: CustomFile | string | null;
@@ -117,7 +118,7 @@ const Blogs = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -155,7 +156,7 @@ const Blogs = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -181,6 +182,8 @@ const Blogs = () => {
 
   const all_customer_columns: GridColDef[] = [
     {
+      minWidth: 120,
+
       flex: 0.2,
       field: "tittle",
       headerName: "Title",
@@ -194,6 +197,8 @@ const Blogs = () => {
       ),
     },
     {
+      minWidth: 120,
+
       flex: 0.3,
       field: "description",
       headerName: "Description",
@@ -208,6 +213,8 @@ const Blogs = () => {
       ),
     },
     {
+      minWidth: 120,
+
       field: "metaDescription",
       headerName: "Meta Description",
       flex: 0.15,
@@ -216,6 +223,8 @@ const Blogs = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "blogImage",
       headerName: "Image",
       flex: 0.25,
@@ -231,6 +240,8 @@ const Blogs = () => {
       ),
     },
     {
+      minWidth: 120,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.1,
@@ -338,7 +349,7 @@ const Blogs = () => {
               components={{
                 LoadingOverlay: LinearProgress,
               }}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50, 100, 300, 500, 1000]}
 
               loading={loading}
               getRowHeight={() => "auto"}

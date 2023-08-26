@@ -15,6 +15,7 @@ import { UseFormReturn } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
+import { ErrorDispaly } from "../../property";
 
 // const NewCompanyValidationSchema = Yup.object().shape({
 //   name: Yup.string().required("Customer name is required"),
@@ -95,7 +96,7 @@ const EditCustomer = () => {
       }
     } catch (e) {
       setPageLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -118,7 +119,7 @@ const EditCustomer = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 

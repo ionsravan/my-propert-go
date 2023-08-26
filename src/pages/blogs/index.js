@@ -4,6 +4,7 @@ import { useAxios } from "src/utills/axios";
 import { useRouter } from "next/router";
 import { Footer, Navbar } from "src/componets";
 import CircularSpinner from "src/componets/circularLoader";
+import { toast } from "react-toastify";
 
 // Dummy blog data
 const blogs = [
@@ -33,6 +34,7 @@ const BlogList = () => {
     } catch (e) {
       //   setLoading(false);
       console.log(e);
+      toast.error(e?.response?.data?.message || "Something Went Wrong");
     }
   }
 

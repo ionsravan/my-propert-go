@@ -17,6 +17,7 @@ import { useAppContext } from "src/Context/AppContext";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
+import { ErrorDispaly } from "../admin/property";
 
 const Card = ({ name, Value }: { name: string; Value: number | string }) => {
   return (
@@ -220,7 +221,7 @@ useEffect(() => {
 
       }
     } catch (e) {
-      console.log(e);
+      ErrorDispaly(e);
     }
   };
   fetchData();

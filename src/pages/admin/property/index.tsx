@@ -62,6 +62,11 @@ export const Button = ({
   );
 };
 
+export const ErrorDispaly = (e: any) => {
+  toast.error(e?.response?.data?.message || "Something Went Wrong");
+
+}
+
 const userTypes = ["All", "Project"];
 
 // give main area a max widht
@@ -98,7 +103,7 @@ const Property = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -118,7 +123,7 @@ const Property = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -152,12 +157,22 @@ const Property = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   const all_customer_columns: GridColDef[] = [
+
     {
+      minWidth: 150,
+      flex: 0.1,
+      field: "_id",
+      headerName: "Id",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    }, {
+      minWidth: 140,
       flex: 0.1,
       field: "primaryImage",
       headerName: "Image",
@@ -169,7 +184,9 @@ const Property = () => {
           <Image src={row?.primaryImage} border={true} zoom={true}></Image>
         ) : null,
     },
+
     {
+      minWidth: 100,
       flex: 0.15,
       field: "name",
       headerName: "Name",
@@ -183,6 +200,8 @@ const Property = () => {
       ),
     },
     {
+      minWidth: 50,
+
       flex: 0.05,
       field: "BHKconfig",
       headerName: "BHK",
@@ -191,6 +210,8 @@ const Property = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 130,
+
       flex: 0.12,
       field: "propertyType",
       headerName: "Property Type",
@@ -199,6 +220,8 @@ const Property = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 100,
+
       field: "location",
       headerName: "Location",
       flex: 0.13,
@@ -216,6 +239,8 @@ const Property = () => {
       ),
     },
     {
+      minWidth: 80,
+
       field: "size",
       headerName: "Size",
       flex: 0.1,
@@ -224,6 +249,8 @@ const Property = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "cost",
       headerName: "Price",
       flex: 0.1,
@@ -235,6 +262,8 @@ const Property = () => {
       ),
     },
     {
+      minWidth: 150,
+
       flex: 0.15,
       field: "status",
       headerName: "Status",
@@ -254,6 +283,8 @@ const Property = () => {
       ),
     },
     {
+      minWidth: 100,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.1,
@@ -358,7 +389,7 @@ const Property = () => {
               loading={loading}
               getRowHeight={() => "auto"}
               pagination
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50, 100, 300, 500, 1000]}
               // rowCount={pagination?.totalUsers || 0}
               // page={pageState.page - 1}
               // pageSize={pageState.pageSize}

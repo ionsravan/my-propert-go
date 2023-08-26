@@ -17,6 +17,7 @@ import { useAxios } from "src/utills/axios";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/router";
 import { RxAvatar } from "react-icons/rx";
+import { ErrorDispaly } from "../admin/property";
 
 interface Props {
   Icon: React.ElementType;
@@ -64,8 +65,7 @@ const Profile = () => {
       setFile(null);
     } catch (e) {
       setLoading(false);
-      console.log(e);
-      toast("Some Error Try Again");
+      ErrorDispaly(e);
     }
   };
 
@@ -101,7 +101,7 @@ const handleLogout = () => {
   
         }
       } catch (e) {
-        console.log(e);
+        ErrorDispaly(e);
       }
     };
     fetchData();

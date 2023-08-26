@@ -36,6 +36,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Modal from "src/componets/shared/modal";
+import { ErrorDispaly } from "../property";
 
 export const tableStyles = {
     "& .MuiDataGrid-cellContent": {
@@ -127,7 +128,7 @@ const CareServiceManagement = () => {
             }
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
     }
 
@@ -166,6 +167,7 @@ const CareServiceManagement = () => {
     const all_customer_columns: GridColDef[] = [
         {
             flex: 0.1,
+            minWidth:140,
             field: "primaryImage",
             headerName: "Image",
             align: "left",
@@ -178,6 +180,7 @@ const CareServiceManagement = () => {
         },
         {
             flex: 0.15,
+            minWidth:150,
             field: "name",
             headerName: "Peoperty Name",
             align: "left",
@@ -190,6 +193,7 @@ const CareServiceManagement = () => {
             ),
         }, {
             flex: 0.2,
+            minWidth:100,
             field: "location",
             headerName: "Location",
             align: "left",
@@ -204,6 +208,7 @@ const CareServiceManagement = () => {
 
         {
             flex: 0.1,
+            minWidth:150,
             field: "userName",
             headerName: "User Name",
             align: "left",
@@ -217,7 +222,7 @@ const CareServiceManagement = () => {
         },
         {
             flex: 0.2,
-            // maxWidth:100,
+            minWidth:150,
             field: "userEmail",
             headerName: "User Email",
             align: "left",
@@ -234,6 +239,7 @@ const CareServiceManagement = () => {
             ),
         },
         {
+      minWidth: 120,
             flex: 0.15,
             field: "action",
             headerName: "Status",
@@ -253,6 +259,8 @@ const CareServiceManagement = () => {
             ),
         },
         {
+      minWidth: 50,
+
             flex: 0.05,
             field: "upload",
             headerName: "Upload",
@@ -282,7 +290,7 @@ const CareServiceManagement = () => {
             }
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
     }
 
@@ -328,7 +336,7 @@ const CareServiceManagement = () => {
             }
         } catch (e) {
             setDeleteLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
     }
 
@@ -349,7 +357,7 @@ const CareServiceManagement = () => {
             <Grid container spacing={6} sx={{ pb: 4 }}>
                 <Grid item xs={12}>
                     <Card sx={{ borderRadius: 2 }}>
-                        <DataGrid
+                        <DataGrid                        
                             rows={careData || []}
                             columns={all_customer_columns}
                             getRowId={(row) => row._id}
@@ -359,7 +367,7 @@ const CareServiceManagement = () => {
                             }}
                             loading={loading}
                             getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
 
                             // pagination
                             // pageSize={pageState.pageSize || 10}

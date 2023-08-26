@@ -46,6 +46,7 @@ import { addForm, iconClass } from "../customers/edit/[id]";
 import { SiGoogleads } from "react-icons/si";
 import Image from "src/componets/shared/Image";
 import { RHFSelect } from "src/componets/shared/RHF/RHFSelect";
+import { ErrorDispaly } from "../property";
 
 const NewCompanyValidationSchema = Yup.object().shape({
   lead: Yup.number().required("Lead count is required"),
@@ -147,7 +148,7 @@ const Orders = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -174,7 +175,7 @@ const Orders = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -201,6 +202,8 @@ const Orders = () => {
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.2,
+      minWidth: 120,
+
       field: "userName",
       headerName: "USER NAME",
       align: "left",
@@ -213,6 +216,8 @@ const Orders = () => {
       ),
     },
     {
+      minWidth: 150,
+
       flex: 0.2,
       field: "userEmail",
       headerName: "EMAIl",
@@ -221,6 +226,8 @@ const Orders = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "planName",
       headerName: "PLAN NAME",
       flex: 0.1,
@@ -229,6 +236,8 @@ const Orders = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "leadCount",
       headerName: "LEADS",
       flex: 0.1,
@@ -237,6 +246,8 @@ const Orders = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 140,
+
       field: "screenshot",
       headerName: "SCREENSHOT",
       flex: 0.1,
@@ -252,6 +263,8 @@ const Orders = () => {
       ),
     },
     {
+      minWidth: 120,
+
       field: "paid",
       headerName: "STATUS",
       flex: 0.1,
@@ -272,6 +285,8 @@ const Orders = () => {
       ),
     },
     {
+      minWidth: 160,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.15,
@@ -331,7 +346,7 @@ const Orders = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,200]}
+              pageSizeOptions={[50,100,300,500,1000]}
 
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}

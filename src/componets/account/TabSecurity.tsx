@@ -30,6 +30,7 @@ import FormProvider from '../shared/RHF/FormProvider'
 import { useRouter } from 'next/router'
 import { useAxios } from 'src/utills/axios'
 import { useCookies } from 'react-cookie'
+import { ErrorDispaly } from 'src/pages/admin/property'
 
 interface State {
     showNewPassword: boolean
@@ -123,7 +124,7 @@ const TabSecurity = () => {
             }
         } catch (e) {
             setLoading(false);
-            console.log(e);
+            ErrorDispaly(e);
         }
     }
 

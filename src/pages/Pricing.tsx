@@ -14,6 +14,7 @@ import { Footer, Navbar } from "src/componets";
 import CustomLoader from "src/componets/shared/Loader";
 import { useRouter } from "next/router";
 import Image from 'next/image';
+import { ErrorDispaly } from "./admin/property";
 
 
 const subscriptionPacks = [
@@ -334,7 +335,7 @@ const PricingPage = () => {
 
         }
       } catch (e) {
-        console.log(e);
+        ErrorDispaly(e);
       }
     };
     fetchData();
@@ -425,7 +426,7 @@ const PricingPage = () => {
                     }}
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   >
-                    {pack?.name === 'starter' ? 'Explore' : pack?.name === 'ultimate' ? 'Explore Now' : 'Buy Now'}
+                    {pack?.name === 'starter' ? 'Explore' : pack?.name === 'ultimate' ? 'Get Quote' : 'Buy Now'}
                   </button>
                   <Modal
                     open={isModalOpen && selectedPlan === pack}
