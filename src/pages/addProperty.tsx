@@ -74,11 +74,11 @@ function SearchDropdown({ options, onSelect, propertyData }) {
       setSelectedOption(null);
     }
   }, [propertyData]);
-  
+
 
   const filteredOptions = options?.filter((option) =>
-  option.name.toLowerCase().includes(searchQuery.toLowerCase())
-);
+    option.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
@@ -370,11 +370,22 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
   };
 
 
+  // useEffect(() => {
+  //   if (residentialActive) {
+  //     setBuildingType("residential");
+  //   } else {
+  //     setBuildingType("commercial");
+  //   }
+  // }, [commercialActive, residentialActive]);
+
+
   useEffect(() => {
     if (residentialActive) {
       setBuildingType("residential");
-    } else {
+    } else if(commercialActive) {
       setBuildingType("commercial");
+    } else{
+      setBuildingType("")
     }
   }, [commercialActive, residentialActive]);
 
@@ -790,6 +801,7 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     bodyFormData.append('numOfParking', parking);
     // bodyFormData.append('numOfParking', String(parseInt(parking, 10)));
     bodyFormData.append('view', selectedViewFacing);
+    bodyFormData.append('facing', selectedView);
     bodyFormData.append('propertyType', propertyType);
     bodyFormData.append('liftFacility', lift);
     bodyFormData.append('userType', userType);
@@ -811,31 +823,31 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
     try {
       let url;
       let successToastMessage;
-      // let redirectRoute;
+      let redirectRoute;
 
       if (navbarFooter === false && isAdmin === false) {
         url = "/agent/property/editProperty";
         successToastMessage = "Property Updated Successfully";
-        // redirectRoute = "/agent";
+        redirectRoute = "/agent";
       } else if (isAdmin === true && addPropertyAdmin === true) {
         url = "/admin/property/addProperty";
         successToastMessage = "Property Added by Admin Successfully";
-        // redirectRoute = "/admin";
+        redirectRoute = "/admin";
       } else if (isAdmin === true) {
         url = "/admin/property/editPropertyByAdmin";
         successToastMessage = "Property Edited by Admin Successfully";
-        // redirectRoute = "/admin";
+        redirectRoute = "/admin";
       } else {
         url = "/agent/property/addProperty";
         successToastMessage = "Property Added Successfully";
-        // redirectRoute = "/agent";
+        redirectRoute = "/agent";
       }
 
       const res = await instance.post(url, bodyFormData);
 
       if (res.data) {
         setIsLoading(true)
-        // router.push(redirectRoute);
+        router.push(redirectRoute);
         toast(successToastMessage);
       }
 
@@ -908,15 +920,24 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
         return;
       }
 
-      if (buildingType.trim() === '') {
-        setBuildingTypeError('Please Fill the Building type');
 
-        setTimeout(() => {
-          setBuildingTypeError('');
-        }, 2000);
+      // Development
 
-        return;
+      if(availabeFor === "Development"){
+
+      } else{
+        if (buildingType.trim() === '') {
+          setBuildingTypeError('Please Fill the Building type');
+  
+          setTimeout(() => {
+            setBuildingTypeError('');
+          }, 2000);
+  
+          return;
+        }
       }
+
+    
 
 
 
@@ -1379,18 +1400,31 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       if (propertyData?.buildingType === "residential") {
         console.log("activeeee")
         setResidentialActive(true)
-        setPropertyType(propertyData?.propertyType)
+        setCommercialActive(false);
+        setDevelopmentActive(false);
         setActiveButton(propertyData?.propertyType);
+        setPropertyType(propertyData?.propertyType)
+       
       }
       if (propertyData?.buildingType === "commercial") {
-        setCommercialActive(true)
-        setPropertyType(propertyData?.propertyType)
+        // setCommercialActive(true)
+        setResidentialActive(false);
+        setCommercialActive(true);
+        setDevelopmentActive(false);
         setActiveButton(propertyData?.propertyType);
+        setPropertyType(propertyData?.propertyType)
+
       }
-      if (propertyData?.buildingType === "develoment") {
-        setDevelopmentActive(true)
-        setPropertyType(propertyData?.propertyType)
-        setActiveButton(propertyData?.propertyType);
+      if (propertyData?.availableFor === "Development") {
+        // setDevelopmentActive(true)
+        setResidentialActive(false);
+        setCommercialActive(false);
+        setDevelopmentActive(true);
+        setRentActive(false);
+        setSaleActive(false);
+        // setActiveButton(propertyData?.propertyType);
+        // setPropertyType(propertyData?.propertyType)
+
       }
 
       setProjectName(propertyData?.name);
@@ -1425,9 +1459,9 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       setBathroom(propertyData?.numOfBathroom)
       // setParking(String(parseInt(propertyData?.numOfParking, 10)))
       setParking(propertyData?.numOfParking)
-      setSelectedView(propertyData?.view)
+      setSelectedView(propertyData?.facing)
       setSelectedViewFacing(propertyData?.view)
-      setPropertyType(propertyData?.propertyType)
+      // setPropertyType(propertyData?.propertyType)
       setLift(propertyData?.liftFacility)
       setUserType(propertyData?.userType)
       setRegulatory(propertyData?.authority)

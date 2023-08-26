@@ -393,8 +393,8 @@ const AvailablePropertyFilter = () => {
         />
         <FilterCheckBox
           setEnabled={setAvailableFor}
-          enabled={availableFor === "development"}
-          name="development"
+          enabled={availableFor === "Development"}
+          name="Development"
         />
       </div>
     </div>
@@ -490,6 +490,13 @@ const TypeFilter = ({
     { label: "penthouse", value: "Penthouse" },
     { label: "individual house", value: "Individual House" },
     { label: "stutio apartment", value: "Stutio Apartment" },
+    { label: "shop", value: "Shop" },
+    { label: "office space", value: "Office Space" },
+    { label: "showroom", value: "Showroom" },
+    { label: "building", value: "Building" },
+    { label: "warehouse", value: "Warehouse" },
+    { label: "industrial land", value: "Industrial Land" },
+
     // { label: "building type", value: "building type" },
   ],
 }: {

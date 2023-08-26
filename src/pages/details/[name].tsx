@@ -271,40 +271,40 @@ const Details = () => {
 
 
 
-const id = getIDFromSlug(slug);
+  const id = getIDFromSlug(slug);
 
   // const _id = slug ? extractIdFromSlug(slug) : null;
 
 
-//   async function getPropertyDetailsById() {
-//     try {
-//         const res = await instance.get(
-//             `/property/getPropertyById/${_id}`
-//         );
-//         if (res.data) {
-//           setData(res.data)
-//         }
-//     } catch (e) {
-//         console.log(e);
-//     }
-// }
+  //   async function getPropertyDetailsById() {
+  //     try {
+  //         const res = await instance.get(
+  //             `/property/getPropertyById/${_id}`
+  //         );
+  //         if (res.data) {
+  //           setData(res.data)
+  //         }
+  //     } catch (e) {
+  //         console.log(e);
+  //     }
+  // }
 
-// useEffect(() => {
+  // useEffect(() => {
 
-//   const { data, error, status } = useFetch<ProperyRes>(
-//     `property/getPropertyById/${_id}`
-//   );
-// }, [_id]);
+  //   const { data, error, status } = useFetch<ProperyRes>(
+  //     `property/getPropertyById/${_id}`
+  //   );
+  // }, [_id]);
 
 
-// Function to extract id from the slug
-// function extractIdFromSlug(slug) {
-//   console.log(slug,"Slug:")
-//   const parts = slug.split('-');
-//   const id = parts[parts.length - 1];
-//   console.log("Extracted id:", id); // Print the extracted id
-//   return id;
-// }
+  // Function to extract id from the slug
+  // function extractIdFromSlug(slug) {
+  //   console.log(slug,"Slug:")
+  //   const parts = slug.split('-');
+  //   const id = parts[parts.length - 1];
+  //   console.log("Extracted id:", id); // Print the extracted id
+  //   return id;
+  // }
 
 
   const { data, error, status } = useFetch<ProperyRes>(
@@ -336,7 +336,7 @@ const id = getIDFromSlug(slug);
 
 
 
- 
+
 
 
 
@@ -424,12 +424,12 @@ const id = getIDFromSlug(slug);
     try {
       if (cookies.jwtToken) {
         const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
-  
+
         if (propertyId) {
           const requestData = { propertyId: propertyId };
-  
+
           const res = await instance.post("/user/addInFavourite", requestData);
-  
+
           if (res.data) {
             toast.success("Property added in Favourite");
           }
@@ -442,8 +442,8 @@ const id = getIDFromSlug(slug);
       console.error("An error occurred:", error);
     }
   };
-  
-  
+
+
 
   return (
     <div className=" bg-white">
@@ -451,26 +451,44 @@ const id = getIDFromSlug(slug);
         {/* head section */}
         <div className="space-y-8 md:space-y-4 w-full">
           <div className="flex items-center justify-between ">
-          <small className="font-manrope">
-            home / Appartment /{" "}
-            <span className="text-primaryBlue pl-1">
-              {data?.result.name || ""}
-              
-            </span>
-          </small>
-          <div style={{borderRadius:"20px", color:"white",marginLeft:"10px"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
-            <p className="mt-1 mb-1">Property ID :{data?.result._id}</p>
-            {/* <p className="mt-1 mb-1">Delhi</p> */}
+            <small className="font-manrope">
+              home / Appartment /{" "}
+              <span className="text-primaryBlue pl-1">
+                {data?.result.name || ""}
+
+              </span>
+            </small>
+            <div style={{ borderRadius: "20px", color: "white", marginLeft: "10px" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
+              <p className="mt-1 mb-1">Property ID :{data?.result._id}</p>
+              {/* <p className="mt-1 mb-1">Delhi</p> */}
+            </div>
           </div>
-          </div>
-      
+
           {/* header section */}
           <div className=" md:flex justify-between items-start space-y-4">
             {/* title */}
+
+            {/* {availableFor === "Development"
+                  ? `${availableFor} site`
+                  : `${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor}`} */}
+
+
             <div className="space-y-2 ">
               <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
                 {/* {data?.result.name} */}
-                {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `}
+                {/* {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `} */}
+                {/* {data?.result?.toggle === "Project" ? data?.result.name : data?.resutl?.availabelFor === "Development" ? `${availableFor} site in  ${data?.result?.location.name}`: `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `  } */}
+
+                {data?.result?.toggle === "Project"
+                  ? data?.result.name
+                  : data?.result?.availableFor === "Development"
+                    ? `${data?.result?.availableFor} site in ${data?.result?.location.name}`
+                    : data?.result?.BHKconfig === ""
+                      ? `${data?.result.propertyType} for ${data?.result?.availableFor} in ${data?.result?.location.name}`
+                      : `${data?.result?.BHKconfig} Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in ${data?.result?.location.name}`}
+
+
+
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
                 <div className="flex items-center justify-center space-x-4">
@@ -479,8 +497,7 @@ const id = getIDFromSlug(slug);
                 </div>
                 <div className=" space-x-2">
                   <p className="flex items-center space-x-2">
-                    {/* <GrStar className="text-2xl text-yellow-300" /> */}
-                    {/* <span className="text-sm md:text-2xl">4.6</span> */}
+
                   </p>
                   <p className="text-xs md:text-xl">₹{data?.result.areaValue}/{data?.result.areaType}</p>
 
@@ -515,10 +532,10 @@ const id = getIDFromSlug(slug);
                 </div>
                 <div onClick={handleFavourite} className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
                   <FaRegBookmark className="text-red-400" />
-                  <p   className="mt-1">Save</p>
+                  <p className="mt-1">Save</p>
                 </div>
                 <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
-                 <AiOutlineShareAlt  onClick={handleShareClick} style={{fontSize:"25px"}}/>
+                  <AiOutlineShareAlt onClick={handleShareClick} style={{ fontSize: "25px" }} />
                 </div>
               </div>
               <p className="text-lg font-medium mt-4 ">Area:{data?.result.size} {data?.result.areaType}</p>
@@ -532,18 +549,32 @@ const id = getIDFromSlug(slug);
 
         {/* Tags */}
         <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
-          <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
+          <div style={{ borderRadius: "20px", color: "white" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.location.name}</p>
             {/* <p className="mt-1 mb-1">Delhi</p> */}
           </div>
-              <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
-            <p className="mt-1 mb-1">{data?.result.BHKconfig} bhk</p>
+          <div
+            style={{
+              borderRadius: "20px",
+              color: "white",
+              display: data?.result.BHKconfig ? "block" : "none"
+            }}
+            className="px-3 py-1 border bg-blue-500 shadow-sm"
+          >
+            <p className="mt-1 mb-1">{data?.result?.BHKconfig} bhk</p>
           </div>
-              <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
+          <div style={{ borderRadius: "20px", color: "white" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.availableFor}</p>
           </div>
-              <div style={{borderRadius:"20px", color:"white"}} className="px-3 py-1 border bg-blue-500 shadow-sm">
-            <p className="mt-1 mb-1">{data?.result.propertyType}</p>
+          <div
+            style={{
+              borderRadius: "20px",
+              color: "white",
+              display: data?.result?.propertyType ? "block" : "none"
+            }}
+            className="px-3 py-1 border bg-blue-500 shadow-sm"
+          >
+            <p className="mt-1 mb-1">{data?.result?.propertyType}</p>
           </div>
         </div>
 
@@ -579,7 +610,7 @@ const id = getIDFromSlug(slug);
           <div className="w-full">
             {cookies?.jwtToken ? (
               <button
-                style={{borderRadius:"20px"}}
+                style={{ borderRadius: "20px" }}
                 className={`bg-${buttonColor ? "current" : "primaryBlue"
                   } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
               >
@@ -599,20 +630,20 @@ const id = getIDFromSlug(slug);
           </div>
 
           <div className="flex space-x-4 text-sm">
-                  {(data?.result.propertyTags && data.result.propertyTags.length > 0) ? (
-                    (data?.result.propertyTags).map((tag, index) => (
-                      <button
-                        key={index}
-                        className={`${index === 0 ? "bg-green-400 bg-opacity-50" : "bg-[#EBECF0]"
-                          } px-4 p-2 ${index === 0 ? "text-xs" : "md:text-sm"} rounded-lg`}
-                      >
-                        {tag}
-                      </button>
-                    ))
-                  ) : (
-                    null
-                  )}
-                </div>
+            {(data?.result.propertyTags && data.result.propertyTags.length > 0) ? (
+              (data?.result.propertyTags).map((tag, index) => (
+                <button
+                  key={index}
+                  className={`${index === 0 ? "bg-green-400 bg-opacity-50" : "bg-[#EBECF0]"
+                    } px-4 p-2 ${index === 0 ? "text-xs" : "md:text-sm"} rounded-lg`}
+                >
+                  {tag}
+                </button>
+              ))
+            ) : (
+              null
+            )}
+          </div>
 
           {data?.result?.propertyImages && (
             <MyModal isOpen={isOpen} setIsOpen={setIsOpen}>
@@ -634,7 +665,7 @@ const id = getIDFromSlug(slug);
             <p className="text-xl ">Specifications</p>
 
             <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-            <div className="flex w-full justify-between items-start flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+              <div className="flex w-full justify-between items-start flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 font-manrope">
 
                 <div className="leftSideContainer">
 
@@ -665,27 +696,7 @@ const id = getIDFromSlug(slug);
             </div>
           </div>
 
-          {/* <div style={{padding:"0 100px"}}>
-            <div style={{ border: "1px solid grey", }} className="flex p-4 space-x-6 ">
-              <div style={{width:"60%"}} className=" h-80 bg-gray-200">
-                {propertyImages.length > 0 && (
-                  <img src={propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
-                )}
-              </div>
-              <div className="flex-1 h-80 flex flex-col justify-between  ">
-                {propertyImages.slice(1, 3).map((image, index) => (
-                  <div style={{ height: "47%" }} className="w-full " key={index}>
-                    <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
-                  </div>
-                ))}
-                {propertyImages.length <= 2 && (
-                  <div className="h-1/2 w-full flex justify-center items-center text-gray-600">
-                    No more images
-                  </div>
-                )}
-              </div>
-            </div>
-          </div> */}
+
 
 
           {data?.result?.toggle === "Project" ? <div style={{
@@ -696,33 +707,31 @@ const id = getIDFromSlug(slug);
 
           }}>
             <p style={{ fontSize: "20px" }}>Project Images</p>
-            <div style={{ padding: "0 150px",marginBottom:"20px" }} className="flex p-4 space-x-6">
-              <div style={{ width: "60%" }} className="h-80 bg-gray-200">
+            <div style={{ padding: "0 150px", marginBottom: "20px" }} className="flex p-4 md:space-x-4 md:flex-row md:items-stretch md:justify-start items-center justify-center flex-col  ">
+              <div className=" md:w-[500px] w-56 h-36 md:mb-0 mb-4  md:h-80 bg-gray-200">
                 {data?.result.propertyImages?.length > 0 && (
                   <img src={data.result.propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
                 )}
               </div>
               <div className="flex-1 h-80 flex flex-col justify-between">
                 {data?.result.propertyImages?.slice(1, 3).map((image, index) => (
-                  <div style={{ height: "47%" }} className="w-full" key={index}>
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4" key={index}>
                     <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
                   </div>
                 ))}
                 {data?.result.propertyImages?.length <= 2 && (
-                  <div style={{ height: "47%" }} className="w-full flex justify-center items-center text-gray-600 border border-gray-600">
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4 flex justify-center items-center text-gray-600 border border-gray-600">
                     No more images
                   </div>
                 )}
                 {data?.result.propertyImages?.length === 1 && (
-                  <div style={{ height: "47%" }} className="w-full flex justify-center items-center text-gray-600 border border-gray-600">
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4 flex justify-center items-center text-gray-600 border border-gray-600">
                     No more images
                   </div>
                 )}
               </div>
             </div>
           </div> : null}
-
-
 
 
 
@@ -746,7 +755,7 @@ const id = getIDFromSlug(slug);
                 const IconTag = Icon?.icon;
                 console.log(IconTag, "Icon")
                 return (
-                  <div key={curElem} style={{borderRadius:"20px", color:"white"}} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-blue-500 shadow-sm">
+                  <div key={curElem} style={{ borderRadius: "20px", color: "white" }} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-blue-500 shadow-sm">
                     {IconTag ? <IconTag /> : null}
                     <p className="mt-1 mb-1">{curElem}</p>
                   </div>
@@ -754,6 +763,7 @@ const id = getIDFromSlug(slug);
               }) : null}
             </div>
           </div>
+
 
 
 
@@ -813,7 +823,7 @@ const id = getIDFromSlug(slug);
             <div className="flex flex-col items-center space-y-5 md:p-0 px-5">
               <div className="h-20 w-20 relative rounded-full">
                 <Image
-                style={{marginTop:"20px"}}
+                  style={{ marginTop: "20px" }}
                   // src={data?.result?.agentId?.profilePhoto as string}
                   src="https://i.ibb.co/8MzgrNc/avatar.png"
                   fill
@@ -844,7 +854,7 @@ const id = getIDFromSlug(slug);
               </div>
 
               {cookies?.jwtToken ? (
-                <button style={{marginBottom:"30px"}} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                <button style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                   <MyMsg
                     data={data}
                     text="Contact Agent"
@@ -853,7 +863,7 @@ const id = getIDFromSlug(slug);
                 </button>
               ) : (
                 <Link href={"/login"}>
-                  <button style={{marginBottom:"30px"}} className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                  <button style={{ marginBottom: "30px" }} className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                     Login to Contact Agent
                   </button>
                 </Link>

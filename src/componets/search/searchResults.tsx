@@ -175,7 +175,7 @@ const HomeResult = ({
 
         </div>
       </Link>
-    ) : (toggle === "Property" || toggle === "property" ) ? (
+    ) : (toggle === "Property" || toggle === "property") ? (
       <Link href={`/details/${slug}`}>
         {/* <Link href={`/details/${_id}`}> */}
         <div
@@ -197,7 +197,13 @@ const HomeResult = ({
             <div className="">
               <h1 className=" text-xl md:text-2xl font-bold text-TitleColor">
                 {/* {name} */}
-                {`${BHKconfig}Bhk ${propertyType} for ${availableFor}  `}
+                {/* {`${BHKconfig}Bhk ${propertyType} for ${availableFor}  `} */}
+                {/* {`${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor}`} */}
+                {availableFor === "Development"
+                  ? `${availableFor} site`
+                  : `${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor}`}
+
+
               </h1>
               <div className="flex space-x-4 mb-4 text-sm mt-1">
                 <p className="text-title ">{name}</p>
@@ -255,7 +261,7 @@ const HomeResult = ({
                 <span className="text-primaryBlue ml-9">learn more</span>
               </p>
             </div>
-            
+
             <div>
               {agentId ? (
                 <div className="absolute left-2 top-2 flex flex-col items-start justify-start">
@@ -331,7 +337,11 @@ const HomeResult = ({
             <div className="">
               <h1 className=" text-xl md:text-2xl font-bold text-TitleColor">
                 {/* {name} */}
-                {`${BHKconfig}Bhk ${propertyType} for ${availableFor}  `}
+                {/* {`${BHKconfig}Bhk ${propertyType} for ${availableFor}  `} */}
+                {/* {`${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor}`} */}
+                {availableFor === "Development"
+                  ? `${availableFor} site`
+                  : `${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor}`}
               </h1>
               <div className="flex space-x-4 mb-4 text-sm mt-1">
                 <p className="text-title ">{name}</p>
@@ -389,7 +399,7 @@ const HomeResult = ({
                 <span className="text-primaryBlue ml-9">learn more</span>
               </p>
             </div>
-            
+
             <div>
               {agentId ? (
                 <div className="absolute left-2 top-2 flex flex-col items-start justify-start">
@@ -443,7 +453,7 @@ const HomeResult = ({
           </div>
         </div>
       </Link>
-    ) : null }
+    ) : null}
 
 
 
@@ -481,7 +491,7 @@ const SearchResult = ({ data }: Props) => {
     });
   }, [filteredSeach]);
 
-  
+
   useEffect(() => {
     if (searchFilter == "all") {
       if (data) {

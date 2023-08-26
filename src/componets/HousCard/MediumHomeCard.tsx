@@ -24,17 +24,17 @@ const MediumHouseCard = ({
   toggle,
   propertyType,
   slug
-  
+
 
 }: Propery) => {
   const imageSource = primaryImage || (propertyImages && propertyImages[0]) || "/bighouse.png";
 
 
   // const slug = generateSlug(toggle, name:undefined, BHKconfig, propertyType, availableFor, location.name, _id);
-  
-// if(slug){
-//   console.log(slug,"slug")
-// }
+
+  // if(slug){
+  //   console.log(slug,"slug")
+  // }
 
   return (
     // <Link href={`/details/${_id}`}>
@@ -49,7 +49,11 @@ const MediumHouseCard = ({
           />
         </div>
         <div className="space-y-1 px-3 ">
-          <h1 className="text-2xl font-semibold text-TitleColor">{`${BHKconfig}Bhk Flat for ${availableFor} in...   `}</h1>
+          {/* <h1 className="text-2xl font-semibold text-TitleColor">{`${BHKconfig}Bhk Flat for ${availableFor} in...   `}</h1> */}
+          {/* <h1 className="text-lg font-semibold text-TitleColor">{`${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor} in ...`}</h1> */}
+          <h1 className="text-lg font-semibold text-TitleColor">    {availableFor === "Development"
+            ? `${availableFor} site...`
+            :`${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor} in ...`}</h1>
           <div className="flex justify-between items-end">
             <div className="flex flex-col">
               <p className="flex items-center text-md "><HiLocationMarker style={{ marginRight: "5px" }} />{location?.name}</p>
