@@ -568,10 +568,10 @@ export default function Home() {
                   <FaHome />
                 </div>
                 <h3 className="text-xl font-semibold mt-4">
-                  Shipping Container Homes
+                  Earn With Us
                 </h3>
                 <p className="text-gray-600 mt-2 text-center">
-                  Experience unique, versatile living with sustainable shipping container homes.
+                Where Earning Meets Excellence: Join Our Team Today!
                 </p>
               </div>
             </div>

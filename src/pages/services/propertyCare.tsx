@@ -117,8 +117,8 @@ const PropertyCare = () => {
 
 
 
-      <h1 style={{ fontSize: "30px", marginTop: "30px" }} className='text-center  '>Book A FREE Design Session</h1>
-      <h1 style={{ fontSize: "30px" }} className='text-center  '>Meet a designer</h1>
+      {/* <h1 style={{ fontSize: "30px", marginTop: "30px" }} className='text-center  '>Book A FREE Design Session</h1> */}
+      {/* <h1 style={{ fontSize: "30px" }} className='text-center  '>Meet a designer</h1> */}
       {/* <h2>Meet a designer</h2> */}
 
       <div style={{ marginTop: "-90px" }}>

@@ -180,8 +180,8 @@ export const homeChipsData: chipData[] = [
     Icon: MdVilla,
   },
   {
-    name: "Appartment",
-    value: "appartment",
+    name: "Flat",
+    value: "flat",
     Icon: MdOutlineApartment,
   },
   // plots ,farm lands ,indivudual house

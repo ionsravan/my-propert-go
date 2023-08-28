@@ -19,6 +19,7 @@ const ContactForm = ({navFooter}) => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [service, setService] = useState("");
+    const [mobile, setMobilie] = useState("");
 
     // const handleChange = (e) => {
     //   setFormData((prevData) => ({
@@ -33,6 +34,7 @@ const ContactForm = ({navFooter}) => {
             name: name,
             email: email,
             message: message,
+            mobile: mobile,
             service: service
         }
 
@@ -77,7 +79,7 @@ const ContactForm = ({navFooter}) => {
     return <>
   {navFooter === true ? null :  <Navbar/>}
       <div className="flex items-center flex-col justify-center min-h-screen px-4 sm:px-6 lg:px-8">
-      <p className="text-3xl">Contact Us</p>
+      <p className="text-3xl">Contact Our Team</p>
       <div className="max-w-sm mx-auto p-6 bg-white rounded-lg shadow-md w-full sm:w-1/2 mt-8">
         <div className="mb-4">
           <label className="block text-gray-700 font-medium mb-2">
@@ -107,6 +109,16 @@ const ContactForm = ({navFooter}) => {
             placeholder="Enter Message"
             value={message}
             setValue={setMessage}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 font-medium mb-2">
+            Mobile No.
+          </label>
+          <Input
+            placeholder="Enter Your Mobile No."
+            value={mobile}
+            setValue={setMobilie}
           />
         </div>
         <div className="mb-4">

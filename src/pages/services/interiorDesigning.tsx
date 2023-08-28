@@ -310,7 +310,7 @@ const InteriorDesigns = () => {
       <h1 style={{fontSize:"30px"}}  className='text-center  '>Meet a designer</h1>
 
 
-      <div style={{marginTop:"-90px"}}>
+      <div style={{marginTop:"0px"}}>
       <ContactForm navFooter = {true}/>
       </div>
      

@@ -55,6 +55,11 @@ const MyPlans = () => {
       <div className="mb-6">
           <h1 className="text-[22px] font-bold text-black mb-5">My Plans</h1>
 
+          <h2 className="text-TitleColor font-bold text-[26px]">
+            {/* Hello {data?.result?.name} */}
+            The current plan is {myPlan !== undefined ? null : "Starter"}
+          </h2>
+
           {myPlan !== undefined &&
             <div
             className="bg-white text-black rounded-lg shadow-lg p-6 mt-5 w-full sm:w-1/2"

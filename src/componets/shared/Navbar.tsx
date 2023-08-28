@@ -17,7 +17,7 @@ const Nav = () => {
     },
     {
       name: "Pricing Plans",
-      link: "/pricing",
+      link: "/Pricing",
     },
     // {
     //   name: "Blogs",
