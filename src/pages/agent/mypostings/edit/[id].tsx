@@ -92,7 +92,7 @@ export const PostingCard = ({
       {/* image section */}
       <div className="h-[160px] relative md:w-[180px]">
         <Image
-          src={"/smallb.png"}
+          src={propertyImages[0] || "/smallb.png"}
           fill
           alt="home"
           className="rounded-l-lg object-cover"

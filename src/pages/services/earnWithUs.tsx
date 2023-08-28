@@ -3,13 +3,14 @@ import React from 'react';
 import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from '../contact';
+import Layout from "src/Layout/main";
 
 
 const EarnWithUs = () => {
 
 
   return <>
-    <Navbar />
+    {/* <Navbar /> */}
 
     <div style={{marginTop:"30px"}} className="bg-white py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -76,7 +77,7 @@ const EarnWithUs = () => {
 
 
 
-    <Footer />
+    {/* <Footer /> */}
 
   </>
 };
@@ -84,5 +85,7 @@ export default EarnWithUs;
 
 
 
-
+EarnWithUs.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 

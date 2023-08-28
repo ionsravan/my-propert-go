@@ -299,7 +299,8 @@ useEffect(() => {
       </div>
       <h2 className="text-TitleColor font-bold text-[26px]">
             {/* Hello {data?.result?.name} */}
-            The current plan is {myPlan !== undefined  ? null : "Starter"}
+            {/* The current plan is {myPlan !== undefined  ? null : "Starter"} */}
+            {myPlan !== undefined ? "The current plan is" : "No plans"}
           </h2>
       {myPlan !== undefined &&
             <div

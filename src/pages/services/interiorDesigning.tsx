@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from 'src/pages/contact';
+import Layout from "src/Layout/main";
 
 
 const VideoLoop = () => {
@@ -51,9 +52,10 @@ const InteriorDesigns = () => {
 
 
   return <>
-    <Navbar />
-
+   
+   {/* <Navbar /> */}
     <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
+
       <header>
  
       <h1 style={{ fontSize: "30px" }} className="text-2xl text-center font-bold mb-10">Interior Designing</h1>
@@ -79,8 +81,8 @@ const InteriorDesigns = () => {
 
 
 
-      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' style={{ margin: "50px 0" }} >
-        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center md:items-center md:justify-center' style={{ margin: "50px 0" }} >
+        <div style={{ width: "302px"}} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"15px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/exteriorDesignn.jpg"
@@ -95,7 +97,7 @@ const InteriorDesigns = () => {
               creates stunning curb appeal that sets the tone for your home's unique style.</p>
           </div>
         </div>
-        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+        <div style={{ width: "302px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"15px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/interiorDesign.jpg"
@@ -114,7 +116,7 @@ const InteriorDesigns = () => {
               your personal taste.</p>
           </div>
         </div>
-        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+        <div style={{ width: "302px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"15px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/gatedCommuninties.jpg"
@@ -123,7 +125,7 @@ const InteriorDesigns = () => {
               height={600}
             />
           </div>
-          <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none  rounded-xl  bg-primaryBlue flex flex-col ">
+          <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none  rounded-xl  bg-primaryBlue flex flex-col  ">
             <p style={{fontSize:"20px", fontWeight:"bold"}}>Gated Communities </p>
             <p className='text-justify'>We design minding
               privacy, security,
@@ -143,7 +145,7 @@ const InteriorDesigns = () => {
 
 
       <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-center items-center' style={{ margin: "50px 0" }} >
-        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+        <div style={{ width: "302px", }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/connectUs.png"
@@ -155,7 +157,7 @@ const InteriorDesigns = () => {
           <p className='text-center my-2 font-bold'>Connect us online</p>
   
         </div>
-        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+        <div style={{ width: "302px", }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/threeD.png"
@@ -167,7 +169,7 @@ const InteriorDesigns = () => {
           <p className='text-center my-2 font-bold'>Get your 3d designs</p>
   
         </div>
-        <div style={{ width: "302px",marginLeft:"30px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+        <div style={{ width: "302px", }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/affordable.png"
@@ -267,8 +269,8 @@ const InteriorDesigns = () => {
    
         </div>
       </div>
-      <div className='flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-start items-center' >
-      <div style={{ width: "302px",marginLeft:"140px", }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
+      <div className=' md:ml-[160px] ml-0 flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-5 justify-start items-center' >
+      <div style={{ width: "302px" }} className="resfeaturedProjectsCard__featuredProjectCard pageComponent fpUpgrade">
           <div style={{borderRadius:"10px"}} className="resfeaturedProjectsCard__imageBox imgHover">
             <Image className="lazyLoadImg"
               src="/book.png"
@@ -328,13 +330,17 @@ const InteriorDesigns = () => {
 
 
 
-
+   
     </main>
-    <Footer />
+    {/* <Footer /> */}
 
   </>
 };
 export default InteriorDesigns;
+
+InteriorDesigns.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 
 
 

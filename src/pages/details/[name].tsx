@@ -423,10 +423,13 @@ const Details = () => {
   const handleFavourite = async () => {
     try {
       if (cookies.jwtToken) {
-        const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
+        // const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
+        // const propertyId = data?.result?.agentId?._id;
 
-        if (propertyId) {
-          const requestData = { propertyId: propertyId };
+
+        if (id) {
+          console.log(id,"iddddd")
+          const requestData = { propertyId: id };
 
           const res = await instance.post("/user/addInFavourite", requestData);
 
@@ -451,13 +454,13 @@ const Details = () => {
         {/* head section */}
         <div className="space-y-8 md:space-y-4 w-full">
           <div className="flex items-center justify-between ">
-            <small className="font-manrope">
+            {/* <small className="font-manrope">
               home / Appartment /{" "}
               <span className="text-primaryBlue pl-1">
                 {data?.result.name || ""}
 
               </span>
-            </small>
+            </small> */}
             <div style={{ borderRadius: "20px", color: "white", marginLeft: "10px" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
               <p className="mt-1 mb-1">Property ID :{data?.result._id}</p>
               {/* <p className="mt-1 mb-1">Delhi</p> */}
@@ -548,10 +551,10 @@ const Details = () => {
 
 
         {/* Tags */}
-        <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
+        {/* <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
           <div style={{ borderRadius: "20px", color: "white" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.location.name}</p>
-            {/* <p className="mt-1 mb-1">Delhi</p> */}
+         
           </div>
           <div
             style={{
@@ -576,7 +579,7 @@ const Details = () => {
           >
             <p className="mt-1 mb-1">{data?.result?.propertyType}</p>
           </div>
-        </div>
+        </div> */}
 
 
         {/* main details content */}
@@ -932,7 +935,7 @@ const Details = () => {
             }}
           >
             {/* <p style={{textAlign:"center",fontSize:"30px",fontWeight:"bold"}}>WE'VE FOUND SIMILAR PROPERTIES FOR YOU</p> */}
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
+            <div className="max-w-7xl mx-auto  md:px-10 ">
               <div className="w-full flex items-center justify-between flex-col md:flex-row">
                 <HomeSectionTitle text="WE'VE FOUND SIMILAR PROPERTIES FOR YOU" />
                 <div className="flex space-x-4 mt-2 md:mt-0 ">
