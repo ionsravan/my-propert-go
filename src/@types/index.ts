@@ -68,6 +68,7 @@ export type Propery = {
   unitNo:number;
   status:string;
   slug:string;
+  userType:string;
   // additionalRooms:string[];
   // furnishingStatus:string[];
   // possessionStatus:string[];

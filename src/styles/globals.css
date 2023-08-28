@@ -8,10 +8,13 @@
 
 @layer components {
   body {
-    @apply font-manrope;
+    @apply font-sans;
   }
 }
 
+h1{
+  @apply font-serif
+}
 .bg {
   background: linear-gradient(
     101.42deg,

@@ -24,11 +24,11 @@ const Slider = ({ property }: { property: Propery }) => {
             />
           </Link>
           <div className="resfeaturedProjectsCard__featuredLarge">
-            <div className="fp_homepage__badges__featuredRegular">
+            {/* <div className="fp_homepage__badges__featuredRegular">
               <div>Featured</div>
-            </div>
+            </div> */}
           </div>
-          <div className="resfeaturedProjectsCard__shortlistItem pageComponent">
+          {/* <div className="resfeaturedProjectsCard__shortlistItem pageComponent">
             <h1>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -45,7 +45,7 @@ const Slider = ({ property }: { property: Propery }) => {
                 />
               </svg>
             </h1>
-          </div>
+          </div> */}
         </div>
         <div className="resfeaturedProjectsCard__contentBox pageComponent"></div>
         <div className="resfeaturedProjectsCard__contentText pageComponent">

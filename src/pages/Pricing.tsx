@@ -14,7 +14,6 @@ import { Footer, Navbar } from "src/componets";
 import CustomLoader from "src/componets/shared/Loader";
 import { useRouter } from "next/router";
 import Image from 'next/image';
-import { ErrorDispaly } from "./admin/property";
 
 
 const subscriptionPacks = [
@@ -335,7 +334,7 @@ const PricingPage = () => {
 
         }
       } catch (e) {
-        ErrorDispaly(e);
+        console.log(e);
       }
     };
     fetchData();
@@ -354,6 +353,7 @@ const PricingPage = () => {
     setIsModalOpen(true);
   };
 
+  
 
   const handleSubscribeClick = (pack) => {
     if (cookies.jwtToken) {
@@ -400,7 +400,9 @@ const PricingPage = () => {
               <div style={{ width: "400px" }} key={pack.id} className="mb-10 mx-4">
                 <div style={{ height: "100%", position: "relative", paddingBottom: "60px" }} className="bg-white p-6 rounded-lg shadow-md w-full max-w-md">
                   <h1 className="text-2xl text-center text-gray-800 font-semibold mb-4">{pack.name.toUpperCase()}</h1>
-                  <h2 className="text-3xl text-center text-primaryBlue font-bold">₹{pack.price}</h2>
+                  {/* <h1 className="text-2xl text-center text-gray-800 font-semibold mb-4">{pack.name === "ultimate" ? null : pack.name.toUpperCase()}</h1> */}
+                  {/* <h1 className="text-2xl text-center text-gray-800 font-semibold mb-4">{pack.name === "ultimate" ? null : pack.name.toUpperCase()}</h1> */}
+                  <h2 className="text-3xl text-center text-primaryBlue font-bold">{pack.price === 2999 ? null : `₹ ${pack.price}`}</h2>
 
                   <div className="custom-separator my-4 mx-auto bg-primary h-px"></div>
 

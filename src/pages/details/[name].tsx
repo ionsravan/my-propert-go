@@ -843,13 +843,13 @@ const Details = () => {
                       </p>
                       <HiCheckCircle className="text-primaryBlue text-xl mb-2" />
                     </div>
-                    <p className="text-xs text-locColor font-manrope flex justify-center items-center">
+                    {/* <p className="text-xs text-locColor font-manrope flex justify-center items-center">
                       Agent
                       <span>
                         <RxDotFilled className="text-lg" />
                       </span>{" "}
                       Joined 2020
-                    </p>
+                    </p> */}
                   </>
                 ) : (
                   <p>No agent information available</p>
@@ -860,14 +860,16 @@ const Details = () => {
                 <button style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                   <MyMsg
                     data={data}
-                    text="Contact Agent"
+                    // text="Contact Agent"
+                    text={data?.result.userType !== undefined ? `Contact ${data?.result.userType}` : `Contact`}
                     onApiCall={handleApiCall}
                   />
                 </button>
               ) : (
                 <Link href={"/login"}>
                   <button style={{ marginBottom: "30px" }} className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
-                    Login to Contact Agent
+                    {/* Login to Contact Agent */}
+                    {data?.result.userType !== undefined ? `Login to Contact ${data?.result.userType}` : `Login to Contact`}
                   </button>
                 </Link>
               )}
