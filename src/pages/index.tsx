@@ -468,10 +468,10 @@ export default function Home() {
 
 
       <section className="py-4">
-        <p className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold font-manrope text-center py-4">
+        <h1 className="max-w-7xl mx-auto px-5 md:px-10 text-4xl font-bold text-center py-4">
           Why Wonderplots?
-        </p>
-        <div className="max-w-7xl mx-auto px-5 md:px-10">
+        </h1>
+        <div className="max-w-7xl mx-auto px-5 md:px-10 font-sans">
           <TableContainer component={Paper}>
             <Table>
               <TableHead>
@@ -521,7 +521,7 @@ export default function Home() {
       <section className="py-4">
         <div className="container mx-auto py-12">
           <div className="text-center mb-4">
-            <p className="text-4xl font-bold font-manrope">Services from Wonderplots</p>
+            <h1 className="text-4xl font-bold ">Services from Wonderplots</h1>
             {/* <p className="text-2xl font-semibold">Why Us?</p> */}
             {/* <div className="flex justify-center items-center">
             <FaHome className="text-4xl text-blue-500" />
@@ -545,7 +545,7 @@ export default function Home() {
             </div>
 
             {/* Card 2 */}
-            <div className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div onClick={() => router.push("/services/propertyCare")} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}
@@ -561,17 +561,17 @@ export default function Home() {
             </div>
 
             {/* Card 3 */}
-            <div className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
+            <div onClick={() => router.push("/services/earnWithUs")} className="w-full sm:w-1/2 md:w-1/3 p-4 transform transition duration-300 hover:scale-105">
               <div className="bg-white rounded-lg shadow-md h-full flex flex-col items-center justify-center p-6">
                 <div className="text-4xl text-blue-500">
                   {/* Icon here */}
                   <FaHome />
                 </div>
                 <h3 className="text-xl font-semibold mt-4">
-                  Shipping Container Homes
+                  Earn With Us
                 </h3>
                 <p className="text-gray-600 mt-2 text-center">
-                  Experience unique, versatile living with sustainable shipping container homes.
+                Where Earning Meets Excellence: Join Our Team Today!
                 </p>
               </div>
             </div>

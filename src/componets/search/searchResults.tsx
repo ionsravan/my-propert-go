@@ -27,7 +27,8 @@ const HomeResult = ({
   propertyTags,
   status,
   agentId,
-  slug
+  slug,
+  userType
 }: Propery) => {
 
 
@@ -58,10 +59,10 @@ const HomeResult = ({
               </h1>
               <div className="flex space-x-4 mb-4 text-sm mt-4">
                 <p className="text-title">{`${BHKconfig}Bhk ${propertyType} for ${availableFor}`}</p>
-                <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
+                {/* <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
                   <p>4.5</p>
                   <AiFillStar />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className=" max-w-xl py-1 w-full flex justify-between">
@@ -148,24 +149,14 @@ const HomeResult = ({
                       </button>
                     ))
                   ) : (
-                    <>
-                      <button className="bg-green-400 bg-opacity-50 px-4 p-2 text-xs md:text-sm rounded-lg">
-                        NO BROKERAGE
-                      </button>
-                      <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
-                        READY MOVE
-                      </button>
-                      <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
-                        NEW BOOKING
-                      </button>
-                    </>
+                null
                   )}
                 </div>
 
               </div>
               <div className="md:mt-0 mt-4">
                 <button className="  bg-primaryBlue px-7  text-white   py-2 rounded-xl shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out w-full  ">
-                  Contact Builder
+                  Contact {userType !== undefined ? `${userType}` : null}
                 </button>
               </div>
             </div>
@@ -207,10 +198,10 @@ const HomeResult = ({
               </h1>
               <div className="flex space-x-4 mb-4 text-sm mt-1">
                 <p className="text-title ">{name}</p>
-                <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
+                {/* <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
                   <p>4.5</p>
                   <AiFillStar />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className=" max-w-xl py-1 w-full flex justify-between">
@@ -291,24 +282,14 @@ const HomeResult = ({
                       </button>
                     ))
                   ) : (
-                    <>
-                      <button className="bg-green-400 bg-opacity-50 px-4 p-2 text-xs md:text-sm rounded-lg">
-                        NO BROKERAGE
-                      </button>
-                      <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
-                        READY MOVE
-                      </button>
-                      <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
-                        NEW BOOKING
-                      </button>
-                    </>
+                    null
                   )}
                 </div>
 
               </div>
               <div className="md:mt-0 mt-4">
                 <button className="  bg-primaryBlue px-7  text-white   py-2 rounded-xl shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out w-full  ">
-                  Contact Builder
+                Contact {userType !== undefined ? `${userType}` : null}
                 </button>
               </div>
             </div>
@@ -345,10 +326,10 @@ const HomeResult = ({
               </h1>
               <div className="flex space-x-4 mb-4 text-sm mt-1">
                 <p className="text-title ">{name}</p>
-                <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
+                {/* <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
                   <p>4.5</p>
                   <AiFillStar />
-                </div>
+                </div> */}
               </div>
             </div>
             <div className=" max-w-xl py-1 w-full flex justify-between">
@@ -429,24 +410,14 @@ const HomeResult = ({
                       </button>
                     ))
                   ) : (
-                    <>
-                      <button className="bg-green-400 bg-opacity-50 px-4 p-2 text-xs md:text-sm rounded-lg">
-                        NO BROKERAGE
-                      </button>
-                      <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
-                        READY MOVE
-                      </button>
-                      <button className="bg-[#EBECF0] px-4 p-2 rounded-lg">
-                        NEW BOOKING
-                      </button>
-                    </>
+                    null
                   )}
                 </div>
 
               </div>
               <div className="md:mt-0 mt-4">
                 <button className="  bg-primaryBlue px-7  text-white   py-2 rounded-xl shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out w-full  ">
-                  Contact Builder
+                Contact {userType !== undefined ? `${userType}` : null}
                 </button>
               </div>
             </div>

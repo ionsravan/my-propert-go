@@ -17,7 +17,7 @@ const Nav = () => {
     },
     {
       name: "Pricing Plans",
-      link: "/pricing",
+      link: "/Pricing",
     },
     // {
     //   name: "Blogs",
@@ -79,7 +79,7 @@ const Nav = () => {
               : "bg-white text-black"
             } px-2 rounded-full py-2 font-manrope`}
         >
-          <FaUserAlt />
+          My Dashboard
         </button>
       )}
     </nav>
@@ -104,28 +104,14 @@ const Navbar = () => {
               ? "overflow-hidden " 
               : "shadow-md overflow-hidden "
           } `}
-    // className={`flex justify-between relative overflow-hidden ${router?.pathname == "/" ? "bg-primaryBlue text-white sticky top-0" : "bg-white"
-    //       } items-center px-6 py-5 ${router?.pathname == "/"
-    //         ? " overflow-hidden sticky top-0 "
-    //         : "shadow-md overflow-hidden sticky top-0 z-30"
-    //       } `}
+  
       >
-        {/* <div style={{border:"2px solid red",width:"200px",height:"30px"}} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer ">
-          <h1 className="text-2xl font-manrope font-extrabold">
-            My Property Go
-          </h1>
-          <img style={{width:"100%",objectFit:"cover" }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
-        </div> */}
-
-
-        {/* <div style={{ width: "200px", height: "30px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
-          <img style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} src="https://i.ibb.co/w7z9Wn2/Artboard-1100.png" alt="" />
-        </div> */}
+      
 
 <div style={{ width: "150px", height: "50px", position: "relative" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
   <Image
    style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} 
-    src="/logoW1.png" // Replace with your logo file path in the public folder
+    src="/logoW1.png" 
     alt="Logo"
     width={150}
     height={45}
@@ -144,9 +130,9 @@ const Navbar = () => {
           {open ? <AiOutlineClose /> : <AiOutlineMenu />}
         </button>
       </header>
-      {open ? (
+      {open ? (     
         <div className="absolute top-20 z-50 bg-white w-full p-5 ">
-          <Nav  />
+        <Nav  />
         </div>
       ) : null}
     </>

@@ -3,12 +3,13 @@ import React from 'react';
 import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from '../contact';
+import Layout from "src/Layout/main";
 
 const PropertyCare = () => {
 
 
   return <>
-    <Navbar />
+    {/* <Navbar /> */}
 
     <div style={{ marginTop: "30px" }} className="bg-white py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -42,7 +43,7 @@ const PropertyCare = () => {
       </div>
 
 
-      <div style={{ marginTop: "30px", marginLeft: "100px" }} className="bg-white py-4 ">
+      <div style={{ marginTop: "30px", }} className="bg-white py-4 md:ml-[100px] md:p-0 p-3 ">
         <h1 style={{ fontSize: "35px" }} className="text-2xl font-bold mb-4 mt-10 text-primaryBlue">Process:</h1>
         <h1 style={{ fontSize: "30px" }} className="text-2xl font-bold mb-4 mt-10">What are the Features of Property care services?
         </h1>
@@ -117,11 +118,11 @@ const PropertyCare = () => {
 
 
 
-      <h1 style={{ fontSize: "30px", marginTop: "30px" }} className='text-center  '>Book A FREE Design Session</h1>
-      <h1 style={{ fontSize: "30px" }} className='text-center  '>Meet a designer</h1>
+      {/* <h1 style={{ fontSize: "30px", marginTop: "30px" }} className='text-center  '>Book A FREE Design Session</h1> */}
+      {/* <h1 style={{ fontSize: "30px" }} className='text-center  '>Meet a designer</h1> */}
       {/* <h2>Meet a designer</h2> */}
 
-      <div style={{ marginTop: "-90px" }}>
+      <div style={{ marginTop: "10px" }}>
         <ContactForm navFooter={true} />
       </div>
 
@@ -132,13 +133,15 @@ const PropertyCare = () => {
 
 
 
-    <Footer />
+    {/* <Footer /> */}
 
   </>
 };
 export default PropertyCare;
 
-
+PropertyCare.getLayout = function getLayout(page: ReactElement) {
+  return <Layout>{page}</Layout>;
+};
 
 
 
