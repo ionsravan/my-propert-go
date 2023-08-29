@@ -262,6 +262,32 @@ const Property = () => {
       ),
     },
     {
+      minWidth: 100,
+
+      field: "agentId",
+      headerName: "User Name",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography>{row?.agentId?.name}</Typography>
+      ),
+    },
+    {
+      minWidth: 100,
+
+      field: "mobileNumber",
+      headerName: "Mobile",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography>{row?.agentId?.mobileNumber}</Typography>
+      ),
+    },
+    {
       minWidth: 150,
 
       flex: 0.15,
