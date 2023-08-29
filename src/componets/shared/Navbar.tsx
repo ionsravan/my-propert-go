@@ -29,7 +29,7 @@ const Nav = () => {
     },
     {
       name: "Interior Designing",
-      link: "/",
+      link: "/services/interiorDesigning",
     },
     {
       name: "Post Property",

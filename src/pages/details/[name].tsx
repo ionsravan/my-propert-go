@@ -477,7 +477,7 @@ const Details = () => {
 
 
             <div className="space-y-2 ">
-              <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
+              <h1 className="text-4xl mb-5  font-semibold text-TitleColor">
                 {/* {data?.result.name} */}
                 {/* {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `} */}
                 {/* {data?.result?.toggle === "Project" ? data?.result.name : data?.resutl?.availabelFor === "Development" ? `${availableFor} site in  ${data?.result?.location.name}`: `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `  } */}
@@ -843,13 +843,13 @@ const Details = () => {
                       </p>
                       <HiCheckCircle className="text-primaryBlue text-xl mb-2" />
                     </div>
-                    {/* <p className="text-xs text-locColor font-manrope flex justify-center items-center">
+                    <p className="text-xs text-locColor font-manrope flex justify-center items-center">
                       Agent
                       <span>
                         <RxDotFilled className="text-lg" />
                       </span>{" "}
                       Joined 2020
-                    </p> */}
+                    </p>
                   </>
                 ) : (
                   <p>No agent information available</p>
@@ -921,12 +921,12 @@ const Details = () => {
         {/*  </CardContent>*/}
         {/*</Card>*/}
 
-        <p style={{ margin: "0" }}>
+        {/* <p style={{ margin: "0" }}>
           <span style={{ fontSize: "20px", marginRight: "15px" }}>
             Address:
           </span>{" "}
           {data?.result.address}
-        </p>
+        </p> */}
 
         <section>
           <div

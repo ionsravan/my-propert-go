@@ -37,7 +37,7 @@ const Card = ({ title, description }) => {
   return (
     <div className="bg-gradient-to-b from-white to-yellow-300 opacity-100 shadow-lg rounded-2xl p-6 flex flex-col justify-between w-96 h-72 items-center ">
       <div className=" flex flex-col justify-center items-center pt-7">
-        <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+        <h1 className="text-2xl font-semibold mb-4">{title}</h1>
         <p className="text-gray-600 text-justify">{description}</p>
       </div>
     </div>
@@ -76,7 +76,7 @@ const InteriorDesigns = () => {
 
 
       <div style={{margin:"80px 0",fontWeight:"bold"}} className='flex items-center justify-center'>
-        <p className='text-3xl'>Market We Serve</p>
+        <h1 className='text-3xl'>Market We Serve</h1>
       </div>
 
 
@@ -92,7 +92,7 @@ const InteriorDesigns = () => {
             />
           </div>
           <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none bg-primaryBlue flex flex-col rounded-xl ">
-            <p style={{fontSize:"20px", fontWeight:"bold"}}>Exteriors</p>
+            <h1 style={{fontSize:"20px", fontWeight:"bold"}}>Exteriors</h1>
             <p className='text-justify'>Our exterior design expertise
               creates stunning curb appeal that sets the tone for your home's unique style.</p>
           </div>
@@ -107,7 +107,7 @@ const InteriorDesigns = () => {
             />
           </div>
           <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none bg-primaryBlue flex flex-col rounded-xl ">
-            <p style={{fontSize:"20px", fontWeight:"bold"}}>Interiors </p>
+            <h1 style={{fontSize:"20px", fontWeight:"bold"}}>Interiors </h1>
             <p className='text-justify'>Our interior design
               services bring your
               vision to life with
@@ -126,7 +126,7 @@ const InteriorDesigns = () => {
             />
           </div>
           <div style={{ width: "270px", height: "170px" }} className="bg-gradient-to-b from-white to-yellow-300 opacity-100 absolute top-32 left-4 z-[100] p-2 border-none  rounded-xl  bg-primaryBlue flex flex-col  ">
-            <p style={{fontSize:"20px", fontWeight:"bold"}}>Gated Communities </p>
+            <h1 style={{fontSize:"20px", fontWeight:"bold"}}>Gated Communities </h1>
             <p className='text-justify'>We design minding
               privacy, security,
               and a sense
@@ -140,7 +140,7 @@ const InteriorDesigns = () => {
 
 
       <div style={{fontWeight:"bold"}} className='flex items-center justify-center'>
-        <p className='text-3xl'>Working Process</p>
+        <h1 className='text-3xl'>Working Process</h1>
       </div>
 
 
@@ -186,7 +186,7 @@ const InteriorDesigns = () => {
 
       
       <div style={{fontWeight:"bold"}} className='flex items-center justify-center'>
-        <p className='text-3xl'>End-to-end interior solutions</p>
+        <h1 className='text-3xl'>End-to-end interior solutions</h1>
       </div>
 
 
