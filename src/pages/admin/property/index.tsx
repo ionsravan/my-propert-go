@@ -415,7 +415,7 @@ const Property = () => {
               loading={loading}
               getRowHeight={() => "auto"}
               pagination
-              pageSizeOptions={[50, 100, 300, 500, 1000]}
+              pageSizeOptions={[25, 50, 75, 100]}
               // rowCount={pagination?.totalUsers || 0}
               // page={pageState.page - 1}
               // pageSize={pageState.pageSize}

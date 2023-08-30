@@ -78,7 +78,7 @@ const Customers = () => {
     try {
       setLoading(true);
       const res = await instance.get(
-        `/admin/user/getAllUsers?page=${paginationModel?.page+1||1}&&limit=${paginationModel?.pageSize||50}&&${pr}`
+        `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
       );
       if (res.data) {
         setUsers(res?.data?.data);
@@ -93,7 +93,7 @@ const Customers = () => {
 
   useEffect(() => {
     getAllUsers();
-  }, [selected, name,paginationModel?.page,paginationModel?.pageSize]);
+  }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
 
   async function deleteCustomer() {
     try {
@@ -264,7 +264,7 @@ const Customers = () => {
 
               pagination
               paginationModel={paginationModel}
-              pageSizeOptions={[50,100,300,500,1000]}
+              pageSizeOptions={[25, 50, 75, 100]}
               rowCount={pagination?.totalUsers}
               paginationMode="server"
               onPaginationModelChange={setPaginationModel}

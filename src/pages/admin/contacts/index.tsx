@@ -63,7 +63,7 @@ const ContactsManagement = () => {
     const all_customer_columns: GridColDef[] = [
         {
             flex: 0.2,
-      minWidth: 120,
+            minWidth: 120,
 
             field: "name",
             headerName: "Name",
@@ -78,7 +78,7 @@ const ContactsManagement = () => {
         },
         {
             flex: 0.4,
-      minWidth: 150,
+            minWidth: 150,
 
             field: "message",
             headerName: "Message",
@@ -88,7 +88,7 @@ const ContactsManagement = () => {
         },
         {
             flex: 0.2,
-      minWidth: 120,
+            minWidth: 120,
 
             field: "email",
             headerName: "Email",
@@ -98,7 +98,7 @@ const ContactsManagement = () => {
         },
         {
             flex: 0.2,
-      minWidth: 120,
+            minWidth: 120,
 
             field: "service",
             headerName: "Service",
@@ -132,7 +132,7 @@ const ContactsManagement = () => {
                             }}
                             loading={loading}
                             getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,300,500,1000]}
+                            pageSizeOptions={[25, 50, 75, 100]}
 
                             // pagination
                             // pageSize={pageState.pageSize || 10}

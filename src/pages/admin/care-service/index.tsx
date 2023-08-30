@@ -167,7 +167,7 @@ const CareServiceManagement = () => {
     const all_customer_columns: GridColDef[] = [
         {
             flex: 0.1,
-            minWidth:140,
+            minWidth: 140,
             field: "primaryImage",
             headerName: "Image",
             align: "left",
@@ -180,7 +180,7 @@ const CareServiceManagement = () => {
         },
         {
             flex: 0.15,
-            minWidth:150,
+            minWidth: 150,
             field: "name",
             headerName: "Peoperty Name",
             align: "left",
@@ -193,7 +193,7 @@ const CareServiceManagement = () => {
             ),
         }, {
             flex: 0.2,
-            minWidth:100,
+            minWidth: 100,
             field: "location",
             headerName: "Location",
             align: "left",
@@ -208,7 +208,7 @@ const CareServiceManagement = () => {
 
         {
             flex: 0.1,
-            minWidth:150,
+            minWidth: 150,
             field: "userName",
             headerName: "User Name",
             align: "left",
@@ -222,7 +222,7 @@ const CareServiceManagement = () => {
         },
         {
             flex: 0.2,
-            minWidth:150,
+            minWidth: 150,
             field: "userEmail",
             headerName: "User Email",
             align: "left",
@@ -239,7 +239,7 @@ const CareServiceManagement = () => {
             ),
         },
         {
-      minWidth: 120,
+            minWidth: 120,
             flex: 0.15,
             field: "action",
             headerName: "Status",
@@ -259,7 +259,7 @@ const CareServiceManagement = () => {
             ),
         },
         {
-      minWidth: 50,
+            minWidth: 50,
 
             flex: 0.05,
             field: "upload",
@@ -357,7 +357,7 @@ const CareServiceManagement = () => {
             <Grid container spacing={6} sx={{ pb: 4 }}>
                 <Grid item xs={12}>
                     <Card sx={{ borderRadius: 2 }}>
-                        <DataGrid                        
+                        <DataGrid
                             rows={careData || []}
                             columns={all_customer_columns}
                             getRowId={(row) => row._id}
@@ -367,7 +367,7 @@ const CareServiceManagement = () => {
                             }}
                             loading={loading}
                             getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,300,500,1000]}
+                            pageSizeOptions={[25, 50, 75, 100]}
 
                             // pagination
                             // pageSize={pageState.pageSize || 10}

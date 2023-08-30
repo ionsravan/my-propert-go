@@ -40,17 +40,17 @@ export const tableStyles = {
     display: "none",
   },
   "& .MuiDataGrid-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
-    {
-      display: "none",
-    },
+  {
+    display: "none",
+  },
   "& .MuiDataGrid-cell": {
     borderBottom: "none",
     paddingY: 1.5,
   },
   "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
-    {
-      outline: "none !important",
-    },
+  {
+    outline: "none !important",
+  },
 };
 
 export const Button = ({
@@ -235,7 +235,7 @@ const TIcketsManagement = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              pageSizeOptions={[50,100,300,500,1000]}
+              pageSizeOptions={[25, 50, 75, 100]}
 
               // pagination
               // pageSize={pageState.pageSize || 10}

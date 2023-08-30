@@ -349,7 +349,7 @@ const Blogs = () => {
               components={{
                 LoadingOverlay: LinearProgress,
               }}
-              pageSizeOptions={[50, 100, 300, 500, 1000]}
+              pageSizeOptions={[25, 50, 75, 100]}
 
               loading={loading}
               getRowHeight={() => "auto"}
