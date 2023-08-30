@@ -428,7 +428,7 @@ const Details = () => {
 
 
         if (id) {
-          console.log(id,"iddddd")
+          console.log(id, "iddddd")
           const requestData = { propertyId: id };
 
           const res = await instance.post("/user/addInFavourite", requestData);
@@ -445,6 +445,70 @@ const Details = () => {
       console.error("An error occurred:", error);
     }
   };
+
+
+  // try {
+  //   setLoading(true);
+  //   const res = await instance.post(
+  //     "/user/property/contactAgent",
+  //     {
+  //       propertyId: data?.result?._id,
+  //       message: message,
+  //       propertyType: data?.result?.propertyType,
+  //     }
+  //   );
+  //   if (res.data) {
+  //     toast("great", {
+  //       position: "bottom-center",
+  //       type: "success",
+  //     });
+  //     setLoading(false);
+  //     onApiCall();
+  //     setMessage("");
+  //     setButtonText("Already Contacted");
+  //     closeModal();
+  //   }
+  // }
+
+
+
+  const handleAgentContact = async () => {
+    try {
+      if (cookies.jwtToken) {
+        const resContactAgent = await instance.post(
+          "/user/property/contactAgent",
+          {
+            propertyId: data?.result?._id,
+            message: "",
+            propertyType: data?.result?.propertyType,
+          }
+        );
+
+        if (resContactAgent.data) {
+          toast.success("The owner will get back to you soon..");
+
+          const resAddLead = await instance.post(
+            "/leads/addLead",
+            {
+              adminId: "64bbba044cd4c09fc77762e9",
+              propertyId: id,
+              agentId: data?.result?.agentId._id,
+            }
+          );
+
+          if (resAddLead.data) {
+
+          }
+        }
+      } else {
+        toast("Please log in to continue");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
+
 
 
 
@@ -610,9 +674,8 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="w-full">
-            {cookies?.jwtToken ? (
-              <button
+
+          {/* <button
                 style={{ borderRadius: "20px" }}
                 className={`bg-${buttonColor ? "current" : "primaryBlue"
                   } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
@@ -622,7 +685,19 @@ const Details = () => {
                   text="Get in Contact"
                   onApiCall={handleApiCall}
                 />
+              </button> */}
+
+          <div className="w-full">
+            {cookies?.jwtToken ? (
+              <button
+                onClick={handleAgentContact}
+                style={{ borderRadius: "20px" }}
+                className={`bg-${buttonColor ? "current" : "primaryBlue"
+                  } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
+              >
+                Get in Contact
               </button>
+
             ) : (
               <Link href={"/login"}>
                 <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
@@ -843,27 +918,27 @@ const Details = () => {
                       </p>
                       <HiCheckCircle className="text-primaryBlue text-xl mb-2" />
                     </div>
-                    <p className="text-xs text-locColor font-manrope flex justify-center items-center">
-                      Agent
-                      <span>
-                        <RxDotFilled className="text-lg" />
-                      </span>{" "}
-                      Joined 2020
-                    </p>
+                    {/* <p className="text-xs text-locColor font-manrope flex justify-center items-center">
+                      {data?.result.agentId ? `Mob. No. - ${data?.result.agentId.mobileNumber}` : null}
+                    </p> */}
                   </>
                 ) : (
                   <p>No agent information available</p>
                 )}
               </div>
 
-              {cookies?.jwtToken ? (
-                <button style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+              {/* <button style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                   <MyMsg
                     data={data}
-                    // text="Contact Agent"
+                  
                     text={data?.result.userType !== undefined ? `Contact ${data?.result.userType}` : `Contact`}
                     onApiCall={handleApiCall}
                   />
+                </button> */}
+
+              {cookies?.jwtToken ? (
+                <button onClick={handleAgentContact} style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                  {data?.result.userType !== undefined ? `Contact ${data?.result.userType}` : `Contact`}
                 </button>
               ) : (
                 <Link href={"/login"}>

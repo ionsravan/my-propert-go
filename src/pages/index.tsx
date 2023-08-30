@@ -19,6 +19,7 @@ import Slider from "src/componets/Home/Slider";
 import { FaHome } from "react-icons/fa";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useRouter } from "next/router";
+import { useAxios } from "src/utills/axios";
 
 const responsive = {
   largeDesktop: {
@@ -72,9 +73,49 @@ export const scrollRight = (id: string) => {
 
 export default function Home() {
   const router = useRouter();
-  const { data, error, status } = useFetch<ProperyResArr>(
-    "/property/getAllProperties"
-  );
+  const instance = useAxios();
+  const [data, setData] = useState([])
+
+  // const { data, error, status } = useFetch<ProperyResArr>(
+  //   "/property/getAllProperties"
+  // );
+
+
+
+
+useEffect(() => {
+
+ 
+  async function searchAllProperty() {
+    try {
+      const modifiedData = {
+        maxPrice: 200000000000000000
+    
+      }
+      const data = await instance.post(
+        "/property/getPropertiesByAllFilters",
+        modifiedData
+      );
+      if (data.data) {
+        console.log(data.data,"dattttttt")
+        // setPropertyResult(res?.data?.result);
+        // setLoading(false);
+        setData(data.data.result)
+        setFiltred(data.data.result)
+      }
+    } catch (e) {
+      // setLoading(false);
+      // ErrorDispal(e);
+      console.log(e)
+    }
+  }
+
+  searchAllProperty()
+}, [])
+
+
+
+
   const { data: featured } = useFetch<ProperyResArr>(
     "/property/getPropertiesByFeature"
   );
@@ -102,12 +143,12 @@ export default function Home() {
 
 
 
-  useEffect(() => {
-    console.log(data?.data, "result")
-    if (data && data.data) {
-      setFiltred(data.data)
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   console.log(data?.data, "result")
+  //   if (data && data.data) {
+  //     setFiltred(data.data)
+  //   }
+  // }, [data]);
 
 
   useEffect(() => {

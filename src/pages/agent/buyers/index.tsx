@@ -58,7 +58,7 @@ export const BuyersPageLayout = ({ children }: LayoutProps) => {
   );
 };
 
-const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userName, userEmail, propertyName }: Buyer) => {
+const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userName, userEmail, propertyName, userMobile }: Buyer) => {
   const [view, setView] = useState<boolean>(false);
   return (
     <div className="bg-white w-full shrink-0 rounded-xl space-x-[17px] px-6  p-5 shadow-md ">
@@ -74,9 +74,9 @@ const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userNa
           </div>
           <div>
             <h1 className="text-sm text-TitleColor font-bold">{userName}</h1>
-            <p className="font-light text-xs text-[#091E42]">
+            {/* <p className="font-light text-xs text-[#091E42]">
               Enquired 4 Minutes Ago{" "}
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="text-sm font-medium space-x-6">
@@ -102,10 +102,10 @@ const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userNa
               <p className="font-normal text-xs text-[#091E42]">
                 {/* {property?.address} */}
               </p>
-              <div className="flex  items-center px-1 space-x-1 bg-green-300 bg-opacity-40 text-green-800 text-[9px]">
+              {/* <div className="flex  items-center px-1 space-x-1 bg-green-300 bg-opacity-40 text-green-800 text-[9px]">
                 <p>4.5</p>
                 <AiFillStar className="text-[6px]" />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -146,7 +146,7 @@ const MessageCardBuyers = ({ _id, agent, property, user, message, userId, userNa
           </div>
           <div className="text-xs text-[#2B2B2B] space-x-2 flex items-center">
             <AiOutlinePhone className="text-primaryBlue text-lg rotate-90" />
-            {/* <p>{user?.mobileNumber}</p> */}
+            <p>{userMobile}</p>
           </div>
           <div className="text-xs text-[#2B2B2B] space-x-2 flex items-center">
             <AiOutlineMail className="text-primaryBlue text-lg" />
