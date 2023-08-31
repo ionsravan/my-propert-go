@@ -131,9 +131,9 @@ function SearchDropdown({ options, onSelect, propertyData }) {
   );
 }
 
-const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
+const AddProperty = ({ propertyData, navbarFooter, isEdit }) => {
 
-  console.log(navbarFooter, addPropertyAdmin, "props")
+  // console.log(navbarFooter, isEdit, "props")
 
   if (propertyData) {
     console.log(propertyData?.agentId?.leads[0]?.propertyId, "property")
@@ -825,23 +825,46 @@ const AddProperty = ({ propertyData, navbarFooter, addPropertyAdmin }) => {
       let successToastMessage;
       let redirectRoute;
 
-      if (navbarFooter === false && isAdmin === false) {
+      if (isAdmin === true && isEdit === true) {
+        url = "/admin/property/editPropertyByAdmin";
+        successToastMessage = "Property Edited Successfully";
+        redirectRoute = "/admin";
+      } else if (isAdmin === true) {
+        url = "/admin/property/addProperty";
+        successToastMessage = "Property Added Successfully";
+        redirectRoute = "/admin";
+      } else if (isAdmin === false && isEdit === true) {
         url = "/agent/property/editProperty";
         successToastMessage = "Property Updated Successfully";
         redirectRoute = "/agent";
-      } else if (isAdmin === true && addPropertyAdmin === true) {
-        url = "/admin/property/addProperty";
-        successToastMessage = "Property Added by Admin Successfully";
-        redirectRoute = "/admin";
-      } else if (isAdmin === true) {
-        url = "/admin/property/editPropertyByAdmin";
-        successToastMessage = "Property Edited by Admin Successfully";
-        redirectRoute = "/admin";
       } else {
         url = "/agent/property/addProperty";
         successToastMessage = "Property Added Successfully";
         redirectRoute = "/agent";
       }
+
+    // try {
+    //   let url;
+    //   let successToastMessage;
+    //   let redirectRoute;
+
+    //   if (navbarFooter === false && isAdmin === false) {
+    //     url = "/agent/property/editProperty";
+    //     successToastMessage = "Property Updated Successfully";
+    //     redirectRoute = "/agent";
+    //   } else if (isAdmin === true && addPropertyAdmin === true) {
+    //     url = "/admin/property/addProperty";
+    //     successToastMessage = "Property Added Successfully";
+    //     redirectRoute = "/admin";
+    //   } else if (isAdmin === true) {
+    //     url = "/admin/property/editPropertyByAdmin";
+    //     successToastMessage = "Property Edited by Admin Successfully";
+    //     redirectRoute = "/admin";
+    //   } else {
+    //     url = "/agent/property/addProperty";
+    //     successToastMessage = "Property Added Successfully";
+    //     redirectRoute = "/agent";
+    //   }
 
       const res = await instance.post(url, bodyFormData);
 

@@ -214,7 +214,7 @@ const Edit = () => {
         <p className="border-b py-3 border-[#0066FF]">Step 1: Genreral Info</p>
       </div>
 
-      <AddProperty navbarFooter={false} propertyData={data?.result} />
+      <AddProperty navbarFooter={false} propertyData={data?.result} isEdit={true} />
 
     </>
   );

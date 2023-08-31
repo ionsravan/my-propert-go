@@ -98,8 +98,7 @@ useEffect(() => {
       );
       if (data.data) {
         console.log(data.data,"dattttttt")
-        // setPropertyResult(res?.data?.result);
-        // setLoading(false);
+  
         setData(data.data.result)
         setFiltred(data.data.result)
       }
@@ -212,13 +211,7 @@ useEffect(() => {
       <div style={{ backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")', margin: "40px 40px", borderRadius: "20px" }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
         <div className="absolute bottom-0 right-0">
           <div className="h-96 relative w-80">
-            {/* <Image
-              style={{ border: "2px solid red" }}
-              src={"/bars.png"}
-              fill
-              className="object-fill"
-              alt="villa4"
-            /> */}
+     
           </div>
         </div>
         <Header />

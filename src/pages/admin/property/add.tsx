@@ -5,7 +5,7 @@ import AddProperty from "src/pages/addProperty";
 
 const AddProperties = () => {
   console.log("Props in AddProperties:", false, true);
-  return <AddProperty navbarFooter={false} addPropertyAdmin={true} />;
+  return <AddProperty navbarFooter={false} />;
 };
 
 AddProperties.getLayout = function getLayout(page: ReactElement) {
