@@ -8,12 +8,7 @@ import { Footer, Navbar } from "src/componets";
 const ContactForm = ({navFooter}) => {
     const router = useRouter();
     const [cookies] = useCookies(["jwtToken"]);
-    // const [formData, setFormData] = useState({
-    //   name: "",
-    //   email: "",
-    //   message: "",
-    //   service: "",
-    // });
+
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -21,12 +16,6 @@ const ContactForm = ({navFooter}) => {
     const [service, setService] = useState("");
     const [mobile, setMobilie] = useState("");
 
-    // const handleChange = (e) => {
-    //   setFormData((prevData) => ({
-    //     ...prevData,
-    //     [e.target.name]: e.target.value,
-    //   }));
-    // };
 
     const handleSubmit = async (e) => {
     
@@ -57,14 +46,7 @@ const ContactForm = ({navFooter}) => {
             console.error("Error while adding property:", error);
         }
         console.log(formData);
-        //   setFormData({
-        //     name: "",
-        //     email: "",
-        //     message: "",
-        //     service: "",
-        //   });
 
-        //   closeModal()
     };
 
     
