@@ -9,16 +9,24 @@ import {
   IconButton,
   Typography,
   alpha,
+  FadeProps,
+  Breakpoint
 } from "@mui/material";
-import React, { forwardRef } from "react";
+import React, { forwardRef,ReactNode } from "react";
 import { CgClose } from "react-icons/cg";
 
-const Transition = forwardRef(function Transition(props, ref) {
+// const Transition = forwardRef(function Transition(props, ref) {
+//   return <Fade ref={ref} {...props} />;
+// });
+
+const Transition = forwardRef<HTMLDivElement, FadeProps>(function Transition(
+  props,
+  ref
+) {
   return <Fade ref={ref} {...props} />;
 });
 
 type modal = {
-  closeDialog: any;
   children: ReactNode;
   open: boolean;
   title: string;
@@ -26,6 +34,7 @@ type modal = {
   scroll?: "body" | "paper" | undefined;
   id?: string;
   fullScreen?: boolean;
+  closeDialog: () => void;
 };
 
 function Modal(props: modal) {

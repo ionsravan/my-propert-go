@@ -6,12 +6,14 @@ interface Props {
   children: ReactNode;
   onlyNav?: boolean;
 }
+
 const Layout = ({ children, onlyNav }: Props) => {
   const router = useRouter();
   console.log(router.pathname);
 
   return (
-    <div className="overflow-hidden bg-[#F5F5F5]">
+    // <div  className="overflow-hidden bg-[#F5F5F5]">
+    <>
       <Navbar />
       <main className="overflow-x-hidden">{children}</main>
       <>
@@ -22,7 +24,7 @@ const Layout = ({ children, onlyNav }: Props) => {
           </>
         ) : null}
       </>
-    </div>
+    </>
   );
 };
 

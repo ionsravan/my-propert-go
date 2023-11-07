@@ -4,6 +4,7 @@ import { SignupSuccess } from "src/componets/successToast";
 import SingnupTemplate from "../signup";
 import LoginSignupCTA from "./LoginSignupCTA";
 import SignupLoginFormContainer from "./SignupLoginFormContainer";
+import { ErrorDispaly } from "src/pages/admin/property";
 const signupController = async (
   name: string,
   email: string,
@@ -42,7 +43,7 @@ const signupController = async (
     setLoadig(false);
     router.push("/");
   } catch (e) {
-    console.log(e);
+    ErrorDispaly(e);
   }
 };
 
@@ -50,7 +51,7 @@ const FormLoginSignup = () => {
   return (
     <>
       <SignupLoginFormContainer>
-        <LoginSignupCTA />
+        {/* <LoginSignupCTA /> */}
         {/* <SingnupTemplate signupContrearller={signupController} /> */}
       </SignupLoginFormContainer>
     </>

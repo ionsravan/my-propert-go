@@ -19,6 +19,7 @@ import CustomLoader from "src/componets/shared/Loader";
 import { useAppContext } from "src/Context/AppContext";
 import Layout from "src/Layout/main";
 import { useFetch } from "src/lib/hooks/useFetch";
+import { ErrorDispaly } from "src/pages/admin/property";
 import { useAxios } from "src/utills/axios";
 
 interface FilterContextInterface {
@@ -42,6 +43,8 @@ interface FilterContextInterface {
   setFurnishing: Dispatch<SetStateAction<string>>;
   possession: string;
   setPossession: Dispatch<SetStateAction<string>>;
+  toggle: string;
+  setToggle: Dispatch<SetStateAction<string>>;
 }
 interface IContextProps {
   children: ReactNode;
@@ -55,19 +58,21 @@ export const useFilterContext = () => {
 
 export const FilterContextProvder = ({ children }: IContextProps) => {
   const [selected, setSelected] = useState<string[]>([]);
-  const [area, setArea] = useState<string[]>([]);
+  // const [area, setArea] = useState<string[]>([]);
+
   const [BHKconfig, setBHKconfig] = useState("");
   const [availableFor, setAvailableFor] = useState("");
   const [propertyType, setPropertyType] = useState("");
   const [size, setSize] = useState("");
   const [min, setMin] = useState(0);
-  const [max, setMax] = useState(20000);
+  const [max, setMax] = useState(200000000000000000);
   const [furnishing, setFurnishing] = useState("");
   const [possession, setPossession] = useState("");
+  const [toggle, setToggle] = useState("");
 
   const shared = {
-    area,
-    setArea,
+    // area,
+    // setArea,
     selected,
     setSelected,
     BHKconfig,
@@ -86,6 +91,8 @@ export const FilterContextProvder = ({ children }: IContextProps) => {
     setFurnishing,
     possession,
     setPossession,
+    toggle,
+    setToggle,
   };
   return (
     <FilterContext.Provider value={shared}>{children}</FilterContext.Provider>
@@ -122,12 +129,19 @@ const SearchAll = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
+  // useEffect(() => {
+
+  //   console.log(PropertyResult,"resultP")
+
+  // }, [PropertyResult])
+  
+
   const {
-    area,
+    // area,
     selected,
     BHKconfig,
     availableFor,
@@ -137,6 +151,7 @@ const SearchAll = () => {
     min,
     furnishing,
     possession,
+    toggle
   } = useFilterContext();
 
   useEffect(() => {
@@ -149,15 +164,16 @@ const SearchAll = () => {
         propertyType: propertyType || undefined,
         BHKconfig: BHKconfig || undefined,
         size: size || undefined,
-        area: area || undefined,
+        // area: area || undefined,
         furnishingStatus: furnishing || undefined,
         amenities: selected?.length ? selected : undefined,
         location: name,
+        toggle: toggle || undefined,
       });
     }
   }, [
     name,
-    area,
+    // area,
     selected,
     BHKconfig,
     availableFor,
@@ -167,9 +183,10 @@ const SearchAll = () => {
     min,
     furnishing,
     possession,
+    toggle
   ]);
 
-  console.log("min",min,max)
+  console.log("min", min, max)
 
   return (
     <>
@@ -178,8 +195,13 @@ const SearchAll = () => {
       <div className="lg:p-10 md:p-8 mx-auto font-manrope overflow-hidden">
         {/* top part */}
         <div className="p-4 md:pb-10 flex items-center justify-between">
-          <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
+          {/* <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
             {resCount} Results in {name}
+          </h1> */}
+          <h1 className="text-lg md:text-2xl text-TitleColor font-bold">
+            {PropertyResult?.length === 0
+              ? `0 Results in ${name}`
+              : `${resCount} Results in ${name}`}
           </h1>
           <div
             className="lg:hidden block p-3 cursor-pointer"
@@ -198,9 +220,8 @@ const SearchAll = () => {
             />
           </div>
           <div
-            className={`absolute z-40 top-0 left-0 transition-all duration-150 ease-in-out  ${
-              open ? "-translate-x-0" : "-translate-x-full"
-            }  border  h-screen overflow-scroll   bg-white w-full shrink  max-w-[290px]  rounded-lg p-4`}
+            className={`absolute z-40 top-0 left-0 transition-all duration-150 ease-in-out  ${open ? "-translate-x-0" : "-translate-x-full"
+              }  border  h-screen overflow-scroll   bg-white w-full shrink  max-w-[290px]  rounded-lg p-4`}
           >
             <SearchSideOptions
               data={PropertyResult}
@@ -208,7 +229,7 @@ const SearchAll = () => {
               searchAllProperty={searchAllProperty}
             />
           </div>
-          <div className="lg:ml-10 w-full overflow-hidden ">
+          <div style={{ marginBottom: "50px" }} className="lg:ml-10 w-full overflow-hidden ">
             {PropertyResult?.length ? (
               <SearchResult data={PropertyResult} />
             ) : (

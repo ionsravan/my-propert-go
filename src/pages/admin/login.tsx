@@ -7,11 +7,12 @@ const Login = () => {
   return (
     <>
       <SignupLoginFormContainer>
-        <LoginSignupCTA />
+        {/* <LoginSignupCTA /> */}
         <LoginTemplate
           url="/admin/login"
           login={loginController}
           redirectUrl="/admin"
+ 
         />
       </SignupLoginFormContainer>
     </>

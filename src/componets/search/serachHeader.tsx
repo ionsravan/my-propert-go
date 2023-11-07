@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { FaRupeeSign } from "react-icons/fa";
 
-const SuggestionCard = () => {
+ const SuggestionCard = () => {
   return (
     <div className=" w-full  flex flex-col items-center space-y-3">
       <div className=" p-1 border-2 border-primaryBlue rounded-full w-max">

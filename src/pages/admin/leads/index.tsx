@@ -34,18 +34,17 @@ import { AdminCustomers } from "src/componets/admin/adminCustomer";
 import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
 import Modal from "src/componets/shared/modal";
 import FormProvider from "src/componets/shared/RHF/FormProvider";
-import RHFTextField from "src/componets/shared/RHF/RHFTextField";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { addForm, iconClass } from "../customers/edit/[id]";
 import { SiGoogleads } from "react-icons/si";
 import { RHFSelect } from "src/componets/shared/RHF/RHFSelect";
+import { ErrorDispaly } from "../property";
 
 const NewCompanyValidationSchema = Yup.object().shape({
   newAgentId: Yup.string().required("Current agent is required"),
@@ -125,7 +124,7 @@ const Leads = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -140,7 +139,7 @@ const Leads = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -163,13 +162,15 @@ const Leads = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.2,
+      minWidth: 120,
+
       field: "userName",
       headerName: "Name",
       align: "left",
@@ -183,6 +184,8 @@ const Leads = () => {
     },
     {
       flex: 0.25,
+      minWidth: 150,
+
       field: "userEmail",
       headerName: "Email",
       align: "left",
@@ -190,6 +193,8 @@ const Leads = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "propertyName",
       headerName: "Property Name",
       flex: 0.2,
@@ -198,14 +203,33 @@ const Leads = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
+      flex: 0.1,
+      field: "location",
+      headerName: "Location",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography >
+          {row?.propertyId?.location?.name}
+        </Typography>
+      ),
+    },
+    {
+      minWidth: 120,
+
       field: "agentName",
       headerName: "Agent",
-      flex: 0.2,
+      flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       field: "action",
       headerName: "ACTION",
       flex: 0.15,
@@ -252,6 +276,7 @@ const Leads = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+              pageSizeOptions={[25, 50, 75, 100]}
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalUsers || 0}
@@ -288,7 +313,7 @@ const Leads = () => {
             name="agentId"
           >
             {users?.map((item: User, i: number) => (
-              <MenuItem value={item?._id}>{item?.name}</MenuItem>
+              <MenuItem key={i} value={item?._id}>{item?.name}</MenuItem>
             ))}
           </RHFSelect>
           <InputLabel sx={{ mt: 2, ml: 1 }}>New Agent</InputLabel>
@@ -302,15 +327,14 @@ const Leads = () => {
             name="newAgentId"
           >
             {users?.map((item: User, i: number) => (
-              <MenuItem value={item?._id}>{item?.name}</MenuItem>
+              <MenuItem key={i} value={item?._id}>{item?.name}</MenuItem>
             ))}
           </RHFSelect>
           <button
             type="submit"
             disabled={deleteLoading}
-            className={`${
-              deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
-            } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
+            className={`${deleteLoading ? "bg-[#2C5FC3]/50 " : "bg-[#2C5FC3]"
+              } flex justify-center w-full p-4 rounded-xl text-white text-center max-w-xl transform transition active:scale-95 duration-200 ease-out mt-4`}
           >
             {deleteLoading ? (
               <CircularProgress size={25} sx={{ mr: 2 }} color="inherit" />

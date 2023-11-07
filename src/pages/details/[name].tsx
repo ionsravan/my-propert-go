@@ -1,8 +1,15 @@
 import { GrLocation, GrStar } from "react-icons/gr";
 import { FaRegBookmark, FaRupeeSign } from "react-icons/fa";
+import { GiLift, GiHandTruck } from "react-icons/gi";
+// import {HiMiniBuildingOffice2 } from "react-icons/hi";
+// import {BiSolidParking } from "react-icons/bi";
+import { MdBathroom } from "react-icons/md";
+// import {BsBuildingFillExclamation } from "react-icons/bs";
+import { FaParking, FaBed, FaBath, FaCar, FaBuilding, FaUser, FaKey, FaHome, FaRuler, FaArrowAltCircleUp } from "react-icons/fa";
 import { useEffect } from "react";
 import {
   CatagoryCard,
+
   Header,
   HomeSectionTitle,
   HouseCard,
@@ -29,7 +36,7 @@ import Link from "next/link";
 import ImageSlider, { MyModal } from "src/componets/Sliders/ImageSlider";
 import CardCarousel from "src/componets/Sliders/cardCaursel";
 import { scrollLeft, scrollRight } from "..";
-import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineCloseCircle, AiOutlineShareAlt } from "react-icons/ai";
 import { Transition, Dialog } from "@headlessui/react";
 import { toast } from "react-toastify";
 import { AnyMxRecord } from "dns";
@@ -40,6 +47,10 @@ import axios from "axios";
 import CustomLoader from "src/componets/shared/Loader";
 import { Box, Card, CardContent, CardHeader } from "@mui/material";
 import { availableAmenities } from "src/@global/Data";
+import PropertyCost from "src/componets/costFormat/PropertyCost";
+import slugify from 'slugify';
+import { ErrorDispaly } from "../admin/property";
+// import { GiLift } from "react-icons/gi";
 const reviewData = [
   {
     text: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequatur quas corrupti doloremque modi accusamus enim sed repellendus vel. Ad porro quisquam et labore reprehenderit quae aliquam vitae, assumenda minima quam?",
@@ -165,7 +176,7 @@ function MyMsg({
                           }
                         } catch (e) {
                           setLoading(false);
-                          console.log(e);
+                          ErrorDispaly(e);
                         }
                       }}
                     >
@@ -214,16 +225,102 @@ const ReviewCard = ({ text }: { text: string }) => {
   );
 };
 
+const SpecificationItem = ({ Icon, text, tagName }) => {
+  return (
+    <div style={{ width: "400px", display: "flex", alignItems: "center", justifyContent: "start", margin: "10px 0" }}>
+      <div style={{ width: "200px", display: "flex", alignItems: "center", justifyContent: "start" }}>
+        <Icon />
+        <p style={{ margin: "0", marginLeft: "10px" }}>{tagName}:</p>
+      </div>
+      <p style={{ margin: "0", marginLeft: "40px" }}>{text}</p>
+    </div>
+  );
+};
+
+
+// const { slug } = router.query;
+// // const slug = router.query["name"];
+
+
+// export function getIDFromSlug(slug) {
+//   const id = slug.substring(0, slug.indexOf('-'));
+//   return id;
+// }
+
+export function getIDFromSlug(slug) {
+  if (!slug || typeof slug !== 'string' || !slug.includes('-')) {
+    return null; // Handle invalid slug format
+  }
+
+  const id = slug.substring(0, slug.indexOf('-'));
+  return id;
+}
+
+
 const Details = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const instance = useAxios();
   const router = useRouter();
-  const id = router.query["name"];
+  const slug = router.query["name"];
+
+  // const id = router.query["name"];
   const [cookies, setCookes] = useCookies(["jwtToken"]);
+  // const [data, setData] = useState([])
+
+
+
+
+
+  const id = getIDFromSlug(slug);
+
+  // const _id = slug ? extractIdFromSlug(slug) : null;
+
+
+  //   async function getPropertyDetailsById() {
+  //     try {
+  //         const res = await instance.get(
+  //             `/property/getPropertyById/${_id}`
+  //         );
+  //         if (res.data) {
+  //           setData(res.data)
+  //         }
+  //     } catch (e) {
+  //         console.log(e);
+  //     }
+  // }
+
+  // useEffect(() => {
+
+  //   const { data, error, status } = useFetch<ProperyRes>(
+  //     `property/getPropertyById/${_id}`
+  //   );
+  // }, [_id]);
+
+
+  // Function to extract id from the slug
+  // function extractIdFromSlug(slug) {
+  //   console.log(slug,"Slug:")
+  //   const parts = slug.split('-');
+  //   const id = parts[parts.length - 1];
+  //   console.log("Extracted id:", id); // Print the extracted id
+  //   return id;
+  // }
+
+
   const { data, error, status } = useFetch<ProperyRes>(
     `property/getPropertyById/${id}`
   );
+
+  // const { data, error, status } = useFetch<ProperyRes>(
+  //   `property/getPropertyById/64c4bc373519d76ccc3e5ae8`
+  // );
+
+  // const { data, error, status } = _id ? useFetch<ProperyRes>(`property/getPropertyById/${_id}`) : {};
+
+
+
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  console.log(data);
+  // console.log(data);
 
   const [buttonColor, setButtonColor] = useState(false);
 
@@ -236,9 +333,16 @@ const Details = () => {
     "property/getAllProperties"
   );
 
+
+
+
+
+
+
+
   useEffect(() => {
-    if (newData?.result) {
-      setSimilarData(newData?.result);
+    if (newData?.data) {
+      setSimilarData(newData?.data);
     }
   }, [newData]);
 
@@ -294,7 +398,7 @@ const Details = () => {
     }
   };
 
-  if (data?.result.address) {
+  if (data?.result?.address) {
     fetchCoordinates(data.result.address);
   }
 
@@ -306,107 +410,247 @@ const Details = () => {
     setButtonColor(true);
   };
 
+  const handleShareClick = () => {
+    const currentUrl = window.location.href;
+
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      toast.success('URL copied to clipboard');
+    }).catch((error) => {
+      toast.error('Failed to copy URL');
+    });
+  };
+
+  const handleFavourite = async () => {
+    try {
+      if (cookies.jwtToken) {
+        // const propertyId = data?.result?.agentId?.leads[0]?.propertyId;
+        // const propertyId = data?.result?.agentId?._id;
+
+
+        if (id) {
+          console.log(id, "iddddd")
+          const requestData = { propertyId: id };
+
+          const res = await instance.post("/user/addInFavourite", requestData);
+
+          if (res.data) {
+            toast.success("Property added in Favourite");
+          }
+        }
+      } else {
+        toast("Please login in order to save");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+
+  // try {
+  //   setLoading(true);
+  //   const res = await instance.post(
+  //     "/user/property/contactAgent",
+  //     {
+  //       propertyId: data?.result?._id,
+  //       message: message,
+  //       propertyType: data?.result?.propertyType,
+  //     }
+  //   );
+  //   if (res.data) {
+  //     toast("great", {
+  //       position: "bottom-center",
+  //       type: "success",
+  //     });
+  //     setLoading(false);
+  //     onApiCall();
+  //     setMessage("");
+  //     setButtonText("Already Contacted");
+  //     closeModal();
+  //   }
+  // }
+
+
+
+  const handleAgentContact = async () => {
+    try {
+      if (cookies.jwtToken) {
+        const resContactAgent = await instance.post(
+          "/user/property/contactAgent",
+          {
+            propertyId: data?.result?._id,
+            message: "",
+            propertyType: data?.result?.propertyType,
+          }
+        );
+
+        if (resContactAgent.data) {
+          toast.success("The owner will get back to you soon..");
+
+          const resAddLead = await instance.post(
+            "/leads/addLead",
+            {
+              adminId: "64bbba044cd4c09fc77762e9",
+              propertyId: id,
+              agentId: data?.result?.agentId._id,
+            }
+          );
+
+          if (resAddLead.data) {
+
+          }
+        }
+      } else {
+        toast("Please log in to continue");
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
+
+
+
+
   return (
     <div className=" bg-white">
       <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
         {/* head section */}
         <div className="space-y-8 md:space-y-4 w-full">
-          <small className="font-manrope">
-            home / Appartment /{" "}
-            <span className="text-primaryBlue pl-1">
-              {data?.result.name || ""}
-            </span>
-          </small>
+          <div className="flex items-center justify-between ">
+            {/* <small className="font-manrope">
+              home / Appartment /{" "}
+              <span className="text-primaryBlue pl-1">
+                {data?.result.name || ""}
+
+              </span>
+            </small> */}
+            <div style={{ borderRadius: "20px", color: "white", marginLeft: "10px" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
+              <p className="mt-1 mb-1">Property ID :{data?.result._id}</p>
+              {/* <p className="mt-1 mb-1">Delhi</p> */}
+            </div>
+          </div>
+
           {/* header section */}
           <div className=" md:flex justify-between items-start space-y-4">
             {/* title */}
+
+            {/* {availableFor === "Development"
+                  ? `${availableFor} site`
+                  : `${BHKconfig ? `${BHKconfig}Bhk ` : ''}${propertyType} for ${availableFor}`} */}
+
+
             <div className="space-y-2 ">
-              <h1 className="text-4xl mb-5 font-manrope font-semibold text-TitleColor">
-                {data?.result.name}
+              <h1 className="text-4xl mb-5  font-semibold text-TitleColor">
+                {/* {data?.result.name} */}
+                {/* {data?.result?.toggle === "Project" ? data?.result.name : `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `} */}
+                {/* {data?.result?.toggle === "Project" ? data?.result.name : data?.resutl?.availabelFor === "Development" ? `${availableFor} site in  ${data?.result?.location.name}`: `${data?.result?.BHKconfig}Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in  ${data?.result?.location.name}  `  } */}
+
+                {data?.result?.toggle === "Project"
+                  ? data?.result.name
+                  : data?.result?.availableFor === "Development"
+                    ? `${data?.result?.availableFor} site in ${data?.result?.location.name}`
+                    : data?.result?.BHKconfig === ""
+                      ? `${data?.result.propertyType} for ${data?.result?.availableFor} in ${data?.result?.location.name}`
+                      : `${data?.result?.BHKconfig} Bhk ${data?.result.propertyType} for ${data?.result?.availableFor} in ${data?.result?.location.name}`}
+
+
+
               </h1>
               <div className="md:flex items-center  space-x-6 text-locColor">
-                <div className="flex items-center space-x-4">
-                  <GrLocation className="text-xl" />
-                  <p className="text-2xl">{data?.result.area.name}</p>
+                <div className="flex items-center justify-center space-x-4">
+                  <GrLocation className="text-2xl" />
+                  <p className="text-2xl m-0">{data?.result.location.name}</p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className=" space-x-2">
                   <p className="flex items-center space-x-2">
-                    <GrStar className="text-2xl text-yellow-300" />
-                    <span className="text-sm md:text-2xl">4.6</span>
+
                   </p>
-                  <p className="text-xs md:text-xl">(23 reviews)</p>
+                  <p className="text-xs md:text-xl">₹{data?.result.areaValue}/{data?.result.areaType}</p>
+
                 </div>
+
+
               </div>
-            </div>
-            {/* save button */}
-            <div
-              style={{ marginTop: "45px" }}
-              className="flex items-center justify-center md:justify-center space-x-8 "
-            >
-              <div className="flex items-center w-full md:w-auto">
-                <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
-                <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
-                  {data?.result.cost}
+
+              <div className="m-0 p-0">
+                <p style={{ margin: "0" }}>
+                  <span style={{ fontSize: "20px", marginRight: "10px" }}>
+                    Address:
+                  </span>{" "}
+                  {data?.result.address}
                 </p>
               </div>
-              <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
-                <FaRegBookmark className="text-red-400" />
-                <p className="mt-1">save</p>
-              </div>
+
             </div>
+
+
+            {/* save button */}
+            <div className="flex flex-col ">
+              <div
+                style={{ marginTop: "45px", }}
+                className="flex items-center justify-center md:justify-center space-x-8 "
+              >
+                <div className="flex items-center w-full md:w-auto">
+                  <FaRupeeSign className="text-primaryBlue text-2xl font-manrope" />
+                  <p className="text-2xl mt-2 font-manrope font-semibold text-primaryBlue">
+                    <PropertyCost cost={data?.result.cost} />
+                  </p>
+                </div>
+                <div onClick={handleFavourite} className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
+                  <FaRegBookmark className="text-red-400" />
+                  <p className="mt-1">Save</p>
+                </div>
+                <div className="flex items-center space-x-1 border px-3 py-1 rounded-full bg-white/70 cursor-pointer shadow-sm active:scale-105 transition transform duration-200 active:bg-gray-100">
+                  <AiOutlineShareAlt onClick={handleShareClick} style={{ fontSize: "25px" }} />
+                </div>
+              </div>
+              <p className="text-lg font-medium mt-4 ">Area:{data?.result.size} {data?.result.areaType}</p>
+            </div>
+
           </div>
         </div>
+
+
+
 
         {/* Tags */}
-        <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+        {/* <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope ">
+          <div style={{ borderRadius: "20px", color: "white" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.location.name}</p>
+         
           </div>
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p className="mt-1 mb-1">{data?.result.BHKconfig} bhk</p>
+          <div
+            style={{
+              borderRadius: "20px",
+              color: "white",
+              display: data?.result.BHKconfig ? "block" : "none"
+            }}
+            className="px-3 py-1 border bg-blue-500 shadow-sm"
+          >
+            <p className="mt-1 mb-1">{data?.result?.BHKconfig} bhk</p>
           </div>
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
+          <div style={{ borderRadius: "20px", color: "white" }} className="px-3 py-1 border bg-blue-500 shadow-sm">
             <p className="mt-1 mb-1">{data?.result.availableFor}</p>
           </div>
-          <div className="px-3 py-1 border bg-gray-50 shadow-sm">
-            <p className="mt-1 mb-1">{data?.result.propertyType}</p>
+          <div
+            style={{
+              borderRadius: "20px",
+              color: "white",
+              display: data?.result?.propertyType ? "block" : "none"
+            }}
+            className="px-3 py-1 border bg-blue-500 shadow-sm"
+          >
+            <p className="mt-1 mb-1">{data?.result?.propertyType}</p>
           </div>
-        </div>
+        </div> */}
 
-        <div
-          style={{
-            padding: "15px",
-            boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
-            paddingBottom: "20px",
-            borderRadius: "8px",
-          }}
-        >
-          <p className="text-xl ">Top Facilities</p>
-          <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-            {data?.result.amenities.map((curElem, index) => (
-              <div
-                key={index}
-                className="px-3 py-1 border bg-gray-50 shadow-sm"
-              >
-                <p className="mt-1 mb-1">{curElem}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
-  {data?.result.amenities[0] ? JSON.parse(data.result.amenities[0]).map((curElem: string) => (
-    <div key={curElem} className="px-3 py-1 border bg-gray-50 shadow-sm">
-      <p className="mt-1 mb-1">{curElem}</p>
-    </div>
-  )) : null}
-</div> */}
-        </div>
 
         {/* main details content */}
         <section className="space-y-10">
           <div className="relative w-full overflow-hidden flex justify-center items-center space-x-2">
             {data?.result?.propertyImages &&
-            data.result.propertyImages.length > 0 ? (
+              data.result.propertyImages.length > 0 ? (
               data.result.propertyImages.slice(0, 2).map((img) => (
                 <LoadImage key={img} src={img || "/bighouse.png"}>
                   <Image
@@ -430,19 +674,30 @@ const Details = () => {
             </div>
           </div>
 
-          <div className="w-full">
-            {cookies?.jwtToken ? (
-              <button
-                className={`bg-${
-                  buttonColor ? "current" : "primaryBlue"
-                } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
+
+          {/* <button
+                style={{ borderRadius: "20px" }}
+                className={`bg-${buttonColor ? "current" : "primaryBlue"
+                  } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
               >
                 <MyMsg
                   data={data}
-                  text="Get in Comfort"
+                  text="Get in Contact"
                   onApiCall={handleApiCall}
                 />
+              </button> */}
+
+          <div className="w-full">
+            {cookies?.jwtToken ? (
+              <button
+                onClick={handleAgentContact}
+                style={{ borderRadius: "20px" }}
+                className={`bg-${buttonColor ? "current" : "primaryBlue"
+                  } text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out`}
+              >
+                Get in Contact
               </button>
+
             ) : (
               <Link href={"/login"}>
                 <button className="  bg-primaryBlue text-white  w-full py-2 rounded-sm shadow-sm  hover:opacity-95 active:opacity-80 transition transform duration-200 ease-out  ">
@@ -451,6 +706,23 @@ const Details = () => {
               </Link>
             )}
           </div>
+
+          <div className="flex space-x-4 text-sm">
+            {(data?.result.propertyTags && data.result.propertyTags.length > 0) ? (
+              (data?.result.propertyTags).map((tag, index) => (
+                <button
+                  key={index}
+                  className={`${index === 0 ? "bg-green-400 bg-opacity-50" : "bg-[#EBECF0]"
+                    } px-4 p-2 ${index === 0 ? "text-xs" : "md:text-sm"} rounded-lg`}
+                >
+                  {tag}
+                </button>
+              ))
+            ) : (
+              null
+            )}
+          </div>
+
           {data?.result?.propertyImages && (
             <MyModal isOpen={isOpen} setIsOpen={setIsOpen}>
               <ImageSlider
@@ -459,6 +731,121 @@ const Details = () => {
               />
             </MyModal>
           )}
+
+          <div
+            style={{
+              padding: "15px",
+              boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+              paddingBottom: "20px",
+              borderRadius: "8px",
+            }}
+          >
+            <p className="text-xl ">Specifications</p>
+
+            <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+              <div className="flex w-full justify-between items-start flex-col md:flex-row md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+
+                <div className="leftSideContainer">
+
+                  <SpecificationItem Icon={FaHome} tagName={"Property Type"} text={data?.result.propertyType} />
+                  <SpecificationItem Icon={FaBuilding} tagName={"Building Type"} text={data?.result.buildingType} />
+                  <SpecificationItem Icon={FaUser} tagName={"User Type"} text={data?.result?.userType} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Available for"} text={data?.result.availableFor} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Age of the Property"} text={data?.result.ageOfProperty} />
+                  <SpecificationItem Icon={FaRuler} tagName={"Area"} text={data?.result.size} />
+                  <SpecificationItem Icon={GiLift} tagName={"Lift Facility"} text={data?.result.liftFacility} />
+                  <SpecificationItem Icon={FaBuilding} tagName={"Toggle"} text={data?.result.toggle} />
+
+
+
+                </div>
+                <div style={{ marginRight: "300px" }} className="rightSideContainer">
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Authority"} text={data?.result.authority} />
+                  <SpecificationItem Icon={FaBed} tagName={"BHK Configure"} text={data?.result.BHKconfig} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Additional Rooms"} text={data?.result.additionalRooms} />
+                  <SpecificationItem Icon={FaRegBookmark} tagName={"Possession Status"} text={data?.result.possessionStatus} />
+                  <SpecificationItem Icon={GiHandTruck} tagName={"Furnishing Status"} text={data?.result.furnishingStatus} />
+                  <SpecificationItem Icon={FaBed} tagName={"Floor No."} text={data?.result.floorNo} />
+                  <SpecificationItem Icon={MdBathroom} tagName={"No. of Bathroom"} text={data?.result.numOfBathroom} />
+                  <SpecificationItem Icon={FaParking} tagName={"No. of Parking"} text={data?.result.numOfParking} />
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          {data?.result?.toggle === "Project" ? <div style={{
+            padding: "15px",
+            boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+            paddingBottom: "20px",
+            borderRadius: "8px",
+
+          }}>
+            <p style={{ fontSize: "20px" }}>Project Images</p>
+            <div style={{ padding: "0 150px", marginBottom: "20px" }} className="flex p-4 md:space-x-4 md:flex-row md:items-stretch md:justify-start items-center justify-center flex-col  ">
+              <div className=" md:w-[500px] w-56 h-36 md:mb-0 mb-4  md:h-80 bg-gray-200">
+                {data?.result.propertyImages?.length > 0 && (
+                  <img src={data.result.propertyImages[0]} alt="Image 1" className="h-full w-full object-cover" />
+                )}
+              </div>
+              <div className="flex-1 h-80 flex flex-col justify-between">
+                {data?.result.propertyImages?.slice(1, 3).map((image, index) => (
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4" key={index}>
+                    <img src={image} alt={`Image ${index + 2}`} className="h-full w-full object-cover mb-2" />
+                  </div>
+                ))}
+                {data?.result.propertyImages?.length <= 2 && (
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4 flex justify-center items-center text-gray-600 border border-gray-600">
+                    No more images
+                  </div>
+                )}
+                {data?.result.propertyImages?.length === 1 && (
+                  <div className="md:w-full md:h-[150px] w-56  h-36 md:mb-0 mb-4 flex justify-center items-center text-gray-600 border border-gray-600">
+                    No more images
+                  </div>
+                )}
+              </div>
+            </div>
+          </div> : null}
+
+
+
+
+          <div
+            style={{
+              padding: "15px",
+              boxShadow: "0 0 6px rgba(0, 0, 0, 0.2)",
+              paddingBottom: "20px",
+              borderRadius: "8px",
+            }}
+          >
+            <p className="text-xl ">Top Facilities</p>
+
+            <div className="md:flex md:space-x-4 space-y-3 md:space-y-0 font-manrope">
+              {data?.result.amenities ? data.result.amenities.map((curElem: string) => {
+                let Icon = availableAmenities?.find((ele: any) => {
+                  let name = ele?.name;
+                  return name === curElem;
+                });
+                const IconTag = Icon?.icon;
+                console.log(IconTag, "Icon")
+                return (
+                  <div key={curElem} style={{ borderRadius: "20px", color: "white" }} className=" flex items-center justify-center space-x-2 px-3 py-1 border bg-blue-500 shadow-sm">
+                    {IconTag ? <IconTag /> : null}
+                    <p className="mt-1 mb-1">{curElem}</p>
+                  </div>
+                )
+              }) : null}
+            </div>
+          </div>
+
+
+
+
+
           <div
             style={{
               padding: "15px",
@@ -474,7 +861,7 @@ const Details = () => {
               {data?.result?.description}
             </p>
           </div>
-          <div className=" flex flex-col items-center justify-center space-y-4  sm:flex-row sm:space-x-4 sm:justify-start sm:space-y-0 ">
+          {/* <div className=" flex flex-col items-center justify-center space-y-4  sm:flex-row sm:space-x-4 sm:justify-start sm:space-y-0 ">
             <div className="border rounded-md space-y-2  h-28 shadow-sm  w-32 flex flex-col justify-center items-center">
               <p className="text-4xl font-manrope font-semibold text-primaryBlue">
                 {data?.result?.BHKconfig}
@@ -493,7 +880,7 @@ const Details = () => {
               </p>
               <p className="text-xl font-manrope font-light">GuestRoom</p>
             </div>
-          </div>
+          </div> */}
         </section>
         {/* maps */}
         <section className="md:flex space-y-5 md:space-y-0  md:space-x-8 justify-center items-center ">
@@ -511,49 +898,53 @@ const Details = () => {
             style={{ margin: "0 auto" }}
             className="max-w-xs shadow-sm rounded-sm  bg-white grow border flex justify-center items-center "
           >
-            <div className="flex flex-col items-center space-y-5 p-5 md:p-0">
+            <div className="flex flex-col items-center space-y-5 md:p-0 px-5">
               <div className="h-20 w-20 relative rounded-full">
                 <Image
-                  src={data?.result?.agentId?.profilePhoto as string}
+                  style={{ marginTop: "20px" }}
+                  // src={data?.result?.agentId?.profilePhoto as string}
+                  src="https://i.ibb.co/8MzgrNc/avatar.png"
                   fill
                   className="object-fill rounded-full"
                   alt="villa4"
                 />
               </div>
-              <div className="w-full text-center">
+              <div className="w-full text-center mt-2">
                 {data?.result.agentId ? (
                   <>
                     <div className="flex items-center justify-center">
-                      <p className="font-manrope text-lg font-medium pr-2">
+                      <p className="font-manrope text-lg font-medium pr-2 pl-3">
                         {data?.result.agentId.name}
                       </p>
-                      <HiCheckCircle className="text-primaryBlue text-xl" />
+                      <HiCheckCircle className="text-primaryBlue text-xl mb-2" />
                     </div>
-                    <p className="text-xs text-locColor font-manrope flex justify-center items-center">
-                      Agent
-                      <span>
-                        <RxDotFilled className="text-lg" />
-                      </span>{" "}
-                      Joined 2020
-                    </p>
+                    {/* <p className="text-xs text-locColor font-manrope flex justify-center items-center">
+                      {data?.result.agentId ? `Mob. No. - ${data?.result.agentId.mobileNumber}` : null}
+                    </p> */}
                   </>
                 ) : (
                   <p>No agent information available</p>
                 )}
               </div>
 
-              {cookies?.jwtToken ? (
-                <button className="  bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+              {/* <button style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
                   <MyMsg
                     data={data}
-                    text="Contact Agent"
+                  
+                    text={data?.result.userType !== undefined ? `Contact ${data?.result.userType}` : `Contact`}
                     onApiCall={handleApiCall}
                   />
+                </button> */}
+
+              {cookies?.jwtToken ? (
+                <button onClick={handleAgentContact} style={{ marginBottom: "30px" }} className=" bg-green-500 px-7  text-white  py-1 rounded-lg shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                  {data?.result.userType !== undefined ? `Contact ${data?.result.userType}` : `Contact`}
                 </button>
               ) : (
                 <Link href={"/login"}>
-                  <button className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
-                    login to Contact Agent
+                  <button style={{ marginBottom: "30px" }} className="  bg-green-500 px-7  text-white   py-2 rounded-full shadow-sm  hover:opacity-95 active:scale-95 transition transform duration-200 ease-out  ">
+                    {/* Login to Contact Agent */}
+                    {data?.result.userType !== undefined ? `Login to Contact ${data?.result.userType}` : `Login to Contact`}
                   </button>
                 </Link>
               )}
@@ -562,48 +953,56 @@ const Details = () => {
         </section>
 
         {/* amenities */}
-        {/* <Card sx={{ borderRadius: 2 }}>
-          <CardHeader title="Amenities" />
-          <CardContent>
-            <Box
-              rowGap={3}
-              columnGap={2}
-              display="grid"
-              gridTemplateColumns={{
-                xs: "repeat(1, 1fr)",
-                sm: "repeat(4, 1fr)",
-              }}
-              sx={{
-                alignItems: "end",
-              }}
-            >
-              {data?.result?.amenities?.map((item, i) => {
-                let Icon = availableAmenities?.find((ele: any) => {
-                  let name = ele?.name;
-                  return name === item;
-                });
-                const IconTag = Icon.icon;
+        {/*<Card sx={{ borderRadius: 2 }}>*/}
+        {/*  <CardHeader title="Amenities" />*/}
+        {/*  <CardContent>*/}
+        {/*    <Box*/}
+        {/*      rowGap={3}*/}
+        {/*      columnGap={2}*/}
+        {/*      display="grid"*/}
+        {/*      gridTemplateColumns={{*/}
+        {/*        xs: "repeat(1, 1fr)",*/}
+        {/*        sm: "repeat(4, 1fr)",*/}
+        {/*      }}*/}
+        {/*      sx={{*/}
+        {/*        alignItems: "end",*/}
+        {/*      }}*/}
+        {/*    >*/}
+        {/*      {data?.result?.amenities?.map((item, i) => {*/}
+        {/*        let Icon = availableAmenities?.find((ele: any) => {*/}
+        {/*          let name = ele?.name;*/}
+        {/*          return name === item;*/}
+        {/*        });*/}
+        {/*        const IconTag = Icon?.icon;*/}
 
-                return (
-                  <div
-                    className="flex justify-start items-center text-black cursor-pointer leading-[32px] "
-                    key={i}
-                  >
-                    <IconTag className="w-[26px] h-[26px] " />
-                    <p className="text-lg text-[1rem] px-3">{item}</p>
-                  </div>
-                );
-              })}
-            </Box>
-          </CardContent>
-        </Card> */}
+        {/*        return (*/}
+        {/*          <div*/}
+        {/*            className="flex justify-start items-center text-black cursor-pointer leading-[32px] "*/}
+        {/*            key={i}*/}
+        {/*          >*/}
+        {/*            <GiLift className="w-[26px] h-[26px] " />*/}
+        {/*            <p className="text-lg text-[1rem] px-3">{item}</p>*/}
+        {/*          </div>*/}
+        {/*        );*/}
+        {/*      })}*/}
+        {/*      <div*/}
+        {/*          className="flex justify-start items-center text-black cursor-pointer leading-[32px] "*/}
+        {/*          // key={i}*/}
+        {/*      >*/}
+        {/*        <GiLift className="w-[26px] h-[26px] " />*/}
+        {/*        <p className="text-lg text-[1rem] px-3">Lift</p>*/}
+        {/*      </div>*/}
+        {/*    </Box>*/}
+        {/*  </CardContent>*/}
+        {/*</Card>*/}
 
-        <p style={{ margin: "0" }}>
+        {/* <p style={{ margin: "0" }}>
           <span style={{ fontSize: "20px", marginRight: "15px" }}>
-            Full Address:
+            Address:
           </span>{" "}
           {data?.result.address}
-        </p>
+        </p> */}
+
         <section>
           <div
             style={{
@@ -613,10 +1012,10 @@ const Details = () => {
             }}
           >
             {/* <p style={{textAlign:"center",fontSize:"30px",fontWeight:"bold"}}>WE'VE FOUND SIMILAR PROPERTIES FOR YOU</p> */}
-            <div className="max-w-7xl mx-auto px-5 md:px-10 ">
-              <div className="w-full flex items-center justify-between">
+            <div className="max-w-7xl mx-auto  md:px-10 ">
+              <div className="w-full flex items-center justify-between flex-col md:flex-row">
                 <HomeSectionTitle text="WE'VE FOUND SIMILAR PROPERTIES FOR YOU" />
-                <div className="hidden md:flex space-x-4 ">
+                <div className="flex space-x-4 mt-2 md:mt-0 ">
                   <button
                     onClick={() => scrollLeft("feat")}
                     className="p-2 m-2 rounded-full bg-white"
@@ -632,7 +1031,7 @@ const Details = () => {
                 </div>
               </div>
               {similarData && (
-                <div id="feat" className="flex overflow-hidden space-x-6 py-10">
+                <div id="feat" className="flex overflow-y-scroll scrollbar-hide w-full">
                   <CardCarousel
                     id="feat"
                     data={similarData}

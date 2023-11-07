@@ -27,6 +27,43 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { Select } from "../../addProperty";
+import { BsFillHouseFill, BsShop } from "react-icons/bs";
+import { RiHome4Fill, RiBuilding4Fill } from "react-icons/ri";
+import {
+  MdApartment,
+  MdOutlineVilla,
+  MdHome,
+} from "react-icons/md";
+// import { HiBuildingStorefront } from "react-icons/hi";
+import { GiIsland } from "react-icons/gi";
+// import {
+//   AiOutlineClose,
+//   AiOutlineDollar,
+//   AiOutlineHome,
+//   AiOutlineSetting,
+//   AiOutlineUser,
+// } from "react-icons/ai";
+import {
+  // FaRegAddressBook,
+  FaHome,
+  FaBuilding,
+  FaLandmark,
+  FaWarehouse,
+} from "react-icons/fa";
+import {
+  // MdOutlineHolidayVillage,
+  // MdPhotoSizeSelectSmall,
+} from "react-icons/md";
+// import { area, location, response } from "src/@types";
+// import { useFetch } from "src/lib/hooks/useFetch";
+import styles from "../styles/addProperty.module.css";
+
+// import { cx } from "../utills/all";
+// import Image from "next/image";
+import { useCookies } from "react-cookie";
+import { availableAmenities } from "src/@global/Data";
+import AddProperty from "src/pages/addProperty";
+import generateSlug from "src/componets/slug/generateSlug";
 
 export const PostingCard = ({
   name,
@@ -42,15 +79,20 @@ export const PostingCard = ({
   area,
   propertyImages,
   purchaseRequests,
+  propertyType,
+  toggle,
+  slug
 }: Propery) => {
   const instance = useAxios();
   const router = useRouter();
+
+  // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
   return (
     <div className="mb-5 bg-white rounded-lg md:flex cursor-pointer">
       {/* image section */}
       <div className="h-[160px] relative md:w-[180px]">
         <Image
-          src={"/smallb.png"}
+          src={propertyImages[0] || "/smallb.png"}
           fill
           alt="home"
           className="rounded-l-lg object-cover"
@@ -60,7 +102,8 @@ export const PostingCard = ({
       <div className="p-5 px-6 w-full">
         <div className="flex w-full justify-between">
           <div>
-            <Link href={`/details/${_id}`}>
+            <Link href={`/details/${slug}`}>
+            {/* <Link href={`/details/${_id}`}> */}
               <h1 className="text-xl font-bold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">
@@ -71,7 +114,7 @@ export const PostingCard = ({
               </div>
             </div>
           </div>
-          <div className="text-red-400 flex items-center space-x-1 self-start text-xs font-medium">
+          {/* <div className="text-red-400 flex items-center space-x-1 self-start text-xs font-medium">
             <p
               onClick={async () => {
                 try {
@@ -93,7 +136,7 @@ export const PostingCard = ({
             >
               Delete
             </p>
-          </div>
+          </div> */}
         </div>
         <div className=" max-w-xl py-1 w-full flex">
           <div className="">
@@ -142,86 +185,20 @@ const loadingAtom = atom(false);
 const Edit = () => {
   const router = useRouter();
   const id = router.query["id"];
+
+  
   const { data, error, status } = useFetch<ProperyRes>(
     `property/getPropertyById/${id}`
   );
-  const [formData, setFormData] = useState<ProperyRes>({} as ProperyRes);
-  const instance = useAxios();
-  const [name, setName] = useState("");
-  const [cost, setCost] = useState<number>(0);
-  const [desccription, setDescription] = useState("");
-  const [size, setSize] = useState<number>(0);
-  const [location, setLocation] = useState<location | null>(null);
-  const [adress, setAdress] = useState("");
-  const [area, setArea] = useState<area | null>(null);
-  const [BHKconfig, setBHKConfig] = useState<number>(0);
-  const { showModal, setShowModal } = useAppContext();
-  const [availableFor, setAvailableFor] = useState({ name: "Rent" });
-  const [propertyType, setPropertyType] = useState({ name: "villa" });
-  const [filesToupload, setFilesToUpload] = useState<any>([]);
-  const [loading, setLoading] = useAtom(loadingAtom);
 
-  useEffect(() => {
-    if (!data?.result._id) {
-      console.log("hi");
-      return;
-    }
-    setName(data?.result?.name);
-    setCost(data?.result?.cost);
-    setDescription((prev) => data?.result?.description);
-    setLocation(() => data?.result?.location);
-    setAdress((prev) => data?.result?.address);
-    setBHKConfig((prev) => data?.result?.BHKconfig);
-    setSize((prev) => data?.result?.size);
-    setArea((prev) => data?.result?.area);
-  }, [data]);
-  const { data: loc } = useFetch<response<location[]>>(
-    "/property/location/getAllLocation"
-  );
-  const { data: areas } = useFetch<response<area[]>>(
-    `/property/location/getAreaInLocation/${location?._id}`
-  );
 
-  const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      const res = await instance.patch("/agent/property/editProperty", {
-        propertyId: data?.result?._id,
-        name: name,
-        cost: cost,
-        description: desccription,
-        size: size,
-        availableFor: "Rent",
-        BHKconfig: BHKconfig,
-        amenities: [],
-        location: location?.name,
-        locationId: data?.result?.location?.locationId,
-        area: area?.name,
-        areaId: data?.result?.area?.areaId,
-        address: adress,
-        propertyType: "Villa",
-      });
-      console.log(res);
-      toast("Property Edited Succesfully", {
-        position: "bottom-center",
-        type: "success",
-      });
-      setLoading(false);
-    } catch (e) {
-      setLoading(false);
-      toast("Error", {
-        position: "bottom-center",
-        type: "error",
-      });
-      console.log(e);
-    }
-  };
+
   return (
     <>
       <div className="flex justify-between mb-8 ">
         <h1 className="text-black font-bold text-[22px]">Edit Property</h1>
         <button
-          onClick={handleSubmit}
+          // onClick={handleSubmit}
           className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
         >
           Submit
@@ -236,101 +213,9 @@ const Edit = () => {
       >
         <p className="border-b py-3 border-[#0066FF]">Step 1: Genreral Info</p>
       </div>
-      <div className="mt-9">
-        <form className=" w-[90%] mx-auto space-y-6' ">
-          <div className="space-y-10">
-            <Input
-              Icon={AiOutlineUser}
-              placeholder="name"
-              value={name}
-              setValue={setName}
-            />
-            <Input
-              Icon={AiOutlineDollar}
-              placeholder="price"
-              value={cost}
-              setValue={setCost}
-            />
-            <Input
-              Icon={AiOutlineHome}
-              placeholder="BHK Config ie. 4"
-              value={BHKconfig}
-              setValue={setBHKConfig}
-            />
-            <div className="flex items-center px-5  relative  w-full border bd rounded-lg">
-              <MdOutlineHolidayVillage className="text-lg text-[#2C5FC3] " />
-              <Select
-                options={[
-                  { name: "villa" },
-                  { name: "pg" },
-                  { name: "appartment" },
-                ]}
-                value={propertyType}
-                setState={setPropertyType}
-              />
-            </div>
-            <div className="flex items-center px-5  relative  w-full border bd rounded-lg">
-              <AiOutlineSetting className="text-lg text-[#2C5FC3] " />
-              <Select
-                options={[{ name: "Rent" }, { name: "Sell" }]}
-                value={availableFor}
-                setState={setAvailableFor}
-              />
-            </div>
-            {loc?.result && (
-              <div className="flex items-center px-5  relative  w-full border bd rounded-lg">
-                <HiOutlineLocationMarker className="text-lg text-[#2C5FC3] " />
-                <Select
-                  options={loc?.result}
-                  value={location}
-                  setState={setLocation}
-                />
-              </div>
-            )}
 
-            {areas?.result && (
-              <div className="flex items-center px-5  relative z-20 w-full border bd rounded-lg">
-                <BsBuilding className="text-lg text-[#2C5FC3] " />
-                <Select
-                  options={areas?.result}
-                  value={area}
-                  setState={setArea}
-                />
-              </div>
-            )}
-            <Input
-              Icon={FaRegAddressBook}
-              placeholder="address"
-              value={adress}
-              setValue={setAdress}
-            />
-            <Input
-              Icon={MdPhotoSizeSelectSmall}
-              placeholder="size in Sqft"
-              value={size}
-              setValue={setSize}
-            />
-          </div>
-          <textarea
-            id="description"
-            name="desccription"
-            value={desccription}
-            onChange={(e) => setDescription(e.target.value)}
-            required={true}
-            placeholder="Add  description"
-            className="focus:outline-none  w-full h-52 px-3 mt-5 py-2 border  my-4"
-          />
-        </form>
-        <div className="flex justify-between mb-8 ">
-          <h1 className="text-black font-bold text-[22px]">Edit Property</h1>
-          <button
-            onClick={handleSubmit}
-            className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
-          >
-            {loading ? "updating" : "submit"}
-          </button>
-        </div>
-      </div>
+      <AddProperty navbarFooter={false} propertyData={data?.result} isEdit={true} />
+
     </>
   );
 };

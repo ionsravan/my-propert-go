@@ -8,10 +8,11 @@ import {
 } from "react-icons/ai";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { TbEdit } from "react-icons/tb";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+// import AdminsideNav from "../../componets/user/adminDasboardnav";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { response, Agent } from "src/@types";
 import CustomLoader from "src/componets/shared/Loader";
+import AdminsideNav from "src/componets/admin/adminDasboardnav";
 
 const Card = ({
   name,

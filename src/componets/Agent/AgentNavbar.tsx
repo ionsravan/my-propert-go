@@ -1,7 +1,8 @@
 import { LucideProps } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { AdminNavbarIcons } from "../admin/adminIcons";
+import { AdminNavbarIcons } from "../user/adminIcons";
+import Image from "next/image";
 
 // sideNavItem
 interface SideNavItemProps {
@@ -62,8 +63,17 @@ const icons = {
 const AgentNavbar = () => {
   const router = useRouter();
   return (
-    <div className="w-full overflow-hidden  font-manrope">
-      <h1 className="text-xl text-black font-bold pl-7 pb-9">My Property Go</h1>
+    <div  className="w-full overflow-y-scroll font-manrope ">
+      {/* <h1 onClick={() => router.push("/")} className="text-xl text-black font-bold pl-9 pb-9 cursor-pointer">Wonderplots</h1> */}
+      <div style={{ width: "150px", height: "50px", position: "relative",left:"20px" }} onClick={() => router.push("/")} className="md:pl-6 pl-4 cursor-pointer">
+  <Image
+   style={{ width: "100%", height: "100%", objectFit: "cover", position: "absolute", top: 0, left: 0, zIndex: 1 }} 
+    src="/logoW1.png" 
+    alt="Logo"
+    width={150}
+    height={45}
+  />
+</div>
       <Link href={"/agent"}>
         <SideNavItem
           name="Dashboard"
@@ -81,13 +91,41 @@ const AgentNavbar = () => {
           }
         />
       </Link>
+      <Link href={"/agent/myPlans"}>
+        <SideNavItem
+          name="My Plans"
+          Icon={icons.postings}
+          isActive={
+            router.pathname == "/agent/myPlans" 
+          }
+        />
+      </Link>
       <Link href={"/agent/buyers"}>
         <SideNavItem
-          name="Buyers"
+          name="Leads"
           Icon={AdminNavbarIcons.customer}
           isActive={
             router.pathname == "/agent/buyers" ||
             router.pathname == "/agent/mypostings/apartments"
+          }
+        />
+      </Link>
+      <Link href={"/agent/tickets"}>
+        <SideNavItem
+          name="Tickets"
+          Icon={icons.postings}
+          isActive={
+            router.pathname == "/agent/tickets" ||
+            router.pathname == "/agent/mypostings/apartments"
+          }
+        />
+      </Link>
+      <Link href={"/agent/favourite"}>
+        <SideNavItem
+          name="Favourites"
+          Icon={icons.postings}
+          isActive={
+            router.pathname == "/agent/favourite"
           }
         />
       </Link>
@@ -96,6 +134,20 @@ const AgentNavbar = () => {
           name="My Profile"
           Icon={icons.profile}
           isActive={router.pathname == "/agent/profile"}
+        />
+      </Link>
+      <Link href={"/agent/notifications"}>
+        <SideNavItem
+          name="Notifications"
+          Icon={icons.profile}
+          isActive={router.pathname == "/agent/notifications"}
+        />
+      </Link>
+      <Link href={"/agent/propertyCare"}>
+        <SideNavItem
+          name="My Property Care"
+          Icon={icons.profile}
+          isActive={router.pathname == "/agent/propertyCare"}
         />
       </Link>
     </div>

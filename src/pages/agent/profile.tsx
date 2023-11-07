@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import {
   AiOutlineHome,
   AiOutlineInfo,
@@ -14,6 +14,10 @@ import AgentNavbar from "src/componets/Agent/AgentNavbar";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
+import { useCookies } from "react-cookie";
+import { useRouter } from "next/router";
+import { RxAvatar } from "react-icons/rx";
+import { ErrorDispaly } from "../admin/property";
 
 interface Props {
   Icon: React.ElementType;
@@ -21,7 +25,7 @@ interface Props {
   value: string | number | undefined;
 }
 
-const ProfileItem = ({ Icon, name, value }: Props) => {
+export const ProfileItem = ({ Icon, name, value }: Props) => {
   return (
     <div className="flex space-x-3 items-center">
       <div>{Icon && <Icon className="text-primaryBlue" />}</div>
@@ -33,12 +37,17 @@ const ProfileItem = ({ Icon, name, value }: Props) => {
   );
 };
 
+
+
 const Profile = () => {
+  const instance = useAxios();
+  const router = useRouter();
+  const [cookies, setCookies, removeCookie] = useCookies(["jwtToken"]);
   const { data } = useFetch<response<Agent>>("/agent/property");
   const [file, setFile] = useState<any>(null);
-  const instance = useAxios();
   const [loading, setLoading] = useState<boolean>(false);
   const [edit, setEdit] = useState<boolean>(false);
+  const [userDetails, setUserDetails] = useState({});
 
   const handleSubmit = async () => {
     const data = new FormData();
@@ -56,18 +65,55 @@ const Profile = () => {
       setFile(null);
     } catch (e) {
       setLoading(false);
-      console.log(e);
-      toast("Some Error Try Again");
+      ErrorDispaly(e);
     }
   };
 
+  const deleteCookie = (name) => {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+  };
+
+const handleLogout = () => {
+    setTimeout(() => {
+      // removeCookie("jwtToken");
+      deleteCookie('jwtToken');
+      localStorage.removeItem('userId');
+
+      toast("Logout Succesfully", {
+        position: "bottom-center",
+        type: "success",
+      });
+     
+      router.push("/")
+    }, 1000);
+
+  }
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await instance.get("/user/getUserDetails");
+        if (res?.data) {
+          // setIsLoading(false)
+          setUserDetails(res.data.data)
+          console.log(res.data.data,"sssss")
+  
+        }
+      } catch (e) {
+        ErrorDispaly(e);
+      }
+    };
+    fetchData();
+  }, [])
   return (
     <>
       <div>
-        <div className="mb-5">
+        <div className="mb-5 flex justify-between">
           <h1 className="text-2xl font-bold text-black">My Profile</h1>
+          <button onClick={handleLogout} className="text-white font-medium  bg-[#0066FF] rounded-full px-5 py-1  transition transform active:scale-95 duration-200">Logout</button>
         </div>
-        <div className="h-20 w-20 relative rounded-full">
+        {/* <div className="h-20 w-20 relative rounded-full">
           <>
             {data?.result?.profilePhoto || file ? (
               <Image
@@ -114,8 +160,8 @@ const Profile = () => {
               </>
             )}
           </>
-        </div>
-        {file && (
+        </div> */}
+        {/* {file && (
           <div className="flex space-x-4 my-7">
             <button
               onClick={() => {
@@ -132,32 +178,39 @@ const Profile = () => {
               {loading ? "saving... " : "save profile"}
             </button>
           </div>
-        )}
+        )} */}
         <div className="my-5 space-y-5">
-          <h2 className="text-xl text-TitleColor font-bold ">
+          {/* <h2 className="text-xl text-TitleColor font-bold ">
             {data?.result.name}
-          </h2>
+            User
+          </h2> */}
           {/* <button className=" max-w-[120px] text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-2 flex space-x-2 items-center transition transform active:scale-95 duration-200   ">
             Edit Profile
           </button> */}
         </div>
         <div className="text-[#4A4A4A] space-y-5 mt-10">
-          <ProfileItem
+          {/* <ProfileItem
             name="EXEPERENCE"
             value={`${4} years`}
             Icon={AiOutlineInfo}
+          /> */}
+                 <ProfileItem
+            name="Name"
+            value={`${userDetails.name} `}
+            Icon={RxAvatar}
           />
           <ProfileItem
             name="MOBILE NUMBER"
-            value={`${data?.result?.mobileNumber} `}
+            value={`${userDetails.mobileNumber} `}
             Icon={AiOutlinePhone}
           />
+   
           <ProfileItem
             name="EMAIL"
-            value={data?.result?.email}
+            value={userDetails.email}
             Icon={AiOutlineMail}
           />
-          <ProfileItem
+          {/* <ProfileItem
             name="PROPERTY COUNT"
             value={data?.result?.properties.length}
             Icon={AiOutlineHome}
@@ -166,7 +219,7 @@ const Profile = () => {
             name="OPRATING AREA"
             value={`Gie   GEo `}
             Icon={FaLocationArrow}
-          />
+          /> */}
         </div>
       </div>
     </>

@@ -5,21 +5,21 @@ const Nav = () => {
   const router = useRouter();
   const NavItems = [
     {
-      name: "Appartment",
+      name: "Home",
       link: "/",
     },
-    {
-      name: "Corpers Trade",
-      link: "/",
-    },
+    // {
+    //   name: "Corpers Trade",
+    //   link: "/",
+    // },
     {
       name: "Help",
       link: "/",
     },
-    {
-      name: "Sing up",
-      link: "/signup",
-    },
+    // {
+    //   name: "Sing up",
+    //   link: "/signup",
+    // },
   ];
   return (
     <nav className="flex-grow space-x-4 flex justify-end items-center text-sm">
@@ -30,7 +30,7 @@ const Nav = () => {
           </Link>
         );
       })}
-      <Link href={"/login"}>
+      {/* <Link href={"/login"}>
         <button
           className={`${
             router?.pathname == "/"
@@ -40,7 +40,7 @@ const Nav = () => {
         >
           Login
         </button>
-      </Link>
+      </Link> */}
     </nav>
   );
 };

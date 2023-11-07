@@ -5,21 +5,29 @@ import { AiOutlineMail, AiOutlineNumber, AiOutlineUser } from "react-icons/ai";
 import { MdArrowBack } from "react-icons/md";
 import { CustomerValuesProps, User } from "src/@types";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
-import AddEditCustomer from "src/componets/admin/AddEditCustomer";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import AdminsideNav from "../../../../componets/admin/adminDasboardnav";
 import CustomLoader from "src/componets/shared/Loader";
 import FormProvider from "src/componets/shared/RHF/FormProvider";
 import RHFTextField from "src/componets/shared/RHF/RHFTextField";
 import { useAxios } from "src/utills/axios";
 import { useForm } from "react-hook-form";
+import { UseFormReturn } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
+import { ErrorDispaly } from "../../property";
+
+// const NewCompanyValidationSchema = Yup.object().shape({
+//   name: Yup.string().required("Customer name is required"),
+//   email: Yup.string().email().required("email is required"),
+//   mobileNumber: Yup.string().required("Mobile number is required"),
+// });
 
 const NewCompanyValidationSchema = Yup.object().shape({
-  name: Yup.string().required("Customer name is required"),
-  email: Yup.string().email().required("email is required"),
-  mobileNumber: Yup.string().required("Mobile number is required"),
+  name: Yup.string().required('Customer name is required'),
+  email: Yup.string().email().required('Email is required'),
+  mobileNumber: Yup.string().required('Mobile number is required'),
+  password: Yup.string().required('Password is required'),
 });
 
 const defaultValues = {
@@ -49,11 +57,18 @@ const EditCustomer = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [pageLoading, setPageLoading] = useState<boolean>(false);
 
-  const methods: any = useForm<CustomerValuesProps>({
-    mode: "onChange",
-    resolver: yupResolver(NewCompanyValidationSchema),
+  // const methods: any = useForm<CustomerValuesProps>({
+  //   mode: "onChange",
+  //   resolver: yupResolver(NewCompanyValidationSchema),
+  //   defaultValues,
+  // });
+
+  const methods: UseFormReturn<CustomerValuesProps> = useForm<CustomerValuesProps>({
+    mode: 'onChange',
+    resolver: yupResolver<CustomerValuesProps>(NewCompanyValidationSchema),
     defaultValues,
   });
+  
 
   const {
     handleSubmit,
@@ -81,10 +96,10 @@ const EditCustomer = () => {
       }
     } catch (e) {
       setPageLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
-  console.log("router)", router.query);
+
 
   useEffect(() => {
     if (id) {
@@ -92,20 +107,22 @@ const EditCustomer = () => {
     }
   }, [id]);
 
-  async function onSubmit(data: CustomerValuesProps) {
+
+  const onSubmit = async (data: CustomerValuesProps) => { 
     try {
       setLoading(true);
       const res = await instance.put("/admin/user/editUserById/" + id, data);
       if (res.data) {
         toast.success("Customer updated Successfully");
         setLoading(false);
-        router.push("/admin/customers");
+        router.push("/user/customers");
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
+
 
   return (
     <div className=" w-full bg-[#F6F6F6] ">

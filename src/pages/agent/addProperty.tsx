@@ -36,7 +36,7 @@ interface SelectProps<T> {
 export function Select<T>({ value, setState, options }: SelectProps<T>) {
   useEffect(() => {
     if (options) {
-      setState(options[0]);
+      // setState(options[0]);
     }
   }, []);
 

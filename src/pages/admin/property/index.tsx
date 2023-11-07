@@ -14,19 +14,29 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsEyeFill, BsPencil, BsPencilFill } from "react-icons/bs";
+import { BsPencil } from "react-icons/bs";
 import { MdDeleteForever } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
-import { location, newResponse, Pagination, response, User } from "src/@types";
-import { AdminCustomers } from "src/componets/admin/adminCustomer";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import {
+  location,
+  newResponse,
+  Pagination,
+  propertyStatus,
+  response,
+  ticketUpdate,
+  User,
+} from "src/@types";
+import { AdminCustomers } from "../../../componets/user/adminCustomer";
+import AdminsideNav from "../../../componets/admin/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
+import Image from "src/componets/shared/Image";
+import { formatCost } from "src/componets/costFormat/PropertyCost";
 
 export const Button = ({
   name,
@@ -52,7 +62,12 @@ export const Button = ({
   );
 };
 
-const userTypes = ["All", "Projects"];
+export const ErrorDispaly = (e: any) => {
+  toast.error(e?.response?.data?.message || "Something Went Wrong");
+
+}
+
+const userTypes = ["All", "Project"];
 
 // give main area a max widht
 const Property = () => {
@@ -66,7 +81,7 @@ const Property = () => {
   });
 
   const instance = useAxios();
-  const [properties, setProperties] = useState<User[] | undefined | null>([]);
+  const [users, setUsers] = useState<User[] | undefined | null>([]);
   const [pagination, setPagination] = useState<Pagination | undefined | null>(
     null
   );
@@ -74,26 +89,26 @@ const Property = () => {
   const [selected, setSelected] = useState("All");
   const router = useRouter();
 
-  async function getAllProperties() {
+  async function getAllUsers() {
     let pr = selected === "All" ? false : true;
     try {
       setLoading(true);
       const res = await instance.get(
-        `/property/getAllProperties?search=${name || ""}`
+        `/property/getAllProperties?search=${name || ""}&toggle=${selected}`
       );
       if (res.data) {
-        setProperties(res?.data?.result);
+        setUsers(res?.data?.data);
         setPagination(res?.data?.pagination);
         setLoading(false);
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   useEffect(() => {
-    getAllProperties();
+    getAllUsers();
   }, [selected, name]);
 
   async function deleteCustomer() {
@@ -104,16 +119,16 @@ const Property = () => {
         toast.success("Customer Deleted Successfully");
         setDeleteLoading(false);
         setDeleteOpen(false);
-        getAllProperties();
+        getAllUsers();
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   function handleChange(value: string, id: string) {
-    setProperties((prev) =>
+    setUsers((prev) =>
       prev.map((selectedExercise) => {
         if (selectedExercise._id === id) {
           return {
@@ -126,11 +141,52 @@ const Property = () => {
       })
     );
 
-    // onSubmit({ ticketStatus: value, ticketId: id });
+    onSubmit({ status: value, propertyId: id });
+  }
+
+  async function onSubmit(data: propertyStatus) {
+    try {
+      setLoading(true);
+      const res = await instance.put(
+        "/admin/property/changePropertyStatus",
+        data
+      );
+      if (res.data) {
+        toast.success("Property updated Successfully");
+        setLoading(false);
+      }
+    } catch (e) {
+      setLoading(false);
+      ErrorDispaly(e);
+    }
   }
 
   const all_customer_columns: GridColDef[] = [
+
     {
+      minWidth: 150,
+      flex: 0.1,
+      field: "_id",
+      headerName: "Id",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+    }, {
+      minWidth: 140,
+      flex: 0.1,
+      field: "primaryImage",
+      headerName: "Image",
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) =>
+        row?.primaryImage ? (
+          <Image src={row?.primaryImage} border={true} zoom={true}></Image>
+        ) : null,
+    },
+
+    {
+      minWidth: 100,
       flex: 0.15,
       field: "name",
       headerName: "Name",
@@ -144,7 +200,9 @@ const Property = () => {
       ),
     },
     {
-      flex: 0.1,
+      minWidth: 50,
+
+      flex: 0.05,
       field: "BHKconfig",
       headerName: "BHK",
       align: "left",
@@ -152,33 +210,89 @@ const Property = () => {
       disableColumnMenu: true,
     },
     {
-      field: "address",
-      headerName: "Address",
-      flex: 0.15,
+      minWidth: 130,
+
+      flex: 0.12,
+      field: "propertyType",
+      headerName: "Property Type",
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
-      field: "availableFor",
-      headerName: "Available For",
+      minWidth: 100,
+
+      field: "location",
+      headerName: "Location",
+      flex: 0.13,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Tooltip title={row?.location?.name}>
+          <Typography
+            sx={{ overflow: "hidden", textOverflow: "ellipsis" }}
+            variant="body1" fontWeight={500}>
+            {row?.location?.name}
+          </Typography>
+        </Tooltip>
+      ),
+    },
+    {
+      minWidth: 80,
+
+      field: "size",
+      headerName: "Size",
       flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "cost",
       headerName: "Price",
       flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography>{formatCost(row?.cost)}</Typography>
+      ),
     },
     {
+      minWidth: 100,
+
+      field: "agentId",
+      headerName: "User Name",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography>{row?.agentId?.name}</Typography>
+      ),
+    },
+    {
+      minWidth: 100,
+
+      field: "mobileNumber",
+      headerName: "Mobile",
+      flex: 0.1,
+      align: "left",
+      headerAlign: "left",
+      disableColumnMenu: true,
+      renderCell: ({ row }) => (
+        <Typography>{row?.agentId?.mobileNumber}</Typography>
+      ),
+    },
+    {
+      minWidth: 150,
+
+      flex: 0.15,
       field: "status",
       headerName: "Status",
-      flex: 0.15,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
@@ -187,36 +301,41 @@ const Property = () => {
           fullWidth
           size="small"
           onChange={(e) => handleChange(e.target.value, row?._id)}
-          value={row?.status || "Active"}
+          value={row?.status ? row?.status : "active"}
         >
-          <MenuItem value="Active">Active</MenuItem>
-          <MenuItem value="InActivate">InActivate</MenuItem>
+          <MenuItem value="active">Active</MenuItem>
+          <MenuItem value="inactive">InActive</MenuItem>
         </Select>
       ),
     },
     {
+      minWidth: 100,
+
       field: "action",
-      headerName: "Action",
+      headerName: "ACTION",
       flex: 0.1,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
         <Box>
-          <Tooltip title="View">
-            <IconButton
-              onClick={() => router.push(`/details/${row._id}`)}
-              color="primary"
-            >
-              <BsEyeFill />
-            </IconButton>
-          </Tooltip>
           <Tooltip title="Edit">
             <IconButton
-              onClick={() => router.push("/addProperty")}
+              onClick={() => router.push(`/admin/property/edit/${row._id}`)}
               color="primary"
             >
-              <BsPencilFill />
+              <BsPencil />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton
+              onClick={() => {
+                setDeleteId(row?._id);
+                setDeleteOpen(true);
+              }}
+              color="error"
+            >
+              <MdDeleteForever />
             </IconButton>
           </Tooltip>
         </Box>
@@ -233,7 +352,7 @@ const Property = () => {
         </div>
         <div className="max-w-[140px] text-sm  w-full">
           <button
-            onClick={() => router.push("/addProperty")}
+            onClick={() => router.push("/admin/property/add")}
             className=" text-white font-medium justify-center w-full bg-[#0066FF] rounded-full py-3 flex space-x-2 items-center transition transform active:scale-95 duration-200  "
           >
             <span>
@@ -252,11 +371,10 @@ const Property = () => {
                   setSelected(u);
                 }}
                 key={u}
-                className={` p-2 ${
-                  selected == u
-                    ? "text-primaryBlue  border-b border-primaryBlue"
-                    : "text-[#616161]"
-                }`}
+                className={` p-2 ${selected == u
+                  ? "text-primaryBlue  border-b border-primaryBlue"
+                  : "text-[#616161]"
+                  }`}
               >
                 {u}
               </button>
@@ -264,7 +382,7 @@ const Property = () => {
           })}
         </div>
 
-        <div className="flex space-x-[12px]">
+        {/* <div className="flex space-x-[12px]">
           <div className="flex items-center bg-white p-2 space-x-3">
             <AiOutlineSearch className="text-xl" />
             <input
@@ -279,7 +397,7 @@ const Property = () => {
               className="outline-none"
             />
           </div>
-        </div>
+        </div> */}
       </div>
       {/* dashboard caerd */}
 
@@ -287,7 +405,7 @@ const Property = () => {
         <Grid item xs={12}>
           <Card sx={{ borderRadius: 2 }}>
             <DataGrid
-              rows={properties || []}
+              rows={users || []}
               columns={all_customer_columns}
               getRowId={(row) => row._id}
               autoHeight
@@ -296,8 +414,8 @@ const Property = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
-              // pagination
-              // rowsPerPageOptions={[5, 10, 25]}
+              pagination
+              pageSizeOptions={[25, 50, 75, 100]}
               // rowCount={pagination?.totalUsers || 0}
               // page={pageState.page - 1}
               // pageSize={pageState.pageSize}
@@ -317,8 +435,8 @@ const Property = () => {
       {/* {users && <AdminCustomers users={users} />} */}
 
       <ConfirmBox
-        title="Customer"
-        name="customer"
+        title="Property"
+        name="property"
         open={deleteOpen}
         closeDialog={() => setDeleteOpen(false)}
         toDoFunction={deleteCustomer}

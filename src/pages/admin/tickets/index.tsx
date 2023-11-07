@@ -20,9 +20,10 @@ import {
   ticketUpdate,
   User,
 } from "src/@types";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
+import AdminsideNav from "src/componets/admin/adminDasboardnav";
 import { useAxios } from "src/utills/axios";
+import { ErrorDispaly } from "../property";
 
 export const tableStyles = {
   "& .MuiDataGrid-cellContent": {
@@ -39,17 +40,17 @@ export const tableStyles = {
     display: "none",
   },
   "& .MuiDataGrid-MuiFormControl-root-MuiTextField-root-MuiDataGrid-toolbarQuickFilter":
-    {
-      display: "none",
-    },
+  {
+    display: "none",
+  },
   "& .MuiDataGrid-cell": {
     borderBottom: "none",
     paddingY: 1.5,
   },
   "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus":
-    {
-      outline: "none !important",
-    },
+  {
+    outline: "none !important",
+  },
 };
 
 export const Button = ({
@@ -101,7 +102,7 @@ const TIcketsManagement = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -129,6 +130,8 @@ const TIcketsManagement = () => {
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.1,
+      minWidth: 120,
+
       field: "tittle",
       headerName: "Ticket Detail",
       align: "left",
@@ -141,6 +144,8 @@ const TIcketsManagement = () => {
       ),
     },
     {
+      minWidth: 160,
+
       flex: 0.4,
       field: "message",
       headerName: "Message",
@@ -150,6 +155,8 @@ const TIcketsManagement = () => {
     },
     {
       flex: 0.1,
+      minWidth: 120,
+
       field: "userName",
       headerName: "User Name",
       align: "left",
@@ -157,6 +164,8 @@ const TIcketsManagement = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       flex: 0.2,
       field: "userEmail",
       headerName: "User Email",
@@ -165,6 +174,8 @@ const TIcketsManagement = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       flex: 0.2,
       field: "action",
       headerName: "Status",
@@ -184,7 +195,7 @@ const TIcketsManagement = () => {
       ),
     },
   ];
-  // router.post("/admin/ticket/changeTicketStatus", adminAuthMiddleware,changeTicketStatus);
+  // router.post("/user/ticket/changeTicketStatus", adminAuthMiddleware,changeTicketStatus);
 
   async function onSubmit(data: ticketUpdate) {
     try {
@@ -196,7 +207,7 @@ const TIcketsManagement = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
@@ -224,6 +235,8 @@ const TIcketsManagement = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+              pageSizeOptions={[25, 50, 75, 100]}
+
               // pagination
               // pageSize={pageState.pageSize || 10}
               // rowCount={pagination?.totalUsers || 0}

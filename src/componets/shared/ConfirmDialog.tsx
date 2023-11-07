@@ -40,7 +40,7 @@ function ConfirmBox({
     <Dialog
       fullWidth
       open={open}
-      maxWidth="sm"
+      maxWidth="md"
       scroll="body"
       onClose={closeDialog}
       onBackdropClick={closeDialog}

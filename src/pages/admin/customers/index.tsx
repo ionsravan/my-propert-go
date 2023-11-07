@@ -7,24 +7,26 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { ReactElement, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { BsPencil, BsPencilFill } from "react-icons/bs";
+import { BsEyeFill, BsPencil, BsPencilFill } from "react-icons/bs";
 import { MdDeleteForever } from "react-icons/md";
 import { TbEdit } from "react-icons/tb";
 import { VscListFilter } from "react-icons/vsc";
 import { toast } from "react-toastify";
 import { location, newResponse, Pagination, response, User } from "src/@types";
-import { AdminCustomers } from "src/componets/admin/adminCustomer";
-import AdminsideNav from "src/componets/admin/adminDasboardnav";
+import { AdminCustomers } from "../../../componets/user/adminCustomer";
+import AdminsideNav from "../../../componets/admin/adminDasboardnav";
 import ConfirmBox from "src/componets/shared/ConfirmDialog";
 import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { useFetch } from "src/lib/hooks/useFetch";
 import { useAxios } from "src/utills/axios";
 import { tableStyles } from "../tickets";
+import CustomPagination from "src/componets/customPagination";
+import { ErrorDispaly } from "../property";
 
 export const Button = ({
   name,
@@ -58,31 +60,26 @@ const Customers = () => {
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string>("");
-  const [pageState, setPageState] = useState({
-    page: 1,
-    pageSize: 10,
-  });
-
   const instance = useAxios();
   const [users, setUsers] = useState<User[] | undefined | null>([]);
-  const [pagination, setPagination] = useState<Pagination | undefined | null>(
+  const [pagination, setPagination] = useState<Pagination | null>(
     null
   );
+  const [paginationModel, setPaginationModel] = useState({
+    page: 0,
+    pageSize: 50,
+  });
   const [name, setName] = useState<string>("");
   const [selected, setSelected] = useState("All");
   const router = useRouter();
 
   async function getAllUsers() {
-    let pr = selected === "All" ? false : true;
-
-    let params =
-      selected === "Premium"
-        ? `?premium=${pr || false}&&search=${name || ""}`
-        : `?search=${name || ""}`;
-
+    let pr = selected === "All" ? `search=${name || ""}` : `premium=true&&search=${name || ""}`
     try {
       setLoading(true);
-      const res = await instance.get(`/admin/user/getAllUsers${params}`);
+      const res = await instance.get(
+        `/admin/user/getAllUsers?page=${paginationModel?.page + 1 || 1}&&limit=${paginationModel?.pageSize || 50}&&${pr}`
+      );
       if (res.data) {
         setUsers(res?.data?.data);
         setPagination(res?.data?.pagination);
@@ -90,13 +87,13 @@ const Customers = () => {
       }
     } catch (e) {
       setLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   useEffect(() => {
     getAllUsers();
-  }, [selected, name]);
+  }, [selected, name, paginationModel?.page, paginationModel?.pageSize]);
 
   async function deleteCustomer() {
     try {
@@ -110,13 +107,15 @@ const Customers = () => {
       }
     } catch (e) {
       setDeleteLoading(false);
-      console.log(e);
+      ErrorDispaly(e);
     }
   }
 
   const all_customer_columns: GridColDef[] = [
     {
       flex: 0.25,
+      minWidth: 150,
+
       field: "name",
       headerName: "USER NAME",
       align: "left",
@@ -129,6 +128,8 @@ const Customers = () => {
       ),
     },
     {
+      minWidth: 150,
+
       flex: 0.25,
       field: "email",
       headerName: "EMAIl",
@@ -137,6 +138,8 @@ const Customers = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 120,
+
       field: "mobileNumber",
       headerName: "MOBILE",
       flex: 0.2,
@@ -145,14 +148,24 @@ const Customers = () => {
       disableColumnMenu: true,
     },
     {
+      minWidth: 150,
+
       field: "action",
       headerName: "ACTION",
-      flex: 0.1,
+      flex: 0.15,
       align: "left",
       headerAlign: "left",
       disableColumnMenu: true,
       renderCell: ({ row }) => (
         <Box>
+          <Tooltip title="Edit">
+            <IconButton
+              onClick={() => router.push(`/admin/customers/${row._id}`)}
+              color="primary"
+            >
+              <BsEyeFill />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Edit">
             <IconButton
               onClick={() => router.push(`/admin/customers/edit/${row._id}`)}
@@ -205,11 +218,10 @@ const Customers = () => {
                   setSelected(u);
                 }}
                 key={u}
-                className={` p-2 ${
-                  selected == u
-                    ? "text-primaryBlue  border-b border-primaryBlue"
-                    : "text-[#616161]"
-                }`}
+                className={` p-2 ${selected == u
+                  ? "text-primaryBlue  border-b border-primaryBlue"
+                  : "text-[#616161]"
+                  }`}
               >
                 {u}
               </button>
@@ -249,6 +261,15 @@ const Customers = () => {
               }}
               loading={loading}
               getRowHeight={() => "auto"}
+
+              pagination
+              paginationModel={paginationModel}
+              pageSizeOptions={[25, 50, 75, 100]}
+              rowCount={pagination?.totalUsers}
+              paginationMode="server"
+              onPaginationModelChange={setPaginationModel}
+
+
               // pagination
               // rowsPerPageOptions={[5, 10, 25]}
               // rowCount={pagination?.totalUsers || 0}

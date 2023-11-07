@@ -24,6 +24,7 @@ import { useFilterContext } from "src/pages/search/[query]/[name]";
 import CustomLoader from "../shared/Loader";
 import { Slider, Stack, TextField, Typography } from "@mui/material";
 import { debounce } from "src/@global/Queries";
+import { Search } from "../Home/header";
 
 const budgetArr: number[] = [5, 10, 15, 20, 25, 30, 40, 50, 60, 75, 90];
 
@@ -182,11 +183,12 @@ const Location = ({
 }) => {
   const { area, setArea } = useFilterContext();
 
+  let newArea = [...area]
   return (
     <div
       onClick={() => {
         let newArray: string[] = [];
-        if (!area.includes(name)) {
+        if (!newArea.includes(name)) {
           newArray.push(name);
         } else {
           newArray.splice(newArray.indexOf(name), 1);
@@ -219,28 +221,30 @@ const LocationsFilter = ({ areas }: { areas: area[] }) => {
   const { area, setArea } = useFilterContext();
   const isSelected = (name:string) => area.indexOf(name) !== -1;
 
-  return (
-    <div>
-      <h1 className="text-[16px] pb-5">Area</h1>
-      <div className="space-y-3">
-        {areas.map((a: area) => {
-          const checkSelect = isSelected(a.name);
-          return (
-            <Location
-              setEnabled={setArea}
-              enabled={checkSelect}
-              key={a._id}
-              name={a.name}
-            />
-          );
-        })}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div>
+//       <h1 className="text-[16px] pb-5">Area</h1>
+//       <div className="space-y-3">
+//         {areas.map((a: area) => {
+//           const checkSelect = isSelected(a.name);
+//           return (
+//             <Location
+//               setEnabled={setArea}
+//               enabled={checkSelect}
+//               key={a._id}
+//               name={a.name}
+//             />
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// };
+}
 
 const BhkFilter = () => {
   const { BHKconfig, setBHKconfig } = useFilterContext();
+  // console.log(BHKconfig,"BHK")
   return (
     <div>
       <h1 className="text-[16px] pb-5">BHK</h1>
@@ -251,36 +255,21 @@ const BhkFilter = () => {
           name="1 BHK"
           values="1"
         />
+   
         <FilterCheckBox
           setEnabled={setBHKconfig}
-          enabled={BHKconfig === "1.5"}
-          name="1.5 BHK"
-          values="1.5"
-        />
-        <FilterCheckBox
-          setEnabled={setBHKconfig}
-          enabled={BHKconfig === "3"}
+          enabled={BHKconfig === "2"}
           name="2 BHK"
           values="2"
         />
-        <FilterCheckBox
-          setEnabled={setBHKconfig}
-          enabled={BHKconfig === "3.5"}
-          name="2.5 BHK"
-          values="2.5"
-        />
+   
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "3"}
           name="3 BHK"
           values="3"
         />
-        <FilterCheckBox
-          setEnabled={setBHKconfig}
-          enabled={BHKconfig === "3.5"}
-          name="3.5 BHK"
-          values="3.5"
-        />
+    
         <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "4"}
@@ -293,17 +282,17 @@ const BhkFilter = () => {
           name="5 BHK"
           values="5"
         />
-        <FilterCheckBox
+        {/* <FilterCheckBox
           setEnabled={setBHKconfig}
           enabled={BHKconfig === "6"}
           name="6 BHK"
           values="6"
-        />
+        /> */}
         <FilterCheckBox
           setEnabled={setBHKconfig}
-          enabled={BHKconfig === "6+"}
-          name="6+ BHK"
-          values="6+"
+          enabled={BHKconfig === "5+"}
+          name="5+ BHK"
+          values="5+"
         />
       </div>
     </div>
@@ -363,28 +352,77 @@ const PossesionFilter = () => {
     </div>
   );
 };
+const PropertyToggleFilter = () => {
+  const { toggle, setToggle } = useFilterContext();
+  console.log(toggle,"BHK")
+
+  return (
+    <div>
+      <h1 className="text-[16px] pb-5">Property Toggle</h1>
+      <div className="space-y-3">
+        <FilterCheckBox
+          setEnabled={setToggle}
+          enabled={toggle === "Property"}
+          name="Property"
+        />
+        <FilterCheckBox
+          setEnabled={setToggle}
+          enabled={toggle === "Project"}
+          name="Project"
+        />
+      </div>
+    </div>
+  );
+};
+const AvailablePropertyFilter = () => {
+  const { availableFor, setAvailableFor } = useFilterContext();
+
+  return (
+    <div>
+      <h1 className="text-[16px] pb-5">Available For</h1>
+      <div className="space-y-3">
+        <FilterCheckBox
+          setEnabled={setAvailableFor}
+          enabled={availableFor === "rent"}
+          name="rent"
+        />
+        <FilterCheckBox
+          setEnabled={setAvailableFor}
+          enabled={availableFor === "sale"}
+          name="sale"
+        />
+        <FilterCheckBox
+          setEnabled={setAvailableFor}
+          enabled={availableFor === "Development"}
+          name="Development"
+        />
+      </div>
+    </div>
+  );
+};
 
 const BudgetFilter = () => {
   const { min, setMax, setMin, max } = useFilterContext();
 
   const minmin = 0;
-  const maxmax = 1000;
+  const maxmax = 200000000;
 
-  const [value, setValue] = useState<number[]>([0, 100]);
+  const [value, setValue] = useState<number[]>([0, 200000000]);
 
   const minDebounced = debounce((val) => {
     setMin(val);
-  }, 2000);
+  }, 20000);
 
   const maxDebounced = debounce((val) => {
     setMax(val);
-  }, 2000);
+  }, 20000);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
-    console.log("newValue", newValue);
-    setValue(newValue as number[]);
-    minDebounced(newValue[0]);
-    maxDebounced(newValue[1]);
+    if (Array.isArray(newValue)) {
+      setValue(newValue);
+      minDebounced(newValue[0]);
+      maxDebounced(newValue[1]);
+    }
   };
 
   return (
@@ -433,9 +471,9 @@ const BudgetFilter = () => {
           />
         </Stack>
         <div className="flex text-[#42526E] space-x-2 items-center pl-2 ">
-          <label htmlFor="" className="text-sm">
+          {/* <label htmlFor="" className="text-sm">
             in Lacs
-          </label>
+          </label> */}
         </div>
       </div>
     </div>
@@ -445,9 +483,21 @@ const BudgetFilter = () => {
 const TypeFilter = ({
   areas = [
     { label: "all", value: "" },
-    { label: "villa", value: "villa" },
-    { label: "appartment", value: "appartment" },
-    { label: "pg", value: "pg" },
+    { label: "villa", value: "Villa" },
+    { label: "flat", value: "Flat" },
+    { label: "pg", value: "PG" },
+    { label: "agriculture land", value: "Agriculture Land" },
+    { label: "penthouse", value: "Penthouse" },
+    { label: "individual house", value: "Individual House" },
+    { label: "stutio apartment", value: "Stutio Apartment" },
+    { label: "shop", value: "Shop" },
+    { label: "office space", value: "Office Space" },
+    { label: "showroom", value: "Showroom" },
+    { label: "building", value: "Building" },
+    { label: "warehouse", value: "Warehouse" },
+    { label: "industrial land", value: "Industrial Land" },
+
+    // { label: "building type", value: "building type" },
   ],
 }: {
   areas?: any;
@@ -498,9 +548,7 @@ interface Props {
 
 const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
   const router = useRouter();
-  if (!router.isReady) {
-    return <CustomLoader />;
-  }
+
   const { query, name } = router.query;
   const { data: areas, error } = useFetch<response<area[]>>(
     `/property/location/getAreaInLocation/${query}`
@@ -508,11 +556,25 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
 
   const { data: ams } = useFetch<response<amenity[]>>("/getAllAmenities");
 
+  if (!router.isReady) {
+    return <CustomLoader />;
+  }
+
   return (
     <>
-      <div className="font-manrope top-2 overflow-hidden">
+      <div  className="font-manrope top-2 overflow-hidden">
+        <div className="mb-2">
+        <Search />
+        </div>
+      
         <h1 className="text-TitleColor font-bold text-2xl py-2 ">Properties</h1>
         <div className="text-TitleColor">
+        <SidBarItemContainer isBottomBorder>
+            <AvailablePropertyFilter />
+          </SidBarItemContainer>
+        <SidBarItemContainer isBottomBorder>
+            <PropertyToggleFilter />
+          </SidBarItemContainer>
           {/* <SidBarItemContainer isBottomBorder>
             <PropertiesFilter
               enabled={verifiedPropety}
@@ -549,9 +611,9 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
           <SidBarItemContainer isBottomBorder>
             <BhkFilter />
           </SidBarItemContainer>
-          <SidBarItemContainer isBottomBorder>
+          {/* <SidBarItemContainer isBottomBorder>
             {areas && <LocationsFilter areas={areas.result} />}
-          </SidBarItemContainer>
+          </SidBarItemContainer> */}
           <SidBarItemContainer isBottomBorder>
             <TypeFilter />
           </SidBarItemContainer>
@@ -559,9 +621,9 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
             <PossesionFilter />
           </SidBarItemContainer>
           {/* amenties */}
-          <SidBarItemContainer isBottomBorder>
+          {/* <SidBarItemContainer isBottomBorder>
             <div>{ams && <Amenties data={ams?.result} />}</div>
-          </SidBarItemContainer>
+          </SidBarItemContainer> */}
           <SidBarItemContainer isBottomBorder>
             <FurnishingFilter />
           </SidBarItemContainer>
@@ -573,5 +635,7 @@ const SearchSideOptions = ({ data, setData, searchAllProperty }: Props) => {
     </>
   );
 };
+
+
 
 export default SearchSideOptions;

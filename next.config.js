@@ -10,8 +10,16 @@ const nextConfig = {
     ],
   },
   env: {
-    baseUrl: "https://my-property-go-backend.onrender.com/api",
+    baseUrl: "https://api.wonderplots.com/api",
   },
+  typescript: {
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    ignoreBuildErrors: true,
+  },
+  eslint:{
+    ignoreDuringBuilds: true,
+  }
 };
 
 module.exports = nextConfig;

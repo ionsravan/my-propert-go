@@ -11,6 +11,11 @@ import DashBoardLayout from "src/Layout/DasboardsLayout";
 import { FetchState, useFetch } from "src/lib/hooks/useFetch";
 import { Button } from "src/pages/admin/customers";
 import { PostingByDeveloper } from "..";
+import CircularSpinner from "src/componets/circularLoader";
+import PropertyCost from "src/componets/costFormat/PropertyCost";
+import { useAxios } from "src/utills/axios";
+import { toast } from "react-toastify";
+import generateSlug from "src/componets/slug/generateSlug";
 
 const Card = ({ name, Value }: { name: string; Value: number | string }) => {
   return (
@@ -31,7 +36,33 @@ export const PostingCard = ({
   address,
   cost,
   propertyImages,
+  toggle,
+  propertyType,
+  availableFor,
+  location,
+  slug
 }: Propery) => {
+  const instance = useAxios();
+  const [isPending, setIsPending] = useState(false);
+  const adminValue = localStorage.getItem("isAdmin");
+
+  // const slug = generateSlug(toggle, name, BHKconfig, propertyType, availableFor, location.name, _id);
+
+
+  const handlePropertyCare = async (id: any) => {
+    try {
+      const requestData = { propertyId: id };
+      const res = await instance.post("/user/requestCareService", requestData);
+
+      if (res.data) {
+        console.log(res.data, "reeeeee");
+        setIsPending(true);
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+      setIsPending(false);
+    }
+  };
   return (
     <div className="mb-5 bg-white rounded-lg md:flex cursor-pointer">
       {/* image section */}
@@ -47,32 +78,44 @@ export const PostingCard = ({
       <div className="p-5 px-6 w-full">
         <div className="flex w-full justify-between">
           <div>
-            <Link href={`/details/${_id}`}>
+            <Link href={`/details/${slug}`}>
+            {/* <Link href={`/details/${_id}`}> */}
               <h1 className="text-xl font-bold text-TitleColor">{name}</h1>
             </Link>
             <div className="flex space-x-4 mb-4 text-sm mt-1">
               <p className="text-title ">{address}</p>
-              <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
+              {/* <div className="flex  items-center px-2 space-x-1 bg-green-300 bg-opacity-40 text-green-800">
                 <p>4.5</p>
                 <AiFillStar />
-              </div>
+              </div> */}
             </div>
           </div>
-          <Link href={`/agent/mypostings/edit/${_id}`}>
-            <div className="text-primaryBlue flex items-center space-x-1 self-start text-xs font-medium">
-              <p>Edit</p>
-              <TbEdit />
-            </div>
-          </Link>
+          <div className="flex  space-x-4">
+            <Link href={adminValue == 'true' ? `/admin/property/edit/${_id}` : `/agent/mypostings/edit/${_id}`}>
+              <div className="text-primaryBlue flex items-center space-x-1 self-start text-xs font-medium">
+                <p>Edit</p>
+                <TbEdit />
+              </div>
+            </Link>
+            <button
+              onClick={() => handlePropertyCare(_id)}
+              className={`text-white flex bg-[#0066FF] rounded-full space-x-2 items-center transition transform active:scale-95 duration-200
+    ${isPending ? 'opacity-70 pointer-events-none' : ''}
+    h-[50px] md:h-[40px] px-[30px] md:px-[20px]`}
+            >
+              {isPending ? 'Pending' : 'Property Care'}
+            </button>
+          </div>
+
         </div>
         <div className=" max-w-xl py-1 w-full flex">
           <div className="">
             <p className="flex text-TitleColor text-lg items-center">
               <span className="flex items-center space-x-1 ">
                 <FaRupeeSign />
-                <span className="text-lg font-bold">{cost}</span>
+                <span className="text-lg font-bold"><PropertyCost cost={cost} /></span>
               </span>
-              <span className="ml-1 text-xs">k</span>
+              {/* <span className="ml-1 text-xs">k</span> */}
             </p>
             <p className="text-black opacity-40 text-sm hidden md:block">
               Onwards
@@ -110,15 +153,21 @@ export const PostingCard = ({
 const PropertyTypes = ["All", "Rent", "Sell", "PG"];
 
 const MyPosting = () => {
-  const { data, status, error } = useFetch<response<Agent>>("/agent/property");
+  const { data, status, error } = useFetch<response<Agent>>("/user/property");
   const [selected, setSelected] = useState(PropertyTypes[0]);
   const [filtredResult, setFiltredResult] = useState<Propery[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   console.log(data);
   useEffect(() => {
-    if (data?.result) {
-      setFiltredResult(data?.result.properties);
+    if (data) {
+      setFiltredResult(data?.result);
+      setIsLoading(false);
     }
-  }, [data?.result]);
+  }, [data]);
+
+  if (filtredResult) {
+    console.log(filtredResult, "filter")
+  }
 
   return (
     <>
@@ -126,11 +175,12 @@ const MyPosting = () => {
         <div>
           <h2 className="text-black font-bold text-[22px]">My Property</h2>
           <p className="text-[#091E42] text-sm">
-            {data?.result.properties.length} Listings
+            {/* { data ? data?.result.properties.length : 0} Listings */}
+            Listings
           </p>
         </div>
       </div>
-      <div className="space-y-3 md:space-y-0  md:flex justify-between  my-4">
+      {/* <div className="space-y-3 md:space-y-0  md:flex justify-between  my-4">
         <div className="space-x-5">
           {PropertyTypes.map((t) => {
             return (
@@ -180,16 +230,17 @@ const MyPosting = () => {
           <Button name="Filter" Icon={VscListFilter} Color="" />
           <Button name="Search" Icon={AiOutlineSearch} Color="" />
         </div>
-      </div>
-      <h1 className="text-lg text-black">Leads</h1>
+      </div> */}
+
+      {/* <h1 className="text-lg text-black">Leads</h1> */}
       <div className="flex space-x-[17px] mt-6 mb-8">
-        <Card name="Properties" Value={18} />
-        <Card name="On Discussion" Value={8} />
-        <Card name="Views" Value={"130k"} />
+        <Card name="Properties" Value={filtredResult.length} />
+        {/* <Card name="On Discussion" Value={8} /> */}
+        {/* <Card name="Views" Value={"130k"} /> */}
       </div>
 
-      <PostingByDeveloper />
-      <div className="w-full space-y-5   scrollbar-hide mb-8">
+      {/* <PostingByDeveloper /> */}
+      {/* <div className="w-full space-y-5   scrollbar-hide mb-8">
         {selected !== "All" && filtredResult.length == 0 ? (
           <>0 Results found for {selected}</>
         ) : (
@@ -207,7 +258,23 @@ const MyPosting = () => {
             </>
           );
         })}
+      </div> */}
+      <div>
+        {isLoading ? (
+          <CircularSpinner />
+        ) : (
+          <div className="w-full space-y-5 scrollbar-hide mb-8">
+            {filtredResult?.length > 0 ? (
+              filtredResult.map((curElem) => {
+                return <PostingCard key={curElem._id} {...curElem} />;
+              })
+            ) : (
+              <p> No Data Available</p>
+            )}
+          </div>
+        )}
       </div>
+
     </>
   );
 };
