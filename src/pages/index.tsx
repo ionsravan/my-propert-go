@@ -20,6 +20,7 @@ import { FaHome } from "react-icons/fa";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useRouter } from "next/router";
 import { useAxios } from "src/utills/axios";
+import CustomHead from "src/componets/Head/CustomHead";
 
 const responsive = {
   largeDesktop: {
@@ -68,7 +69,12 @@ export const scrollRight = (id: string) => {
 };
 
 
-
+// export async function generateMetadata({ params, searchParams }) {
+// 	return {
+// 		title: 'Real Estate Property Site | Buy Sell Rent Properties Portal | Wonderplots.com',
+// 		description: 'Find your Dream Property on Wonderplots.com Post your Property for Free. Buy, rent or Sale of Residential & Commercial Property.',
+// 	}
+// }
 
 
 export default function Home() {
@@ -208,6 +214,11 @@ useEffect(() => {
 
   return (
     <>
+    <div>
+    <CustomHead
+        title="Real Estate Property Site | Buy Sell Rent Properties Portal | Wonderplots.com"
+        description="Find your Dream Property on Wonderplots.com Post your Property for Free. Buy, rent or Sale of Residential & Commercial Property."
+      />
       <div style={{ backgroundImage: 'url("https://i.ibb.co/ZY28n97/Homepage-Background-Image.webp")', margin: "40px 40px", borderRadius: "20px" }} className="min-h-[70vh] bg-no-repeat bg-cover relative py-32 px-5 md:px-10">
         <div className="absolute bottom-0 right-0">
           <div className="h-96 relative w-80">
@@ -641,6 +652,8 @@ useEffect(() => {
       {/*    </Carousel>*/}
       {/*  </div>*/}
       {/*</section>*/}
+      
+    </div>
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from '../contact';
 import Layout from "src/Layout/main";
+import CustomHead from 'src/componets/Head/CustomHead';
 
 const PropertyCare = () => {
 
@@ -12,6 +13,10 @@ const PropertyCare = () => {
     {/* <Navbar /> */}
 
     <div style={{ marginTop: "30px" }} className="bg-white py-8 px-4 sm:px-6 lg:px-8">
+    <CustomHead
+        title="Property Care: Expert Property Management Services in A.P and T.N"
+        description="Expert property management services in Andhra Pradesh and Telangana. Trust our professional team for all your property needs. Learn more today!"
+      />
       <div className="max-w-7xl mx-auto">
         <section className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 p-4">

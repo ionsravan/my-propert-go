@@ -4,6 +4,7 @@ import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from '../contact';
 import Layout from "src/Layout/main";
+import CustomHead from 'src/componets/Head/CustomHead';
 
 
 const EarnWithUs = () => {
@@ -13,6 +14,10 @@ const EarnWithUs = () => {
     {/* <Navbar /> */}
 
     <div style={{marginTop:"30px"}} className="bg-white py-8 px-4 sm:px-6 lg:px-8">
+    <CustomHead
+        title="Earn Extra Money As A Student - Flexible Part-Time Work Opportunities"
+        description="Become a student side hustler! Earn BIG with our flexible Videography and Property verifications. Make your own schedule. Join now for high income potential student jobs!"
+      />
       <div className="max-w-7xl mx-auto">
         <section className="flex flex-col md:flex-row">
           <div className="w-full md:w-1/2 p-4">

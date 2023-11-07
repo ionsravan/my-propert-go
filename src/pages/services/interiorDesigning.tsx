@@ -4,6 +4,7 @@ import { Footer, Navbar } from 'src/componets';
 import { Input } from 'src/componets/shared/sharedInput';
 import ContactForm from 'src/pages/contact';
 import Layout from "src/Layout/main";
+import CustomHead from 'src/componets/Head/CustomHead';
 
 
 const VideoLoop = () => {
@@ -55,6 +56,10 @@ const InteriorDesigns = () => {
    
    {/* <Navbar /> */}
     <main className=" py-12 px-5 md:px-8 space-y-6 max-w-7xl mx-auto w-full">
+    <CustomHead
+        title="Transform Your Home with Custom Interior Design. Ask for free Quote."
+        description="View a huge selection of completely customisable home interior ideas. Have our specialists design the interior of your home. Today, schedule a free consultation."
+      />
 
       <header>
  
